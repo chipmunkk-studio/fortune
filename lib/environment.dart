@@ -107,15 +107,6 @@ class Environment {
   }
 }
 
-// 앱 플래버.
-Future<String?> getBuildTypeInfo(String method) async {
-  return await const MethodChannel(
-    'build_type',
-  ).invokeMethod<String>(
-    method,
-  );
-}
-
 // baseUrl 가져옴.
 getRemoteConfigArgs() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
