@@ -9,7 +9,6 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:single_item_storage/storage.dart';
 import 'package:synchronized/synchronized.dart';
 
-import '../error/fortune_error_message.dart';
 import '../util/logger.dart';
 import 'api/service/normal/normal_user_service.dart';
 import 'credential/token_response.dart';

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foresh_flutter/core/util/strings.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:single_item_storage/storage.dart';
 
 import '../core/network/auth_helper_jwt.dart';
@@ -93,7 +94,15 @@ class Environment {
     ]);
 
     /// 파이어베이스 crashlytics
-    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    FirebaseCrashlytics.instance
+      ..setCustomKey("appName", packageInfo.appName)
+      ..setCustomKey("packageName", packageInfo.packageName)
+      ..setCustomKey("version", packageInfo.version)
+      ..setCustomKey("buildNumber", packageInfo.buildNumber)
+      ..setCustomKey("buildType", buildType.toString())
+      ..setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
 
     /// 앱메트리카.
     AppMetrica.activate(AppMetricaConfig(remoteConfig.appMetricaKey));

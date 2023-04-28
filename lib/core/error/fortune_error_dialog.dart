@@ -89,6 +89,7 @@ extension FortuneContextEx on BuildContext {
                 child: Text(
                   error.message ?? 'No message',
                   style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                  textAlign: TextAlign.center,
                 ),
               ),
               SizedBox(height: 32.h),

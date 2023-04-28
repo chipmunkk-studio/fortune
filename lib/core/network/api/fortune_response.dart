@@ -7,7 +7,6 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/error/fortune_error_response.dart';
 
 import '../../error/fortune_error_mapper.dart';
-import '../../error/fortune_error_message.dart';
 
 extension FortuneResponseMapper on Response {
   dynamic response() {

@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_animation.dart';
-import 'package:foresh_flutter/environment.dart';
+import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
 import 'package:latlong2/latlong.dart';

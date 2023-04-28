@@ -12,7 +12,7 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/environment.dart';
+import 'package:foresh_flutter/env.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';

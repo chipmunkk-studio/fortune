@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
-import 'package:foresh_flutter/core/error/fortune_error_message.dart';
 
 import 'fortune_error_mapper.dart';
 
@@ -34,13 +33,13 @@ class AuthFailure extends FortuneFailure {
   final String? errorType;
   final String? errorMessage;
 
-  AuthFailure(
+  const AuthFailure(
     this.errorCode,
     this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.unauthorized,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
+          message: errorMessage,
         );
 
   factory AuthFailure.internal({
@@ -64,70 +63,13 @@ class BadRequestFailure extends FortuneFailure {
   final String? errorType;
   final String? errorMessage;
 
-  BadRequestFailure(
+  const BadRequestFailure(
     this.errorCode,
     this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.badRequest,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
-        );
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// 스프링 bad request.(클라이언트)
-class SpringBadRequestFailure extends FortuneFailure {
-  final int? errorCode;
-  final String? errorType;
-  final String? errorMessage;
-
-  SpringBadRequestFailure(
-    this.errorCode,
-    this.errorType,
-    this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.springBadRequest,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
-        );
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// 유효성 검사.
-class ValidationFailure extends FortuneFailure {
-  final String? errorType;
-  final int? errorCode;
-  final String? errorMessage;
-
-  ValidationFailure(
-    this.errorCode,
-    this.errorType,
-    this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.validationError,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
-        );
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// Not Found.
-class NotFoundFailure extends FortuneFailure {
-  final String? errorType;
-  final int? errorCode;
-  final String? errorMessage;
-
-  NotFoundFailure(
-    this.errorCode,
-    this.errorType,
-    this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.duplicatedUser,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
+          message: errorMessage,
         );
 
   @override
@@ -140,13 +82,13 @@ class InternalServerFailure extends FortuneFailure {
   final int? errorCode;
   final String? errorMessage;
 
-  InternalServerFailure(
+  const InternalServerFailure(
     this.errorCode,
     this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.internalServerError,
-          message: getErrorDataMessage(errorCode, errorType, errorMessage),
+          message: errorMessage,
         );
 
   @override
