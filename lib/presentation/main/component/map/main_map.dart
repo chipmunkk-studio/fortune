@@ -16,7 +16,7 @@ import 'center_profile.dart';
 class MainMap extends StatelessWidget {
   final MainBloc _bloc;
   final MapController _mapController;
-  final RemoteConfigArgs _remoteConfigArgs;
+  final FortuneRemoteConfig _remoteConfigArgs;
   final LocationData? _myLocation;
 
   const MainMap(

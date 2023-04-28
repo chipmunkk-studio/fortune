@@ -49,7 +49,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final MapController _mapController = MapController();
   late MainBloc bloc;
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
-  final RemoteConfigArgs environment = serviceLocator<Environment>().configArgs;
+  final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
   final router = serviceLocator<FortuneRouter>().router;
   late Function(GlobalKey) runAddToCartAnimation;
   LocationData? myLocation;

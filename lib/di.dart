@@ -98,7 +98,7 @@ Future<void> init() async {
 
   /// 서비스 프로바이더.
   ApiServiceProvider apiProvider = ApiServiceProvider(
-    baseUrl: serviceLocator<Environment>().configArgs.baseUrl,
+    baseUrl: serviceLocator<Environment>().remoteConfig.baseUrl,
     userStore: userStorage,
   );
 
@@ -116,7 +116,7 @@ Future<void> init() async {
 /// 환경설정.
 initEnvironment() async {
   final Environment environment = Environment.create(
-    configArgs: await getRemoteConfigArgs(),
+    remoteConfig: await getRemoteConfigArgs(),
   )..init();
 
   serviceLocator.registerLazySingleton<Environment>(() => environment);

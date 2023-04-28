@@ -35,14 +35,14 @@ enum EnvKey {
   APP_METRICA_KEY,
 }
 
-class RemoteConfigArgs {
+class FortuneRemoteConfig {
   final String baseUrl;
   final String mapAccessToken;
   final String mapStyleId;
   final String mapUrlTemplate;
   final String appMetricaKey;
 
-  RemoteConfigArgs({
+  FortuneRemoteConfig({
     required this.baseUrl,
     required this.mapAccessToken,
     required this.mapStyleId,
@@ -65,10 +65,10 @@ class Environment {
   static const translation = "assets/translations";
 
   late BuildType buildType;
-  final RemoteConfigArgs configArgs;
+  final FortuneRemoteConfig remoteConfig;
 
   Environment.create({
-    required this.configArgs,
+    required this.remoteConfig,
   });
 
   /// 앱에서 지원하는 언어 리스트 변수
@@ -96,12 +96,12 @@ class Environment {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
 
     /// 앱메트리카.
-    AppMetrica.activate(AppMetricaConfig(configArgs.appMetricaKey));
+    AppMetrica.activate(AppMetricaConfig(remoteConfig.appMetricaKey));
 
     FortuneLogger.debug(
       "buildType: $buildType, "
       "--------------configArgs--------------"
-      "${configArgs.toString()}"
+      "${remoteConfig.toString()}"
       "--------------------------------------",
     );
   }
@@ -135,7 +135,7 @@ getRemoteConfigArgs() async {
           return describeEnum(EnvKey.DEV_URL);
       }
     }());
-    return RemoteConfigArgs(
+    return FortuneRemoteConfig(
       baseUrl: baseUrl,
       appMetricaKey: metricaKey,
       mapAccessToken: mapAccessToken,

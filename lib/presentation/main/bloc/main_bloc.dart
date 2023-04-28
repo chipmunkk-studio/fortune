@@ -182,7 +182,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   // 소켓 연결.
   void _connectSocket() {
-    final url = serviceLocator<Environment>().configArgs.baseUrl;
+    final url = serviceLocator<Environment>().remoteConfig.baseUrl;
     _stompClient = StompClient(
       config: StompConfig(
         url: 'ws://ec2-15-164-228-218.ap-northeast-2.compute.amazonaws.com:10083/fortune',
