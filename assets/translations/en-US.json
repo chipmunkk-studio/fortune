@@ -1,0 +1,73 @@
+{
+  "hello": "hello",
+  "name": "name",
+  "clear": "clear",
+  "english": "English",
+  "korean": "한국어",
+  "chandongi": "chandongi",
+  "myNameIs": "My Name is {}",
+  "namedArgs": "Named Args {name}",
+  "argsWithNamedArgs": "args: {}, {}, Named Args {name}",
+  "errorClientValidation": {
+    "title": "유효성검사 실패",
+    "common": "유효성 검사에 실패했습니다.",
+    "10002": "유효성 검증 실패 에러"
+  },
+  "errorClientAuth": {
+    "title": "인증 에러",
+    "common": "인증에러가 발생했습니다",
+    "10003": "인증되지 않은 사용자 요청일 경우 발생"
+  },
+  "errorClientRequest": {
+    "title": "요청 실패",
+    "common": "요청에 실패했습니다.",
+    "10000": "잘못된 요청",
+    "10004": "이미 가입된 회원",
+    "10005": "존재하지 않는 유저 정보로 조회 요청",
+    "10006": "인증 번호 검증 전 요청부터 진행해야 함",
+    "10007": "잘못된 인증번호로 검증 요청",
+    "10008": "유효하지 않은 닉네임으로 회원가입 요청",
+    "10009": "유효하지 않은 핸드폰 번호로 회원 가입 요청",
+    "10010": "유효하지 않은 파일 사이즈로 회원 가입 요청",
+    "10011": "제한된 인증번호 요청(1분간 1회) 시 발생하는 에러",
+    "10012": "이미 획득한 마커입니다.",
+    "10013": "라운드가 존재하지 않습니다."
+  },
+  "errorServerInternal": {
+    "title": "서버장애",
+    "common": "서버 장애입니다.",
+    "20000": "서버에서 발생하는 에러",
+    "20001": "서버에서 발생하는 스프링 관련"
+  },
+  "errorClientInternal": {
+    "title": "클라이언트 에러",
+    "common": "클라이언트에서 발생한 에러입니다."
+  },
+  "errorClientUnknown": {
+    "title": "알 수 없는 에러",
+    "common": "예상하지 못한 에러가 발생했습니다."
+  },
+  "errorClientCustom": {
+    "title": "에러 발생",
+    "common": "커스텀 에러입니다."
+  },
+  "onboarding_greeting_title": "Nice to meet You!",
+  "onboarding_greeting_sub_title": "Please login to use app",
+  "require_certify_phone_number": "For identification\nI need a cell phone number",
+  "require_certify_phone_number_hint": "Please enter your cell phone number",
+  "require_certify_phone_number_error": "Please enter a valid number",
+  "require_input_nickname_error": "Please input correct nickname.",
+  "select_country_code": "Please select the country code",
+  "join_membership": "JOIN",
+  "next": "NEXT",
+  "default_country_name": "South Korea",
+  "cert_expiration": "Certification expiration",
+  "enter_nickname": "Please enter a nickname",
+  "enter_nickname_hint": "your nickname",
+  "enter_profile_image": "Please set\nthe profile image",
+  "sign_up_complete": "Sign up completed!",
+  "move_in_few_minutes": "Move in a few minutes",
+  "home": "홈",
+  "fortune_radar": "포춘레이더",
+  "my_page": "마이페이지"
+}
