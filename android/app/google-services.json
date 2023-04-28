@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "961220732209",
+    "project_id": "fortune-79931",
+    "storage_bucket": "fortune-79931.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961220732209:android:6b0419a71137e90c34fc10",
+        "android_client_info": {
+          "package_name": "com.foresh.fortune"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961220732209-pt1225h8940o2snve3csip8mj5ckmd9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhRI6J2IhFd5tcmWZEhej5lLRk3CyPQTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961220732209-pt1225h8940o2snve3csip8mj5ckmd9p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961220732209-uoo8ffh5iakflsa8m3952eeub3m7bn6d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.foresh.fortune"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
