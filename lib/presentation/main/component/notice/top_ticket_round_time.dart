@@ -62,7 +62,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                       builder: (context, state) {
                         return Row(
                           children: [
-                            Assets.icons.fortuneTicket.svg(width: 24.w, height: 24.h),
+                            Assets.icons.icFortuneTicket.svg(width: 24.w, height: 24.h),
                             SizedBox(width: 8.w),
                             Text("${state.normalTicketCnt}", style: FortuneTextStyle.body3Bold())
                           ],
@@ -82,13 +82,13 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                       builder: (context, state) {
                         return Row(
                           children: [
-                            Assets.icons.fortuneMoney.svg(width: 24.w, height: 24.h),
+                            Assets.icons.icFortuneMoney.svg(width: 24.w, height: 24.h),
                             SizedBox(width: 8.w),
                             Text("${state.chargeTicketCnt}", style: FortuneTextStyle.body3Bold()),
                             SizedBox(
                               width: 8.w,
                             ),
-                            Assets.icons.fortuneMoneyPlus.svg(width: 16.w, height: 16.h),
+                            Assets.icons.icFortuneMoneyPlus.svg(width: 16.w, height: 16.h),
                           ],
                         );
                       },
@@ -104,7 +104,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                       ),
                       child: Row(
                         children: [
-                          Assets.icons.timer.svg(width: 24.w, height: 24.h),
+                          Assets.icons.icTimer.svg(width: 24.w, height: 24.h),
                           SizedBox(width: 8.w),
                           Expanded(
                             child: Stack(

@@ -28,7 +28,7 @@ class StampExchange extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(width: 9.w),
-        Assets.icons.info.svg(width: 20, height: 20),
+        Assets.icons.icInfo.svg(width: 20, height: 20),
         const Spacer(),
         InkWell(
           onTap: onStampExchangeClick,

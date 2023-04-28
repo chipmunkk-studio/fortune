@@ -120,7 +120,7 @@ class _TopNoticeState extends State<TopNotice> {
                           right: 20,
                           bottom: 0,
                           top: 0,
-                          child: Assets.icons.rightArrow.svg(),
+                          child: Assets.icons.icRightArrow.svg(),
                         )
                       ],
                     ),

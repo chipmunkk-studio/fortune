@@ -58,45 +58,20 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/arrow_left.svg
-  SvgGenImage get arrowLeft => const SvgGenImage('assets/icons/arrow_left.svg');
-
-  /// File path: assets/icons/box1.gif
-  AssetGenImage get box1 => const AssetGenImage('assets/icons/box1.gif');
-
-  /// File path: assets/icons/box2.gif
-  AssetGenImage get box2 => const AssetGenImage('assets/icons/box2.gif');
-
-  /// File path: assets/icons/camera.svg
-  SvgGenImage get camera => const SvgGenImage('assets/icons/camera.svg');
-
-  /// File path: assets/icons/fortune_money.svg
-  SvgGenImage get fortuneMoney =>
-      const SvgGenImage('assets/icons/fortune_money.svg');
-
-  /// File path: assets/icons/fortune_money_plus.svg
-  SvgGenImage get fortuneMoneyPlus =>
-      const SvgGenImage('assets/icons/fortune_money_plus.svg');
-
-  /// File path: assets/icons/fortune_ticket.svg
-  SvgGenImage get fortuneTicket =>
-      const SvgGenImage('assets/icons/fortune_ticket.svg');
-
-  /// File path: assets/icons/home_selected.svg
-  SvgGenImage get homeSelected =>
-      const SvgGenImage('assets/icons/home_selected.svg');
-
-  /// File path: assets/icons/home_unselected.svg
-  SvgGenImage get homeUnselected =>
-      const SvgGenImage('assets/icons/home_unselected.svg');
-
   /// File path: assets/icons/ic_arrow_down.svg
   SvgGenImage get icArrowDown =>
       const SvgGenImage('assets/icons/ic_arrow_down.svg');
 
+  /// File path: assets/icons/ic_arrow_left.svg
+  SvgGenImage get icArrowLeft =>
+      const SvgGenImage('assets/icons/ic_arrow_left.svg');
+
   /// File path: assets/icons/ic_arrow_up.svg
   SvgGenImage get icArrowUp =>
       const SvgGenImage('assets/icons/ic_arrow_up.svg');
+
+  /// File path: assets/icons/ic_camera.svg
+  SvgGenImage get icCamera => const SvgGenImage('assets/icons/ic_camera.svg');
 
   /// File path: assets/icons/ic_cancel.svg
   SvgGenImage get icCancel => const SvgGenImage('assets/icons/ic_cancel.svg');
@@ -113,109 +88,74 @@ class $AssetsIconsGen {
   SvgGenImage get icFortuneDiamond =>
       const SvgGenImage('assets/icons/ic_fortune_diamond.svg');
 
+  /// File path: assets/icons/ic_fortune_money.svg
+  SvgGenImage get icFortuneMoney =>
+      const SvgGenImage('assets/icons/ic_fortune_money.svg');
+
+  /// File path: assets/icons/ic_fortune_money_plus.svg
+  SvgGenImage get icFortuneMoneyPlus =>
+      const SvgGenImage('assets/icons/ic_fortune_money_plus.svg');
+
+  /// File path: assets/icons/ic_fortune_ticket.svg
+  SvgGenImage get icFortuneTicket =>
+      const SvgGenImage('assets/icons/ic_fortune_ticket.svg');
+
+  /// File path: assets/icons/ic_info.svg
+  SvgGenImage get icInfo => const SvgGenImage('assets/icons/ic_info.svg');
+
+  /// File path: assets/icons/ic_inventory.svg
+  SvgGenImage get icInventory =>
+      const SvgGenImage('assets/icons/ic_inventory.svg');
+
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
+
+  /// File path: assets/icons/ic_profile_setting.svg
+  SvgGenImage get icProfileSetting =>
+      const SvgGenImage('assets/icons/ic_profile_setting.svg');
 
   /// File path: assets/icons/ic_recycle.svg
   SvgGenImage get icRecycle => const SvgGenImage('assets/icons/ic_recycle.svg');
 
-  /// File path: assets/icons/info.svg
-  SvgGenImage get info => const SvgGenImage('assets/icons/info.svg');
+  /// File path: assets/icons/ic_right_arrow.svg
+  SvgGenImage get icRightArrow =>
+      const SvgGenImage('assets/icons/ic_right_arrow.svg');
 
-  /// File path: assets/icons/inventory.svg
-  SvgGenImage get inventory => const SvgGenImage('assets/icons/inventory.svg');
-
-  /// File path: assets/icons/item1.svg
-  SvgGenImage get item1 => const SvgGenImage('assets/icons/item1.svg');
-
-  /// File path: assets/icons/item2.svg
-  SvgGenImage get item2 => const SvgGenImage('assets/icons/item2.svg');
-
-  /// File path: assets/icons/item3.svg
-  SvgGenImage get item3 => const SvgGenImage('assets/icons/item3.svg');
-
-  /// File path: assets/icons/item4.svg
-  SvgGenImage get item4 => const SvgGenImage('assets/icons/item4.svg');
-
-  /// File path: assets/icons/map_selected.svg
-  SvgGenImage get mapSelected =>
-      const SvgGenImage('assets/icons/map_selected.svg');
-
-  /// File path: assets/icons/map_unselected.svg
-  SvgGenImage get mapUnselected =>
-      const SvgGenImage('assets/icons/map_unselected.svg');
-
-  /// File path: assets/icons/megaphone.svg
-  SvgGenImage get megaphone => const SvgGenImage('assets/icons/megaphone.svg');
-
-  /// File path: assets/icons/right_arrow.svg
-  SvgGenImage get rightArrow =>
-      const SvgGenImage('assets/icons/right_arrow.svg');
-
-  /// File path: assets/icons/smile_selected.svg
-  SvgGenImage get smileSelected =>
-      const SvgGenImage('assets/icons/smile_selected.svg');
-
-  /// File path: assets/icons/smile_unselected.svg
-  SvgGenImage get smileUnselected =>
-      const SvgGenImage('assets/icons/smile_unselected.svg');
-
-  /// File path: assets/icons/timer.svg
-  SvgGenImage get timer => const SvgGenImage('assets/icons/timer.svg');
+  /// File path: assets/icons/ic_timer.svg
+  SvgGenImage get icTimer => const SvgGenImage('assets/icons/ic_timer.svg');
 
   /// List of all assets
-  List<dynamic> get values => [
-        arrowLeft,
-        box1,
-        box2,
-        camera,
-        fortuneMoney,
-        fortuneMoneyPlus,
-        fortuneTicket,
-        homeSelected,
-        homeUnselected,
+  List<SvgGenImage> get values => [
         icArrowDown,
+        icArrowLeft,
         icArrowUp,
+        icCamera,
         icCancel,
         icCancelCircle,
         icFortuneCookie,
         icFortuneDiamond,
+        icFortuneMoney,
+        icFortuneMoneyPlus,
+        icFortuneTicket,
+        icInfo,
+        icInventory,
         icLock,
+        icProfileSetting,
         icRecycle,
-        info,
-        inventory,
-        item1,
-        item2,
-        item3,
-        item4,
-        mapSelected,
-        mapUnselected,
-        megaphone,
-        rightArrow,
-        smileSelected,
-        smileUnselected,
-        timer
+        icRightArrow,
+        icTimer
       ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/ic_fortune.svg
-  SvgGenImage get icFortune =>
-      const SvgGenImage('assets/images/ic_fortune.svg');
-
-  /// File path: assets/images/ic_profile_setting.svg
-  SvgGenImage get icProfileSetting =>
-      const SvgGenImage('assets/images/ic_profile_setting.svg');
-
   /// File path: assets/images/iv_default_profile.svg
   SvgGenImage get ivDefaultProfile =>
       const SvgGenImage('assets/images/iv_default_profile.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [icFortune, icProfileSetting, ivDefaultProfile];
+  List<SvgGenImage> get values => [ivDefaultProfile];
 }
 
 class $AssetsTranslationsGen {

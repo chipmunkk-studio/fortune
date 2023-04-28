@@ -39,7 +39,7 @@ class ProfileImage extends StatelessWidget {
                   final String? profileImage = state.profileImage;
                   return ClipOval(
                     child: profileImage == null
-                        ? Assets.icons.camera.svg(
+                        ? Assets.icons.icCamera.svg(
                             width: 69.w,
                             height: 69.h,
                           )

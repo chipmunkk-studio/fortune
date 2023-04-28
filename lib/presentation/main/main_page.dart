@@ -176,7 +176,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Assets.icons.inventory.svg(),
+                            child: Assets.icons.icInventory.svg(),
                           ),
                         ),
                         badgeOptions: const BadgeOptions(active: false),

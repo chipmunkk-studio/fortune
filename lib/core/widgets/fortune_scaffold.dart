@@ -59,7 +59,7 @@ abstract class FortuneCustomAppBar {
   }) =>
       AppBar(
         leading: IconButton(
-          icon: Assets.icons.arrowLeft.svg(),
+          icon: Assets.icons.icArrowLeft.svg(),
           onPressed: onPressed ?? () => Navigator.pop(context),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,

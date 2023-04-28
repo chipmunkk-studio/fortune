@@ -41,7 +41,7 @@ class Profile extends StatelessWidget {
                 children: [
                   Text("익명의 다람쥐", style: FortuneTextStyle.subTitle3Bold()),
                   SizedBox(width: 4.w),
-                  Assets.icons.rightArrow.svg(),
+                  Assets.icons.icRightArrow.svg(),
                 ],
               ),
               SizedBox(height: 4.h),
