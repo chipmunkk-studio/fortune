@@ -4,6 +4,8 @@ import 'package:logger/logger.dart';
 abstract class FortuneLogger {
   static void debug(String? message, {String? tag}) => serviceLocator<AppLogger>().debugPrint(tag, message);
 
+  static void info(String? message, {String? tag}) => serviceLocator<AppLogger>().infoPrint(tag, message);
+
   static void error(String? message, {String? tag}) => serviceLocator<AppLogger>().errorPrint(tag, message);
 }
 
@@ -18,5 +20,9 @@ class AppLogger {
 
   errorPrint(String? tag, String? message) {
     logger.e("${tag ?? ''}>> $message");
+  }
+
+  infoPrint(String? tag, String? message) {
+    logger.i("${tag ?? ''} >> $message");
   }
 }
