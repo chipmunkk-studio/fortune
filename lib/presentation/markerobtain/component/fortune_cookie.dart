@@ -45,6 +45,8 @@ class _FortuneCookieState extends State<FortuneCookie> {
         });
       },
       child: Container(
+        width: 100,
+        height: 100,
         child: getMarkerIcon(widget.grade),
       ),
     );

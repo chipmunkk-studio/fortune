@@ -99,3 +99,11 @@ class MainRefreshNotice extends MainEvent {
   @override
   List<Object?> get props => [];
 }
+
+class MainRoundOver extends MainEvent {
+  MainRoundOver();
+
+  @override
+  List<Object?> get props => [];
+}
+

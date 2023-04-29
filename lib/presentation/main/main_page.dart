@@ -57,16 +57,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addObserver(this);
     bloc = BlocProvider.of<MainBloc>(context);
-    super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
     bloc.close();
-    super.dispose();
   }
 
   @override
@@ -98,27 +98,32 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<MainBloc, MainSideEffect>(
-      listener: (context, sideEffect) async {
+      listener: (context, sideEffect) {
         if (sideEffect is MainLocationChangeListenSideEffect) {
-          listenLocationChange(sideEffect.myLocation);
-          setState(() {
-            myLocation = sideEffect.myLocationData;
-          });
+          // listenLocationChange(sideEffect.myLocation);
+          // 내 위치 잡고 최초에  한번만 다시 그림.
+          if (myLocation == null) {
+            setState(() {
+              myLocation = sideEffect.myLocationData;
+            });
+          }
         } else if (sideEffect is MainMarkerClickSideEffect) {
-          await router.navigateTo(
-            context,
-            Routes.markerObtainAnimationRoute,
-            opaque: false,
-            routeSettings: RouteSettings(
-              arguments: MarkerObtainArgs(
-                grade: sideEffect.grade,
-                message: "포츈쿠키 메세지 입니다.포츈\n쿠키 메세지 입니다",
+          () async {
+            await router.navigateTo(
+              context,
+              Routes.markerObtainAnimationRoute,
+              opaque: false,
+              routeSettings: RouteSettings(
+                arguments: MarkerObtainArgs(
+                  grade: sideEffect.grade,
+                  message: "포츈쿠키 메세지 입니다.포츈\n쿠키 메세지 입니다",
+                ),
               ),
-            ),
-          );
-          // 다음 위치 추가.
-          bloc.add(MainChangeNewMarkers(sideEffect.newMarkers));
-          startAnimation(sideEffect.key);
+            );
+            // 다음 위치 추가.
+            bloc.add(MainChangeNewMarkers(sideEffect.newMarkers));
+            startAnimation(sideEffect.key);
+          }();
         } else if (sideEffect is MainRequireLocationPermission) {
           FortuneLogger.debug("Permission Denied :$sideEffect");
           context.showFortuneDialog(
@@ -208,14 +213,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   void listenLocationChange(Location myLocation) async {
     myLocation.onLocationChanged.listen(
       (newLoc) {
-        // _animatedMapMove(
-        //   LatLng(
-        //     newLoc.latitude!,
-        //     newLoc.longitude!,
-        //   ),
-        //   zoomThreshold,
-        // );
-        // bloc.add(MainMyLocationChange(newLoc));
+        _animatedMapMove(
+          LatLng(
+            newLoc.latitude!,
+            newLoc.longitude!,
+          ),
+          bloc.state.zoomThreshold,
+        );
+        bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }
@@ -236,6 +241,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       );
     });
 
+    // 애니메이션 후 바로 해제.
     animation.addStatusListener(
       (status) {
         if (status == AnimationStatus.completed) {
@@ -245,7 +251,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         }
       },
     );
-
     controller.forward();
   }
 

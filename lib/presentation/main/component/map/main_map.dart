@@ -43,7 +43,7 @@ class MainMap extends StatelessWidget {
                     // 37.559357,
                     // 126.971477,
                   ),
-                  zoom: zoomThreshold,
+                  zoom: _bloc.state.zoomThreshold,
                   // interactiveFlags: InteractiveFlag.none,
                   interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                   // interactiveFlags: InteractiveFlag.drag,
@@ -72,7 +72,9 @@ class MainMap extends StatelessWidget {
                   ),
                   IgnorePointer(
                     child: BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.myLocation != current.myLocation,
+                      buildWhen: (previous, current) =>
+                          previous.myLocation != current.myLocation ||
+                          previous.clickableRadiusLength != current.clickableRadiusLength,
                       builder: (context, state) {
                         return CircleLayer(
                           circles: <CircleMarker>[
@@ -84,7 +86,7 @@ class MainMap extends StatelessWidget {
                               color: ColorName.deActive.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
-                              radius: clickableRadiusLength,
+                              radius: state.clickableRadiusLength,
                             ),
                           ],
                         );
@@ -129,7 +131,11 @@ class MainMap extends StatelessWidget {
     LatLng markerPosition = LatLng(latitude, longitude);
     LocationData myLocation = _bloc.state.myLocation!;
     LatLng currentPosition = LatLng(myLocation.latitude!, myLocation.longitude!);
-    final double distance = isMarkerInsideCircle(currentPosition, markerPosition);
+    final double distance = isMarkerInsideCircle(
+      currentPosition,
+      markerPosition,
+      _bloc.state.clickableRadiusLength,
+    );
     _bloc.add(
       MainMarkerClick(
         id: id,
@@ -139,9 +145,5 @@ class MainMap extends StatelessWidget {
         widgetKey: widgetKey,
       ),
     );
-  }
-
-  void _onShatteringCompleted(int id) {
-    _bloc.add(MainShatteredMarkerRefresh(id));
   }
 }

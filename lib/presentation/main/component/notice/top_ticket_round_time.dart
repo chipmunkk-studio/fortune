@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 
 import '../../bloc/main.dart';
@@ -34,16 +35,39 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
   }
 
   @override
+  void initState() {
+    super.initState();
+    // vsync때문에 여기에 초기화함.
+    controller = AnimationController(
+      duration: const Duration(seconds: 0),
+      vsync: this,
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainBloc, MainState>(
       listenWhen: (previous, current) => previous.roundTime != current.roundTime,
       listener: (context, state) {
+        controller.dispose();
         controller = AnimationController(
           vsync: this,
           duration: Duration(seconds: state.roundTime),
           // duration: Duration(seconds: 10),
         );
         controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
+        controller.addListener(() {
+          if (controller.value == 0) {
+            widget.bloc.add(MainRoundOver());
+            controller.dispose();
+          }
+        });
       },
       buildWhen: (previous, current) => previous.roundTime != current.roundTime,
       builder: (context, state) {
@@ -109,16 +133,21 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                           Expanded(
                             child: Stack(
                               children: [
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: ColorName.deActiveDark,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 2.0.h),
-                                    child: Text("", style: FortuneTextStyle.caption1SemiBold()),
-                                  ),
+                                AnimatedBuilder(
+                                  animation: controller,
+                                  builder: (context, child) {
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: ColorName.deActiveDark,
+                                        borderRadius: BorderRadius.circular(12.r),
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                                        child: Text("", style: FortuneTextStyle.caption1SemiBold()),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 LayoutBuilder(
                                   builder: (context, constraints) {
@@ -155,7 +184,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(vertical: 2.0.h),
                                         child: Text(
-                                          _timerString,
+                                          controller.value <= 0.01 ? "라운드 종료" : _timerString,
                                           overflow: TextOverflow.ellipsis,
                                           style: FortuneTextStyle.caption1SemiBold(),
                                         ),

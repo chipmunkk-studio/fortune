@@ -52,6 +52,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       transformer: sequential(),
     );
     on<MainRefreshNotice>(refreshNotice);
+    on<MainRoundOver>(roundOver);
   }
 
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
@@ -107,6 +108,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 normalTicketCnt: r.normalTicketsCnt,
                 chargeTicketCnt: r.chargeTicketCnt,
                 roundTime: r.roundTime,
+                clickableRadiusLength: 960,
+                zoomThreshold: 14,
               ),
             );
           } catch (e) {
@@ -219,14 +222,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     late List<MainLocationData> newMarkers;
     // 내가 클릭한 위치여부.
     bool isAnotherLocation = state.userId != event.userId;
+    final marker = state.markers.firstWhere((element) => element.id == event.id);
 
     if (isAnotherLocation) {
-      // 기존 위치 파티클 효과.
+      // 기존 위치 언박싱 효과.
       newMarkers = state.markers.map((e) {
         if (e.id == event.id) {
           return MainLocationData(
             id: e.id,
             location: e.location,
+            grade: e.grade,
             disappeared: true,
           );
         } else {
@@ -238,18 +243,19 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         MainLocationData(
           id: event.id,
           location: LatLng(event.latitude, event.longitude),
+          grade: marker.grade,
           disappeared: false,
         ),
       );
       add(MainChangeNewMarkers(newMarkers));
     } else {
       // 내가 클릭한 위치라면.
-      final marker = state.markers.firstWhere((element) => element.id == event.id);
       newMarkers = state.markers.map((e) {
         if (e.id == event.id) {
           return MainLocationData(
             id: e.id,
             location: LatLng(event.latitude, event.longitude),
+            grade: marker.grade,
             disappeared: false,
           );
         } else {
@@ -277,5 +283,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         notices: state.notices,
       ),
     );
+  }
+
+  // 라운드 종료 시.
+  FutureOr<void> roundOver(MainRoundOver event, Emitter<MainState> emit) {
+    emit(state.copyWith(markers: List.empty()));
   }
 }

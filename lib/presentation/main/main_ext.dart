@@ -11,11 +11,11 @@ import 'package:latlong2/latlong.dart';
 import 'component/map/main_location_data.dart';
 import 'component/map/main_marker_view.dart';
 
-// 60/18, 120/17, 240/16, 480/15, 960/14
-const double clickableRadiusLength = 240;
-const double zoomThreshold = 16;
-
-double isMarkerInsideCircle(LatLng currentPosition, LatLng targetPosition) {
+double isMarkerInsideCircle(
+  LatLng currentPosition,
+  LatLng targetPosition,
+  double clickableRadiusLength,
+) {
   var distanceInMeters = Geolocator.distanceBetween(
     targetPosition.latitude,
     targetPosition.longitude,
