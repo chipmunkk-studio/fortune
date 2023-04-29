@@ -16,13 +16,13 @@ extension FortuneBottomSheet on BuildContext {
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.r),
-          topRight: Radius.circular(16.r),
+          topLeft: Radius.circular(32.r),
+          topRight: Radius.circular(32.r),
         ),
       ),
       context: this,
       builder: (context) => Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 48.h),
         child: Wrap(
           children: [
             isShowTopBar

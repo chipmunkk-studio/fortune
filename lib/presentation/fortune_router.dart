@@ -4,6 +4,8 @@ import 'package:foresh_flutter/presentation/exchange/exchange_page.dart';
 import 'package:foresh_flutter/presentation/history/marker_history_page.dart';
 import 'package:foresh_flutter/presentation/main/main_page.dart';
 import 'package:foresh_flutter/presentation/markerobtain/marker_obtain_page.dart';
+import 'package:foresh_flutter/presentation/mypage/my_page.dart';
+import 'package:foresh_flutter/presentation/store/store_page.dart';
 
 import 'login/countrycode/country_code_page.dart';
 import 'login/phonenumber/phone_number_page.dart';
@@ -103,6 +105,18 @@ class FortuneRouter {
     },
   );
 
+  static var storeHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const StorePage();
+    },
+  );
+
+  static var myPageHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const MyPage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -185,6 +199,20 @@ class FortuneRouter {
       ..define(
         Routes.exchangeRoute,
         handler: exchangeHandler,
+        transitionType: TransitionType.material,
+      )
+
+      /// 스토어.
+      ..define(
+        Routes.storeRoute,
+        handler: storeHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 마이페이지.
+      ..define(
+        Routes.myPageRoute,
+        handler: myPageHandler,
         transitionType: TransitionType.fadeIn,
       )
 
@@ -209,4 +237,6 @@ class Routes {
   static const String signUpCompleteRoute = 'signUpCompleteRoute';
   static const String exchangeRoute = 'exchangeRoute';
   static const String markerObtainAnimationRoute = 'markerObtainAnimationRoute';
+  static const String storeRoute = 'storeRoute';
+  static const String myPageRoute = 'myPageRoute';
 }

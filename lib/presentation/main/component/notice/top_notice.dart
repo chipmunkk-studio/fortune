@@ -7,6 +7,7 @@ import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/date.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
@@ -41,19 +42,19 @@ class _TopNoticeState extends State<TopNotice> {
       builder: (context, state) {
         return state.notices.isEmpty
             ? Container()
-            : Container(
-                height: 76.h,
-                // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16.r),
-                  color: ColorName.backgroundLight,
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: _onTap,
+            : ScaleWidget(
+                scaleY: 0.98,
+                scaleX: 0.98,
+                onTapUp: _onTap,
+                child: Container(
+                  height: 64.h,
+                  // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
-                    splashColor: ColorName.deActiveDark,
+                    color: ColorName.backgroundLight,
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
                     child: Stack(
                       children: [
                         Positioned.fill(
@@ -120,7 +121,7 @@ class _TopNoticeState extends State<TopNotice> {
                           right: 20,
                           bottom: 0,
                           top: 0,
-                          child: Assets.icons.icRightArrow.svg(),
+                          child: Assets.icons.icArrowRight16.svg(),
                         )
                       ],
                     ),
@@ -149,7 +150,7 @@ class _TopNoticeState extends State<TopNotice> {
               curve: Curves.easeIn,
             );
             if (currentPage == state.notices.length - 1) {
-              widget._bloc.add(MainRefreshNotice());
+              widget._bloc.add(MainRefresh());
             }
           }
           if (currentPage < state.notices.length - 1) {

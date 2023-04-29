@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
+import 'package:foresh_flutter/di.dart';
+import 'package:foresh_flutter/presentation/fortune_router.dart';
 
 import '../../bloc/main.dart';
 
@@ -22,6 +24,7 @@ class TopTicketRoundTime extends StatefulWidget {
 
 class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProviderStateMixin {
   late AnimationController controller;
+  final router = serviceLocator<FortuneRouter>().router;
 
   String get _timerString {
     Duration duration = controller.duration! * controller.value;
@@ -59,7 +62,6 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
         controller = AnimationController(
           vsync: this,
           duration: Duration(seconds: state.roundTime),
-          // duration: Duration(seconds: 10),
         );
         controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
         controller.addListener(() {
@@ -95,27 +97,33 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                     ),
                   ),
                   SizedBox(width: 10.w),
-                  Container(
-                    padding: EdgeInsets.only(left: 6.w, right: 8.w, top: 6.h, bottom: 6.h),
-                    decoration: BoxDecoration(
-                      color: ColorName.backgroundLight,
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.chargeTicketCnt != current.chargeTicketCnt,
-                      builder: (context, state) {
-                        return Row(
-                          children: [
-                            Assets.icons.icFortuneMoney.svg(width: 24.w, height: 24.h),
-                            SizedBox(width: 8.w),
-                            Text("${state.chargeTicketCnt}", style: FortuneTextStyle.body3Bold()),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Assets.icons.icFortuneMoneyPlus.svg(width: 16.w, height: 16.h),
-                          ],
-                        );
-                      },
+                  ScaleWidget(
+                    onTapUp: () async {
+                      await router.navigateTo(context, Routes.storeRoute);
+                      widget.bloc.add(MainRefresh());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(left: 6.w, right: 8.w, top: 6.h, bottom: 6.h),
+                      decoration: BoxDecoration(
+                        color: ColorName.backgroundLight,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: BlocBuilder<MainBloc, MainState>(
+                        buildWhen: (previous, current) => previous.chargeTicketCnt != current.chargeTicketCnt,
+                        builder: (context, state) {
+                          return Row(
+                            children: [
+                              Assets.icons.icFortuneMoney.svg(width: 24.w, height: 24.h),
+                              SizedBox(width: 8.w),
+                              Text("${state.chargeTicketCnt}", style: FortuneTextStyle.body3Bold()),
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              Assets.icons.icFortuneMoneyPlus.svg(width: 16.w, height: 16.h),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(width: 10.w),
@@ -160,11 +168,9 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                               ? constraints.maxWidth
                                               : constraints.maxWidth * controller.value,
                                           decoration: BoxDecoration(
-                                            color: animationValue == 0.0 || animationValue > 0.7
+                                            color: animationValue == 0.0 || animationValue > 0.2
                                                 ? ColorName.deActive
-                                                : animationValue > 0.5
-                                                    ? ColorName.positive
-                                                    : ColorName.negative,
+                                                : ColorName.negative,
                                             borderRadius: BorderRadius.circular(12.r),
                                           ),
                                           child: Padding(
@@ -184,7 +190,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(vertical: 2.0.h),
                                         child: Text(
-                                          controller.value <= 0.01 ? "라운드 종료" : _timerString,
+                                          controller.value <= 0.01 ? "라운드 집계중" : _timerString,
                                           overflow: TextOverflow.ellipsis,
                                           style: FortuneTextStyle.caption1SemiBold(),
                                         ),

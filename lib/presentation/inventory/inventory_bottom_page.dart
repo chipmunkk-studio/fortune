@@ -21,7 +21,11 @@ class InventoryBottomPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Profile(profile: profile),
+        Profile(
+          profile: profile,
+          onGradeBenefitClick: () {},
+          onNicknameClick: () => router.navigateTo(context, Routes.myPageRoute),
+        ),
         SizedBox(height: 36.h),
         StampExchange(
           onStampExchangeClick: () {

@@ -17,7 +17,6 @@ class MainState with _$MainState {
     required int chargeTicketCnt,
     required int normalTicketCnt,
     required int roundTime,
-    required bool isNewMarker,
     required double clickableRadiusLength,
     required double zoomThreshold,
   }) = _MainState;
@@ -31,7 +30,6 @@ class MainState with _$MainState {
         chargeTicketCnt: 0,
         normalTicketCnt: 0,
         roundTime: -1,
-        isNewMarker: false,
         // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
         clickableRadiusLength: 240,
         zoomThreshold: 16,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 
 class TopNoticeAutoSlide extends StatefulWidget {
@@ -26,6 +25,7 @@ class _TopNoticeAutoSlideState extends State<TopNoticeAutoSlide> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return PageView.builder(
+          physics: const BouncingScrollPhysics(),
           controller: widget.pageController,
           itemCount: widget.items.length,
           scrollDirection: Axis.vertical,

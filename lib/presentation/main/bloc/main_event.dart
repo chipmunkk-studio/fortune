@@ -93,8 +93,8 @@ class MainShatteredMarkerRefresh extends MainEvent {
   List<Object?> get props => [];
 }
 
-class MainRefreshNotice extends MainEvent {
-  MainRefreshNotice();
+class MainRefresh extends MainEvent {
+  MainRefresh();
 
   @override
   List<Object?> get props => [];

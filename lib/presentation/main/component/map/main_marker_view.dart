@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
 
 class MainMarkerView extends StatefulWidget {

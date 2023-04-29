@@ -66,6 +66,14 @@ class $AssetsIconsGen {
   SvgGenImage get icArrowLeft =>
       const SvgGenImage('assets/icons/ic_arrow_left.svg');
 
+  /// File path: assets/icons/ic_arrow_right_16.svg
+  SvgGenImage get icArrowRight16 =>
+      const SvgGenImage('assets/icons/ic_arrow_right_16.svg');
+
+  /// File path: assets/icons/ic_arrow_right_20.svg
+  SvgGenImage get icArrowRight20 =>
+      const SvgGenImage('assets/icons/ic_arrow_right_20.svg');
+
   /// File path: assets/icons/ic_arrow_up.svg
   SvgGenImage get icArrowUp =>
       const SvgGenImage('assets/icons/ic_arrow_up.svg');
@@ -117,10 +125,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_recycle.svg
   SvgGenImage get icRecycle => const SvgGenImage('assets/icons/ic_recycle.svg');
 
-  /// File path: assets/icons/ic_right_arrow.svg
-  SvgGenImage get icRightArrow =>
-      const SvgGenImage('assets/icons/ic_right_arrow.svg');
-
   /// File path: assets/icons/ic_timer.svg
   SvgGenImage get icTimer => const SvgGenImage('assets/icons/ic_timer.svg');
 
@@ -128,6 +132,8 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
         icArrowDown,
         icArrowLeft,
+        icArrowRight16,
+        icArrowRight20,
         icArrowUp,
         icCamera,
         icCancel,
@@ -142,7 +148,6 @@ class $AssetsIconsGen {
         icLock,
         icProfileSetting,
         icRecycle,
-        icRightArrow,
         icTimer
       ];
 }

@@ -51,7 +51,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       changeNewMarkers,
       transformer: sequential(),
     );
-    on<MainRefreshNotice>(refreshNotice);
+    on<MainRefresh>(refresh);
     on<MainRoundOver>(roundOver);
   }
 
@@ -108,8 +108,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 normalTicketCnt: r.normalTicketsCnt,
                 chargeTicketCnt: r.chargeTicketCnt,
                 roundTime: r.roundTime,
-                clickableRadiusLength: 960,
-                zoomThreshold: 14,
+                // clickableRadiusLength: 960,
+                // zoomThreshold: 14,
               ),
             );
           } catch (e) {
@@ -158,7 +158,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             state.copyWith(
               chargeTicketCnt: r.chargedTickets,
               normalTicketCnt: r.normalTickets,
-              isNewMarker: r.isNew,
             ),
           );
         },
@@ -276,13 +275,47 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     emit(state.copyWith(markers: event.newMarkers));
   }
 
-  FutureOr<void> refreshNotice(MainRefreshNotice event, Emitter<MainState> emit) {
-    // todo 마커리프레시 목록은 어떻게 가져오는지?
-    emit(
-      state.copyWith(
-        notices: state.notices,
-      ),
-    );
+  /// 메인 SUPER API 콜 > 결제 후 혹은 히스토리 페이징.
+  FutureOr<void> refresh(MainRefresh event, Emitter<MainState> emit) async {
+    FortuneLogger.debug("refresh()");
+    final locationData = state.myLocation;
+    if (locationData != null) {
+      await mainUseCase(
+        RequestMainParams(
+          latitude: locationData.latitude,
+          longitude: locationData.longitude,
+        ),
+      ).then(
+        (value) => value.fold(
+          // 실패시 에러 처리.
+          (l) => produceSideEffect(MainError(l)),
+          (r) async {
+            try {
+              emit(
+                state.copyWith(
+                  markers: r.markers
+                      .map(
+                        (e) => MainLocationData(
+                          id: e.id,
+                          location: LatLng(e.latitude, e.longitude),
+                          disappeared: false,
+                          grade: e.grade,
+                        ),
+                      )
+                      .toList(),
+                  notices: r.histories,
+                  profileImage: r.profileImageUrl,
+                  normalTicketCnt: r.normalTicketsCnt,
+                  chargeTicketCnt: r.chargeTicketCnt,
+                ),
+              );
+            } catch (e) {
+              produceSideEffect(MainError(AuthFailure.internal(errorMessage: e.toString())));
+            }
+          },
+        ),
+      );
+    }
   }
 
   // 라운드 종료 시.

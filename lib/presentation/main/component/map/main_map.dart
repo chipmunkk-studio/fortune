@@ -48,7 +48,11 @@ class MainMap extends StatelessWidget {
                   interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.drag,
                   // interactiveFlags: InteractiveFlag.drag,
                   onTap: (tapPosition, point) {
-                    FortuneLogger.debug("point: $point");
+                    FortuneLogger.debug("point: $point, distance: ${isMarkerInsideCircle(
+                      LatLng(_bloc.state.myLocation!.latitude!, _bloc.state.myLocation!.longitude!),
+                      point,
+                      _bloc.state.clickableRadiusLength,
+                    )}");
                   },
                 ),
                 children: [

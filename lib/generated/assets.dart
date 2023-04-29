@@ -14,6 +14,8 @@ class Assets {
   static const String fontsPretendardThin = 'assets/fonts/Pretendard-Thin.ttf';
   static const String iconsIcArrowDown = 'assets/icons/ic_arrow_down.svg';
   static const String iconsIcArrowLeft = 'assets/icons/ic_arrow_left.svg';
+  static const String iconsIcArrowRight16 = 'assets/icons/ic_arrow_right_16.svg';
+  static const String iconsIcArrowRight29 = 'assets/icons/ic_arrow_right_20.svg';
   static const String iconsIcArrowUp = 'assets/icons/ic_arrow_up.svg';
   static const String iconsIcCamera = 'assets/icons/ic_camera.svg';
   static const String iconsIcCancel = 'assets/icons/ic_cancel.svg';
@@ -28,7 +30,6 @@ class Assets {
   static const String iconsIcLock = 'assets/icons/ic_lock.svg';
   static const String iconsIcProfileSetting = 'assets/icons/ic_profile_setting.svg';
   static const String iconsIcRecycle = 'assets/icons/ic_recycle.svg';
-  static const String iconsIcRightArrow = 'assets/icons/ic_right_arrow.svg';
   static const String iconsIcTimer = 'assets/icons/ic_timer.svg';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
   static const String splashAndroid12splash = 'assets/images/splash/android12splash.png';
