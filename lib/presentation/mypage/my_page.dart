@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/image_picker.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
@@ -41,7 +42,16 @@ class _MyPageState extends State<_MyPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ProfileInfo(),
+        ProfileInfo(
+          onNicknameModifyTap: () {},
+          onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+          onProfileTap: () {
+            FortuneImagePicker().loadImagePicker(
+              (path) {},
+              () {},
+            );
+          },
+        ),
         SizedBox(height: 16.h),
         TicketFortuneArea(),
         SizedBox(height: 32.h),

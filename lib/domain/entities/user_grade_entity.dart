@@ -14,7 +14,7 @@ abstract class GradeInfo {
   );
 }
 
-class Bronze implements GradeInfo {
+class GradeBronze implements GradeInfo {
   @override
   final int grade;
 
@@ -24,8 +24,72 @@ class Bronze implements GradeInfo {
   @override
   final String name;
 
-  Bronze(double iconSize)
+  GradeBronze(double iconSize)
       : grade = 1,
         name = "bronze".tr(),
         icon = Assets.icons.icGradeBronze.svg(width: iconSize, height: iconSize);
+}
+
+class GradeSilver implements GradeInfo {
+  @override
+  final int grade;
+
+  @override
+  final SvgPicture icon;
+
+  @override
+  final String name;
+
+  GradeSilver(double iconSize)
+      : grade = 2,
+        name = "silver".tr(),
+        icon = Assets.icons.icGradeSilver.svg(width: iconSize, height: iconSize);
+}
+
+class GradeGold implements GradeInfo {
+  @override
+  final int grade;
+
+  @override
+  final SvgPicture icon;
+
+  @override
+  final String name;
+
+  GradeGold(double iconSize)
+      : grade = 3,
+        name = "gold".tr(),
+        icon = Assets.icons.icGradeGold.svg(width: iconSize, height: iconSize);
+}
+
+class GradePlatinum implements GradeInfo {
+  @override
+  final int grade;
+
+  @override
+  final SvgPicture icon;
+
+  @override
+  final String name;
+
+  GradePlatinum(double iconSize)
+      : grade = 4,
+        name = "platinum".tr(),
+        icon = Assets.icons.icGradePlatinum.svg(width: iconSize, height: iconSize);
+}
+
+class GradeDiamond implements GradeInfo {
+  @override
+  final int grade;
+
+  @override
+  final SvgPicture icon;
+
+  @override
+  final String name;
+
+  GradeDiamond(double iconSize)
+      : grade = 5,
+        name = "diamond".tr(),
+        icon = Assets.icons.icGradeDiamond.svg(width: iconSize, height: iconSize);
 }

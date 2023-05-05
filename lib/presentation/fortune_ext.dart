@@ -11,8 +11,16 @@ String getSampleNetworkImageUrl({
 GradeInfo getGradeIconInfo(int grade, {required double size}) {
   switch (grade) {
     case 1:
-      return Bronze(size);
+      return GradeBronze(size);
+    case 2:
+      return GradeSilver(size);
+    case 3:
+      return GradeGold(size);
+    case 4:
+      return GradePlatinum(size);
+    case 5:
+      return GradeDiamond(size);
     default:
-      return Bronze(size);
+      return GradeBronze(size);
   }
 }

@@ -1,20 +1,21 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/exchange/exchange_page.dart';
-import 'package:foresh_flutter/presentation/history/marker_history_page.dart';
-import 'package:foresh_flutter/presentation/main/main_page.dart';
-import 'package:foresh_flutter/presentation/markerobtain/marker_obtain_page.dart';
-import 'package:foresh_flutter/presentation/mypage/my_page.dart';
-import 'package:foresh_flutter/presentation/product/product_page.dart';
-import 'package:foresh_flutter/presentation/store/store_page.dart';
 
+import 'exchange/exchange_page.dart';
+import 'gradeguide/grade_guide_page.dart';
+import 'history/marker_history_page.dart';
 import 'login/countrycode/country_code_page.dart';
 import 'login/phonenumber/phone_number_page.dart';
 import 'login/smsverify/sms_verify_page.dart';
+import 'main/main_page.dart';
+import 'markerobtain/marker_obtain_page.dart';
+import 'mypage/my_page.dart';
 import 'onboarding/on_boarding_page.dart';
+import 'product/product_page.dart';
 import 'signup/complete/sign_up_complete.dart';
 import 'signup/nickname/enter_nickname_page.dart';
 import 'signup/profileimage/enter_profile_image_page.dart';
+import 'store/store_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;
@@ -124,6 +125,12 @@ class FortuneRouter {
     },
   );
 
+  static var gradeGuideHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const GradeGuidePage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -220,13 +227,20 @@ class FortuneRouter {
       ..define(
         Routes.myPageRoute,
         handler: myPageHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.material,
       )
 
-      /// 마커 상세.
+      /// 상품 상세.
       ..define(
         Routes.productRoute,
         handler: productHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 등급 안내.
+      ..define(
+        Routes.gradeGuideRoute,
+        handler: gradeGuideHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -254,4 +268,5 @@ class Routes {
   static const String storeRoute = 'storeRoute';
   static const String myPageRoute = 'myPageRoute';
   static const String productRoute = 'productRoute';
+  static const String gradeGuideRoute = 'gradeGuideRoute';
 }

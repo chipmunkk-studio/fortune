@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
@@ -9,8 +10,15 @@ import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/presentation/fortune_ext.dart';
 
 class ProfileInfo extends StatelessWidget {
+  final Function0 onGradeGuideTap;
+  final Function0 onProfileTap;
+  final Function0 onNicknameModifyTap;
+
   const ProfileInfo({
     super.key,
+    required this.onGradeGuideTap,
+    required this.onProfileTap,
+    required this.onNicknameModifyTap,
   });
 
   @override
@@ -19,16 +27,22 @@ class ProfileInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
-          child: _ProfileImage(),
+          child: _ProfileImage(
+            onProfileTap: onProfileTap,
+          ),
         ),
         SizedBox(width: 12.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _Nickname(),
+            _Nickname(
+              onNicknameModifyTap: onNicknameModifyTap,
+            ),
             SizedBox(height: 8.h),
-            _Grade(),
+            _Grade(
+              onGradeGuideTap: onGradeGuideTap,
+            ),
           ],
         )
       ],
@@ -37,8 +51,11 @@ class ProfileInfo extends StatelessWidget {
 }
 
 class _Grade extends StatelessWidget {
+  final Function0 onGradeGuideTap;
+
   const _Grade({
     super.key,
+    required this.onGradeGuideTap,
   });
 
   @override
@@ -46,7 +63,7 @@ class _Grade extends StatelessWidget {
     return ScaleWidget(
       scaleX: 0.98,
       scaleY: 0.98,
-      onTapUp: () {},
+      onTapUp: onGradeGuideTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,8 +100,11 @@ class _Grade extends StatelessWidget {
 }
 
 class _Nickname extends StatelessWidget {
+  final Function0 onNicknameModifyTap;
+
   const _Nickname({
     super.key,
+    required this.onNicknameModifyTap,
   });
 
   @override
@@ -100,7 +120,7 @@ class _Nickname extends StatelessWidget {
         ),
         SizedBox(width: 8.w),
         ScaleWidget(
-          onTapUp: () {},
+          onTapUp: onNicknameModifyTap,
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
             decoration: BoxDecoration(
@@ -119,8 +139,11 @@ class _Nickname extends StatelessWidget {
 }
 
 class _ProfileImage extends StatelessWidget {
+  final Function0 onProfileTap;
+
   const _ProfileImage({
     super.key,
+    required this.onProfileTap,
   });
 
   @override
@@ -128,12 +151,7 @@ class _ProfileImage extends StatelessWidget {
     return ScaleWidget(
       scaleX: 0.96,
       scaleY: 0.96,
-      onTapUp: () {
-        FortuneImagePicker().loadImagePicker(
-          (path) {},
-          () {},
-        );
-      },
+      onTapUp: onProfileTap,
       child: Stack(
         children: [
           SquircleNetworkImageView(

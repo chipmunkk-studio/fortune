@@ -39,5 +39,9 @@
   "home": "홈",
   "fortune_radar": "포춘레이더",
   "my_page": "마이페이지",
-  "bronze": "Bronze"
+  "bronze": "Bronze",
+  "silver": "Silver",
+  "gold": "Gold",
+  "platinum": "Platinum",
+  "diamond": "Diamond"
 }

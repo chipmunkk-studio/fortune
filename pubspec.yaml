@@ -50,6 +50,7 @@ dependencies:
   transparent_image: ^2.0.1
   flutter_styled_toast: ^2.1.3
   confetti: ^0.7.0
+  percent_indicator: ^4.2.3
 
   # map
   flutter_map: ^3.1.0
