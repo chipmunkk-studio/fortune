@@ -8,6 +8,7 @@ import 'package:foresh_flutter/core/widgets/animation/scale_animation.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
+import 'package:foresh_flutter/presentation/main/main_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 

@@ -10,10 +10,12 @@ extension FortuneBottomSheet on BuildContext {
   showFortuneBottomSheet({
     required Widget Function(BuildContext) content,
     bool isShowCloseButton = true,
+    bool isDismissible = true,
     bool isShowTopBar = false,
   }) {
     showModalBottomSheet(
       isScrollControlled: true,
+      isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(32.r),
@@ -60,7 +62,8 @@ extension FortuneBottomSheet on BuildContext {
                             InkResponse(
                               radius: 25,
                               onTap: () => Navigator.pop(context),
-                              child: Assets.icons.icCancel.svg(width: 24.w, height: 24.h),
+                              splashColor: ColorName.backgroundLight,
+                              child: Assets.icons.icCancel.svg(width: 24, height: 24),
                             ),
                             SizedBox(width: 25.w),
                           ],

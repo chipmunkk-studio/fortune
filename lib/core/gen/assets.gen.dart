@@ -66,6 +66,10 @@ class $AssetsIconsGen {
   SvgGenImage get icArrowLeft =>
       const SvgGenImage('assets/icons/ic_arrow_left.svg');
 
+  /// File path: assets/icons/ic_arrow_right_12.svg
+  SvgGenImage get icArrowRight12 =>
+      const SvgGenImage('assets/icons/ic_arrow_right_12.svg');
+
   /// File path: assets/icons/ic_arrow_right_16.svg
   SvgGenImage get icArrowRight16 =>
       const SvgGenImage('assets/icons/ic_arrow_right_16.svg');
@@ -88,6 +92,9 @@ class $AssetsIconsGen {
   SvgGenImage get icCancelCircle =>
       const SvgGenImage('assets/icons/ic_cancel_circle.svg');
 
+  /// File path: assets/icons/ic_clock.svg
+  SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
+
   /// File path: assets/icons/ic_fortune_cookie.svg
   SvgGenImage get icFortuneCookie =>
       const SvgGenImage('assets/icons/ic_fortune_cookie.svg');
@@ -108,6 +115,26 @@ class $AssetsIconsGen {
   SvgGenImage get icFortuneTicket =>
       const SvgGenImage('assets/icons/ic_fortune_ticket.svg');
 
+  /// File path: assets/icons/ic_grade_bronze.svg
+  SvgGenImage get icGradeBronze =>
+      const SvgGenImage('assets/icons/ic_grade_bronze.svg');
+
+  /// File path: assets/icons/ic_grade_diamond.svg
+  SvgGenImage get icGradeDiamond =>
+      const SvgGenImage('assets/icons/ic_grade_diamond.svg');
+
+  /// File path: assets/icons/ic_grade_gold.svg
+  SvgGenImage get icGradeGold =>
+      const SvgGenImage('assets/icons/ic_grade_gold.svg');
+
+  /// File path: assets/icons/ic_grade_platinum.svg
+  SvgGenImage get icGradePlatinum =>
+      const SvgGenImage('assets/icons/ic_grade_platinum.svg');
+
+  /// File path: assets/icons/ic_grade_silver.svg
+  SvgGenImage get icGradeSilver =>
+      const SvgGenImage('assets/icons/ic_grade_silver.svg');
+
   /// File path: assets/icons/ic_info.svg
   SvgGenImage get icInfo => const SvgGenImage('assets/icons/ic_info.svg');
 
@@ -118,9 +145,24 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
+  /// File path: assets/icons/ic_megaphone.svg
+  SvgGenImage get icMegaphone =>
+      const SvgGenImage('assets/icons/ic_megaphone.svg');
+
+  /// File path: assets/icons/ic_pencil.svg
+  SvgGenImage get icPencil => const SvgGenImage('assets/icons/ic_pencil.svg');
+
   /// File path: assets/icons/ic_profile_setting.svg
   SvgGenImage get icProfileSetting =>
       const SvgGenImage('assets/icons/ic_profile_setting.svg');
+
+  /// File path: assets/icons/ic_push_alarm.svg
+  SvgGenImage get icPushAlarm =>
+      const SvgGenImage('assets/icons/ic_push_alarm.svg');
+
+  /// File path: assets/icons/ic_question.svg
+  SvgGenImage get icQuestion =>
+      const SvgGenImage('assets/icons/ic_question.svg');
 
   /// File path: assets/icons/ic_recycle.svg
   SvgGenImage get icRecycle => const SvgGenImage('assets/icons/ic_recycle.svg');
@@ -132,21 +174,32 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
         icArrowDown,
         icArrowLeft,
+        icArrowRight12,
         icArrowRight16,
         icArrowRight20,
         icArrowUp,
         icCamera,
         icCancel,
         icCancelCircle,
+        icClock,
         icFortuneCookie,
         icFortuneDiamond,
         icFortuneMoney,
         icFortuneMoneyPlus,
         icFortuneTicket,
+        icGradeBronze,
+        icGradeDiamond,
+        icGradeGold,
+        icGradePlatinum,
+        icGradeSilver,
         icInfo,
         icInventory,
         icLock,
+        icMegaphone,
+        icPencil,
         icProfileSetting,
+        icPushAlarm,
+        icQuestion,
         icRecycle,
         icTimer
       ];

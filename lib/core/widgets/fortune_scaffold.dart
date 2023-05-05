@@ -54,7 +54,7 @@ class FortuneEmptyAppBar extends StatelessWidget implements PreferredSizeWidget 
 abstract class FortuneCustomAppBar {
   static leadingAppBar(
     BuildContext context, {
-    required String title,
+    String title = "",
     Function0? onPressed,
   }) =>
       AppBar(

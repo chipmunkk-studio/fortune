@@ -23,7 +23,7 @@ class StampExchange extends StatelessWidget {
         SizedBox(width: 24.w),
         Text(
           "내가 모은 스탬프",
-          style: FortuneTextStyle.subTitle2SemiBold(),
+          style: FortuneTextStyle.subTitle2Bold(),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

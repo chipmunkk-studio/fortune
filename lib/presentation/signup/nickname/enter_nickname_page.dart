@@ -112,6 +112,7 @@ class _EnterNickNamePageState extends State<_EnterNickNamePage> {
                       curve: Curves.easeInOut,
                       child: FortuneBottomButton(
                         isKeyboardVisible: isKeyboardVisible,
+                        buttonText: 'next'.tr(),
                         isEnabled: true,
                         onPress: () {
                           bloc.add(SignUpCheckNickname());

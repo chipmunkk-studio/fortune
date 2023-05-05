@@ -24,16 +24,19 @@ class FortuneApp extends StatelessWidget {
           /// 강제로 언어를 한글로 설정. 배포 시 삭제해야 함.
           // EasyLocalization.of(context)?.setLocale(const Locale('en', 'US'));
           EasyLocalization.of(context)?.setLocale(const Locale('ko', 'KR'));
-          return MaterialApp(
-            // 기본적으로 필요한 언어 설정
-            debugShowCheckedModeBanner: false,
-            title: "Fortune",
-            theme: theme(),
-            onGenerateRoute: serviceLocator<FortuneRouter>().router.generator,
-            initialRoute: startRoute,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
+          return MediaQuery(
+            data: MediaQueryData.fromView(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),
+            child: MaterialApp(
+              // 기본적으로 필요한 언어 설정
+              debugShowCheckedModeBanner: false,
+              title: "Fortune",
+              theme: theme(),
+              onGenerateRoute: serviceLocator<FortuneRouter>().router.generator,
+              initialRoute: startRoute,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+            ),
           );
         },
       );

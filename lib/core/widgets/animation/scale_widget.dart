@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 
 class ScaleWidget extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTapDown;
   final VoidCallback? onTapUp;
+  final bool isRipple;
   final double scaleX;
   final double scaleY;
 
@@ -14,6 +17,7 @@ class ScaleWidget extends StatefulWidget {
     this.onTapUp,
     this.scaleX = 0.9,
     this.scaleY = 0.9,
+    this.isRipple = false,
   });
 
   @override
@@ -69,10 +73,11 @@ class _ScaleWidgetState extends State<ScaleWidget> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
       onTapCancel: _onTapCancel,
+      splashColor: widget.isRipple ? ColorName.backgroundLight : Colors.transparent,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {

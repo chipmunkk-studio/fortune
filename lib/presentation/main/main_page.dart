@@ -33,7 +33,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<MainBloc>()..add(MainInit()),
-      child: _MainPage(),
+      child: const _MainPage(),
     );
   }
 }
@@ -100,7 +100,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     return BlocSideEffectListener<MainBloc, MainSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MainLocationChangeListenSideEffect) {
-          // listenLocationChange(sideEffect.myLocation);
+          listenLocationChange(sideEffect.myLocation);
           // 내 위치 잡고 최초에  한번만 다시 그림.
           if (myLocation == null) {
             setState(() {

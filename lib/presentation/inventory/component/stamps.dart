@@ -106,6 +106,8 @@ class _StampIcon extends StatelessWidget {
               ),
             )
           : ScaleWidget(
+              scaleX: 0.96,
+              scaleY: 0.96,
               onTapUp: onStampClick,
               child: CustomPaint(
                 painter: SquirclePainter(),

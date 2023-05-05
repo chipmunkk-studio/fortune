@@ -275,7 +275,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     emit(state.copyWith(markers: event.newMarkers));
   }
 
-  /// 메인 SUPER API 콜 > 결제 후 혹은 히스토리 페이징.
+  /// 메인 SUPER API 콜
+  /// - 결제 후 혹은 히스토리 페이징으로 다시 초기화해줘야 됨.
   FutureOr<void> refresh(MainRefresh event, Emitter<MainState> emit) async {
     FortuneLogger.debug("refresh()");
     final locationData = state.myLocation;

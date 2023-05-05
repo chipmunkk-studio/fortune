@@ -30,8 +30,6 @@ class Profile extends StatelessWidget {
         SquircleNetworkImageView(
           imageUrl: profile,
           size: 72.h,
-          backgroundColor: ColorName.deActiveDark,
-          placeHolder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
           placeHolderPadding: EdgeInsets.all(16.w),
         ),
         SizedBox(width: 20.w),

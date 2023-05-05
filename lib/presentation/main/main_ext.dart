@@ -76,3 +76,4 @@ SvgPicture getMarkerDisappearedIcon(int grade) {
       return Assets.icons.icFortuneCookie.svg(width: size, height: size);
   }
 }
+

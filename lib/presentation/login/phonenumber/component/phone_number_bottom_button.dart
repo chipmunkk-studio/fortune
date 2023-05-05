@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ class PhoneNumberBottomButton extends StatelessWidget {
     return FortuneBottomButton(
       isKeyboardVisible: isKeyboardVisible,
       isEnabled: state.isButtonEnabled,
+      buttonText: 'next'.tr(),
       onPress: () {
         router.navigateTo(
           context,

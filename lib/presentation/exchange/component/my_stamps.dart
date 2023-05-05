@@ -25,31 +25,39 @@ class _MyStampsState extends State<MyStamps> {
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: ExpansionTile(
-        title: Text(
-          "내가 모은 스탬프",
-          style: FortuneTextStyle.body2Regular(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Assets.icons.icInventory.svg(width: 16, height: 16),
+                SizedBox(width: 8.w),
+                Text(
+                  "내가 보유한 포춘",
+                  style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Text("2개", style: FortuneTextStyle.subTitle2Bold()),
+            SizedBox(height: 16.h),
+          ],
+        ),
+        trailing: Padding(
+          padding: EdgeInsets.only(top: 4.h),
+          child: _isExpanded
+              ? Assets.icons.icArrowUp.svg(width: 20, height: 20)
+              : Assets.icons.icArrowDown.svg(width: 20, height: 20),
         ),
         tilePadding: EdgeInsets.only(
-          left: 20.w,
-          right: 16.w,
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(text: "123,456", style: FortuneTextStyle.body1SemiBold(fontColor: ColorName.primary)),
-                  TextSpan(text: "개", style: FortuneTextStyle.body1SemiBold()),
-                ],
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(width: 8.w),
-            _isExpanded ? Assets.icons.icArrowUp.svg() : Assets.icons.icArrowDown.svg()
-          ],
+          left: 24.w,
+          right: 20.w,
         ),
         onExpansionChanged: (bool isExpanded) {
           setState(() {

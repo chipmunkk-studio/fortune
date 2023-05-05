@@ -1,13 +1,18 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductList extends StatelessWidget {
+  final Function1<int, void> onItemClick;
+
   const ProductList({
+    required this.onItemClick,
     super.key,
   });
 
@@ -20,9 +25,12 @@ class ProductList extends StatelessWidget {
         return SizedBox(height: 20.h);
       },
       itemBuilder: (BuildContext context, int index) {
-        // Why network for web?
-        // See https://pub.dev/packages/image_picker#getting-ready-for-the-web-platform
-        return _ProductItem();
+        return ScaleWidget(
+          scaleY: 0.96,
+          scaleX: 0.96,
+          onTapUp: () => onItemClick(index),
+          child: _ProductItem(),
+        );
       },
     );
   }

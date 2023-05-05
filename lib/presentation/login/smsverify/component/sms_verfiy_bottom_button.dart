@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/presentation/login/smsverify/bloc/sms_verify.dart';
@@ -20,6 +21,7 @@ class SmsVerifyBottomButton extends StatelessWidget {
     return FortuneBottomButton(
       isEnabled: state.isEnabled,
       onPress: onPress,
+      buttonText: 'next'.tr(),
       isKeyboardVisible: isKeyboardVisible,
     );
   }

@@ -5,6 +5,7 @@ import 'package:foresh_flutter/presentation/history/marker_history_page.dart';
 import 'package:foresh_flutter/presentation/main/main_page.dart';
 import 'package:foresh_flutter/presentation/markerobtain/marker_obtain_page.dart';
 import 'package:foresh_flutter/presentation/mypage/my_page.dart';
+import 'package:foresh_flutter/presentation/product/product_page.dart';
 import 'package:foresh_flutter/presentation/store/store_page.dart';
 
 import 'login/countrycode/country_code_page.dart';
@@ -117,6 +118,12 @@ class FortuneRouter {
     },
   );
 
+  static var productHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const ProductPage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -216,6 +223,13 @@ class FortuneRouter {
         transitionType: TransitionType.fadeIn,
       )
 
+      /// 마커 상세.
+      ..define(
+        Routes.productRoute,
+        handler: productHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 획득 시 애니메이션 화면 루트.
       ..define(
         Routes.markerObtainAnimationRoute,
@@ -239,4 +253,5 @@ class Routes {
   static const String markerObtainAnimationRoute = 'markerObtainAnimationRoute';
   static const String storeRoute = 'storeRoute';
   static const String myPageRoute = 'myPageRoute';
+  static const String productRoute = 'productRoute';
 }
