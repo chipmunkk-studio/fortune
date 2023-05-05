@@ -77,6 +77,7 @@ class _MyStampsState extends State<MyStamps> {
               8,
               (index) {
                 return SquircleNetworkImageView(
+                  placeHolderPadding: EdgeInsets.all(16.w),
                   imageUrl: "https://source.unsplash.com/user/max_duz/68x68",
                   backgroundColor: ColorName.deActiveDark.withOpacity(0.4),
                   size: 76,

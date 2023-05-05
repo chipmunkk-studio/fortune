@@ -51,7 +51,7 @@ class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
         width: 56.w,
         height: 32.h,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(16.r),
           color: _isOn ? ColorName.secondary : Colors.grey,
         ),
         child: Padding(
@@ -61,8 +61,8 @@ class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
             curve: Curves.easeInOut,
             alignment: _isOn ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
-              width: 30.0,
-              height: 30.0,
+              width: 24.w,
+              height: 24.h,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,

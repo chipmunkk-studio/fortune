@@ -44,7 +44,7 @@ class _MyPageState extends State<_MyPage> {
         ProfileInfo(),
         SizedBox(height: 16.h),
         TicketFortuneArea(),
-        SizedBox(height: 40.h),
+        SizedBox(height: 32.h),
         InfoMenu("이용내역", icon: Assets.icons.icClock.svg(), onTap: () {}),
         InfoMenu("공지사항", icon: Assets.icons.icMegaphone.svg(), onTap: () {}),
         InfoMenu("자주 묻는 질문", icon: Assets.icons.icQuestion.svg(), onTap: () {}),
