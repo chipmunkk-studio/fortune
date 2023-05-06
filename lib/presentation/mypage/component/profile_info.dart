@@ -26,111 +26,21 @@ class ProfileInfo extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Flexible(
-          child: _ProfileImage(
-            onProfileTap: onProfileTap,
-          ),
+        _ProfileImage(
+          onProfileTap: onProfileTap,
         ),
         SizedBox(width: 12.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _Nickname(
-              onNicknameModifyTap: onNicknameModifyTap,
-            ),
-            SizedBox(height: 8.h),
-            _Grade(
-              onGradeGuideTap: onGradeGuideTap,
-            ),
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class _Grade extends StatelessWidget {
-  final Function0 onGradeGuideTap;
-
-  const _Grade({
-    super.key,
-    required this.onGradeGuideTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.98,
-      scaleY: 0.98,
-      onTapUp: onGradeGuideTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
-              color: ColorName.backgroundLight,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                getGradeIconInfo(1, size: 14.w).icon,
-                SizedBox(width: 8.w),
-                Text(
-                  getGradeIconInfo(1, size: 14.w).name,
-                  style: FortuneTextStyle.body3Bold(),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Text(
-            "등급안내",
-            style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
-          ),
-          SizedBox(width: 4.w),
-          Assets.icons.icArrowRight12.svg(width: 12.w, height: 12.w),
-        ],
-      ),
-    );
-  }
-}
-
-class _Nickname extends StatelessWidget {
-  final Function0 onNicknameModifyTap;
-
-  const _Nickname({
-    super.key,
-    required this.onNicknameModifyTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          "열두글자로한다고라고라고",
-          style: FortuneTextStyle.subTitle3Bold(),
-          maxLines: 1,
-          softWrap: true,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(width: 8.w),
-        ScaleWidget(
-          onTapUp: onNicknameModifyTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.r),
-              border: Border.all(color: ColorName.deActiveDark, width: 1),
-            ),
-            child: Text(
-              "수정",
-              style: FortuneTextStyle.caption1SemiBold(),
-            ),
+        Flexible(
+          child: Column(
+            children: [
+              _Nickname(
+                onNicknameModifyTap: onNicknameModifyTap,
+              ),
+              SizedBox(height: 8.h),
+              _Grade(
+                onGradeGuideTap: onGradeGuideTap,
+              ),
+            ],
           ),
         ),
       ],
@@ -174,6 +84,96 @@ class _ProfileImage extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Nickname extends StatelessWidget {
+  final Function0 onNicknameModifyTap;
+
+  const _Nickname({
+    super.key,
+    required this.onNicknameModifyTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              "열두글자로한다고라고라고라고asfadfa",
+              style: FortuneTextStyle.subTitle3Bold(),
+            ),
+          ),
+        ),
+        SizedBox(width: 8.w),
+        ScaleWidget(
+          onTapUp: onNicknameModifyTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.r),
+              border: Border.all(color: ColorName.deActiveDark, width: 1),
+            ),
+            child: Text(
+              "수정",
+              style: FortuneTextStyle.caption1SemiBold(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Grade extends StatelessWidget {
+  final Function0 onGradeGuideTap;
+
+  const _Grade({
+    super.key,
+    required this.onGradeGuideTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleWidget(
+      scaleX: 0.98,
+      scaleY: 0.98,
+      onTapUp: onGradeGuideTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              color: ColorName.backgroundLight,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                getGradeIconInfo(1, size: 14.w).icon,
+                SizedBox(width: 8.w),
+                Text(
+                  getGradeIconInfo(1, size: 14.w).name,
+                  style: FortuneTextStyle.body3Bold(),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Text(
+            "등급안내",
+            style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+          ),
+          SizedBox(width: 4.w),
+          Assets.icons.icArrowRight12.svg(width: 12.w, height: 12.w),
         ],
       ),
     );

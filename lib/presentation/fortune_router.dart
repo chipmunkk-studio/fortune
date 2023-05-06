@@ -150,49 +150,49 @@ class FortuneRouter {
       ..define(
         Routes.onBoardingRoute,
         handler: onBoardingHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 메인.
       ..define(
         Routes.mainRoute,
         handler: mainHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 회원가입/로그인.
       ..define(
         Routes.phoneNumberRoute,
         handler: phoneNumberHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 국가코드
       ..define(
         Routes.countryCodeRoute,
         handler: countryCodeHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// SMS 인증.
       ..define(
         Routes.smsCertifyRoute,
         handler: smsCertifyHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 닉네임 입력.
       ..define(
         Routes.putNickNameRoute,
         handler: putNickNameHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 프로필 이미지 등록.
       ..define(
         Routes.enterProfileImageRoute,
         handler: enterProfileImageHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 회원가입 완료.
@@ -206,28 +206,28 @@ class FortuneRouter {
       ..define(
         Routes.markerHistoryRoute,
         handler: markerHistoryHandler,
-        transitionType: TransitionType.fadeIn,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 스탬프 교환소.
       ..define(
         Routes.exchangeRoute,
         handler: exchangeHandler,
-        transitionType: TransitionType.material,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 스토어.
       ..define(
         Routes.storeRoute,
         handler: storeHandler,
-        transitionType: TransitionType.cupertino,
+        transitionType: TransitionType.material,
       )
 
       /// 마이페이지.
       ..define(
         Routes.myPageRoute,
         handler: myPageHandler,
-        transitionType: TransitionType.material,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 상품 상세.

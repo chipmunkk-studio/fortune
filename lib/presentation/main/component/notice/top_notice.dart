@@ -97,7 +97,7 @@ class _TopNoticeState extends State<TopNotice> {
                                                       text: e.markerId.toString(), style: FortuneTextStyle.body3Bold()),
                                                   TextSpan(text: "를 획득하셨어요!", style: FortuneTextStyle.body3Regular()),
                                                   TextSpan(
-                                                    text: "  ${FortuneDateExtension.diffTimeStamp(e.createdAt)}",
+                                                    text: "  ${FortuneDateExtension.convertTimeAgo(e.createdAt)}",
                                                     style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive)
                                                         .copyWith(
                                                       overflow: TextOverflow.ellipsis,

@@ -1,6 +1,3 @@
-
-
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,16 +17,25 @@ class StampExchange extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 24.w),
-        Text(
-          "내가 모은 스탬프",
-          style: FortuneTextStyle.subTitle2Bold(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 24.w),
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "포춘 컬렉션",
+                    style: FortuneTextStyle.subTitle2Bold(),
+                  ),
+                ),
+              ),
+              SizedBox(width: 9.w),
+              Assets.icons.icInfo.svg(width: 20, height: 20),
+            ],
+          ),
         ),
-        SizedBox(width: 9.w),
-        Assets.icons.icInfo.svg(width: 20, height: 20),
-        const Spacer(),
         InkWell(
           onTap: onStampExchangeClick,
           borderRadius: BorderRadius.circular(8.r),
@@ -45,7 +51,7 @@ class StampExchange extends StatelessWidget {
                 Assets.icons.icRecycle.svg(width: 16, height: 16),
                 SizedBox(width: 4.w),
                 Text(
-                  "스탬프 교환소",
+                  "포춘 교환소",
                   style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
                 ),
               ],
