@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
+import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 
 class TopGradeArea extends StatelessWidget {
   final String nickname;
@@ -48,7 +48,7 @@ class TopGradeArea extends StatelessWidget {
           ),
         ),
         SizedBox(width: 51.w),
-        getGradeIconInfo(1, size: 72.w).icon,
+        getGradeIconInfo(1).getIcon(size: 72.w),
       ],
     );
   }

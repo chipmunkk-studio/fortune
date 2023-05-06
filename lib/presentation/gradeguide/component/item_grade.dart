@@ -5,7 +5,7 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 
 class ItemGrade extends StatelessWidget {
-  final GradeInfo gradeInfo;
+  final UserGradeEntity gradeInfo;
 
   const ItemGrade(
     this.gradeInfo, {
@@ -31,7 +31,7 @@ class ItemGrade extends StatelessWidget {
             ],
           ),
           Spacer(),
-          gradeInfo.icon,
+          gradeInfo.getIcon(),
         ],
       ),
     );

@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/image_picker.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
+import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 
 class ProfileInfo extends StatelessWidget {
   final Function0 onGradeGuideTap;
@@ -158,10 +157,10 @@ class _Grade extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getGradeIconInfo(1, size: 14.w).icon,
+                getGradeIconInfo(1).getIcon(size: 14.w),
                 SizedBox(width: 8.w),
                 Text(
-                  getGradeIconInfo(1, size: 14.w).name,
+                  getGradeIconInfo(1).name,
                   style: FortuneTextStyle.body3Bold(),
                 ),
               ],

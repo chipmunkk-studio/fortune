@@ -26,6 +26,7 @@ import 'package:foresh_flutter/domain/usecases/check_nickname_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_country_code_usecase.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
 import 'package:foresh_flutter/domain/usecases/sign_up_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
@@ -258,5 +259,8 @@ _initUseCase() {
   );
   serviceLocator.registerLazySingleton<MainUseCase>(
     () => MainUseCase(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<ObtainInventoryUseCase>(
+    () => ObtainInventoryUseCase(serviceLocator()),
   );
 }

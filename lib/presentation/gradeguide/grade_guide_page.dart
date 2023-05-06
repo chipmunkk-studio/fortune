@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
+import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 import 'package:foresh_flutter/presentation/gradeguide/component/bottom_grade_area.dart';
 import 'package:foresh_flutter/presentation/gradeguide/component/item_grade.dart';
 import 'package:foresh_flutter/presentation/gradeguide/component/middle_percentage.dart';
 import 'package:foresh_flutter/presentation/gradeguide/component/top_grade_area.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class GradeGuidePage extends StatelessWidget {
   const GradeGuidePage({Key? key}) : super(key: key);
@@ -52,15 +50,15 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
               remainCount: '3',
             ),
             SizedBox(height: 40.h),
-            ItemGrade(getGradeIconInfo(1, size: 60)),
+            ItemGrade(getGradeIconInfo(1)),
             SizedBox(height: 12.h),
-            ItemGrade(getGradeIconInfo(2, size: 60)),
+            ItemGrade(getGradeIconInfo(2)),
             SizedBox(height: 12.h),
-            ItemGrade(getGradeIconInfo(3, size: 60)),
+            ItemGrade(getGradeIconInfo(3)),
             SizedBox(height: 12.h),
-            ItemGrade(getGradeIconInfo(4, size: 60)),
+            ItemGrade(getGradeIconInfo(4)),
             SizedBox(height: 12.h),
-            ItemGrade(getGradeIconInfo(5, size: 60)),
+            ItemGrade(getGradeIconInfo(5)),
             SizedBox(height: 12.h),
             Text("매월 1일, 누적 점수 기준으로 등급이 부여됩니다.", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
             SizedBox(height: 6.h),

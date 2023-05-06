@@ -4,6 +4,7 @@ import 'package:foresh_flutter/core/network/api/request/request_main.dart';
 import 'package:foresh_flutter/core/network/api/request/request_post_marker.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/datasources/main_datasource.dart';
+import 'package:foresh_flutter/domain/entities/inventory_entity.dart';
 import 'package:foresh_flutter/domain/entities/main_entity.dart';
 import 'package:foresh_flutter/domain/entities/marker_click_entity.dart';
 import 'package:foresh_flutter/domain/repositories/marker_repository.dart';
@@ -43,6 +44,12 @@ class MainRepositoryImpl implements MainRepository {
           ),
         )
         .toRemoteDomainData(errorMapper);
+    return remoteData;
+  }
+
+  @override
+  Future<FortuneResult<InventoryEntity>> getInventory() async {
+    final remoteData = await markerRemoteDataSource.getInventory().toRemoteDomainData(errorMapper);
     return remoteData;
   }
 }

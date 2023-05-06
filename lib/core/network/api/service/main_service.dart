@@ -19,4 +19,8 @@ abstract class MainService extends ChopperService {
   // 히스토리 목록.
   @Get(path: "histories")
   Future<Response> histories();
+
+  // 포춘 인벤토리.
+  @Get(path: "inventory")
+  Future<Response> inventory();
 }
