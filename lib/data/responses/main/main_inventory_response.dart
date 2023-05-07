@@ -1,4 +1,5 @@
 import 'package:foresh_flutter/domain/entities/inventory_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
 import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -23,9 +24,9 @@ class MainInventoryResponse extends InventoryEntity {
           markers: markers_
                   ?.map(
                     (e) => InventoryMarkerEntity(
-                      grade: getGradeIconInfo(e.grade ?? 0),
-                      count: e.count,
-                      open: e.open,
+                      grade: getMarkerGradeIconInfo(e.grade ?? 0),
+                      count: e.count ?? 0,
+                      open: e.open ?? false,
                     ),
                   )
                   .toList() ??

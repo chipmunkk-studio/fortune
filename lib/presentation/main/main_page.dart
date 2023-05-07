@@ -263,12 +263,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   _onMyBagClick() {
-    final state = bloc.state;
     context.showFortuneBottomSheet(
-      content: (context) => InventoryBottomPage(
-        profile: state.profileImage ?? '',
-        stamps: const [1, 2, 3, 4, 5, 6, 7],
-      ),
+      content: (context) => const InventoryBottomPage(),
     );
   }
 }

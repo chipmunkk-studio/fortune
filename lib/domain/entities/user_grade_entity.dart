@@ -111,7 +111,7 @@ class GradeDiamond implements UserGradeEntity {
   SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
-UserGradeEntity getGradeIconInfo(int grade) {
+UserGradeEntity getUserGradeIconInfo(int grade) {
   switch (grade) {
     case 1:
       return GradeBronze();

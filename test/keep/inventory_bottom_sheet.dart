@@ -7,7 +7,6 @@ import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
 import 'package:scrollable_list_tab_scroller/scrollable_list_tab_scroller.dart';
 
-/// todo 나중에 쓸일이 있음.
 class InventoryBottomSheet extends StatefulWidget {
   const InventoryBottomSheet({Key? key}) : super(key: key);
 

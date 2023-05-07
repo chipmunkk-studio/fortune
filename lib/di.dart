@@ -33,6 +33,7 @@ import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.d
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/history/bloc/marker_history_bloc.dart';
+import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
 import 'package:foresh_flutter/presentation/login/phonenumber/bloc/phone_number.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
 import 'package:foresh_flutter/presentation/signup/bloc/sign_up.dart';
@@ -195,6 +196,12 @@ _initBloc() {
 
   serviceLocator.registerFactory(
     () => MarkerHistoryBloc(),
+  );
+
+  serviceLocator.registerFactory(
+    () => InventoryBloc(
+      obtainInventoryUseCase: serviceLocator(),
+    ),
   );
 }
 

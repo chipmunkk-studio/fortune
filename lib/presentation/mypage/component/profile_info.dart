@@ -156,10 +156,10 @@ class _Grade extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getGradeIconInfo(1).getIcon(size: 14.w),
+                getUserGradeIconInfo(1).getIcon(size: 14.w),
                 SizedBox(width: 8.w),
                 Text(
-                  getGradeIconInfo(1).name,
+                  getUserGradeIconInfo(1).name,
                   style: FortuneTextStyle.body3Bold(),
                 ),
               ],

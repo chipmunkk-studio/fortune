@@ -14,13 +14,13 @@ class Profile extends StatelessWidget {
     super.key,
     required this.profile,
     required this.onNicknameClick,
-    required this.onGradeBenefitClick,
     required this.onGradeClick,
+    required this.nickname,
   });
 
   final String profile;
+  final String nickname;
   final Function0 onNicknameClick;
-  final Function0 onGradeBenefitClick;
   final Function0 onGradeClick;
 
   @override
@@ -41,7 +41,10 @@ class Profile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _Nickname(onNicknameClick: onNicknameClick),
+              _Nickname(
+                nickname: nickname,
+                onNicknameClick: onNicknameClick,
+              ),
               SizedBox(height: 8.h),
               _Grade(
                 onGradeGuideTap: onGradeClick,
@@ -56,10 +59,12 @@ class Profile extends StatelessWidget {
 
 class _Nickname extends StatelessWidget {
   const _Nickname({
+    required this.nickname,
     required this.onNicknameClick,
   });
 
   final Function0 onNicknameClick;
+  final String nickname;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,7 @@ class _Nickname extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "열두글자로한다고라고라고라rh",
+              nickname,
               style: FortuneTextStyle.subTitle3Bold(),
               overflow: TextOverflow.visible,
             ),
@@ -113,10 +118,10 @@ class _Grade extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getGradeIconInfo(1).getIcon(size: 14.w),
+                getUserGradeIconInfo(1).getIcon(size: 14.w),
                 SizedBox(width: 8.w),
                 Text(
-                  getGradeIconInfo(1).name,
+                  getUserGradeIconInfo(1).name,
                   style: FortuneTextStyle.body3Bold(),
                 ),
               ],

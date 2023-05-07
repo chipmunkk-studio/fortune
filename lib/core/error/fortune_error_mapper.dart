@@ -1,3 +1,4 @@
+
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 
@@ -18,11 +19,11 @@ abstract class FortuneErrorStatus {
   // 클라이언트 에러.
   static const int clientInternal = 996;
 
+  // 인증되지 않은 사용자 요청일 경우 발생하는 에러.
+  static const int unauthorized = 401;
+
   // 잘못된 요청.
   static const int badRequest = 10000;
-
-  // 인증되지 않은 사용자 요청일 경우 발생하는 에러.
-  static const int unauthorized = 10003;
 
   // 이미 획득한 마커
   static const int markerAlreadyAcquired = 10016;
