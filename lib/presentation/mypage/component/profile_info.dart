@@ -93,7 +93,6 @@ class _Nickname extends StatelessWidget {
   final Function0 onNicknameModifyTap;
 
   const _Nickname({
-    super.key,
     required this.onNicknameModifyTap,
   });
 

@@ -25,21 +25,18 @@ class InventoryBottomPage extends StatelessWidget {
           profile: profile,
           onGradeBenefitClick: () {},
           onNicknameClick: () => router.navigateTo(context, Routes.myPageRoute),
+          onGradeClick: () => router.navigateTo(context, Routes.gradeGuideRoute),
         ),
         SizedBox(height: 36.h),
         StampExchange(
-          onStampExchangeClick: () {
-            _navigateToExchangePage(context);
-          },
+          onStampExchangeClick: () => _navigateToExchangePage(context),
         ),
         SizedBox(height: 33.h),
         Stamps(
           top: stamps.take(2).toList(),
           center: stamps.skip(2).take(3).toList(),
           bottom: stamps.skip(5).toList(),
-          onStampClick: () {
-            _navigateToExchangePage(context);
-          },
+          onStampClick: () => _navigateToExchangePage(context),
         )
       ],
     );
@@ -49,7 +46,6 @@ class InventoryBottomPage extends StatelessWidget {
     router.navigateTo(
       context,
       Routes.exchangeRoute,
-      replace: true,
     );
   }
 }

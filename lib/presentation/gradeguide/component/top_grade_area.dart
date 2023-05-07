@@ -1,55 +1,72 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
 
 class TopGradeArea extends StatelessWidget {
-  final String nickname;
   final String grade;
 
   const TopGradeArea({
     super.key,
-    required this.nickname,
     required this.grade,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Flexible(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "$nickname님의",
-                  style: FortuneTextStyle.subTitle1SemiBold(),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(text: "현재 등급은", style: FortuneTextStyle.subTitle1Regular()),
-                      TextSpan(text: "\u00A0", style: FortuneTextStyle.body3Bold(fontColor: ColorName.secondary)),
-                      TextSpan(
-                        text: grade.tr(),
-                        style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.secondary),
-                      ),
-                      TextSpan(text: "입니다", style: FortuneTextStyle.subTitle1Regular()),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(width: 51.w),
+        _MyGradeInfo(grade: grade),
         getGradeIconInfo(1).getIcon(size: 72.w),
       ],
+    );
+  }
+}
+
+class _MyGradeInfo extends StatelessWidget {
+  const _MyGradeInfo({
+    super.key,
+    required this.grade,
+  });
+
+  final String grade;
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      child: Row(
+        children: [
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "나의 현재 등급은",
+                    style: FortuneTextStyle.subTitle1Regular(),
+                  ),
+                  SizedBox(height: 4.h),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: grade.tr(),
+                          style: FortuneTextStyle.subTitle1SemiBold(),
+                        ),
+                        TextSpan(text: "\u00A0입니다", style: FortuneTextStyle.subTitle1Regular()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

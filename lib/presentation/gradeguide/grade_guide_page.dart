@@ -37,7 +37,6 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
           physics: const BouncingScrollPhysics(),
           children: [
             TopGradeArea(
-              nickname: '열두글자로한다고라고라고라',
               grade: "브론즈",
             ),
             SizedBox(height: 24.h),

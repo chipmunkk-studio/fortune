@@ -4,16 +4,16 @@ import 'package:foresh_flutter/core/gen/assets.gen.dart';
 
 abstract class UserGradeEntity {
   final int grade;
-  final String iconPath;
+  final SvgGenImage icon;
   final String name;
 
   UserGradeEntity(
     this.grade,
-    this.iconPath,
+    this.icon,
     this.name,
   );
 
-  SvgPicture getIcon({double size = 60});
+  SvgPicture getIcon({double size});
 }
 
 class GradeBronze implements UserGradeEntity {
@@ -21,7 +21,7 @@ class GradeBronze implements UserGradeEntity {
   final int grade;
 
   @override
-  final String iconPath;
+  final SvgGenImage icon;
 
   @override
   final String name;
@@ -29,10 +29,10 @@ class GradeBronze implements UserGradeEntity {
   GradeBronze()
       : grade = 1,
         name = "bronze".tr(),
-        iconPath = Assets.icons.icGradeBronze.path;
+        icon = Assets.icons.icGradeBronze;
 
   @override
-  SvgPicture getIcon({double size = 60}) => SvgPicture.asset(iconPath);
+  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeSilver implements UserGradeEntity {
@@ -40,7 +40,7 @@ class GradeSilver implements UserGradeEntity {
   final int grade;
 
   @override
-  final String iconPath;
+  final SvgGenImage icon;
 
   @override
   final String name;
@@ -48,10 +48,10 @@ class GradeSilver implements UserGradeEntity {
   GradeSilver()
       : grade = 2,
         name = "silver".tr(),
-        iconPath = Assets.icons.icGradeSilver.path;
+        icon = Assets.icons.icGradeSilver;
 
   @override
-  SvgPicture getIcon({double size = 60}) => SvgPicture.asset(iconPath);
+  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeGold implements UserGradeEntity {
@@ -59,7 +59,7 @@ class GradeGold implements UserGradeEntity {
   final int grade;
 
   @override
-  final String iconPath;
+  final SvgGenImage icon;
 
   @override
   final String name;
@@ -67,10 +67,10 @@ class GradeGold implements UserGradeEntity {
   GradeGold()
       : grade = 3,
         name = "gold".tr(),
-        iconPath = Assets.icons.icGradeGold.path;
+        icon = Assets.icons.icGradeGold;
 
   @override
-  SvgPicture getIcon({double size = 60}) => SvgPicture.asset(iconPath);
+  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradePlatinum implements UserGradeEntity {
@@ -78,7 +78,7 @@ class GradePlatinum implements UserGradeEntity {
   final int grade;
 
   @override
-  final String iconPath;
+  final SvgGenImage icon;
 
   @override
   final String name;
@@ -86,10 +86,10 @@ class GradePlatinum implements UserGradeEntity {
   GradePlatinum()
       : grade = 4,
         name = "platinum".tr(),
-        iconPath = Assets.icons.icGradePlatinum.path;
+        icon = Assets.icons.icGradePlatinum;
 
   @override
-  SvgPicture getIcon({double size = 60}) => SvgPicture.asset(iconPath);
+  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeDiamond implements UserGradeEntity {
@@ -97,7 +97,7 @@ class GradeDiamond implements UserGradeEntity {
   final int grade;
 
   @override
-  final String iconPath;
+  final SvgGenImage icon;
 
   @override
   final String name;
@@ -105,10 +105,10 @@ class GradeDiamond implements UserGradeEntity {
   GradeDiamond()
       : grade = 5,
         name = "diamond".tr(),
-        iconPath = Assets.icons.icGradeDiamond.path;
+        icon = Assets.icons.icGradeDiamond;
 
   @override
-  SvgPicture getIcon({double size = 60}) => SvgPicture.asset(iconPath);
+  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 UserGradeEntity getGradeIconInfo(int grade) {
