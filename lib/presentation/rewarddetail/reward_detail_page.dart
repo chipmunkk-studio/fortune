@@ -4,29 +4,30 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/presentation/product/component/content.dart';
 
-class ProductPage extends StatelessWidget {
-  const ProductPage({Key? key}) : super(key: key);
+import 'component/content.dart';
+
+class RewardDetailPage extends StatelessWidget {
+  const RewardDetailPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FortuneScaffold(
       padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
       appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-      child: _ProductPage(),
+      child: _RewardDetailPage(),
     );
   }
 }
 
-class _ProductPage extends StatefulWidget {
-  const _ProductPage({Key? key}) : super(key: key);
+class _RewardDetailPage extends StatefulWidget {
+  const _RewardDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<_ProductPage> createState() => _ProductPageState();
+  State<_RewardDetailPage> createState() => _RewardDetailPageState();
 }
 
-class _ProductPageState extends State<_ProductPage> {
+class _RewardDetailPageState extends State<_RewardDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Column(

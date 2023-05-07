@@ -5,7 +5,7 @@ import 'package:foresh_flutter/core/util/logger.dart';
 import '../../../core/network/api/request/request_sms_verify_code.dart';
 import '../../../core/network/api/service/normal/normal_auth_service.dart';
 import '../../../domain/entities/sms_verify_result_entity.dart';
-import '../../responses/sms_verify_code_confirm_response.dart';
+import '../../responses/user/sms_verify_code_confirm_response.dart';
 
 abstract class AuthNormalDataSource {
   Future<void> requestSmsVerifyCode(RequestSmsVerifyCode params);

@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
+import 'package:foresh_flutter/domain/entities/reward_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductList extends StatelessWidget {
   final Function1<int, void> onItemClick;
+  final List<RewardProductEntity> rewards;
 
   const ProductList({
+    required this.rewards,
     required this.onItemClick,
     super.key,
   });
@@ -20,7 +21,7 @@ class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
-      itemCount: 10,
+      itemCount: rewards.length,
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(height: 20.h);
       },
@@ -29,7 +30,7 @@ class ProductList extends StatelessWidget {
           scaleY: 0.96,
           scaleX: 0.96,
           onTapUp: () => onItemClick(index),
-          child: _ProductItem(),
+          child: _ProductItem(rewards[index]),
         );
       },
     );
@@ -37,9 +38,9 @@ class ProductList extends StatelessWidget {
 }
 
 class _ProductItem extends StatelessWidget {
-  const _ProductItem({
-    super.key,
-  });
+  const _ProductItem(this.reward);
+
+  final RewardProductEntity reward;
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +68,13 @@ class _ProductItem extends StatelessWidget {
                         border: Border.all(color: ColorName.deActiveDark, width: 1),
                       ),
                       child: Text(
-                        "카페/베이커리",
+                        reward.name,
                         style: FortuneTextStyle.caption1SemiBold(),
                       ),
                     ),
                     SizedBox(height: 12.h),
                     Text(
-                      "스타벅스 아이스 카페 아메리카노 Tall",
+                      reward.name,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       style: FortuneTextStyle.subTitle3Bold(),
@@ -87,7 +88,7 @@ class _ProductItem extends StatelessWidget {
                 child: ClipOval(
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
-                    image: "https://source.unsplash.com/user/max_duz/92x92",
+                    image: reward.imageUrl,
                   ),
                 ),
               ),
@@ -117,27 +118,52 @@ class _ProductItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "1,234개 남았어요",
+                  "${reward.stock}개 남았어요",
                   style: FortuneTextStyle.body3Regular(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const Spacer(),
-                Assets.icons.icFortuneDiamond.svg(width: 20, height: 20),
-                SizedBox(width: 4.w),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(text: "153", style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary)),
-                      TextSpan(text: "/50", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-                    ],
-                  ),
-                ),
+                _Recipe(recipe: reward.exchangeableMarkers),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+class _Recipe extends StatelessWidget {
+  const _Recipe({
+    required this.recipe,
+  });
+
+  final List<ExchangeableMarkerEntity> recipe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: recipe
+          .map(
+            (e) => Row(
+              children: [
+                e.grade.icon.svg(width: 20.w, height: 20.w),
+                SizedBox(width: 4.w),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: "${e.userHaveCount}", style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary)),
+                      TextSpan(
+                          text: "/${e.count}",
+                          style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+          .toList(),
     );
   }
 }

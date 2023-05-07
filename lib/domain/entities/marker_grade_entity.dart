@@ -12,8 +12,6 @@ abstract class MarkerGradeEntity {
     this.icon,
     this.name,
   );
-
-  SvgPicture getIcon({double size});
 }
 
 class MarkerGrade1 implements MarkerGradeEntity {
@@ -30,9 +28,6 @@ class MarkerGrade1 implements MarkerGradeEntity {
       : grade = 1,
         name = "포츈쿠키".tr(),
         icon = Assets.icons.icFortuneCookie;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MakrerGrade2 implements MarkerGradeEntity {
@@ -49,9 +44,6 @@ class MakrerGrade2 implements MarkerGradeEntity {
       : grade = 2,
         name = "silver".tr(),
         icon = Assets.icons.icGradeSilver;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MarkerGrade3 implements MarkerGradeEntity {
@@ -68,9 +60,6 @@ class MarkerGrade3 implements MarkerGradeEntity {
       : grade = 3,
         name = "gold".tr(),
         icon = Assets.icons.icGradeGold;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MarkerGrade4 implements MarkerGradeEntity {
@@ -87,9 +76,6 @@ class MarkerGrade4 implements MarkerGradeEntity {
       : grade = 4,
         name = "platinum".tr(),
         icon = Assets.icons.icGradePlatinum;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MarkerGrade5 implements MarkerGradeEntity {
@@ -106,9 +92,6 @@ class MarkerGrade5 implements MarkerGradeEntity {
       : grade = 5,
         name = "diamond".tr(),
         icon = Assets.icons.icGradeDiamond;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MarkerGrade6 implements MarkerGradeEntity {
@@ -125,9 +108,6 @@ class MarkerGrade6 implements MarkerGradeEntity {
       : grade = 6,
         name = "diamond".tr(),
         icon = Assets.icons.icGradeDiamond;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 class MarkerGrade7 implements MarkerGradeEntity {
@@ -144,9 +124,6 @@ class MarkerGrade7 implements MarkerGradeEntity {
       : grade = 7,
         name = "diamond".tr(),
         icon = Assets.icons.icGradeDiamond;
-
-  @override
-  SvgPicture getIcon({double size = 68}) => icon.svg(width: size, height: size);
 }
 
 MarkerGradeEntity getMarkerGradeIconInfo(int grade) {

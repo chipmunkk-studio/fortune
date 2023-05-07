@@ -30,8 +30,8 @@ class ItemGrade extends StatelessWidget {
               Text("누적 00점 이상 달성 시 00회 무료", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
             ],
           ),
-          Spacer(),
-          gradeInfo.getIcon(),
+          const Spacer(),
+          gradeInfo.icon.svg(width: 60.w, height: 60.w),
         ],
       ),
     );

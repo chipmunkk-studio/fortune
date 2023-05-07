@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:foresh_flutter/core/network/api/service/reward_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
@@ -53,6 +54,7 @@ class ApiServiceProvider {
       services: [
         UserService.create(),
         MainService.create(),
+        RewardService.create(),
         // 여기에 인증이 필요한 api 추가.
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
@@ -89,4 +91,6 @@ class ApiServiceProvider {
   UserService getUserService() => _defaultClient.getService<UserService>();
 
   MainService getMarkerService() => _defaultClient.getService<MainService>();
+
+  RewardService getRewardService() => _defaultClient.getService<RewardService>();
 }

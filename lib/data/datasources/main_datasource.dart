@@ -17,10 +17,10 @@ abstract class MainDataSource {
   Future<InventoryEntity> getInventory();
 }
 
-class MainRemoteDataSourceImpl extends MainDataSource {
+class MainDataSourceImpl extends MainDataSource {
   final MainService mainService;
 
-  MainRemoteDataSourceImpl(this.mainService);
+  MainDataSourceImpl(this.mainService);
 
   @override
   Future<MainEntity> getMarkerList(RequestMain request) async {

@@ -6,6 +6,7 @@ import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
 import 'package:foresh_flutter/core/network/api/service/main_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_auth_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_user_service.dart';
+import 'package:foresh_flutter/core/network/api/service/reward_service.dart';
 import 'package:foresh_flutter/core/network/api/service/user_service.dart';
 import 'package:foresh_flutter/core/network/api_service_provider.dart';
 import 'package:foresh_flutter/core/network/auth_helper_jwt.dart';
@@ -14,19 +15,23 @@ import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/datasources/local_datasource.dart';
 import 'package:foresh_flutter/data/datasources/main_datasource.dart';
+import 'package:foresh_flutter/data/datasources/reward_datasource.dart';
 import 'package:foresh_flutter/data/datasources/user/auth_normal_datasource.dart';
 import 'package:foresh_flutter/data/datasources/user/user_normal_datasource.dart';
 import 'package:foresh_flutter/data/repositories/auth_normal_repository_impl.dart';
 import 'package:foresh_flutter/data/repositories/main_repository_impl.dart';
+import 'package:foresh_flutter/data/repositories/reward_repository_impl.dart';
 import 'package:foresh_flutter/data/repositories/user_normal_repository_impl.dart';
 import 'package:foresh_flutter/domain/repositories/auth_normal_remote_repository.dart';
 import 'package:foresh_flutter/domain/repositories/marker_repository.dart';
+import 'package:foresh_flutter/domain/repositories/reward_repository.dart';
 import 'package:foresh_flutter/domain/repositories/user_normal_remote_repository.dart';
 import 'package:foresh_flutter/domain/usecases/check_nickname_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_country_code_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
 import 'package:foresh_flutter/domain/usecases/sign_up_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
@@ -36,6 +41,7 @@ import 'package:foresh_flutter/presentation/history/bloc/marker_history_bloc.dar
 import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
 import 'package:foresh_flutter/presentation/login/phonenumber/bloc/phone_number.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
+import 'package:foresh_flutter/presentation/rewardlist/bloc/reward_list.dart';
 import 'package:foresh_flutter/presentation/signup/bloc/sign_up.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -157,6 +163,7 @@ _initService(ApiServiceProvider apiProvider) {
   // abnormal.
   serviceLocator.registerLazySingleton<UserService>(() => apiProvider.getUserService());
   serviceLocator.registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
+  serviceLocator.registerLazySingleton<RewardService>(() => apiProvider.getRewardService());
 }
 
 /// Bloc.
@@ -203,6 +210,12 @@ _initBloc() {
       obtainInventoryUseCase: serviceLocator(),
     ),
   );
+
+  serviceLocator.registerFactory(
+    () => RewardListBloc(
+      obtainRewardProductsUseCase: serviceLocator(),
+    ),
+  );
 }
 
 /// DataSource.
@@ -217,7 +230,10 @@ _initDataSource() {
     () => AuthNormalDataSourceImpl(serviceLocator()),
   );
   serviceLocator.registerLazySingleton<MainDataSource>(
-    () => MainRemoteDataSourceImpl(serviceLocator()),
+    () => MainDataSourceImpl(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<RewardDataSource>(
+    () => RewardDataSourceImpl(serviceLocator()),
   );
 }
 
@@ -239,6 +255,13 @@ _initRepository() {
   serviceLocator.registerLazySingleton<MainRepository>(
     () => MainRepositoryImpl(
       markerRemoteDataSource: serviceLocator(),
+      errorMapper: serviceLocator(),
+    ),
+  );
+
+  serviceLocator.registerLazySingleton<RewardRepository>(
+    () => RewardRepositoryImpl(
+      rewardDataSource: serviceLocator(),
       errorMapper: serviceLocator(),
     ),
   );
@@ -269,5 +292,8 @@ _initUseCase() {
   );
   serviceLocator.registerLazySingleton<ObtainInventoryUseCase>(
     () => ObtainInventoryUseCase(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<ObtainRewardProductsUseCase>(
+    () => ObtainRewardProductsUseCase(serviceLocator()),
   );
 }

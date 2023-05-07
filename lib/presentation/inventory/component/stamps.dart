@@ -121,13 +121,13 @@ class _MarkerStampIcon extends StatelessWidget {
             dimension: 92,
             child: !isOpen
                 ? CustomPaint(
-                    painter: SquirclePainter(),
+                    painter: SquirclePainter(color: ColorName.deActiveDark.withOpacity(0.4)),
                     child: Assets.icons.icLock.svg(
                       fit: BoxFit.none,
                     ),
                   )
                 : CustomPaint(
-                    painter: SquirclePainter(),
+                    painter: SquirclePainter(color: ColorName.deActiveDark.withOpacity(0.4)),
                     child: icon,
                   ),
           ),

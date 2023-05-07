@@ -12,8 +12,6 @@ abstract class UserGradeEntity {
     this.icon,
     this.name,
   );
-
-  SvgPicture getIcon({double size});
 }
 
 class GradeBronze implements UserGradeEntity {
@@ -30,9 +28,6 @@ class GradeBronze implements UserGradeEntity {
       : grade = 1,
         name = "bronze".tr(),
         icon = Assets.icons.icGradeBronze;
-
-  @override
-  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeSilver implements UserGradeEntity {
@@ -49,9 +44,6 @@ class GradeSilver implements UserGradeEntity {
       : grade = 2,
         name = "silver".tr(),
         icon = Assets.icons.icGradeSilver;
-
-  @override
-  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeGold implements UserGradeEntity {
@@ -68,9 +60,6 @@ class GradeGold implements UserGradeEntity {
       : grade = 3,
         name = "gold".tr(),
         icon = Assets.icons.icGradeGold;
-
-  @override
-  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradePlatinum implements UserGradeEntity {
@@ -87,9 +76,6 @@ class GradePlatinum implements UserGradeEntity {
       : grade = 4,
         name = "platinum".tr(),
         icon = Assets.icons.icGradePlatinum;
-
-  @override
-  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 class GradeDiamond implements UserGradeEntity {
@@ -106,9 +92,6 @@ class GradeDiamond implements UserGradeEntity {
       : grade = 5,
         name = "diamond".tr(),
         icon = Assets.icons.icGradeDiamond;
-
-  @override
-  SvgPicture getIcon({double size = 60}) => icon.svg(width: size, height: size);
 }
 
 UserGradeEntity getUserGradeIconInfo(int grade) {

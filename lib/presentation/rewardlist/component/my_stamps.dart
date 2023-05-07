@@ -4,9 +4,19 @@ import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
+import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
+import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward_entity.dart';
 
 class MyStamps extends StatefulWidget {
-  const MyStamps({Key? key}) : super(key: key);
+  final int totalMarkerCount;
+  final List<RewardMarkerEntity> markers;
+
+  const MyStamps({
+    Key? key,
+    required this.totalMarkerCount,
+    required this.markers,
+  }) : super(key: key);
 
   @override
   State<MyStamps> createState() => _MyStampsState();
@@ -45,7 +55,7 @@ class _MyStampsState extends State<MyStamps> {
               ],
             ),
             SizedBox(height: 8.h),
-            Text("2개", style: FortuneTextStyle.subTitle2Bold()),
+            Text("${widget.totalMarkerCount}개", style: FortuneTextStyle.subTitle2Bold()),
             SizedBox(height: 16.h),
           ],
         ),
@@ -73,17 +83,42 @@ class _MyStampsState extends State<MyStamps> {
             mainAxisSpacing: 12.w,
             crossAxisSpacing: 12.w,
             padding: EdgeInsets.only(left: 20.h, right: 20.h, bottom: 20.h, top: 8.h),
-            children: List.generate(
-              8,
-              (index) {
-                return SquircleNetworkImageView(
-                  placeHolderPadding: EdgeInsets.all(16.w),
-                  imageUrl: "https://source.unsplash.com/user/max_duz/68x68",
-                  backgroundColor: ColorName.deActiveDark.withOpacity(0.4),
-                  size: 76,
-                );
-              },
-            ),
+            children: widget.markers
+                .map(
+                  (e) => Stack(
+                    children: [
+                      Positioned.fill(
+                        child: CustomPaint(
+                          painter: SquirclePainter(color: ColorName.deActiveDark.withOpacity(0.4)),
+                          child: e.open
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: getMarkerGradeIconInfo(e.grade.grade).icon.svg(
+                                        fit: BoxFit.cover,
+                                      ),
+                                )
+                              : Assets.icons.icLock.svg(
+                                  fit: BoxFit.none,
+                                ),
+                        ),
+                      ),
+                      e.open
+                          ? Positioned(
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 5.w),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  color: ColorName.negative,
+                                ),
+                                child: Text(e.count.toString(), style: FortuneTextStyle.caption1SemiBold()),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                )
+                .toList(),
           ),
         ],
       ),

@@ -19,7 +19,7 @@ class TopGradeArea extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _MyGradeInfo(grade: grade),
-        getUserGradeIconInfo(1).getIcon(size: 72.w),
+        getUserGradeIconInfo(1).icon.svg(width: 72.w, height: 72.w),
       ],
     );
   }
