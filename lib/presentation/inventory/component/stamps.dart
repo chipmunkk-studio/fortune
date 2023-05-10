@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
@@ -111,10 +112,8 @@ class _MarkerStampIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.96,
-      scaleY: 0.96,
-      onTapUp: onStampClick,
+    return Bounceable(
+      onTap: onStampClick,
       child: Stack(
         children: [
           SizedBox.square(

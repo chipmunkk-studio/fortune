@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
@@ -26,10 +27,8 @@ class ProductList extends StatelessWidget {
         return SizedBox(height: 20.h);
       },
       itemBuilder: (BuildContext context, int index) {
-        return ScaleWidget(
-          scaleY: 0.96,
-          scaleX: 0.96,
-          onTapUp: () => onItemClick(index),
+        return Bounceable(
+          onTap: () => onItemClick(index),
           child: _ProductItem(rewards[index]),
         );
       },
@@ -153,10 +152,10 @@ class _Recipe extends StatelessWidget {
                 Text.rich(
                   TextSpan(
                     children: [
-                      TextSpan(text: "${e.userHaveCount}", style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary)),
                       TextSpan(
-                          text: "/${e.count}",
-                          style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
+                          text: "${e.userHaveCount}", style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary)),
+                      TextSpan(
+                          text: "/${e.count}", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
                     ],
                   ),
                 ),

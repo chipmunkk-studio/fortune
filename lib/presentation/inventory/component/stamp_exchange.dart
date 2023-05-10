@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -36,9 +37,8 @@ class StampExchange extends StatelessWidget {
             ],
           ),
         ),
-        InkWell(
+        Bounceable(
           onTap: onStampExchangeClick,
-          borderRadius: BorderRadius.circular(8.r),
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
             decoration: BoxDecoration(

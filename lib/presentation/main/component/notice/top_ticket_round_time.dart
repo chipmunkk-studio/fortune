@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -97,8 +98,8 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                     ),
                   ),
                   SizedBox(width: 10.w),
-                  ScaleWidget(
-                    onTapUp: () async {
+                  Bounceable(
+                    onTap: () async {
                       await router.navigateTo(context, Routes.storeRoute);
                       widget.bloc.add(MainRefresh());
                     },

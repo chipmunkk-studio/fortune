@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
@@ -21,10 +22,8 @@ class InfoMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.99,
-      scaleY: 0.99,
-      onTapUp: onTap,
+    return Bounceable(
+      onTap: onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 18.h),
         child: IntrinsicHeight(

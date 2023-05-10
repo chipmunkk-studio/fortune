@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -68,10 +69,8 @@ class _Nickname extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.98,
-      scaleY: 0.98,
-      onTapUp: onNicknameClick,
+    return Bounceable(
+      onTap: onNicknameClick,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Row(
@@ -101,10 +100,8 @@ class _Grade extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.98,
-      scaleY: 0.98,
-      onTapUp: onGradeGuideTap,
+    return Bounceable(
+      onTap: onGradeGuideTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

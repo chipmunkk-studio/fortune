@@ -51,7 +51,11 @@ class _MyPageState extends State<_MyPage> {
             },
           ),
           SizedBox(height: 16.h),
-          TicketFortuneArea(),
+          TicketFortuneArea(
+            onTicketClick: () {},
+            onMoneyClick: () {},
+            onFortuneClick: () {},
+          ),
           SizedBox(height: 32.h),
           InfoMenu("스토어", icon: Assets.icons.icClock.svg(), onTap: () {}),
           InfoMenu("공지사항", icon: Assets.icons.icMegaphone.svg(), onTap: () {}),

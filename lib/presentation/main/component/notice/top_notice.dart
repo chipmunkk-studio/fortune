@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -42,10 +43,8 @@ class _TopNoticeState extends State<TopNotice> {
       builder: (context, state) {
         return state.notices.isEmpty
             ? Container()
-            : ScaleWidget(
-                scaleY: 0.98,
-                scaleX: 0.98,
-                onTapUp: _onTap,
+            : Bounceable(
+                onTap: _onTap,
                 child: Container(
                   height: 64.h,
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -57,10 +58,8 @@ class _ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.96,
-      scaleY: 0.96,
-      onTapUp: onProfileTap,
+    return Bounceable(
+      onTap: onProfileTap,
       child: Stack(
         children: [
           SquircleNetworkImageView(
@@ -110,8 +109,8 @@ class _Nickname extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8.w),
-        ScaleWidget(
-          onTapUp: onNicknameModifyTap,
+        Bounceable(
+          onTap: onNicknameModifyTap,
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
             decoration: BoxDecoration(
@@ -139,10 +138,8 @@ class _Grade extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleWidget(
-      scaleX: 0.98,
-      scaleY: 0.98,
-      onTapUp: onGradeGuideTap,
+    return Bounceable(
+      onTap: onGradeGuideTap,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
