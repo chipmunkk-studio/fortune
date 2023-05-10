@@ -33,10 +33,22 @@ class _MyPage extends StatefulWidget {
 class _MyPageState extends State<_MyPage> {
   final router = serviceLocator<FortuneRouter>().router;
 
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Skeleton(
-      isLoading: false,
+      isLoading: _isLoading,
       skeleton: const _Skeleton(),
       child: Column(
         children: [
@@ -52,9 +64,9 @@ class _MyPageState extends State<_MyPage> {
           ),
           SizedBox(height: 16.h),
           TicketFortuneArea(
-            onTicketClick: () {},
-            onMoneyClick: () {},
-            onFortuneClick: () {},
+            onTicketClick: () => router.navigateTo(context, Routes.ticketHistoryRoute),
+            onMoneyClick: () => router.navigateTo(context, Routes.moneyHistoryRoute),
+            onFortuneClick: () => router.navigateTo(context, Routes.fortuneHistoryRoute),
           ),
           SizedBox(height: 32.h),
           InfoMenu("스토어", icon: Assets.icons.icClock.svg(), onTap: () {}),

@@ -37,7 +37,6 @@ import 'package:foresh_flutter/domain/usecases/sign_up_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/history/bloc/marker_history_bloc.dart';
 import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
 import 'package:foresh_flutter/presentation/login/phonenumber/bloc/phone_number.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
@@ -54,6 +53,7 @@ import 'package:single_item_storage/storage.dart';
 import 'env.dart';
 import 'presentation/login/countrycode/bloc/country_code.dart';
 import 'presentation/login/smsverify/bloc/sms_verify.dart';
+import 'presentation/markerhistory/bloc/marker_history_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 

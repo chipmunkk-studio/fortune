@@ -1,16 +1,19 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/rewarddetail/reward_detail_page.dart';
+import 'package:foresh_flutter/presentation/usagehistory/fortune/fortune_history_page.dart';
+import 'package:foresh_flutter/presentation/usagehistory/money/money_history_page.dart';
+import 'package:foresh_flutter/presentation/usagehistory/ticket/ticket_history_page.dart';
 
 import 'gradeguide/grade_guide_page.dart';
-import 'history/marker_history_page.dart';
 import 'login/countrycode/country_code_page.dart';
 import 'login/phonenumber/phone_number_page.dart';
 import 'login/smsverify/sms_verify_page.dart';
 import 'main/main_page.dart';
+import 'markerhistory/marker_history_page.dart';
 import 'markerobtain/marker_obtain_page.dart';
 import 'mypage/my_page.dart';
 import 'onboarding/on_boarding_page.dart';
+import 'rewarddetail/reward_detail_page.dart';
 import 'rewardlist/reward_list_page.dart';
 import 'signup/complete/sign_up_complete.dart';
 import 'signup/nickname/enter_nickname_page.dart';
@@ -131,6 +134,24 @@ class FortuneRouter {
     },
   );
 
+  static var ticketHistoryHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const TicketHistoryPage();
+    },
+  );
+
+  static var moneyHistoryHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const MoneyHistoryPage();
+    },
+  );
+
+  static var fortuneHistoryHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const FortuneHistoryPage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -244,6 +265,27 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 티켓 사용 내역.
+      ..define(
+        Routes.ticketHistoryRoute,
+        handler: ticketHistoryHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 금화 사용 내역.
+      ..define(
+        Routes.moneyHistoryRoute,
+        handler: moneyHistoryHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 포춘 사용 내역.
+      ..define(
+        Routes.fortuneHistoryRoute,
+        handler: fortuneHistoryHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 획득 시 애니메이션 화면 루트.
       ..define(
         Routes.markerObtainAnimationRoute,
@@ -269,4 +311,7 @@ class Routes {
   static const String myPageRoute = 'myPageRoute';
   static const String productRoute = 'productRoute';
   static const String gradeGuideRoute = 'gradeGuideRoute';
+  static const String ticketHistoryRoute = 'ticketHistoryRoute';
+  static const String moneyHistoryRoute = 'moneyHistoryRoute';
+  static const String fortuneHistoryRoute = 'fortuneHistoryRoute';
 }

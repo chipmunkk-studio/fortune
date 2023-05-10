@@ -26,16 +26,16 @@ class TicketFortuneArea extends StatelessWidget {
         color: ColorName.backgroundLight,
       ),
       child: IntrinsicHeight(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 18.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: Bounceable(
-                  onTap: onTicketClick,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Bounceable(
+                onTap: onTicketClick,
+                child: Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("티켓", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
                       SizedBox(height: 4.h),
@@ -44,10 +44,17 @@ class TicketFortuneArea extends StatelessWidget {
                   ),
                 ),
               ),
-              const VerticalDivider(width: 1, color: ColorName.deActiveDark),
-              Expanded(
-                child: Bounceable(
-                  onTap: () => onMoneyClick,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+              child: const VerticalDivider(width: 1, color: ColorName.deActiveDark),
+            ),
+            Expanded(
+              child: Bounceable(
+                onTap: onMoneyClick,
+                child: Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -58,10 +65,17 @@ class TicketFortuneArea extends StatelessWidget {
                   ),
                 ),
               ),
-              const VerticalDivider(width: 1, color: ColorName.deActiveDark),
-              Expanded(
-                child: Bounceable(
-                  onTap: onFortuneClick,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+              child: const VerticalDivider(width: 1, color: ColorName.deActiveDark),
+            ),
+            Expanded(
+              child: Bounceable(
+                onTap: onFortuneClick,
+                child: Container(
+                  color: Colors.transparent,
+                  padding: EdgeInsets.symmetric(vertical: 18.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -72,8 +86,8 @@ class TicketFortuneArea extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -11,5 +11,5 @@ class MarkerHistoryState with _$MarkerHistoryState {
 
   factory MarkerHistoryState.initial() => MarkerHistoryState(
     histories: List.empty(),
-      );
+  );
 }

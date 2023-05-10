@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/presentation/history/mock_data.dart';
+import 'package:foresh_flutter/presentation/markerhistory/mock_data.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'marker_history.dart';
