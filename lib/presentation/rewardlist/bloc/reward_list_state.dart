@@ -9,11 +9,13 @@ class RewardListState with _$RewardListState {
     required int totalMarkerCount,
     required List<RewardMarkerEntity> markers,
     required List<RewardProductEntity> rewards,
+    required bool isChangeableChecked,
   }) = _RewardListState;
 
   factory RewardListState.initial() => RewardListState(
         totalMarkerCount: 0,
         markers: List.empty(),
         rewards: List.empty(),
+        isChangeableChecked: false,
       );
 }

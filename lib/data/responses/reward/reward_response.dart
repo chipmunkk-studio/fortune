@@ -25,7 +25,7 @@ class RewardResponse extends RewardEntity {
                     ?.map(
                       (e) => RewardMarkerEntity(
                         grade: getMarkerGradeIconInfo(e.grade ?? 0),
-                        count: e.count ?? 0,
+                        count: e.count ?? "",
                         open: e.open ?? false,
                       ),
                     )

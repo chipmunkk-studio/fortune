@@ -9,11 +9,13 @@ class InventoryState with _$InventoryState {
     required String nickname,
     required String profileImage,
     required List<InventoryMarkerEntity> markers,
+    required bool isLoading,
   }) = _InventoryState;
 
   factory InventoryState.initial() => InventoryState(
         nickname: "",
         profileImage: "",
         markers: List.empty(),
+        isLoading: true,
       );
 }

@@ -5,7 +5,7 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 
 class FortuneCheckBox extends StatelessWidget {
   final bool state;
-  final Function0<void> onCheck;
+  final Function1<bool?, void> onCheck;
 
   const FortuneCheckBox({
     Key? key,
@@ -26,7 +26,7 @@ class FortuneCheckBox extends StatelessWidget {
         ),
         child: Checkbox(
           value: state,
-          onChanged: (value) => onCheck(),
+          onChanged: (value) => onCheck(value),
         ),
       ),
     );

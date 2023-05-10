@@ -25,7 +25,7 @@ class MainInventoryResponse extends InventoryEntity {
                   ?.map(
                     (e) => InventoryMarkerEntity(
                       grade: getMarkerGradeIconInfo(e.grade ?? 0),
-                      count: e.count ?? 0,
+                      count: e.count ?? "",
                       open: e.open ?? false,
                     ),
                   )
@@ -43,7 +43,7 @@ class MainInventoryMarkerResponse {
   @JsonKey(name: 'grade')
   final int? grade;
   @JsonKey(name: 'count')
-  final int? count;
+  final String? count;
   @JsonKey(name: 'open')
   final bool? open;
 

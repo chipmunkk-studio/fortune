@@ -28,6 +28,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState>
               nickname: r.nickname,
               profileImage: r.profileImage,
               markers: r.markers,
+              isLoading: false,
             ),
           );
         },

@@ -56,7 +56,15 @@ class _RewardListPageState extends State<_RewardListPage> {
           },
         ),
         SizedBox(height: 32.h),
-        const MyStampsFilter(),
+        BlocBuilder<RewardListBloc, RewardListState>(
+          buildWhen: (previous, current) => previous.isChangeableChecked != current.isChangeableChecked,
+          builder: (context, state) {
+            return MyStampsFilter(
+              state.isChangeableChecked,
+              onCheck: (isChecked) => _bloc.add(RewardChangeCheckStatus()),
+            );
+          },
+        ),
         SizedBox(height: 16.h),
         Expanded(
           child: Stack(

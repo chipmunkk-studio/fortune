@@ -14,7 +14,7 @@ class RewardEntity {
 
 class RewardMarkerEntity {
   final MarkerGradeEntity grade;
-  final int count;
+  final String count;
   final bool open;
 
   RewardMarkerEntity({

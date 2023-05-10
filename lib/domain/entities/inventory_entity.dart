@@ -15,7 +15,7 @@ class InventoryEntity {
 
 class InventoryMarkerEntity {
   final MarkerGradeEntity grade;
-  final int count;
+  final String count;
   final bool open;
 
   InventoryMarkerEntity({

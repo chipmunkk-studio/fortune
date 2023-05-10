@@ -8,7 +8,7 @@ class RewardMarkerResponse {
   @JsonKey(name: 'grade')
   final int? grade;
   @JsonKey(name: 'count')
-  final int? count;
+  final String? count;
   @JsonKey(name: 'open')
   final bool? open;
 
