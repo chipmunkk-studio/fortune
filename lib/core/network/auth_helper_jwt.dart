@@ -43,7 +43,6 @@ class AuthHelperJwt {
         FortuneLogger.error("refreshIfTokenExpired():: Token does not exist");
         throw FortuneException(
           errorCode: FortuneErrorStatus.unauthorized,
-          errorType: FortuneErrorDataReference.errorClientAuth,
           errorMessage: 'AccessToken does not exist (액세스 토큰 만료.)',
         );
       }
@@ -103,7 +102,6 @@ class AuthHelperJwt {
         FortuneLogger.error("interceptResponse():: Need to login.");
         throw FortuneException(
           errorCode: FortuneErrorStatus.unauthorized,
-          errorType: FortuneErrorDataReference.errorClientAuth,
           errorMessage: "Need to login (로그인이 필요합니다.)",
         );
       }
@@ -161,7 +159,6 @@ class AuthHelperJwt {
           FortuneLogger.error("interceptRequest():: AccessToken not exist: $request");
           throw FortuneException(
             errorCode: FortuneErrorStatus.unauthorized,
-            errorType: FortuneErrorDataReference.errorClientAuth,
             errorMessage: "AccessToken not exist (액세스 토큰이 없습니다.)",
           );
         }
@@ -214,7 +211,6 @@ class AuthHelperJwt {
       FortuneLogger.error('RefreshToken is expired.');
       throw FortuneException(
         errorCode: FortuneErrorStatus.unauthorized,
-        errorType: FortuneErrorDataReference.errorClientAuth,
         errorMessage: "RefreshToken is expired (리프레시 토큰이 만료되었습니다.)",
       );
     }
@@ -231,7 +227,6 @@ class AuthHelperJwt {
       FortuneLogger.error('_refreshToken() - Refresh token refused');
       throw FortuneException(
         errorCode: FortuneErrorStatus.unauthorized,
-        errorType: FortuneErrorDataReference.errorClientAuth,
         errorMessage: "Refresh token refused. (리프레시 토큰을 서버로부터 받아올 수 없습니다.) + ${e.toString()}",
       );
     }

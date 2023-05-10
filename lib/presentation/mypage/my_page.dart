@@ -38,7 +38,7 @@ class _MyPageState extends State<_MyPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(milliseconds: 500), () {
       setState(() {
         _isLoading = false;
       });
@@ -69,10 +69,26 @@ class _MyPageState extends State<_MyPage> {
             onFortuneClick: () => router.navigateTo(context, Routes.fortuneHistoryRoute),
           ),
           SizedBox(height: 32.h),
-          InfoMenu("스토어", icon: Assets.icons.icClock.svg(), onTap: () {}),
-          InfoMenu("공지사항", icon: Assets.icons.icMegaphone.svg(), onTap: () {}),
-          InfoMenu("자주 묻는 질문", icon: Assets.icons.icQuestion.svg(), onTap: () {}),
-          SwitchMenu("푸시알림", onTap: () {}, icon: Assets.icons.icPushAlarm.svg()),
+          InfoMenu(
+            "스토어",
+            icon: Assets.icons.icClock.svg(),
+            onTap: () => router.navigateTo(context, Routes.storeRoute),
+          ),
+          InfoMenu(
+            "공지사항",
+            icon: Assets.icons.icMegaphone.svg(),
+            onTap: () => router.navigateTo(context, Routes.announcementRoute),
+          ),
+          InfoMenu(
+            "자주 묻는 질문",
+            icon: Assets.icons.icQuestion.svg(),
+            onTap: () => router.navigateTo(context, Routes.questionRoute),
+          ),
+          SwitchMenu(
+            "푸시알림",
+            onTap: () {},
+            icon: Assets.icons.icPushAlarm.svg(),
+          ),
         ],
       ),
     );

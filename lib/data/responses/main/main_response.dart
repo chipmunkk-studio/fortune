@@ -16,10 +16,10 @@ class MainResponse extends MainEntity {
   final List<MainHistoryResponse>? histories_;
   @JsonKey(name: 'profileImageUrl')
   final String? profileImageUrl_;
-  @JsonKey(name: 'chargedTickets')
-  final int? chargeTicketCnt_;
-  @JsonKey(name: 'normalTickets')
-  final int? normalTicketsCnt_;
+  @JsonKey(name: 'coinCount')
+  final int? coinCount_;
+  @JsonKey(name: 'ticketCount')
+  final int? ticketCount_;
   @JsonKey(name: 'remainRoundTime')
   final int? roundTime_;
 
@@ -28,8 +28,8 @@ class MainResponse extends MainEntity {
     required this.id_,
     required this.histories_,
     required this.profileImageUrl_,
-    required this.chargeTicketCnt_,
-    required this.normalTicketsCnt_,
+    required this.coinCount_,
+    required this.ticketCount_,
     required this.roundTime_,
   }) : super(
           id: id_,
@@ -63,8 +63,8 @@ class MainResponse extends MainEntity {
                   .toList() ??
               List.empty(),
           profileImageUrl: profileImageUrl_ ?? "",
-          chargeTicketCnt: chargeTicketCnt_ ?? 0,
-          normalTicketsCnt: normalTicketsCnt_ ?? 0,
+          coinCount: coinCount_ ?? 0,
+          ticketCount: ticketCount_ ?? 0,
           roundTime: roundTime_ ?? 0,
         );
 

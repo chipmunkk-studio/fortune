@@ -5,16 +5,16 @@ class MainEntity extends Equatable {
   final List<MainMarkerEntity> markers;
   final List<MainHistoryEntity> histories;
   final String profileImageUrl;
-  final int chargeTicketCnt;
-  final int normalTicketsCnt;
+  final int coinCount;
+  final int ticketCount;
   final int roundTime;
 
   const MainEntity({
     required this.id,
     required this.markers,
     required this.profileImageUrl,
-    required this.chargeTicketCnt,
-    required this.normalTicketsCnt,
+    required this.coinCount,
+    required this.ticketCount,
     required this.roundTime,
     required this.histories,
   });

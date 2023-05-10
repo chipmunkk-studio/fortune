@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/presentation/support/announcement_page.dart';
+import 'package:foresh_flutter/presentation/support/question_page.dart';
 import 'package:foresh_flutter/presentation/usagehistory/fortune/fortune_history_page.dart';
 import 'package:foresh_flutter/presentation/usagehistory/money/money_history_page.dart';
 import 'package:foresh_flutter/presentation/usagehistory/ticket/ticket_history_page.dart';
@@ -152,6 +154,18 @@ class FortuneRouter {
     },
   );
 
+  static var announcementHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const AnnouncementPage();
+    },
+  );
+
+  static var questionHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const QuestionPage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -241,7 +255,7 @@ class FortuneRouter {
       ..define(
         Routes.storeRoute,
         handler: storeHandler,
-        transitionType: TransitionType.material,
+        transitionType: TransitionType.cupertino,
       )
 
       /// 마이페이지.
@@ -286,6 +300,20 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 공지사항.
+      ..define(
+        Routes.announcementRoute,
+        handler: announcementHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 자주 묻는 질문.
+      ..define(
+        Routes.questionRoute,
+        handler: questionHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 획득 시 애니메이션 화면 루트.
       ..define(
         Routes.markerObtainAnimationRoute,
@@ -314,4 +342,6 @@ class Routes {
   static const String ticketHistoryRoute = 'ticketHistoryRoute';
   static const String moneyHistoryRoute = 'moneyHistoryRoute';
   static const String fortuneHistoryRoute = 'fortuneHistoryRoute';
+  static const String announcementRoute = 'announcementRoute';
+  static const String questionRoute = 'questionRoute';
 }

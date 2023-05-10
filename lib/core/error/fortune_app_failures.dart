@@ -7,12 +7,10 @@ import 'fortune_error_mapper.dart';
 
 class FortuneException {
   final int? errorCode;
-  final String? errorType;
   final String? errorMessage;
 
   FortuneException({
     required this.errorCode,
-    required this.errorType,
     required this.errorMessage,
   });
 }
@@ -30,12 +28,10 @@ abstract class FortuneFailure extends Equatable {
 /// 인증에러.
 class AuthFailure extends FortuneFailure {
   final int? errorCode;
-  final String? errorType;
   final String? errorMessage;
 
   const AuthFailure(
     this.errorCode,
-    this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.unauthorized,
@@ -49,7 +45,6 @@ class AuthFailure extends FortuneFailure {
   }) =>
       AuthFailure(
         errorCode ?? HttpStatus.unauthorized,
-        errorType ?? FortuneErrorDataReference.errorClientAuth,
         errorMessage,
       );
 
@@ -60,12 +55,10 @@ class AuthFailure extends FortuneFailure {
 /// Bad Request.
 class BadRequestFailure extends FortuneFailure {
   final int? errorCode;
-  final String? errorType;
   final String? errorMessage;
 
   const BadRequestFailure(
     this.errorCode,
-    this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.badRequest,
@@ -78,13 +71,11 @@ class BadRequestFailure extends FortuneFailure {
 
 /// 서버 에러.
 class InternalServerFailure extends FortuneFailure {
-  final String? errorType;
   final int? errorCode;
   final String? errorMessage;
 
   const InternalServerFailure(
     this.errorCode,
-    this.errorType,
     this.errorMessage,
   ) : super(
           code: errorCode ?? FortuneErrorStatus.internalServerError,

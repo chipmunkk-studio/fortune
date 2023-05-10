@@ -33,14 +33,12 @@ extension FortuneResponseMapper on Response {
       if (base.statusCode >= HttpStatus.internalServerError) {
         throw FortuneException(
           errorCode: FortuneErrorStatus.internalServerError,
-          errorType: null,
           errorMessage: "${base.request?.url.path}",
         );
       }
       FortuneErrorResponse? errorResponse = this.errorResponse();
       throw FortuneException(
         errorCode: errorResponse?.code ?? FortuneErrorStatus.clientInternal,
-        errorType: errorResponse?.type ?? FortuneErrorDataReference.errorClientInternal,
         errorMessage: errorResponse?.message ?? "정의되지 않은 에러입니다.",
       );
     }
@@ -63,7 +61,6 @@ extension FortuneDomainMapper<T> on Future<T> {
       return errorMapper.mapAsLeft(
         FortuneException(
           errorCode: FortuneErrorStatus.clientInternal,
-          errorType: FortuneErrorDataReference.errorClientInternal,
           errorMessage: e.toString(),
         ),
       );

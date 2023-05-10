@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 
@@ -20,7 +19,7 @@ abstract class FortuneErrorStatus {
   static const int clientInternal = 996;
 
   // 인증되지 않은 사용자 요청일 경우 발생하는 에러.
-  static const int unauthorized = 401;
+  static const int unauthorized = 10003;
 
   // 잘못된 요청.
   static const int badRequest = 10000;
@@ -42,24 +41,23 @@ class FortuneErrorMapper {
   FortuneFailure map(FortuneException error) {
     try {
       final int? errorCode = error.errorCode;
-      final String? errorType = error.errorType;
       final String? errorMessage = error.errorMessage;
 
       FortuneLogger.error("$errorCode: $errorMessage");
       switch (errorCode) {
         // 인증에러.
         case FortuneErrorStatus.unauthorized:
-          return AuthFailure(errorCode, errorType, errorMessage);
+          return AuthFailure(errorCode, errorMessage);
         // 서버 에러.
         case FortuneErrorStatus.internalServerSpringError:
         case FortuneErrorStatus.internalServerError:
-          return InternalServerFailure(errorCode, errorType, errorMessage);
+          return InternalServerFailure(errorCode, errorMessage);
         // 클라이언트 에러.
         case FortuneErrorStatus.clientInternal:
           return InternalClientFailure(errorMessage);
         // 그 외.
         default:
-          return BadRequestFailure(errorCode, errorType, errorMessage);
+          return BadRequestFailure(errorCode, errorMessage);
       }
     } catch (e) {
       return UnKnownFailure(e.toString());
