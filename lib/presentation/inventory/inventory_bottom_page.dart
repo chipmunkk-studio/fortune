@@ -99,7 +99,7 @@ class _InventoryBottomPageState extends State<_InventoryBottomPage> {
   _navigateToExchangePage(BuildContext context) {
     router.navigateTo(
       context,
-      Routes.exchangeRoute,
+      Routes.rewardListRoute,
     );
   }
 }

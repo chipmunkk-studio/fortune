@@ -106,7 +106,7 @@ class FortuneRouter {
     },
   );
 
-  static var exchangeHandler = Handler(
+  static var rewardListHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const RewardListPage();
     },
@@ -124,9 +124,10 @@ class FortuneRouter {
     },
   );
 
-  static var productHandler = Handler(
+  static var rewardDetailHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const RewardDetailPage();
+      final args = context?.settings?.arguments as int?;
+      return args != null ? RewardDetailPage(args) : null;
     },
   );
 
@@ -246,8 +247,8 @@ class FortuneRouter {
 
       /// 스탬프 교환소.
       ..define(
-        Routes.exchangeRoute,
-        handler: exchangeHandler,
+        Routes.rewardListRoute,
+        handler: rewardListHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -267,8 +268,8 @@ class FortuneRouter {
 
       /// 상품 상세.
       ..define(
-        Routes.productRoute,
-        handler: productHandler,
+        Routes.rewardDetailRoute,
+        handler: rewardDetailHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -333,11 +334,11 @@ class Routes {
   static const String markerHistoryRoute = 'markerHistoryRoute';
   static const String enterProfileImageRoute = 'enterProfileImageRoute';
   static const String signUpCompleteRoute = 'signUpCompleteRoute';
-  static const String exchangeRoute = 'exchangeRoute';
+  static const String rewardListRoute = 'rewardListRoute';
   static const String markerObtainAnimationRoute = 'markerObtainAnimationRoute';
   static const String storeRoute = 'storeRoute';
   static const String myPageRoute = 'myPageRoute';
-  static const String productRoute = 'productRoute';
+  static const String rewardDetailRoute = 'productRoute';
   static const String gradeGuideRoute = 'gradeGuideRoute';
   static const String ticketHistoryRoute = 'ticketHistoryRoute';
   static const String moneyHistoryRoute = 'moneyHistoryRoute';

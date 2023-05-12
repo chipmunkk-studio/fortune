@@ -21,7 +21,7 @@ class RewardListBloc extends Bloc<RewardListEvent, RewardListState>
   }
 
   FutureOr<void> init(RewardListInit event, Emitter<RewardListState> emit) async {
-    await obtainRewardProductsUseCase().then(
+    await obtainRewardProductsUseCase(0).then(
       (value) => value.fold(
         (l) => produceSideEffect(RewardListError(l)),
         (r) {

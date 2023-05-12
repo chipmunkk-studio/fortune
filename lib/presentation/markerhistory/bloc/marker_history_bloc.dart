@@ -18,11 +18,11 @@ class MarkerHistoryBloc extends Bloc<MarkerHistoryEvent, MarkerHistoryState>
   }
 
   FutureOr<void> init(MarkerHistoryInit event, Emitter<MarkerHistoryState> emit) async {
-    emit(
-      state.copyWith(
-        histories: historySampleList,
-      ),
-    );
+    // emit(
+    //   state.copyWith(
+    //     histories: historySampleList,
+    //   ),
+    // );
   }
 
   FutureOr<void> nextPage(MarkerHistoryNextPage event, Emitter<MarkerHistoryState> emit) {

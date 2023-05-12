@@ -4,8 +4,8 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
-import 'package:foresh_flutter/domain/entities/reward_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_exchangeable_marker_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductList extends StatelessWidget {
@@ -28,7 +28,7 @@ class ProductList extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         return Bounceable(
-          onTap: () => onItemClick(index),
+          onTap: () => onItemClick(rewards[index].rewardId),
           child: _ProductItem(rewards[index]),
         );
       },
@@ -138,7 +138,7 @@ class _Recipe extends StatelessWidget {
     required this.recipe,
   });
 
-  final List<ExchangeableMarkerEntity> recipe;
+  final List<RewardExchangeableMarkerEntity> recipe;
 
   @override
   Widget build(BuildContext context) {

@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
 import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
-import 'package:foresh_flutter/domain/entities/reward_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_marker_entity.dart';
 
 class MyStamps extends StatefulWidget {
   final int totalMarkerCount;

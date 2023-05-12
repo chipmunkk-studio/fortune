@@ -31,8 +31,10 @@ import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_country_code_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_reward_product_detail_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
+import 'package:foresh_flutter/domain/usecases/request_reward_exchange_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sign_up_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
 import 'package:foresh_flutter/firebase_options.dart';
@@ -40,6 +42,7 @@ import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
 import 'package:foresh_flutter/presentation/login/phonenumber/bloc/phone_number.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
+import 'package:foresh_flutter/presentation/rewarddetail/bloc/reward_detail.dart';
 import 'package:foresh_flutter/presentation/rewardlist/bloc/reward_list.dart';
 import 'package:foresh_flutter/presentation/signup/bloc/sign_up.dart';
 import 'package:get_it/get_it.dart';
@@ -216,6 +219,13 @@ _initBloc() {
       obtainRewardProductsUseCase: serviceLocator(),
     ),
   );
+
+  serviceLocator.registerFactory(
+    () => RewardDetailBloc(
+      obtainRewardProductDetailUseCase: serviceLocator(),
+      requestRewardExchangeUseCase: serviceLocator(),
+    ),
+  );
 }
 
 /// DataSource.
@@ -295,5 +305,11 @@ _initUseCase() {
   );
   serviceLocator.registerLazySingleton<ObtainRewardProductsUseCase>(
     () => ObtainRewardProductsUseCase(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<ObtainRewardProductDetailUseCase>(
+    () => ObtainRewardProductDetailUseCase(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<RequestRewardExchangeUseCase>(
+    () => RequestRewardExchangeUseCase(serviceLocator()),
   );
 }

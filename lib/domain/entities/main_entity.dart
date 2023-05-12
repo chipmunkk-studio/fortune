@@ -52,38 +52,23 @@ class MainMarkerEntity extends Equatable {
 }
 
 class MainHistoryEntity extends Equatable {
-  final double latitude;
-  final double longitude;
-  final int grade;
-  final int userId;
   final String nickname;
-  final int markerId;
-  final int id;
-  final String createdAt;
-  final String modifiedAt;
+  final String rewardName;
+  final String rewardImage;
+  final String requestTime;
 
   const MainHistoryEntity({
-    required this.latitude,
-    required this.longitude,
-    required this.grade,
-    required this.userId,
     required this.nickname,
-    required this.markerId,
-    required this.id,
-    required this.createdAt,
-    required this.modifiedAt,
+    required this.rewardName,
+    required this.rewardImage,
+    required this.requestTime,
   });
 
   @override
   List<Object?> get props => [
-        latitude,
-        longitude,
-        grade,
-        userId,
         nickname,
-        markerId,
-        id,
-        createdAt,
-        modifiedAt,
+        rewardName,
+        rewardName,
+        requestTime,
       ];
 }

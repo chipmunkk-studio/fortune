@@ -110,9 +110,3 @@ UserGradeEntity getUserGradeIconInfo(int grade) {
       return GradeBronze();
   }
 }
-
-String getSampleNetworkImageUrl({
-  required int width,
-  required int height,
-}) =>
-    "https://source.unsplash.com/user/max_duz/${width}x$height";

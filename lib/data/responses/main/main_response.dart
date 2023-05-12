@@ -49,15 +49,10 @@ class MainResponse extends MainEntity {
           histories: histories_
                   ?.map(
                     (e) => MainHistoryEntity(
-                      latitude: e.latitude,
-                      longitude: e.longitude,
-                      grade: e.grade,
-                      id: e.id,
-                      createdAt: e.createdAt,
-                      modifiedAt: e.modifiedAt,
-                      userId: e.userId,
-                      nickname: e.nickname,
-                      markerId: e.markerId,
+                      nickname: e.nickname ?? "",
+                      rewardImage: e.productImage ?? "",
+                      rewardName: e.productName ?? "",
+                      requestTime: e.requestTime ?? "",
                     ),
                   )
                   .toList() ??

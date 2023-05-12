@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 
 class ProfileInfo extends StatelessWidget {
   final Function0 onGradeGuideTap;

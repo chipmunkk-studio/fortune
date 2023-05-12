@@ -1,7 +1,8 @@
 import 'package:foresh_flutter/data/responses/reward/reward_marker_response.dart';
 import 'package:foresh_flutter/data/responses/reward/reward_product_response.dart';
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
-import 'package:foresh_flutter/domain/entities/reward_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_marker_entity.dart';
+import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'reward_response.g.dart';
@@ -20,38 +21,31 @@ class RewardResponse extends RewardEntity {
     this.markers_,
     this.rewards_,
   }) : super(
-            totalMarkerCount: totalMarkerCount_ ?? 0,
-            markers: markers_
-                    ?.map(
-                      (e) => RewardMarkerEntity(
-                        grade: getMarkerGradeIconInfo(e.grade ?? 0),
-                        count: e.count ?? "",
-                        open: e.open ?? false,
-                      ),
-                    )
-                    .toList() ??
-                List.empty(),
-            rewards: rewards_
-                    ?.map(
-                      (e) => RewardProductEntity(
-                        rewardId: e.rewardId ?? 0,
-                        name: e.name ?? "",
-                        imageUrl: e.imageUrl ?? "",
-                        stock: e.stock ?? 0,
-                        exchangeableMarkers: e.exchangeableMarkers
-                                ?.map(
-                                  (e) => ExchangeableMarkerEntity(
-                                    grade: getMarkerGradeIconInfo(e.grade ?? 0),
-                                    count: e.count ?? 0,
-                                    userHaveCount: e.userHaveCount ?? 0,
-                                  ),
-                                )
-                                .toList() ??
-                            List.empty(),
-                      ),
-                    )
-                    .toList() ??
-                List.empty());
+          totalMarkerCount: totalMarkerCount_ ?? 0,
+          markers: markers_
+                  ?.map(
+                    (e) => RewardMarkerEntity(
+                      grade: e.grade,
+                      count: e.count,
+                      open: e.open,
+                    ),
+                  )
+                  .toList() ??
+              List.empty(),
+          rewards: rewards_
+                  ?.map(
+                    (e) => RewardProductEntity(
+                      rewardId: e.rewardId,
+                      name: e.name,
+                      imageUrl: e.imageUrl,
+                      stock: e.stock,
+                      exchangeableMarkers: e.exchangeableMarkers,
+                      notices: e.notices,
+                    ),
+                  )
+                  .toList() ??
+              List.empty(),
+        );
 
   factory RewardResponse.fromJson(Map<String, dynamic> json) => _$RewardResponseFromJson(json);
 

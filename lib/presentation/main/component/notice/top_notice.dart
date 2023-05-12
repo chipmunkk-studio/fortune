@@ -10,6 +10,7 @@ import 'package:foresh_flutter/core/util/date.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/di.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_notice_auto_slider.dart';
@@ -70,7 +71,7 @@ class _TopNoticeState extends State<TopNotice> {
                                       child: ClipOval(
                                         child: FadeInImage.memoryNetwork(
                                           placeholder: kTransparentImage,
-                                          image: "https://source.unsplash.com/user/max_duz/40x40",
+                                          image: e.rewardImage.isEmpty ? transparentImageUrl : e.rewardImage,
                                         ),
                                       ),
                                     ),
@@ -80,35 +81,34 @@ class _TopNoticeState extends State<TopNotice> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(text: e.nickname, style: FortuneTextStyle.body3Bold()),
-                                                TextSpan(text: "님께서", style: FortuneTextStyle.body3Regular()),
-                                              ],
-                                            ),
+                                          Text(
+                                            "${e.nickname}님",
+                                            style: FortuneTextStyle.body3Bold(),
                                           ),
                                           Flexible(
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                      text: e.markerId.toString(), style: FortuneTextStyle.body3Bold()),
-                                                  TextSpan(text: "를 획득하셨어요!", style: FortuneTextStyle.body3Regular()),
-                                                  TextSpan(
-                                                    text: "  ${FortuneDateExtension.convertTimeAgo(e.createdAt)}",
-                                                    style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive)
-                                                        .copyWith(
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    "${e.rewardName.substring(0, 10)}... 신청 완료!",
+                                                    style: FortuneTextStyle.body3Regular(),
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  FortuneDateExtension.convertTimeAgo(e.requestTime),
+                                                  style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
+                                    SizedBox(width: 12.w),
                                   ],
                                 );
                               },

@@ -4,35 +4,20 @@ part 'main_history_response.g.dart';
 
 @JsonSerializable(nullable: true, ignoreUnannotated: false)
 class MainHistoryResponse {
-  @JsonKey(name: 'latitude')
-  double latitude;
-  @JsonKey(name: 'longitude')
-  double longitude;
-  @JsonKey(name: 'grade')
-  int grade;
-  @JsonKey(name: 'userId')
-  int userId;
+  @JsonKey(name: 'productName')
+  String? productName;
+  @JsonKey(name: 'productImage')
+  String? productImage;
+  @JsonKey(name: 'requestTime')
+  String? requestTime;
   @JsonKey(name: 'nickname')
-  String nickname;
-  @JsonKey(name: 'markerId')
-  int markerId;
-  @JsonKey(name: 'id')
-  int id;
-  @JsonKey(name: 'createdAt')
-  String createdAt;
-  @JsonKey(name: 'modifiedAt')
-  String modifiedAt;
+  String? nickname;
 
   MainHistoryResponse({
-    required this.latitude,
-    required this.longitude,
-    required this.grade,
-    required this.userId,
     required this.nickname,
-    required this.markerId,
-    required this.id,
-    required this.createdAt,
-    required this.modifiedAt,
+    required this.productImage,
+    required this.requestTime,
+    required this.productName,
   });
 
   factory MainHistoryResponse.fromJson(Map<String, dynamic> json) => _$MainHistoryResponseFromJson(json);

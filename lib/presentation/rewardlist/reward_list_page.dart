@@ -75,7 +75,13 @@ class _RewardListPageState extends State<_RewardListPage> {
                   return ProductList(
                     rewards: state.rewards,
                     onItemClick: (item) {
-                      router.navigateTo(context, Routes.productRoute);
+                      router.navigateTo(
+                        context,
+                        Routes.rewardDetailRoute,
+                        routeSettings: RouteSettings(
+                          arguments: item,
+                        ),
+                      );
                     },
                   );
                 },
