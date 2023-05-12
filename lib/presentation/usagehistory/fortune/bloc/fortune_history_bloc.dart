@@ -15,10 +15,10 @@ class FortuneHistoryBloc extends Bloc<FortuneHistoryEvent, FortuneHistoryState>
   }
 
   FutureOr<void> init(FortuneHistoryInit event, Emitter<FortuneHistoryState> emit) async {
-    emit(
-      state.copyWith(
-        histories: historySampleList,
-      ),
-    );
+    // emit(
+    //   state.copyWith(
+    //     histories: historySampleList,
+    //   ),
+    // );
   }
 }
