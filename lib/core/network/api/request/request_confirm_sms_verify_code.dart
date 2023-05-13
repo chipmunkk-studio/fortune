@@ -10,11 +10,14 @@ class RequestConfirmSmsVerifyCode {
   String countryCode;
   @JsonKey(name: 'authenticationNumber')
   int authenticationNumber;
+  @JsonKey(name: 'pushToken')
+  String? pushToken;
 
   RequestConfirmSmsVerifyCode({
     required this.phoneNumber,
     required this.countryCode,
     required this.authenticationNumber,
+    required this.pushToken,
   });
 
   factory RequestConfirmSmsVerifyCode.fromJson(Map<String, dynamic> json) =>

@@ -18,9 +18,11 @@ class SignUpUseCase implements UseCase1<TokenEntity, RequestSignUpParams> {
 class RequestSignUpParams {
   final SignUpForm data;
   final String? profileImage;
+  final String? pushToken;
 
   RequestSignUpParams({
     required this.data,
     required this.profileImage,
+    required this.pushToken,
   });
 }

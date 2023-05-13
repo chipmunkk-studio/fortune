@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
 import 'package:foresh_flutter/core/network/api/service/main_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_auth_service.dart';
@@ -54,6 +55,7 @@ import 'package:single_item_storage/observed_storage.dart';
 import 'package:single_item_storage/storage.dart';
 
 import 'env.dart';
+import 'notification_manager.dart';
 import 'presentation/login/countrycode/bloc/country_code.dart';
 import 'presentation/login/smsverify/bloc/sms_verify.dart';
 import 'presentation/markerhistory/bloc/marker_history_bloc.dart';
@@ -70,6 +72,9 @@ Future<void> init() async {
 
   /// 파이어베이스 analytics.
   final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
+
+  /// 파이어베이스 FCM
+  await initFCM();
 
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
@@ -122,6 +127,23 @@ Future<void> init() async {
   _initRepository();
   _initBloc();
   _initUseCase();
+}
+
+/// FCM
+initFCM() async {
+  const androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+    requestAlertPermission: true, // 앱이 알림 권한을 요청해야 하는지 여부를 지정합니다.
+    requestBadgePermission: false, // 앱이 배지 알림 권한을 요청해야 하는지 여부를 지정합니다.
+    requestSoundPermission: false, // 앱이 사운드 알림 권한을 요청해야 하는지 여부를 지정합니다.
+  );
+  const initializeSettings = InitializationSettings(
+    android: androidInitialize,
+    iOS: initializationSettingsDarwin,
+  );
+  final NotificationsManager notificationsManager = NotificationsManager(initializeSettings);
+  serviceLocator.registerLazySingleton<NotificationsManager>(() => notificationsManager);
+  notificationsManager.setupPushNotifications();
 }
 
 /// 환경설정.
@@ -182,6 +204,7 @@ _initBloc() {
       obtainSmsVerifyCodeUseCase: serviceLocator(),
       smsVerifyCodeConfirmUseCase: serviceLocator(),
       userStorage: serviceLocator(),
+      fcmManager: serviceLocator(),
     ),
   );
   serviceLocator.registerLazySingleton(
@@ -189,6 +212,7 @@ _initBloc() {
       checkNicknameUseCase: serviceLocator(),
       signUpUseCase: serviceLocator(),
       userStorage: serviceLocator(),
+      fcmManager: serviceLocator(),
     ),
     dispose: (bloc) {
       FortuneLogger.debug(tag: "SignUpBloc", "close()");

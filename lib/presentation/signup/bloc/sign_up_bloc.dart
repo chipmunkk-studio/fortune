@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/notification_manager.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:single_item_storage/storage.dart';
 
@@ -21,11 +22,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState>
   final CheckNicknameUseCase checkNicknameUseCase;
   final SignUpUseCase signUpUseCase;
   final Storage<UserCredential> userStorage;
+  final NotificationsManager fcmManager;
 
   SignUpBloc({
     required this.checkNicknameUseCase,
     required this.signUpUseCase,
     required this.userStorage,
+    required this.fcmManager,
   }) : super(SignUpState.initial()) {
     on<SignUpInit>(init);
     on<SignUpNickNameInput>(nicknameInput);
@@ -88,10 +91,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState>
   }
 
   // 회원가입.
-  FutureOr<void> signUpRequest(SignUpRequest event, Emitter<SignUpState> emit) {
+  FutureOr<void> signUpRequest(SignUpRequest event, Emitter<SignUpState> emit) async {
+    // 푸시토큰 가져와야됨.
     signUpUseCase(RequestSignUpParams(
       data: state.signUpForm,
       profileImage: state.profileImage,
+      pushToken: await fcmManager.getFcmPushToken(),
     )).then(
       (value) => value.fold(
         (l) => produceSideEffect(SignUpProfileError(l)),

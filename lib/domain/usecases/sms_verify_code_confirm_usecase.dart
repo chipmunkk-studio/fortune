@@ -18,10 +18,12 @@ class RequestConfirmSmsVerifyCodeParams {
   final String phoneNumber;
   final String countryCode;
   final int authenticationNumber;
+  final String? pushToken;
 
   RequestConfirmSmsVerifyCodeParams({
     required this.phoneNumber,
     required this.countryCode,
     required this.authenticationNumber,
+    required this.pushToken,
   });
 }

@@ -40,6 +40,7 @@ class UserNormalRemoteDataSourceImpl extends UserNormalDataSource {
           countryCode: request.data.countryCode,
           nickname: request.data.nickname,
           profileImage: request.profileImage,
+          pushToken: request.pushToken,
         )
         .then((value) => value.toResponseData());
     final tokenEntity = TokenEntity.fromJson(tokenResponse);

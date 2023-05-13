@@ -42,6 +42,7 @@ class AuthNormalRepositoryImpl implements AuthNormalRemoteRepository {
             phoneNumber: params.phoneNumber,
             countryCode: params.countryCode,
             authenticationNumber: params.authenticationNumber,
+            pushToken: params.pushToken,
           ),
         )
         .toRemoteDomainData(errorMapper);

@@ -39,12 +39,13 @@ class UserNormalRepositoryImpl implements UserNormalRemoteRepository {
   }
 
   @override
-  Future<FortuneResult<TokenEntity>> signUp(RequestSignUpParams param) async{
+  Future<FortuneResult<TokenEntity>> signUp(RequestSignUpParams param) async {
     final remoteData = await userDataSource
         .signUp(
           RequestSignUp(
             data: param.data,
             profileImage: param.profileImage,
+            pushToken: param.pushToken,
           ),
         )
         .toRemoteDomainData(errorMapper);

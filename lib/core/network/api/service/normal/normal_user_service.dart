@@ -25,5 +25,6 @@ abstract class NormalUserService extends ChopperService {
     @Part('countryCode') required String countryCode,
     @Part('nickname') required String nickname,
     @PartFile('profileImage') required String? profileImage,
+    @Part('pushToken') String? pushToken,
   });
 }

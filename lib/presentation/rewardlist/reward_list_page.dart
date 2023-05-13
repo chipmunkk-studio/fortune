@@ -48,7 +48,7 @@ class _RewardListPageState extends State<_RewardListPage> {
     return Column(
       children: [
         BlocBuilder<RewardListBloc, RewardListState>(
-          buildWhen: (previous, current) => previous.totalMarkerCount != current.totalMarkerCount,
+          buildWhen: (previous, current) => previous.markers != current.markers,
           builder: (context, state) {
             return MyStamps(
               totalMarkerCount: state.totalMarkerCount,
