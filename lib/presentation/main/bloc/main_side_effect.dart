@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_click_info_entity.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:location/location.dart';
 
@@ -32,12 +33,12 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
 
 class MainMarkerClickSideEffect extends MainSideEffect {
   final GlobalKey key;
-  final int grade;
+  final MarkerClickInfoEntity? obtainMarker;
   final List<MainLocationData> newMarkers;
 
   MainMarkerClickSideEffect({
     required this.key,
-    required this.grade,
+    required this.obtainMarker,
     required this.newMarkers,
   });
 

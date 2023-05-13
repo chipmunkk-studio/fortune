@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
+import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
+import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/bloc/reward_detail.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/component/reward_image.dart';
+import 'package:foresh_flutter/presentation/rewardlist/reward_list_page.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'component/need_fortune_area.dart';
@@ -46,6 +50,7 @@ class _RewardDetailPage extends StatefulWidget {
 
 class _RewardDetailPageState extends State<_RewardDetailPage> {
   late final RewardDetailBloc _bloc;
+  final router = serviceLocator<FortuneRouter>().router;
 
   @override
   void initState() {
@@ -58,7 +63,16 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
     return BlocSideEffectListener<RewardDetailBloc, RewardDetailSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is RewardDetailExchangeSuccess) {
-          context.showSnackBar("상품 교환 요청 성공.");
+          context.showFortuneDialog(
+            title: '교환신청 완료',
+            subTitle: '축하해요!',
+            btnOkText: '확인',
+            btnOkPressed: () {
+              router.pop(context, true);
+            },
+          );
+        } else if (sideEffect is RewardDetailInventoryError) {
+          context.handleError(sideEffect.error);
         }
       },
       child: Column(
@@ -156,7 +170,10 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
               SizedBox(height: 16.h),
               FortuneBottomButton(
                 isEnabled: true,
-                onPress: () => _bloc.add(RewardDetailExchange()),
+                onPress: () {
+                  router.pop(context);
+                  _bloc.add(RewardDetailExchange());
+                },
                 buttonText: "교환",
                 isKeyboardVisible: false,
               ),

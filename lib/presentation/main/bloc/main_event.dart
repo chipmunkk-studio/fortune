@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/presentation/main/component/map/main_changed_location_data.dart';
 import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
@@ -57,22 +58,14 @@ class MainRequestPermission extends MainEvent {
 }
 
 class MainMarkerLocationChange extends MainEvent {
-  final int id;
-  final double latitude;
-  final double longitude;
-  final int userId;
-  final String nickname;
+  final MainChangedLocationData entity;
 
   MainMarkerLocationChange(
-    this.id,
-    this.latitude,
-    this.longitude,
-    this.userId,
-    this.nickname,
+    this.entity,
   );
 
   @override
-  List<Object?> get props => [id, latitude, longitude];
+  List<Object?> get props => [entity];
 }
 
 class MainChangeNewMarkers extends MainEvent {
@@ -106,4 +99,3 @@ class MainRoundOver extends MainEvent {
   @override
   List<Object?> get props => [];
 }
-

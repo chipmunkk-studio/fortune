@@ -1,5 +1,4 @@
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
-import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_grade_entity.dart';
 
 class InventoryEntity {
   final String nickname;

@@ -1,6 +1,6 @@
 import 'package:foresh_flutter/data/responses/reward/reward_exchangeable_marker_response.dart';
 import 'package:foresh_flutter/data/responses/reward/reward_notice_response.dart';
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_grade_entity.dart';
 import 'package:foresh_flutter/domain/entities/reward/reward_exchangeable_marker_entity.dart';
 import 'package:foresh_flutter/domain/entities/reward/reward_notice_entity.dart';
 import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';

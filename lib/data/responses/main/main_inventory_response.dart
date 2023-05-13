@@ -1,6 +1,5 @@
 import 'package:foresh_flutter/domain/entities/inventory_entity.dart';
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
-import 'package:foresh_flutter/domain/entities/user_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_grade_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'main_inventory_response.g.dart';

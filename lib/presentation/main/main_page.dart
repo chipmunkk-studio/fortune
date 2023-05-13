@@ -115,8 +115,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               opaque: false,
               routeSettings: RouteSettings(
                 arguments: MarkerObtainArgs(
-                  grade: sideEffect.grade,
-                  message: "포츈쿠키 메세지 입니다.포츈\n쿠키 메세지 입니다",
+                  sideEffect.obtainMarker,
                 ),
               ),
             );

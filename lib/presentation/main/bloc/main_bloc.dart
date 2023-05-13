@@ -105,8 +105,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                     .toList(),
                 notices: r.histories,
                 profileImage: r.profileImageUrl,
-                normalTicketCnt: r.ticketCount,
-                chargeTicketCnt: r.coinCount,
+                ticketCount: r.ticketCount,
+                coinCount: r.coinCount,
                 roundTime: r.roundTime,
                 // clickableRadiusLength: 960,
                 // zoomThreshold: 14,
@@ -156,8 +156,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (r) {
           emit(
             state.copyWith(
-              chargeTicketCnt: r.chargedTickets,
-              normalTicketCnt: r.normalTickets,
+              ticketCount: r.remainTicketCount,
             ),
           );
         },
@@ -209,8 +208,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         var locationInfoBody = callback.body;
         FortuneLogger.debug("locationInfoBody:$locationInfoBody");
         if (locationInfoBody != null) {
-          MainChangedLocationData l = MainChangedLocationData.fromJson(jsonDecode(locationInfoBody));
-          add(MainMarkerLocationChange(l.id, l.latitude, l.longitude, l.userId, l.nickname));
+          MainChangedLocationData entity = MainChangedLocationData.fromJson(jsonDecode(locationInfoBody));
+          add(MainMarkerLocationChange(entity));
         }
       },
     );
@@ -219,14 +218,15 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 위치 변경.
   FutureOr<void> markerLocationChange(MainMarkerLocationChange event, Emitter<MainState> emit) async {
     late List<MainLocationData> newMarkers;
+    final entity = event.entity;
     // 내가 클릭한 위치여부.
-    bool isAnotherLocation = state.userId != event.userId;
-    final marker = state.markers.firstWhere((element) => element.id == event.id);
+    bool isAnotherLocation = state.userId != entity.userId;
+    final marker = state.markers.firstWhere((element) => element.id == entity.id);
 
     if (isAnotherLocation) {
       // 기존 위치 언박싱 효과.
       newMarkers = state.markers.map((e) {
-        if (e.id == event.id) {
+        if (e.id == entity.id) {
           return MainLocationData(
             id: e.id,
             location: e.location,
@@ -240,8 +240,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       // 다음 위치 추가.
       newMarkers.add(
         MainLocationData(
-          id: event.id,
-          location: LatLng(event.latitude, event.longitude),
+          id: entity.id,
+          location: LatLng(entity.latitude, entity.longitude),
           grade: marker.grade,
           disappeared: false,
         ),
@@ -250,10 +250,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     } else {
       // 내가 클릭한 위치라면.
       newMarkers = state.markers.map((e) {
-        if (e.id == event.id) {
+        if (e.id == entity.id) {
           return MainLocationData(
             id: e.id,
-            location: LatLng(event.latitude, event.longitude),
+            location: LatLng(entity.latitude, entity.longitude),
             grade: marker.grade,
             disappeared: false,
           );
@@ -264,7 +264,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       produceSideEffect(
         MainMarkerClickSideEffect(
           key: marker.widgetKey,
-          grade: marker.grade,
+          obtainMarker: entity.obtainMarker, // 이거 보내줘야됨.
           newMarkers: newMarkers,
         ),
       );
@@ -306,8 +306,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                       .toList(),
                   notices: r.histories,
                   profileImage: r.profileImageUrl,
-                  normalTicketCnt: r.ticketCount,
-                  chargeTicketCnt: r.coinCount,
+                  ticketCount: r.ticketCount,
+                  coinCount: r.coinCount,
                 ),
               );
             } catch (e) {

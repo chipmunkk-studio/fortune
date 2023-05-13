@@ -6,10 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
 import 'package:foresh_flutter/domain/entities/inventory_entity.dart';
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_grade_entity.dart';
 
 class MarkerStamps extends StatelessWidget {
   const MarkerStamps({

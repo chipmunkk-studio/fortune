@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_click_info_entity.dart';
 import 'package:foresh_flutter/presentation/markerobtain/component/fortune_cookie.dart';
 
 class MarkerObtainArgs {
-  final int grade;
-  final String message;
+  final MarkerClickInfoEntity? markerInfo;
 
-  MarkerObtainArgs({
-    required this.grade,
-    required this.message,
-  });
+  MarkerObtainArgs(
+    this.markerInfo,
+  );
 }
 
 class MarkerObtainPage extends StatelessWidget {
-  final int grade;
-  final String message;
-
-  const MarkerObtainPage({
-    required this.grade,
-    required this.message,
+  const MarkerObtainPage(
+    this.args, {
     Key? key,
   }) : super(key: key);
 
+  final MarkerClickInfoEntity args;
+
   @override
   Widget build(BuildContext context) {
-    if (grade == 1) {
+    if (args.grade == 1) {
       // 포츈쿠키일경우.
       return FortuneCookie(
-        grade,
-        message,
+        args.grade,
+        args.message,
       );
     } else {
       return Container();

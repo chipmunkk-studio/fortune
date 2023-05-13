@@ -11,8 +11,8 @@ class RewardListInit extends RewardListEvent {
   List<Object?> get props => [];
 }
 
-class RewardChangeCheckStatus extends RewardListEvent {
-  RewardChangeCheckStatus();
+class RewardListChangeCheckStatus extends RewardListEvent {
+  RewardListChangeCheckStatus();
 
   @override
   List<Object?> get props => [];

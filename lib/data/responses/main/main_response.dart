@@ -50,8 +50,8 @@ class MainResponse extends MainEntity {
                   ?.map(
                     (e) => MainHistoryEntity(
                       nickname: e.nickname ?? "",
-                      rewardImage: e.productImage ?? "",
-                      rewardName: e.productName ?? "",
+                      rewardImage: e.rewardImage ?? "",
+                      rewardName: e.rewardName ?? "",
                       requestTime: e.requestTime ?? "",
                     ),
                   )

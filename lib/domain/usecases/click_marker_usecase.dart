@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/entities/marker_click_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_click_entity.dart';
 import 'package:foresh_flutter/domain/repositories/marker_repository.dart';
 
 class ClickMarkerUseCase implements UseCase1<void, RequestPostMarkerParams> {

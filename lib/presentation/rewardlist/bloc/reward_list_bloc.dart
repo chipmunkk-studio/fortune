@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'reward_list.dart';
@@ -17,7 +16,7 @@ class RewardListBloc extends Bloc<RewardListEvent, RewardListState>
     required this.obtainRewardProductsUseCase,
   }) : super(RewardListState.initial()) {
     on<RewardListInit>(init);
-    on<RewardChangeCheckStatus>(changeCheckStatus);
+    on<RewardListChangeCheckStatus>(changeCheckStatus);
   }
 
   FutureOr<void> init(RewardListInit event, Emitter<RewardListState> emit) async {
@@ -37,7 +36,7 @@ class RewardListBloc extends Bloc<RewardListEvent, RewardListState>
     );
   }
 
-  FutureOr<void> changeCheckStatus(RewardChangeCheckStatus event, Emitter<RewardListState> emit) {
+  FutureOr<void> changeCheckStatus(RewardListChangeCheckStatus event, Emitter<RewardListState> emit) {
     emit(state.copyWith(isChangeableChecked: !state.isChangeableChecked));
   }
 }

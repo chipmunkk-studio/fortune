@@ -91,17 +91,18 @@ class _TopNoticeState extends State<TopNotice> {
                                               children: [
                                                 Flexible(
                                                   child: Text(
-                                                    "${e.rewardName.substring(0, 10)}... 신청 완료!",
+                                                    e.rewardName,
                                                     style: FortuneTextStyle.body3Regular(),
+                                                    maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                                SizedBox(width: 8.w),
                                                 Text(
-                                                  FortuneDateExtension.convertTimeAgo(e.requestTime),
-                                                  style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                                                  " 신청 완료!",
+                                                  style: FortuneTextStyle.body3Regular(),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
+                                                SizedBox(width: 40.w),
                                               ],
                                             ),
                                           ),

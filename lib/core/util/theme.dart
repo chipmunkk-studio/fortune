@@ -38,14 +38,14 @@ _checkboxThemeData() {
     checkColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
         if (states.contains(MaterialState.disabled)) {
-          return ColorName.backgroundLight; // 체크박스가 비활성화된 경우
+          return ColorName.primary; // 체크박스가 비활성화된 경우
         }
-        return ColorName.backgroundLight; // 체크박스가 활성화된 경우
+        return Colors.black; // 체크박스가 활성화된 경우
       },
     ),
     fillColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
-        if (states.contains(MaterialState.disabled)) {
+        if (!states.contains(MaterialState.selected)) {
           return ColorName.backgroundLight; // 체크박스가 비활성화된 경우
         }
         return ColorName.primary; // 체크박스가 활성화된 경우
@@ -54,7 +54,7 @@ _checkboxThemeData() {
     overlayColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
         if (states.contains(MaterialState.disabled)) {
-          return ColorName.backgroundLight; // 체크박스가 비활성화된 경우
+          return ColorName.primary; // 체크박스가 비활성화된 경우
         }
         return ColorName.primary; // 체크박스가 활성화된 경우
       },

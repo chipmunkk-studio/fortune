@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/entities/marker_grade_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_grade_entity.dart';
 import 'package:foresh_flutter/domain/entities/reward/reward_marker_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

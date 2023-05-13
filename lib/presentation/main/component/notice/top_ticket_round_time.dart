@@ -85,13 +85,13 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.normalTicketCnt != current.normalTicketCnt,
+                      buildWhen: (previous, current) => previous.ticketCount != current.ticketCount,
                       builder: (context, state) {
                         return Row(
                           children: [
                             Assets.icons.icFortuneTicket.svg(width: 24.w, height: 24.h),
                             SizedBox(width: 8.w),
-                            Text("${state.normalTicketCnt}", style: FortuneTextStyle.body3Bold())
+                            Text("${state.ticketCount}", style: FortuneTextStyle.body3Bold())
                           ],
                         );
                       },
@@ -110,13 +110,13 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: BlocBuilder<MainBloc, MainState>(
-                        buildWhen: (previous, current) => previous.chargeTicketCnt != current.chargeTicketCnt,
+                        buildWhen: (previous, current) => previous.coinCount != current.coinCount,
                         builder: (context, state) {
                           return Row(
                             children: [
                               Assets.icons.icFortuneMoney.svg(width: 24.w, height: 24.h),
                               SizedBox(width: 8.w),
-                              Text("${state.chargeTicketCnt}", style: FortuneTextStyle.body3Bold()),
+                              Text("${state.coinCount}", style: FortuneTextStyle.body3Bold()),
                               SizedBox(
                                 width: 8.w,
                               ),

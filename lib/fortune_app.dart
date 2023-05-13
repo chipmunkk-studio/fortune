@@ -37,13 +37,7 @@ class FortuneApp extends StatelessWidget {
                   ColorName.deActiveDark,
                   ColorName.backgroundLight,
                 ],
-                stops: [
-                  0.1,
-                  0.5,
-                  0.9,
-                  0.5,
-                  0.9,
-                ],
+                stops: [0.1, 0.5, 0.9, 0.5, 0.9],
               ),
               child: MaterialApp(
                 // 기본적으로 필요한 언어 설정

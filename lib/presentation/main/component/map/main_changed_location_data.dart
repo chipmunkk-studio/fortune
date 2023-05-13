@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/domain/entities/marker/marker_click_info_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'main_changed_location_data.g.dart';
@@ -14,6 +15,8 @@ class MainChangedLocationData {
   int userId;
   @JsonKey(name: 'nickname')
   String nickname;
+  @JsonKey(name: 'obtainMarker')
+  MarkerClickInfoEntity obtainMarker;
 
   MainChangedLocationData({
     required this.id,
@@ -21,6 +24,7 @@ class MainChangedLocationData {
     required this.longitude,
     required this.userId,
     required this.nickname,
+    required this.obtainMarker,
   });
 
   factory MainChangedLocationData.fromJson(Map<String, dynamic> json) => _$MainChangedLocationDataFromJson(json);

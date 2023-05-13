@@ -7,7 +7,7 @@ import 'package:foresh_flutter/data/responses/main/main_marker_click_response.da
 import 'package:foresh_flutter/data/responses/main/main_response.dart';
 import 'package:foresh_flutter/domain/entities/inventory_entity.dart';
 import 'package:foresh_flutter/domain/entities/main_entity.dart';
-import 'package:foresh_flutter/domain/entities/marker_click_entity.dart';
+import 'package:foresh_flutter/domain/entities/marker/marker_click_entity.dart';
 
 abstract class MainDataSource {
   Future<MainEntity> getMarkerList(RequestMain request);

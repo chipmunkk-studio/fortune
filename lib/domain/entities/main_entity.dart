@@ -68,7 +68,7 @@ class MainHistoryEntity extends Equatable {
   List<Object?> get props => [
         nickname,
         rewardName,
-        rewardName,
+        rewardImage,
         requestTime,
       ];
 }

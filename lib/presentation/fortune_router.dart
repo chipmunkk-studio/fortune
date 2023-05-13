@@ -170,12 +170,8 @@ class FortuneRouter {
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
-      final grade = args?.grade ?? -1;
-      final message = args?.message ?? "";
-      return MarkerObtainPage(
-        grade: grade,
-        message: message,
-      );
+      final markerInfo = args?.markerInfo;
+      return markerInfo != null ? MarkerObtainPage(markerInfo) : null;
     },
   );
 

@@ -4,10 +4,10 @@ part 'main_history_response.g.dart';
 
 @JsonSerializable(nullable: true, ignoreUnannotated: false)
 class MainHistoryResponse {
-  @JsonKey(name: 'productName')
-  String? productName;
-  @JsonKey(name: 'productImage')
-  String? productImage;
+  @JsonKey(name: 'rewardName')
+  String? rewardName;
+  @JsonKey(name: 'rewardImage')
+  String? rewardImage;
   @JsonKey(name: 'requestTime')
   String? requestTime;
   @JsonKey(name: 'nickname')
@@ -15,9 +15,9 @@ class MainHistoryResponse {
 
   MainHistoryResponse({
     required this.nickname,
-    required this.productImage,
+    required this.rewardImage,
     required this.requestTime,
-    required this.productName,
+    required this.rewardName,
   });
 
   factory MainHistoryResponse.fromJson(Map<String, dynamic> json) => _$MainHistoryResponseFromJson(json);

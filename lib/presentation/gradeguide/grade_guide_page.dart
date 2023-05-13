@@ -1,3 +1,4 @@
+import 'package:animation_list/animation_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -33,8 +34,10 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ListView(
+        AnimationList(
           physics: const BouncingScrollPhysics(),
+          duration: 1500,
+          reBounceDepth: 10,
           children: [
             TopGradeArea(
               grade: "브론즈",
