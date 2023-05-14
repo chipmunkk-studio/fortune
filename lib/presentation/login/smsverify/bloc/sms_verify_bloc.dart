@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
-import 'package:foresh_flutter/notification_manager.dart';
+import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:single_item_storage/storage.dart';
@@ -23,7 +23,7 @@ class SmsVerifyBloc extends Bloc<SmsVerifyEvent, SmsVerifyState>
   final ObtainSmsVerifyCodeUseCase obtainSmsVerifyCodeUseCase;
   final SmsVerifyCodeConfirmUseCase smsVerifyCodeConfirmUseCase;
   final Storage<UserCredential> userStorage;
-  final NotificationsManager fcmManager;
+  final FortuneNotificationsManager fcmManager;
 
   SmsVerifyBloc({
     required this.obtainSmsVerifyCodeUseCase,

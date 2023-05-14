@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foresh_flutter/core/util/strings.dart';
+import 'package:foresh_flutter/domain/entities/notification_entity.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:single_item_storage/storage.dart';
 
@@ -12,8 +13,8 @@ import '../core/network/auth_helper_jwt.dart';
 import '../core/network/credential/token_response.dart';
 import '../core/network/credential/user_credential.dart';
 import '../core/util/logger.dart';
-import '../presentation/fortune_router.dart';
 import '../di.dart';
+import '../presentation/fortune_router.dart';
 
 /*
 * 안드로이드 스튜디오 환경설정.
@@ -157,7 +158,7 @@ getRemoteConfigArgs() async {
 }
 
 // 시작 화면 결정.
-Future<String> getStartRoute() async {
+Future<String> getStartRoute(Map<String, dynamic>? data) async {
   final Storage<UserCredential> userStorage = serviceLocator();
   final AuthHelperJwt authHelperJwt = serviceLocator();
   final UserCredential loggedInUser = await userStorage.get() ?? UserCredential.initial();
@@ -174,15 +175,20 @@ Future<String> getStartRoute() async {
     AppMetrica.reportEvent("리프레시토큰 만료");
     return Routes.phoneNumberRoute;
   } else {
-    // 액세스 토큰이 만료된 경우 > 리프레시토큰으로 갱신.
+    // 액세스 토큰이 만료된 경우 > 리프레시 토큰으로 갱신.
     try {
       if (tokenResponse.isAccessTokenExpired()) {
         await authHelperJwt.refreshIfTokenExpired(token: tokenResponse);
       }
-      // 만료가 되지 않은경우에는 메인화면 보여줌.
-      return Routes.mainRoute;
+      // 만료가 되지 않은 경우에는 메인화면 보여줌.
+      if (data != null) {
+        final entity = NotificationEntity.fromJson(data);
+        return "${Routes.mainRoute}/${entity.landingRoute}";
+      } else {
+        return Routes.mainRoute;
+      }
     } catch (e) {
-      // 리프레시토큰 갱신에러일 경우 다시 로그인.
+      // 리프레시 토큰 갱신 에러일 경우 다시 로그인.
       return Routes.phoneNumberRoute;
     }
   }

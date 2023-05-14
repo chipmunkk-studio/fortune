@@ -16,6 +16,9 @@ PODS:
   - Firebase/Crashlytics (10.7.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 10.7.0)
+  - Firebase/Messaging (10.7.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (~> 10.7.0)
   - Firebase/RemoteConfig (10.7.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.7.0)
@@ -28,6 +31,10 @@ PODS:
     - Flutter
   - firebase_crashlytics (3.3.0):
     - Firebase/Crashlytics (= 10.7.0)
+    - firebase_core
+    - Flutter
+  - firebase_messaging (14.6.0):
+    - Firebase/Messaging (= 10.7.0)
     - firebase_core
     - Flutter
   - firebase_remote_config (4.2.0):
@@ -75,6 +82,15 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
+  - FirebaseMessaging (10.7.0):
+    - FirebaseCore (~> 10.0)
+    - FirebaseInstallations (~> 10.0)
+    - GoogleDataTransport (~> 9.2)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
+    - GoogleUtilities/Environment (~> 7.8)
+    - GoogleUtilities/Reachability (~> 7.8)
+    - GoogleUtilities/UserDefaults (~> 7.8)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseRemoteConfig (10.7.0):
     - FirebaseABTesting (~> 10.0)
     - FirebaseCore (~> 10.0)
@@ -91,6 +107,8 @@ PODS:
     - PromisesSwift (~> 2.1)
   - Flutter (1.0.0)
   - flutter_keyboard_visibility (0.0.1):
+    - Flutter
+  - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_native_splash (0.0.1):
     - Flutter
@@ -180,9 +198,11 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
+  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -203,6 +223,7 @@ SPEC REPOS:
     - FirebaseCoreInternal
     - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseRemoteConfig
     - FirebaseSessions
     - GoogleAppMeasurement
@@ -227,12 +248,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
+  firebase_messaging:
+    :path: ".symlinks/plugins/firebase_messaging/ios"
   firebase_remote_config:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
     :path: Flutter
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
@@ -260,6 +285,7 @@ SPEC CHECKSUMS:
   firebase_analytics: 843839cfcab326b37cca084009045a8fc287ef74
   firebase_core: 312d0d81b346ec20540822c8498e626d6918ef48
   firebase_crashlytics: 869c43dd16f650004bb312ff9eff8d068406b939
+  firebase_messaging: 8432ce73100171cab1707fad998a89590276bb4d
   firebase_remote_config: e6b22eba96aba1a34d39c89fbc96917b8c2f680f
   FirebaseABTesting: 005b70969e2817e2a1e631e8dba29134a04c0622
   FirebaseAnalytics: f8133442ee6f8512e28ff19e62ce15398bfaeace
@@ -268,10 +294,12 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: d2b4acb827908e72eca47a9fd896767c3053921e
   FirebaseCrashlytics: 35fdd1a433b31e28adcf5c8933f4c526691a1e0b
   FirebaseInstallations: c58489c9caacdbf27d1da60891a87318e20218e0
+  FirebaseMessaging: ac9062bcc35ed56e15a0241d8fd317022499baf8
   FirebaseRemoteConfig: d5de62211e2eaa2152d8ee85a23c301b70887a74
   FirebaseSessions: 44a6782502eb279a214d4adca20891353278760c
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401

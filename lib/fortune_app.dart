@@ -27,6 +27,7 @@ class FortuneApp extends StatelessWidget {
           // EasyLocalization.of(context)?.setLocale(const Locale('en', 'US'));
           EasyLocalization.of(context)?.setLocale(const Locale('ko', 'KR'));
           return MediaQuery(
+            // 화면 비율 일정 하도록 함.
             data: MediaQueryData.fromView(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),
             child: SkeletonTheme(
               shimmerGradient: const LinearGradient(

@@ -9,10 +9,12 @@ import '../component/map/main_location_data.dart';
 abstract class MainEvent extends Equatable {}
 
 class MainInit extends MainEvent {
-  MainInit();
+  final String? landingPage;
+
+  MainInit({this.landingPage});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [landingPage];
 }
 
 class MainGetLocation extends MainEvent {

@@ -9,9 +9,9 @@ import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
 import 'package:foresh_flutter/core/network/credential/user_credential.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
+import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
-import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
@@ -57,12 +57,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
     bool hasPermission = await FortunePermissionUtil().requestPermission([Permission.location]);
+    // 알람으로 랜딩할 경우 페이지.
+    final landingPage = event.landingPage;
+
     // 위치 권한이 없을 경우.
     if (!hasPermission) {
       produceSideEffect(MainRequireLocationPermission());
       return;
     }
     add(MainGetLocation());
+    if (landingPage != null) {
+      produceSideEffect(MainSchemeLandingPage(landingPage));
+    }
   }
 
   // 위치 정보 초기화.

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/notification_manager.dart';
+import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:single_item_storage/storage.dart';
 
@@ -12,7 +12,6 @@ import '../../../core/network/credential/user_credential.dart';
 import '../../../core/util/logger.dart';
 import '../../../domain/usecases/check_nickname_usecase.dart';
 import '../../../domain/usecases/sign_up_usecase.dart';
-import '../nickname/enter_nickname_page.dart';
 import 'sign_up.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState>
@@ -22,7 +21,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState>
   final CheckNicknameUseCase checkNicknameUseCase;
   final SignUpUseCase signUpUseCase;
   final Storage<UserCredential> userStorage;
-  final NotificationsManager fcmManager;
+  final FortuneNotificationsManager fcmManager;
 
   SignUpBloc({
     required this.checkNicknameUseCase,

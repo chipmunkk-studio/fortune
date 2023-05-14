@@ -27,7 +27,8 @@ class FortuneRouter {
 
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const MainPage();
+      String? landingRoute = params[Routes.paramLandingPage]?.first;
+      return MainPage(landingRoute);
     },
   );
 
@@ -185,6 +186,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 메인 > 랜딩 페이지가 있는 경우.
+      ..define(
+        "${Routes.mainRoute}/:${Routes.paramLandingPage}",
+        handler: mainHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 메인.
       ..define(
         Routes.mainRoute,
@@ -321,24 +329,25 @@ class FortuneRouter {
 }
 
 class Routes {
-  static const String mainRoute = 'mainRoute';
-  static const String onBoardingRoute = 'onBoardingRoute';
-  static const String phoneNumberRoute = 'phoneNumberRoute';
-  static const String countryCodeRoute = 'countryCodeRoute';
-  static const String smsCertifyRoute = 'smsCertifyRoute';
-  static const String putNickNameRoute = 'putNickNameRoute';
-  static const String markerHistoryRoute = 'markerHistoryRoute';
-  static const String enterProfileImageRoute = 'enterProfileImageRoute';
-  static const String signUpCompleteRoute = 'signUpCompleteRoute';
-  static const String rewardListRoute = 'rewardListRoute';
-  static const String markerObtainAnimationRoute = 'markerObtainAnimationRoute';
-  static const String storeRoute = 'storeRoute';
-  static const String myPageRoute = 'myPageRoute';
-  static const String rewardDetailRoute = 'productRoute';
-  static const String gradeGuideRoute = 'gradeGuideRoute';
-  static const String ticketHistoryRoute = 'ticketHistoryRoute';
-  static const String moneyHistoryRoute = 'moneyHistoryRoute';
-  static const String fortuneHistoryRoute = 'fortuneHistoryRoute';
-  static const String announcementRoute = 'announcementRoute';
-  static const String questionRoute = 'questionRoute';
+  static const String paramLandingPage = "paramLandingPage";
+  static const String mainRoute = 'main';
+  static const String onBoardingRoute = 'onBoarding';
+  static const String phoneNumberRoute = 'phoneNumber';
+  static const String countryCodeRoute = 'countryCode';
+  static const String smsCertifyRoute = 'smsCertify';
+  static const String putNickNameRoute = 'putNickName';
+  static const String markerHistoryRoute = 'markerHistory';
+  static const String enterProfileImageRoute = 'enterProfileImage';
+  static const String signUpCompleteRoute = 'signUpComplete';
+  static const String rewardListRoute = 'rewardList';
+  static const String markerObtainAnimationRoute = 'markerObtainAnimation';
+  static const String storeRoute = 'store';
+  static const String myPageRoute = 'myPage';
+  static const String rewardDetailRoute = 'product';
+  static const String gradeGuideRoute = 'gradeGuide';
+  static const String ticketHistoryRoute = 'ticketHistory';
+  static const String moneyHistoryRoute = 'moneyHistory';
+  static const String fortuneHistoryRoute = 'fortuneHistory';
+  static const String announcementRoute = 'announcement';
+  static const String questionRoute = 'question';
 }

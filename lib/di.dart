@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
 import 'package:foresh_flutter/core/network/api/service/main_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_auth_service.dart';
@@ -12,6 +11,7 @@ import 'package:foresh_flutter/core/network/api/service/user_service.dart';
 import 'package:foresh_flutter/core/network/api_service_provider.dart';
 import 'package:foresh_flutter/core/network/auth_helper_jwt.dart';
 import 'package:foresh_flutter/core/network/credential/user_credential.dart';
+import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/datasources/local_datasource.dart';
@@ -54,8 +54,8 @@ import 'package:single_item_storage/cached_storage.dart';
 import 'package:single_item_storage/observed_storage.dart';
 import 'package:single_item_storage/storage.dart';
 
+import 'core/notification/notification_manager.dart';
 import 'env.dart';
-import 'notification_manager.dart';
 import 'presentation/login/countrycode/bloc/country_code.dart';
 import 'presentation/login/smsverify/bloc/sms_verify.dart';
 import 'presentation/markerhistory/bloc/marker_history_bloc.dart';
@@ -64,25 +64,24 @@ final serviceLocator = GetIt.instance;
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
+  /// 앱로거
+  initAppLogger();
 
   ///  Firebase 초기화.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  /// 파이어 베이스 FCM
+  await initFCM();
+
   /// 파이어베이스 analytics.
   final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
-
-  /// 파이어베이스 FCM
-  await initFCM();
 
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
 
-  /// 앱로거
-  initAppLogger();
-
-  /// 개발환경설정.
+  /// 개발 환경 설정.
   await initEnvironment();
 
   /// 로컬 데이터 - Storage.
@@ -131,19 +130,9 @@ Future<void> init() async {
 
 /// FCM
 initFCM() async {
-  const androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
-  const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
-    requestAlertPermission: true, // 앱이 알림 권한을 요청해야 하는지 여부를 지정합니다.
-    requestBadgePermission: false, // 앱이 배지 알림 권한을 요청해야 하는지 여부를 지정합니다.
-    requestSoundPermission: false, // 앱이 사운드 알림 권한을 요청해야 하는지 여부를 지정합니다.
-  );
-  const initializeSettings = InitializationSettings(
-    android: androidInitialize,
-    iOS: initializationSettingsDarwin,
-  );
-  final NotificationsManager notificationsManager = NotificationsManager(initializeSettings);
-  serviceLocator.registerLazySingleton<NotificationsManager>(() => notificationsManager);
+  final FortuneNotificationsManager notificationsManager = FortuneNotificationsManager(initializeSettings);
   notificationsManager.setupPushNotifications();
+  serviceLocator.registerLazySingleton<FortuneNotificationsManager>(() => notificationsManager);
 }
 
 /// 환경설정.

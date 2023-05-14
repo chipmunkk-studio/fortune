@@ -1,29 +1,29 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/domain/entities/notification_entity.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
 import 'package:single_item_storage/storage.dart';
+
+import 'notification_ext.dart';
 
 const String apnsDeviceTokenKey = 'apns-device-token';
 const String fcmDeviceTokenKey = 'firebase-device-token';
 
-/// To obtain an instance use `serviceLocator.get<NotificationsManager>()`
-class NotificationsManager {
+class FortuneNotificationsManager {
   late final FirebaseMessaging _fcm;
-  late final FlutterLocalNotificationsPlugin flNotification;
+  static const String _TAG = 'NotificationsManager';
+  static late final FlutterLocalNotificationsPlugin flNotification;
 
   final Storage<String> _fcmTokenStorage;
   final Storage<String> _apnsTokenStorage;
 
   bool _setupStarted = false;
 
-  static const String _TAG = 'NotificationsManager';
-  static const String CHANNEL_ID = 'foreground';
-  static const String CHANNEL_NAME = 'channel name';
-  static const String CHANNEL_DESCRIPTION = 'channel description';
-
-  NotificationsManager(
+  FortuneNotificationsManager(
     InitializationSettings initializationSettings, {
     Storage<String>? fcmTokenStorage,
     Storage<String>? apnsTokenStorage,
@@ -40,7 +40,7 @@ class NotificationsManager {
 
   setupPushNotifications() async {
     if (_setupStarted) {
-      FortuneLogger.debug(tag: _TAG, "Setup: Aborting, already completed.");
+      FortuneLogger.error(tag: _TAG, "알림매니저가 이미 초기화 되어있습니다.");
     }
     _setupStarted = true;
 
@@ -59,18 +59,24 @@ class NotificationsManager {
       _onFCMTokenReceived(token);
     });
 
+    // 앱이 포그라운드에 있을때 알림을 받는 경우.
     FirebaseMessaging.onMessage.listen((message) {
       _onMessage(message);
     });
 
+    // 앱이 포그라운드에 있을때 알림을 클릭하는 경우.
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       _onAppOpenedFromMessage(message);
     });
 
+    // 앱이 백그라운드에 있을 때 알림을 받는 경우.
     FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
 
-    //TODO change this behavior depending on your app requirements
-    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   Future<void> disablePushNotifications() async {
@@ -85,9 +91,8 @@ class NotificationsManager {
     return await _fcmTokenStorage.get();
   }
 
-  /// Requests permissions for push notifications on iOS
-  /// There is no need to call this method on Android
-  /// if called on Android it will always return authorization status authorized
+  /// ios에서 필요한 권한들을 요청. (안드로이드에서는 요청 할 필요 없음)
+  /// android에서 요청한다면 항상 true.
   Future<NotificationSettings> requestPermissions({
     alert = true, // 권한 요청 알림 화면을 표시 (default true)
     announcement = false, // 시리를 통해 알림의 내용을 자동으로 읽을 수 있는 권한 요청 (default false)
@@ -118,24 +123,19 @@ class NotificationsManager {
     return settings;
   }
 
-  /// Returns bool that indicates if push notifications are authorized
-  /// On Android it is always true
+  /// 푸시 알람이 허용되어 있는지. (안드로이드에서는 항상 on)
   Future<bool> isPushAuthorized() async {
-    // return true;
-
     final notificationSettings = await _fcm.getNotificationSettings();
     return notificationSettings.authorizationStatus == AuthorizationStatus.authorized;
   }
 
-  /// Returns the current authorization status for push notifications
-  /// On Android it is always authorized
+  /// 현재 알람 권한 여부. (안드로이드에서는 항상 on)
   Future<AuthorizationStatus> getAuthorizationStatus() async {
     final notificationSettings = await _fcm.getNotificationSettings();
     return notificationSettings.authorizationStatus;
   }
 
-  /// Returns ANPS token for iOS
-  /// Return null for Android/web
+  /// ios용 토큰 (그 외 안드로이드/웹은 항상 null)
   Future<String?> getAPNSToken() async {
     final token = await _fcm.getAPNSToken();
     return token;
@@ -161,34 +161,24 @@ class NotificationsManager {
     }
   }
 
-  /// Creates a local notification for Android only
-  /// On iOS the system shows the remote push notification by default
-  /// To change the iOS behavior see setForegroundNotificationPresentationOptions in setupPushNotifications
+  /// 안드로이드 한정.
+  /// ios에서는 기본적으로 시스템이 보여줌.
+  /// ios동작을 바꿀려면 우측 참조 > setForegroundNotificationPresentationOptions in setupPushNotifications
   _onMessage(RemoteMessage message) async {
-    if (Platform.isIOS) {
-      return;
+    FortuneLogger.info(tag: _TAG, "_onMessage > ${message.data.toString()}");
+    final remoteMessageData = message.data;
+    if (remoteMessageData.isNotEmpty) {
+      final entity = NotificationEntity.fromJson(remoteMessageData);
+      await flNotification.show(
+        NOTIFICATION_ID,
+        entity.title,
+        entity.content,
+        platformChannelSpecifics(androidNotificationDetails),
+      );
     }
-
-    String notificationTitle = message.notification!.title!;
-    String notificationBody = message.notification!.body!;
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      CHANNEL_ID,
-      CHANNEL_NAME,
-      channelDescription: CHANNEL_DESCRIPTION,
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flNotification.show(0, notificationTitle, notificationBody, platformChannelSpecifics);
   }
 
   _onAppOpenedFromMessage(RemoteMessage message) {
     FortuneLogger.info(tag: _TAG, "Opened from remote message");
   }
 }
-
-Future<void> backgroundMessageHandler(message) async {
-  FortuneLogger.info(tag: 'NotificationsManager', "Bg message missed. User unauthorized");
-}
-
-bool shouldConfigureFirebase() => true;

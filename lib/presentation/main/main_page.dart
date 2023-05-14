@@ -27,12 +27,17 @@ import 'component/notice/top_notice.dart';
 import 'component/notice/top_ticket_round_time.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({Key? key}) : super(key: key);
+  const MainPage(
+    this.landingRoute, {
+    Key? key,
+  }) : super(key: key);
+
+  final String? landingRoute;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit()),
+      create: (_) => serviceLocator<MainBloc>()..add(MainInit(landingPage: landingRoute)),
       child: const _MainPage(),
     );
   }
@@ -137,6 +142,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           context.handleError(sideEffect.error);
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toInt()}미터 만큼 부족합니다.");
+        } else if (sideEffect is MainSchemeLandingPage) {
+          router.navigateTo(context, sideEffect.landingRoute);
         }
       },
       child: FortuneScaffold(

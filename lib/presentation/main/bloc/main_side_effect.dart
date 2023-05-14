@@ -61,3 +61,14 @@ class MainRequireInCircleMeters extends MainSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+
+class MainSchemeLandingPage extends MainSideEffect {
+  final String landingRoute;
+
+  MainSchemeLandingPage(this.landingRoute);
+
+  @override
+  List<Object?> get props => [landingRoute];
+}
+
