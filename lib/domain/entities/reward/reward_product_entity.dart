@@ -2,7 +2,9 @@ import 'package:foresh_flutter/domain/entities/reward/reward_notice_entity.dart'
 
 import 'reward_exchangeable_marker_entity.dart';
 
-class RewardProductEntity {
+abstract class RewardProductPagingEntity {}
+
+class RewardProductEntity extends RewardProductPagingEntity {
   final int rewardId;
   final String name;
   final String imageUrl;
@@ -19,3 +21,5 @@ class RewardProductEntity {
     required this.notices,
   });
 }
+
+class RewardProductLoading extends RewardProductPagingEntity {}

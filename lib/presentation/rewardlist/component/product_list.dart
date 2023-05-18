@@ -1,5 +1,6 @@
-import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -8,31 +9,73 @@ import 'package:foresh_flutter/domain/entities/reward/reward_exchangeable_marker
 import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProductList extends StatelessWidget {
-  final Function1<int, void> onItemClick;
-  final List<RewardProductEntity> rewards;
+class ProductList extends StatefulWidget {
+  final dartz.Function1<int, void> onItemClick;
+  final List<RewardProductPagingEntity> rewards;
+  final dartz.Function0 onNextPage;
 
   const ProductList({
     required this.rewards,
     required this.onItemClick,
+    required this.onNextPage,
     super.key,
   });
 
   @override
+  State<ProductList> createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      controller: _scrollController,
       physics: const BouncingScrollPhysics(),
-      itemCount: rewards.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(height: 20.h);
-      },
+      itemCount: widget.rewards.length,
+      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 20.h),
       itemBuilder: (BuildContext context, int index) {
-        return Bounceable(
-          onTap: () => onItemClick(rewards[index].rewardId),
-          child: _ProductItem(rewards[index]),
-        );
+        final item = widget.rewards[index];
+        if (item is RewardProductEntity) {
+          return Bounceable(
+            onTap: () => widget.onItemClick(item.rewardId),
+            child: _ProductItem(item),
+          );
+        } else {
+          return Center(
+            child: SizedBox.square(
+              dimension: 32.w,
+              child: const CircularProgressIndicator(
+                color: ColorName.primary,
+              ),
+            ),
+          );
+        }
       },
     );
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    const tolerance = 0.1; // You can adjust this value
+    if (currentScroll <= maxScroll - tolerance &&
+        _scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      widget.onNextPage();
+    }
   }
 }
 

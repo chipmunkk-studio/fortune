@@ -186,7 +186,7 @@ Future<String> getStartRoute(Map<String, dynamic>? data) async {
         return "${Routes.mainRoute}/${entity.landingRoute}";
       } else {
         // return Routes.mainRoute;
-        return "${Routes.mainRoute}/${Routes.announcementRoute}";
+        return Routes.mainRoute;
       }
     } catch (e) {
       // 리프레시 토큰 갱신 에러일 경우 다시 로그인.

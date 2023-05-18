@@ -9,9 +9,11 @@ class RewardListState with _$RewardListState {
   factory RewardListState({
     required int totalMarkerCount,
     required List<RewardMarkerEntity> markers,
-    required List<RewardProductEntity> rewards,
+    required List<RewardProductPagingEntity> rewards,
     required bool isChangeableChecked,
+    required bool isLoading,
     required int page,
+    required bool isNextPageLoading,
   }) = _RewardListState;
 
   factory RewardListState.initial() => RewardListState(
@@ -19,6 +21,8 @@ class RewardListState with _$RewardListState {
         markers: List.empty(),
         rewards: List.empty(),
         page: 0,
+        isNextPageLoading: false,
+        isLoading: true,
         isChangeableChecked: false,
       );
 }

@@ -17,3 +17,10 @@ class RewardListChangeCheckStatus extends RewardListEvent {
   @override
   List<Object?> get props => [];
 }
+
+class RewardListNextPage extends RewardListEvent {
+  RewardListNextPage();
+
+  @override
+  List<Object?> get props => [];
+}
