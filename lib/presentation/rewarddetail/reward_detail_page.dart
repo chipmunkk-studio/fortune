@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
@@ -13,11 +12,12 @@ import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/bloc/reward_detail.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/component/reward_image.dart';
-import 'package:foresh_flutter/presentation/rewardlist/reward_list_page.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'component/need_fortune_area.dart';
 import 'component/reward_notices.dart';
+import 'component/reward_skeleton.dart';
 import 'component/reward_title.dart';
 
 class RewardDetailPage extends StatelessWidget {
@@ -75,74 +75,78 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
           context.handleError(sideEffect.error);
         }
       },
-      child: Column(
-        children: [
-          BlocBuilder<RewardDetailBloc, RewardDetailState>(
-            builder: (context, state) {
-              return Expanded(
-                child: Stack(
-                  children: [
-                    ListView(
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        RewardImage(contentImage: state.rewardImage),
-                        SizedBox(height: 36.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: RewardTitle(title: state.name),
-                        ),
-                        SizedBox(height: 20.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
-                          child: Text("교환 시 필요한 포춘",
-                              style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark)),
-                        ),
-                        SizedBox(height: 12.h),
-                        SizedBox(
-                          height: 36.h,
-                          child: NeedFortuneArea(state.haveMarkers),
-                        ),
-                        SizedBox(height: 36.h),
-                        Divider(
-                          thickness: 12.h,
-                          color: ColorName.backgroundLight,
-                        ),
-                        RewardNotices(state.notices),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 50.h,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              ColorName.background.withOpacity(1.0),
-                              ColorName.background.withOpacity(0.0),
-                            ],
+      child: BlocBuilder<RewardDetailBloc, RewardDetailState>(
+        builder: (context, state) {
+          return Skeleton(
+            isLoading: state.isLoading,
+            skeleton: const RewardSkeleton(),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Stack(
+                    children: [
+                      ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          RewardImage(contentImage: state.rewardImage),
+                          SizedBox(height: 36.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: RewardTitle(title: state.name),
+                          ),
+                          SizedBox(height: 20.h),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Text("교환 시 필요한 포춘",
+                                style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark)),
+                          ),
+                          SizedBox(height: 12.h),
+                          SizedBox(
+                            height: 36.h,
+                            child: NeedFortuneArea(state.haveMarkers),
+                          ),
+                          SizedBox(height: 36.h),
+                          Divider(
+                            thickness: 12.h,
+                            color: ColorName.backgroundLight,
+                          ),
+                          RewardNotices(state.notices),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 50.h,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                                ColorName.background.withOpacity(1.0),
+                                ColorName.background.withOpacity(0.0),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              );
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: FortuneBottomButton(
-              isEnabled: true,
-              buttonText: "교환하기",
-              onPress: () => _showExchangeBottomSheet(),
-              isKeyboardVisible: false,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: FortuneBottomButton(
+                    isEnabled: true,
+                    buttonText: "교환하기",
+                    onPress: () => _showExchangeBottomSheet(),
+                    isKeyboardVisible: false,
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

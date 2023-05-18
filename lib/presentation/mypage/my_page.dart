@@ -11,6 +11,8 @@ import 'package:foresh_flutter/presentation/mypage/component/switch_menu.dart';
 import 'package:foresh_flutter/presentation/mypage/component/ticket_fortune_area.dart';
 import 'package:skeletons/skeletons.dart';
 
+import 'component/my_page_skeleton.dart';
+
 class MyPage extends StatelessWidget {
   const MyPage({Key? key}) : super(key: key);
 
@@ -49,7 +51,7 @@ class _MyPageState extends State<_MyPage> {
   Widget build(BuildContext context) {
     return Skeleton(
       isLoading: _isLoading,
-      skeleton: const _Skeleton(),
+      skeleton: const MyPageSkeleton(),
       child: Column(
         children: [
           ProfileInfo(
@@ -98,93 +100,6 @@ class _MyPageState extends State<_MyPage> {
     router.pop(
       context,
       true,
-    );
-  }
-}
-
-// 스켈레톤.
-class _Skeleton extends StatelessWidget {
-  const _Skeleton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                shape: BoxShape.circle,
-                width: 84,
-                height: 84,
-              ),
-            ),
-            SizedBox(width: 12.w),
-            Flexible(
-              child: Column(
-                children: [
-                  SkeletonLine(
-                    style: SkeletonLineStyle(
-                      height: 24.h,
-                      width: 128.w,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                  ),
-                  SizedBox(height: 7.h),
-                  SkeletonLine(
-                    style: SkeletonLineStyle(
-                      height: 24.h,
-                      width: 178.w,
-                      borderRadius: BorderRadius.circular(16.r),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 15.h),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 84.h,
-            width: double.infinity,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-        SizedBox(height: 31.h),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 44.h,
-            width: 324.w,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-        SizedBox(height: 12.h),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 44.h,
-            width: 256.w,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-        SizedBox(height: 12.h),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 44.h,
-            width: 128.w,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-        SizedBox(height: 12.h),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 44.h,
-            width: 312.w,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-      ],
     );
   }
 }
