@@ -6,9 +6,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/date.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/animation/scale_widget.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -150,7 +148,7 @@ class _TopNoticeState extends State<TopNotice> {
               curve: Curves.easeIn,
             );
             if (currentPage == state.notices.length - 1) {
-              widget._bloc.add(MainRefresh());
+              // widget._bloc.add(MainRefresh());
             }
           }
           if (currentPage < state.notices.length - 1) {

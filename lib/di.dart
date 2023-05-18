@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
+import 'package:foresh_flutter/core/network/api/service/common_service.dart';
 import 'package:foresh_flutter/core/network/api/service/main_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_auth_service.dart';
 import 'package:foresh_flutter/core/network/api/service/normal/normal_user_service.dart';
@@ -14,23 +15,28 @@ import 'package:foresh_flutter/core/network/credential/user_credential.dart';
 import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/datasources/common_datasource.dart';
 import 'package:foresh_flutter/data/datasources/local_datasource.dart';
 import 'package:foresh_flutter/data/datasources/main_datasource.dart';
 import 'package:foresh_flutter/data/datasources/reward_datasource.dart';
 import 'package:foresh_flutter/data/datasources/user/auth_normal_datasource.dart';
 import 'package:foresh_flutter/data/datasources/user/user_normal_datasource.dart';
 import 'package:foresh_flutter/data/repositories/auth_normal_repository_impl.dart';
+import 'package:foresh_flutter/data/repositories/common_repository_impl.dart';
 import 'package:foresh_flutter/data/repositories/main_repository_impl.dart';
 import 'package:foresh_flutter/data/repositories/reward_repository_impl.dart';
 import 'package:foresh_flutter/data/repositories/user_normal_repository_impl.dart';
 import 'package:foresh_flutter/domain/repositories/auth_normal_remote_repository.dart';
+import 'package:foresh_flutter/domain/repositories/common_repository.dart';
 import 'package:foresh_flutter/domain/repositories/marker_repository.dart';
 import 'package:foresh_flutter/domain/repositories/reward_repository.dart';
 import 'package:foresh_flutter/domain/repositories/user_normal_remote_repository.dart';
 import 'package:foresh_flutter/domain/usecases/check_nickname_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_announcement_usecaase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_country_code_usecase.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_faq_usecaase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_product_detail_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
@@ -46,6 +52,8 @@ import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/bloc/reward_detail.dart';
 import 'package:foresh_flutter/presentation/rewardlist/bloc/reward_list.dart';
 import 'package:foresh_flutter/presentation/signup/bloc/sign_up.dart';
+import 'package:foresh_flutter/presentation/support/announcement/bloc/announcement.dart';
+import 'package:foresh_flutter/presentation/support/faq/bloc/faq.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -64,6 +72,7 @@ final serviceLocator = GetIt.instance;
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   /// 앱로거
   initAppLogger();
 
@@ -170,159 +179,188 @@ initAppLogger() {
 
 /// Service.
 _initService(ApiServiceProvider apiProvider) {
-  // normal.
-  serviceLocator.registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt());
-  serviceLocator.registerLazySingleton<NormalUserService>(() => apiProvider.getMemberNormalService());
-  serviceLocator.registerLazySingleton<NormalAuthService>(() => apiProvider.getAuthNormalService());
-  // abnormal.
-  serviceLocator.registerLazySingleton<UserService>(() => apiProvider.getUserService());
-  serviceLocator.registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
-  serviceLocator.registerLazySingleton<RewardService>(() => apiProvider.getRewardService());
+  serviceLocator
+
+    /// normal.(인증이 필요하지 않은 서비스)
+    ..registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt())
+    ..registerLazySingleton<NormalUserService>(() => apiProvider.getMemberNormalService())
+    ..registerLazySingleton<NormalAuthService>(() => apiProvider.getAuthNormalService())
+
+    /// abnormal.(인증이 필요한 서비스)
+    ..registerLazySingleton<UserService>(() => apiProvider.getUserService())
+    ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService())
+    ..registerLazySingleton<RewardService>(() => apiProvider.getRewardService())
+    ..registerLazySingleton<CommonService>(() => apiProvider.getCommonService());
 }
 
 /// Bloc.
 _initBloc() {
-  serviceLocator.registerFactory(() => PhoneNumberBloc());
-  serviceLocator.registerFactory(
-    () => CountryCodeBloc(
-      obtainCountryCodeUseCase: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerFactory(
-    () => SmsVerifyBloc(
-      obtainSmsVerifyCodeUseCase: serviceLocator(),
-      smsVerifyCodeConfirmUseCase: serviceLocator(),
-      userStorage: serviceLocator(),
-      fcmManager: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton(
-    () => SignUpBloc(
-      checkNicknameUseCase: serviceLocator(),
-      signUpUseCase: serviceLocator(),
-      userStorage: serviceLocator(),
-      fcmManager: serviceLocator(),
-    ),
-    dispose: (bloc) {
-      FortuneLogger.debug(tag: "SignUpBloc", "close()");
-      bloc.close();
-    },
-  );
-
-  serviceLocator.registerFactory(
-    () => MainBloc(
-      mainUseCase: serviceLocator(),
-      clickMarkerUseCase: serviceLocator(),
-      userStorage: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
-    () => MarkerHistoryBloc(),
-  );
-
-  serviceLocator.registerFactory(
-    () => InventoryBloc(
-      obtainInventoryUseCase: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
-    () => RewardListBloc(
-      obtainRewardProductsUseCase: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerFactory(
-    () => RewardDetailBloc(
-      obtainRewardProductDetailUseCase: serviceLocator(),
-      requestRewardExchangeUseCase: serviceLocator(),
-    ),
-  );
+  serviceLocator
+    ..registerFactory(
+      () => PhoneNumberBloc(),
+    )
+    ..registerFactory(
+      () => CountryCodeBloc(
+        obtainCountryCodeUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => SmsVerifyBloc(
+        obtainSmsVerifyCodeUseCase: serviceLocator(),
+        smsVerifyCodeConfirmUseCase: serviceLocator(),
+        userStorage: serviceLocator(),
+        fcmManager: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => SignUpBloc(
+        checkNicknameUseCase: serviceLocator(),
+        signUpUseCase: serviceLocator(),
+        userStorage: serviceLocator(),
+        fcmManager: serviceLocator(),
+      ),
+      dispose: (bloc) {
+        FortuneLogger.debug(tag: "SignUpBloc", "close()");
+        bloc.close();
+      },
+    )
+    ..registerFactory(
+      () => MainBloc(
+        mainUseCase: serviceLocator(),
+        clickMarkerUseCase: serviceLocator(),
+        userStorage: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MarkerHistoryBloc(),
+    )
+    ..registerFactory(
+      () => InventoryBloc(
+        obtainInventoryUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => RewardListBloc(
+        obtainRewardProductsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => AnnouncementBloc(
+        obtainAnnouncementUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => RewardDetailBloc(
+        obtainRewardProductDetailUseCase: serviceLocator(),
+        requestRewardExchangeUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => FaqBloc(
+        obtainFaqUseCase: serviceLocator(),
+      ),
+    );
 }
 
 /// DataSource.
 _initDataSource() {
-  serviceLocator.registerLazySingleton<LocalDataSource>(
-    () => LocalDataSourceImpl(sharedPreferences: serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<UserNormalDataSource>(
-    () => UserNormalRemoteDataSourceImpl(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<AuthNormalDataSource>(
-    () => AuthNormalDataSourceImpl(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<MainDataSource>(
-    () => MainDataSourceImpl(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<RewardDataSource>(
-    () => RewardDataSourceImpl(serviceLocator()),
-  );
+  serviceLocator
+    ..registerLazySingleton<LocalDataSource>(
+      () => LocalDataSourceImpl(sharedPreferences: serviceLocator()),
+    )
+    ..registerLazySingleton<UserNormalDataSource>(
+      () => UserNormalRemoteDataSourceImpl(serviceLocator()),
+    )
+    ..registerLazySingleton<AuthNormalDataSource>(
+      () => AuthNormalDataSourceImpl(serviceLocator()),
+    )
+    ..registerLazySingleton<MainDataSource>(
+      () => MainDataSourceImpl(serviceLocator()),
+    )
+    ..registerLazySingleton<RewardDataSource>(
+      () => RewardDataSourceImpl(serviceLocator()),
+    )
+    ..registerLazySingleton<CommonDataSource>(
+      () => CommonDataSourceImpl(serviceLocator()),
+    );
 }
 
 /// Repository.
 _initRepository() {
-  serviceLocator.registerLazySingleton<FortuneErrorMapper>(() => FortuneErrorMapper());
-  serviceLocator.registerLazySingleton<UserNormalRemoteRepository>(
-    () => UserNormalRepositoryImpl(
-      userDataSource: serviceLocator(),
-      errorMapper: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<AuthNormalRemoteRepository>(
-    () => AuthNormalRepositoryImpl(
-      authDataSource: serviceLocator(),
-      errorMapper: serviceLocator(),
-    ),
-  );
-  serviceLocator.registerLazySingleton<MainRepository>(
-    () => MainRepositoryImpl(
-      markerRemoteDataSource: serviceLocator(),
-      errorMapper: serviceLocator(),
-    ),
-  );
-
-  serviceLocator.registerLazySingleton<RewardRepository>(
-    () => RewardRepositoryImpl(
-      rewardDataSource: serviceLocator(),
-      errorMapper: serviceLocator(),
-    ),
-  );
+  serviceLocator
+    ..registerLazySingleton<FortuneErrorMapper>(() => FortuneErrorMapper())
+    ..registerLazySingleton<UserNormalRemoteRepository>(
+      () => UserNormalRepositoryImpl(
+        userDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<AuthNormalRemoteRepository>(
+      () => AuthNormalRepositoryImpl(
+        authDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MainRepository>(
+      () => MainRepositoryImpl(
+        markerRemoteDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<RewardRepository>(
+      () => RewardRepositoryImpl(
+        rewardDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<CommonRepository>(
+      () => CommonRepositoryImpl(
+        commonDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    );
 }
 
 /// UseCase.
 _initUseCase() {
-  serviceLocator.registerLazySingleton<ObtainCountryCodeUseCase>(
-    () => ObtainCountryCodeUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<ObtainSmsVerifyCodeUseCase>(
-    () => ObtainSmsVerifyCodeUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<SmsVerifyCodeConfirmUseCase>(
-    () => SmsVerifyCodeConfirmUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<CheckNicknameUseCase>(
-    () => CheckNicknameUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<SignUpUseCase>(
-    () => SignUpUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<ClickMarkerUseCase>(
-    () => ClickMarkerUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<MainUseCase>(
-    () => MainUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<ObtainInventoryUseCase>(
-    () => ObtainInventoryUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<ObtainRewardProductsUseCase>(
-    () => ObtainRewardProductsUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<ObtainRewardProductDetailUseCase>(
-    () => ObtainRewardProductDetailUseCase(serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton<RequestRewardExchangeUseCase>(
-    () => RequestRewardExchangeUseCase(serviceLocator()),
-  );
+  serviceLocator
+    ..registerLazySingleton<ObtainCountryCodeUseCase>(
+      () => ObtainCountryCodeUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainSmsVerifyCodeUseCase>(
+      () => ObtainSmsVerifyCodeUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<SmsVerifyCodeConfirmUseCase>(
+      () => SmsVerifyCodeConfirmUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<CheckNicknameUseCase>(
+      () => CheckNicknameUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<SignUpUseCase>(
+      () => SignUpUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ClickMarkerUseCase>(
+      () => ClickMarkerUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<MainUseCase>(
+      () => MainUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainInventoryUseCase>(
+      () => ObtainInventoryUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainRewardProductsUseCase>(
+      () => ObtainRewardProductsUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainRewardProductDetailUseCase>(
+      () => ObtainRewardProductDetailUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<RequestRewardExchangeUseCase>(
+      () => RequestRewardExchangeUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainAnnouncementUseCase>(
+      () => ObtainAnnouncementUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainFaqUseCase>(
+      () => ObtainFaqUseCase(serviceLocator()),
+    );
 }

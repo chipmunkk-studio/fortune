@@ -185,7 +185,8 @@ Future<String> getStartRoute(Map<String, dynamic>? data) async {
         final entity = NotificationEntity.fromJson(data);
         return "${Routes.mainRoute}/${entity.landingRoute}";
       } else {
-        return Routes.mainRoute;
+        // return Routes.mainRoute;
+        return "${Routes.mainRoute}/${Routes.announcementRoute}";
       }
     } catch (e) {
       // 리프레시 토큰 갱신 에러일 경우 다시 로그인.

@@ -82,7 +82,7 @@ class _MyPageState extends State<_MyPage> {
           InfoMenu(
             "자주 묻는 질문",
             icon: Assets.icons.icQuestion.svg(),
-            onTap: () => router.navigateTo(context, Routes.questionRoute),
+            onTap: () => router.navigateTo(context, Routes.faqRoute),
           ),
           SwitchMenu(
             "푸시알림",

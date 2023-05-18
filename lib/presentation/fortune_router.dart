@@ -1,10 +1,5 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/support/announcement_page.dart';
-import 'package:foresh_flutter/presentation/support/question_page.dart';
-import 'package:foresh_flutter/presentation/usagehistory/fortune/fortune_history_page.dart';
-import 'package:foresh_flutter/presentation/usagehistory/money/money_history_page.dart';
-import 'package:foresh_flutter/presentation/usagehistory/ticket/ticket_history_page.dart';
 
 import 'gradeguide/grade_guide_page.dart';
 import 'login/countrycode/country_code_page.dart';
@@ -21,6 +16,11 @@ import 'signup/complete/sign_up_complete.dart';
 import 'signup/nickname/enter_nickname_page.dart';
 import 'signup/profileimage/enter_profile_image_page.dart';
 import 'store/store_page.dart';
+import 'support/announcement/announcement_page.dart';
+import 'support/faq/faq_page.dart';
+import 'usagehistory/fortune/fortune_history_page.dart';
+import 'usagehistory/money/money_history_page.dart';
+import 'usagehistory/ticket/ticket_history_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;
@@ -164,7 +164,7 @@ class FortuneRouter {
 
   static var questionHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const QuestionPage();
+      return const FaqPage();
     },
   );
 
@@ -314,7 +314,7 @@ class FortuneRouter {
 
       /// 자주 묻는 질문.
       ..define(
-        Routes.questionRoute,
+        Routes.faqRoute,
         handler: questionHandler,
         transitionType: TransitionType.cupertino,
       )
@@ -349,5 +349,5 @@ class Routes {
   static const String moneyHistoryRoute = 'moneyHistory';
   static const String fortuneHistoryRoute = 'fortuneHistory';
   static const String announcementRoute = 'announcement';
-  static const String questionRoute = 'question';
+  static const String faqRoute = 'faq';
 }

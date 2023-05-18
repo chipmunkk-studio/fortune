@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -142,7 +141,7 @@ class FortuneNotificationsManager {
   }
 
   Future<void> _onAPNSTokenReceived(String? token) async {
-    FortuneLogger.debug(tag: _TAG, "APNS Token $token");
+    FortuneLogger.info(tag: _TAG, "APNS Token $token");
 
     final storedToken = await _apnsTokenStorage.get();
 

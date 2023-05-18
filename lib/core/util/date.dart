@@ -1,4 +1,4 @@
-
+import 'package:easy_localization/easy_localization.dart';
 
 abstract class FortuneDateExtension {
   static String convertTimeAgo(String timestamp) {
@@ -15,5 +15,13 @@ abstract class FortuneDateExtension {
     } else {
       return "방금 전";
     }
+  }
+
+  static String formattedDate(
+    String time, {
+    String format = 'yyyy.MM.dd',
+  }) {
+    DateTime parsedDate = DateTime.parse(time);
+    return DateFormat(format).format(parsedDate);
   }
 }
