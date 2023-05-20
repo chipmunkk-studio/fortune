@@ -41,16 +41,16 @@ class CountryCode extends StatelessWidget {
           },
           borderRadius: BorderRadius.circular(ScreenUtil().radius(8)),
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 8.h,
-              horizontal: 8.w,
+            padding: const EdgeInsets.symmetric(
+              vertical: 8,
+              horizontal: 8,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("${state.countryName} (${state.countryCode})", style: FortuneTextStyle.body1Regular()),
                 Padding(
-                  padding: EdgeInsets.only(left: 15.w),
+                  padding: const EdgeInsets.only(left: 15),
                   child: SvgPicture.asset("assets/icons/ic_arrow_down.svg"),
                 ),
               ],

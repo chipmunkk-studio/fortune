@@ -34,53 +34,53 @@ class TicketFortuneArea extends StatelessWidget {
                 onTap: onTicketClick,
                 child: Container(
                   color: Colors.transparent,
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   child: Column(
                     children: [
                       Text("티켓", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-                      SizedBox(height: 4.h),
+                      const SizedBox(height: 4),
                       Text("10", style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.active)),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.h),
-              child: const VerticalDivider(width: 1, color: ColorName.deActiveDark),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: VerticalDivider(width: 1, color: ColorName.deActiveDark),
             ),
             Expanded(
               child: Bounceable(
                 onTap: onMoneyClick,
                 child: Container(
                   color: Colors.transparent,
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("머니", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-                      SizedBox(height: 4.h),
+                      const SizedBox(height: 4),
                       Text("10", style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.active)),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.h),
-              child: const VerticalDivider(width: 1, color: ColorName.deActiveDark),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: VerticalDivider(width: 1, color: ColorName.deActiveDark),
             ),
             Expanded(
               child: Bounceable(
                 onTap: onFortuneClick,
                 child: Container(
                   color: Colors.transparent,
-                  padding: EdgeInsets.symmetric(vertical: 18.h),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text("포춘", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-                      SizedBox(height: 4.h),
+                      const SizedBox(height: 4),
                       Text("1234", style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.active)),
                     ],
                   ),

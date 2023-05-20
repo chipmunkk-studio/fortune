@@ -30,13 +30,13 @@ class Profile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(width: 20.w),
+        const SizedBox(width: 20),
         SquircleNetworkImageView(
           imageUrl: profile,
-          size: 72.h,
-          placeHolderPadding: EdgeInsets.all(16.w),
+          size: 72,
+          placeHolderPadding: const EdgeInsets.all(16),
         ),
-        SizedBox(width: 20.w),
+        const SizedBox(width: 20),
         Flexible(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -46,7 +46,7 @@ class Profile extends StatelessWidget {
                 nickname: nickname,
                 onNicknameClick: onNicknameClick,
               ),
-              SizedBox(height: 8.h),
+              const SizedBox(height: 8),
               _Grade(
                 onGradeGuideTap: onGradeClick,
               ),
@@ -80,9 +80,9 @@ class _Nickname extends StatelessWidget {
               style: FortuneTextStyle.subTitle3Bold(),
               overflow: TextOverflow.visible,
             ),
-            SizedBox(width: 4.w),
+            const SizedBox(width: 4),
             Assets.icons.icArrowRight20.svg(),
-            SizedBox(width: 20.w),
+            const SizedBox(width: 20),
           ],
         ),
       ),
@@ -107,16 +107,16 @@ class _Grade extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(8),
               color: ColorName.backgroundLight,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getUserGradeIconInfo(1).icon.svg(width: 14.w, height: 14.w),
-                SizedBox(width: 8.w),
+                getUserGradeIconInfo(1).icon.svg(width: 14, height: 14),
+                const SizedBox(width: 8),
                 Text(
                   getUserGradeIconInfo(1).name,
                   style: FortuneTextStyle.body3Bold(),
@@ -124,13 +124,13 @@ class _Grade extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 12.w),
+          const SizedBox(width: 12),
           Text(
             "등급 혜택 보기",
             style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
           ),
-          SizedBox(width: 4.w),
-          Assets.icons.icArrowRight12.svg(width: 12.w, height: 12.w),
+          const SizedBox(width: 4),
+          Assets.icons.icArrowRight12.svg(width: 12, height: 12),
         ],
       ),
     );

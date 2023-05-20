@@ -38,13 +38,13 @@ class _MyStampsState extends State<MyStamps> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 16.h),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Assets.icons.icInventory.svg(width: 16, height: 16),
-                SizedBox(width: 8.w),
+                const SizedBox(width: 8),
                 Text(
                   "내가 보유한 포춘",
                   style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark),
@@ -53,20 +53,20 @@ class _MyStampsState extends State<MyStamps> {
                 ),
               ],
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             Text("${widget.totalMarkerCount}개", style: FortuneTextStyle.subTitle2Bold()),
-            SizedBox(height: 16.h),
+            const SizedBox(height: 16),
           ],
         ),
         trailing: Padding(
-          padding: EdgeInsets.only(top: 4.h),
+          padding: const EdgeInsets.only(top: 4),
           child: _isExpanded
               ? Assets.icons.icArrowUp.svg(width: 20, height: 20)
               : Assets.icons.icArrowDown.svg(width: 20, height: 20),
         ),
-        tilePadding: EdgeInsets.only(
-          left: 24.w,
-          right: 20.w,
+        tilePadding: const EdgeInsets.only(
+          left: 24,
+          right: 20,
         ),
         onExpansionChanged: (bool isExpanded) {
           setState(() {
@@ -79,9 +79,9 @@ class _MyStampsState extends State<MyStamps> {
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 4,
             shrinkWrap: true,
-            mainAxisSpacing: 12.w,
-            crossAxisSpacing: 12.w,
-            padding: EdgeInsets.only(left: 20.h, right: 20.h, bottom: 20.h, top: 8.h),
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 8),
             children: widget.markers
                 .map(
                   (e) => Stack(
@@ -96,8 +96,9 @@ class _MyStampsState extends State<MyStamps> {
                                         fit: BoxFit.cover,
                                       ),
                                 )
-                              : Assets.icons.icLock.svg(
-                                  fit: BoxFit.none,
+                              : Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Assets.icons.icLock.svg(),
                                 ),
                         ),
                       ),
@@ -105,12 +106,12 @@ class _MyStampsState extends State<MyStamps> {
                           ? Positioned(
                               right: 0,
                               child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 3.h, horizontal: 5.w),
+                                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
                                   color: ColorName.negative,
                                 ),
-                                child: Text(e.count.toString(), style: FortuneTextStyle.caption1SemiBold()),
+                                child: Text(e.count.toString(), style: FortuneTextStyle.body2SemiBold()),
                               ),
                             )
                           : const SizedBox.shrink(),

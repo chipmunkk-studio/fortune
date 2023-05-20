@@ -198,13 +198,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               ),
             ),
             Positioned(
-              top: 13.h,
-              right: 20.w,
-              left: 20.w,
+              top: 13,
+              right: 20,
+              left: 20,
               child: Column(
                 children: [
                   TopNotice(bloc),
-                  SizedBox(height: 10.h),
+                  const SizedBox(height: 10),
                   TopTicketRoundTime(bloc),
                 ],
               ),
@@ -219,13 +219,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   void listenLocationChange(Location myLocation) async {
     myLocation.onLocationChanged.listen(
       (newLoc) {
-        _animatedMapMove(
-          LatLng(
-            newLoc.latitude!,
-            newLoc.longitude!,
-          ),
-          bloc.state.zoomThreshold,
-        );
+        // _animatedMapMove(
+        //   LatLng(
+        //     newLoc.latitude!,
+        //     newLoc.longitude!,
+        //   ),
+        //   bloc.state.zoomThreshold,
+        // );
         bloc.add(MainMyLocationChange(newLoc));
       },
     );

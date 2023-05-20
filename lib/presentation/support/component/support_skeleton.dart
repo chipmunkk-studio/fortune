@@ -11,44 +11,44 @@ class SupportSkeleton extends StatelessWidget {
       children: [
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 20.h),
+        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 20.h),
+        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 20.h),
+        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 20.h),
+        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 20.h),
+        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
             height: 100.h,

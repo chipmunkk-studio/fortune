@@ -22,7 +22,7 @@ class StampExchange extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(width: 24.w),
+              SizedBox(width: 24),
               Flexible(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
@@ -32,7 +32,7 @@ class StampExchange extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 9.w),
+              const SizedBox(width: 9),
               Assets.icons.icInfo.svg(width: 20, height: 20),
             ],
           ),
@@ -40,7 +40,7 @@ class StampExchange extends StatelessWidget {
         Bounceable(
           onTap: onStampExchangeClick,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: ColorName.primary.withOpacity(0.1),
@@ -58,7 +58,7 @@ class StampExchange extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 20.w),
+        const SizedBox(width: 20),
       ],
     );
   }

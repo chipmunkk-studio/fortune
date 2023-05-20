@@ -33,7 +33,7 @@ class RewardDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<RewardDetailBloc>()..add(RewardDetailInit(rewardId)),
       child: FortuneScaffold(
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
         child: const _RewardDetailPage(),
       ),
@@ -89,25 +89,25 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
                         physics: const BouncingScrollPhysics(),
                         children: [
                           RewardImage(contentImage: state.rewardImage),
-                          SizedBox(height: 36.h),
+                          const SizedBox(height: 36),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: RewardTitle(title: state.name),
                           ),
-                          SizedBox(height: 20.h),
+                          const SizedBox(height: 20),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
                             child: Text("교환 시 필요한 포춘",
                                 style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark)),
                           ),
-                          SizedBox(height: 12.h),
+                          const SizedBox(height: 12),
                           SizedBox(
-                            height: 36.h,
+                            height: 36,
                             child: NeedFortuneArea(state.haveMarkers),
                           ),
-                          SizedBox(height: 36.h),
-                          Divider(
-                            thickness: 12.h,
+                          const SizedBox(height: 36),
+                          const Divider(
+                            thickness: 12,
                             color: ColorName.backgroundLight,
                           ),
                           RewardNotices(state.notices),
@@ -118,7 +118,7 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 50.h,
+                          height: 50,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.bottomCenter,
@@ -135,7 +135,7 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: FortuneBottomButton(
                     isEnabled: true,
                     buttonText: "교환하기",
@@ -155,7 +155,7 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
     context.showFortuneBottomSheet(
       content: (context) {
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -165,13 +165,13 @@ class _RewardDetailPageState extends State<_RewardDetailPage> {
                 style: FortuneTextStyle.headLine1(),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               Text(
                 "50개가 차감되며, 회원정보에 등록된 휴대폰 메세지로 모바일 상품권이 발송됩니다. 지금받으시겠습니까?",
                 textAlign: TextAlign.center,
                 style: FortuneTextStyle.body2Regular(),
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               FortuneBottomButton(
                 isEnabled: true,
                 onPress: () {

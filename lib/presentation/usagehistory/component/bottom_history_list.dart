@@ -23,7 +23,7 @@ class BottomHistoryList extends StatelessWidget {
           header: Container(
             width: double.infinity,
             color: ColorName.background,
-            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Text(
               items[index].date,
               style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.activeDark),
@@ -39,14 +39,14 @@ class BottomHistoryList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         children: [
                           Text(
                             item.content,
                             style: FortuneTextStyle.body1Regular(),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Text(
                             "-20",
                             style: FortuneTextStyle.body1SemiBold(fontColor: ColorName.negative),
@@ -54,21 +54,21 @@ class BottomHistoryList extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    const SizedBox(height: 8),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
-                        "${item.time}",
+                        item.time,
                         style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
                       ),
                     ),
                     itemIndex != items[index].items.length - 1
-                        ? SizedBox(height: 24.h)
-                        : Column(
+                        ? const SizedBox(height: 24)
+                        : const Column(
                             children: [
-                              SizedBox(height: 20.h),
+                              SizedBox(height: 20),
                               Divider(
-                                thickness: 12.h,
+                                thickness: 12,
                                 color: ColorName.backgroundLight,
                               ),
                             ],

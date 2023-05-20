@@ -73,12 +73,7 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
       decoration: InputDecoration(
         isDense: false,
         hintText: widget.hint,
-        contentPadding: EdgeInsets.fromLTRB(
-          prefixIcon == null ? 16.w : 0,
-          16.h,
-          suffixIcon == null ? 16.w : 0,
-          16.w,
-        ),
+        contentPadding: EdgeInsets.fromLTRB(prefixIcon == null ? 16 : 0, 16, suffixIcon == null ? 16 : 0, 16),
         counterText: "",
         hintStyle: FortuneTextStyle.subTitle3Regular(fontColor: ColorName.deActive),
         errorText: widget.errorMessage,

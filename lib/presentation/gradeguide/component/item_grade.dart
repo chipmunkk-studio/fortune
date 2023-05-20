@@ -19,7 +19,7 @@ class ItemGrade extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.r),
         color: ColorName.backgroundLight,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 21.h),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 21),
       child: Row(
         children: [
           Column(
@@ -31,7 +31,7 @@ class ItemGrade extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          gradeInfo.icon.svg(width: 60.w, height: 60.w),
+          gradeInfo.icon.svg(width: 60, height: 60),
         ],
       ),
     );

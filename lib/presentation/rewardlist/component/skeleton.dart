@@ -8,34 +8,34 @@ class SkeletonRewardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 100.h,
+            height: 100,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 32.h),
+        const SizedBox(height: 32),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 32.h,
+            height: 32,
             width: double.infinity,
             borderRadius: BorderRadius.circular(8.r),
           ),
         ),
-        SizedBox(height: 16.h),
+        const SizedBox(height: 16),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 204.h,
+            height: 204,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
-        SizedBox(height: 16.h),
+        const SizedBox(height: 16),
         SkeletonLine(
           style: SkeletonLineStyle(
-            height: 204.h,
+            height: 204,
             width: double.infinity,
             borderRadius: BorderRadius.circular(16.r),
           ),

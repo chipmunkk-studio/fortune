@@ -20,7 +20,7 @@ class MiddleFilter extends StatelessWidget {
       runSpacing: 4.0, // gap between lines
       children: <Widget>[
         Chip(
-          labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
           backgroundColor: Colors.white,
           label: Text('전체', style: FortuneTextStyle.body2SemiBold(fontColor: Colors.black)),
         ),
@@ -28,7 +28,7 @@ class MiddleFilter extends StatelessWidget {
           onTap: () => onFilterTap("OBTAIN"),
           child: Chip(
             label: Text('획득', style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.activeDark)),
-            labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
+            labelPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100.r),
               side: const BorderSide(
@@ -45,7 +45,7 @@ class MiddleFilter extends StatelessWidget {
           onTap: () => onFilterTap("USE"),
           child: Chip(
             label: Text('사용', style: FortuneTextStyle.body2SemiBold(fontColor: ColorName.activeDark)),
-            labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
+            labelPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100.r),
               side: const BorderSide(

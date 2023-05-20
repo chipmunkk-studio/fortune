@@ -32,23 +32,23 @@ class _FortuneHistoryPageState extends State<_FortuneHistoryPage> {
     return Skeleton(
       isLoading: false,
       skeleton: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
             SkeletonLine(
               style: SkeletonLineStyle(
-                height: 96.h,
-                width: 350.w,
+                height: 96,
+                width: 350,
                 borderRadius: BorderRadius.circular(16.r),
               ),
             ),
-            SizedBox(height: 39.h),
+            const SizedBox(height: 39),
             Row(
               children: [
                 SkeletonLine(
                   style: SkeletonLineStyle(
-                    height: 64.h,
-                    width: 256.w,
+                    height: 64,
+                    width: 256,
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                 ),
@@ -62,14 +62,14 @@ class _FortuneHistoryPageState extends State<_FortuneHistoryPage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: const TopHaveCount(fortuneCount: "1,234개"),
+              const SizedBox(height: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: TopHaveCount(fortuneCount: "1,234개"),
               ),
-              SizedBox(height: 40.h),
+              const SizedBox(height: 40),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: MiddleFilter(
                   onFilterTap: (filter) {},
                 ),
@@ -82,23 +82,23 @@ class _FortuneHistoryPageState extends State<_FortuneHistoryPage> {
             ],
           ),
           // Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           //   child: Column(
           //     children: [
           //       SkeletonLine(
           //         style: SkeletonLineStyle(
-          //           height: 96.h,
-          //           width: 350.w,
+          //           height: 96,
+          //           width: 350,
           //           borderRadius: BorderRadius.circular(16.r),
           //         ),
           //       ),
-          //       SizedBox(height: 39.h),
+          //       SizedBox(height: 39),
           //       Row(
           //         children: [
           //           SkeletonLine(
           //             style: SkeletonLineStyle(
-          //               height: 68.h,
-          //               width: 256.w,
+          //               height: 68,
+          //               width: 256,
           //               borderRadius: BorderRadius.circular(16.r),
           //             ),
           //           ),

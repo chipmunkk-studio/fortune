@@ -73,7 +73,7 @@ class _FaqPageState extends State<_FaqPage> {
               controller: _scrollController,
               physics: const BouncingScrollPhysics(),
               itemCount: state.items.length,
-              separatorBuilder: (context, index) => SizedBox(height: 20.h),
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
               itemBuilder: (context, index) {
                 final item = state.items[index];
                 if (item is FaqContentEntity) {

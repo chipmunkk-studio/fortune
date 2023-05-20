@@ -15,7 +15,7 @@ class MiddlePercentage extends StatelessWidget {
   Widget build(BuildContext context) {
     return LinearPercentIndicator(
       animation: true,
-      lineHeight: 12.h,
+      lineHeight: 12,
       animationDuration: 2000,
       percent: percent,
       padding: const EdgeInsets.all(0),

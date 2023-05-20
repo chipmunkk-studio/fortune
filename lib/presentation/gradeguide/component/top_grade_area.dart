@@ -19,7 +19,7 @@ class TopGradeArea extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _MyGradeInfo(grade: grade),
-        getUserGradeIconInfo(1).icon.svg(width: 72.w, height: 72.w),
+        getUserGradeIconInfo(1).icon.svg(width: 72, height: 72),
       ],
     );
   }
@@ -27,7 +27,6 @@ class TopGradeArea extends StatelessWidget {
 
 class _MyGradeInfo extends StatelessWidget {
   const _MyGradeInfo({
-    super.key,
     required this.grade,
   });
 
@@ -49,7 +48,7 @@ class _MyGradeInfo extends StatelessWidget {
                     "나의 현재 등급은",
                     style: FortuneTextStyle.subTitle1Regular(),
                   ),
-                  SizedBox(height: 4.h),
+                  const SizedBox(height: 4),
                   RichText(
                     text: TextSpan(
                       children: [

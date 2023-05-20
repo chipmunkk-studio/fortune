@@ -79,22 +79,22 @@ class _PhoneNumberPageState extends State<_PhoneNumberPage> {
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Container(
                 padding: EdgeInsets.only(
-                  top: 20.h,
-                  bottom: isKeyboardVisible ? 0 : 20.h,
+                  top: 20,
+                  bottom: isKeyboardVisible ? 0 : 20,
                 ),
                 child: Column(
                   children: <Widget>[
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: 100.h),
+                              const SizedBox(height: 100),
                               Text('require_certify_phone_number'.tr(), style: FortuneTextStyle.headLine3()),
-                              SizedBox(height: 40.h),
+                              const SizedBox(height: 40),
                               CountryCode(router, onTap: (countryCodeArgs) {
                                 bloc.add(
                                   PhoneNumberChangeCountryCode(
@@ -103,7 +103,7 @@ class _PhoneNumberPageState extends State<_PhoneNumberPage> {
                                   ),
                                 );
                               }),
-                              SizedBox(height: 20.h),
+                              const SizedBox(height: 20),
                               BlocBuilder<PhoneNumberBloc, PhoneNumberState>(
                                 builder: (context, state) {
                                   return PhoneNumberInputField(
@@ -126,9 +126,9 @@ class _PhoneNumberPageState extends State<_PhoneNumberPage> {
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
                       padding: EdgeInsets.only(
-                        left: isKeyboardVisible ? 0 : 20.w,
-                        right: isKeyboardVisible ? 0 : 20.w,
-                        bottom: isKeyboardVisible ? 0 : 20.h,
+                        left: isKeyboardVisible ? 0 : 20,
+                        right: isKeyboardVisible ? 0 : 20,
+                        bottom: isKeyboardVisible ? 0 : 20,
                       ),
                       curve: Curves.easeInOut,
                       child: BlocBuilder<PhoneNumberBloc, PhoneNumberState>(

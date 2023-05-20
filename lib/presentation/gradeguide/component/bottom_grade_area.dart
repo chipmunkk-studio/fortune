@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
@@ -30,10 +29,10 @@ class BottomGradeArea extends StatelessWidget {
             ],
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Text("내역 조회", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-        SizedBox(width: 4.w),
-        Assets.icons.icArrowRight12.svg(width: 12.w, height: 12.w),
+        const SizedBox(width: 4),
+        Assets.icons.icArrowRight12.svg(width: 12, height: 12),
       ],
     );
   }

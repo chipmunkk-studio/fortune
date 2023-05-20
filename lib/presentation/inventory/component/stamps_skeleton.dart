@@ -37,7 +37,7 @@ class MarkerStampsSkeleton extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 16.w),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +58,7 @@ class MarkerStampsSkeleton extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 16.w),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

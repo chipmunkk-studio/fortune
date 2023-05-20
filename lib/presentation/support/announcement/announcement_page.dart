@@ -73,7 +73,7 @@ class _AnnouncementPageState extends State<_AnnouncementPage> {
               controller: _scrollController,
               physics: const BouncingScrollPhysics(),
               itemCount: state.items.length,
-              separatorBuilder: (context, index) => SizedBox(height: 20.h),
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
               itemBuilder: (context, index) {
                 final item = state.items[index];
                 if (item is NoticeEntity) {
@@ -83,10 +83,10 @@ class _AnnouncementPageState extends State<_AnnouncementPage> {
                     date: FortuneDateExtension.formattedDate(item.createdAt),
                   );
                 } else {
-                  return Center(
+                  return const Center(
                     child: SizedBox.square(
-                      dimension: 32.w,
-                      child: const CircularProgressIndicator(
+                      dimension: 32,
+                      child: CircularProgressIndicator(
                         color: ColorName.primary,
                       ),
                     ),

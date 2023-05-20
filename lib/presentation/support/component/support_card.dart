@@ -37,36 +37,30 @@ class _SupportCardState extends State<SupportCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 16.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  widget.title,
-                  style: FortuneTextStyle.body1SemiBold(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+            const SizedBox(height: 16),
+            Text(
+              widget.title,
+              style: FortuneTextStyle.body1SemiBold(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             Text(
               widget.date,
               style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark),
             ),
-            SizedBox(height: 16.h),
+            const SizedBox(height: 16),
           ],
         ),
         trailing: Padding(
-          padding: EdgeInsets.only(top: 4.h),
+          padding: const EdgeInsets.only(top: 4),
           child: _isExpanded
               ? Assets.icons.icArrowUp.svg(width: 20, height: 20)
               : Assets.icons.icArrowDown.svg(width: 20, height: 20),
         ),
-        tilePadding: EdgeInsets.only(
-          left: 24.w,
-          right: 20.w,
+        tilePadding: const EdgeInsets.only(
+          left: 24,
+          right: 20,
         ),
         onExpansionChanged: (bool isExpanded) {
           setState(() {
@@ -76,16 +70,16 @@ class _SupportCardState extends State<SupportCard> {
         initiallyExpanded: _isExpanded,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: 24.w,
-              right: 20.w,
+            padding: const EdgeInsets.only(
+              left: 24,
+              right: 20,
             ),
             child: Text(
               widget.content,
               style: FortuneTextStyle.body3Bold(fontColor: ColorName.activeDark),
             ),
           ),
-          SizedBox(height: 20.h),
+          const SizedBox(height: 20),
         ],
       ),
     );

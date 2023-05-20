@@ -48,21 +48,20 @@ class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
     return GestureDetector(
       onTap: _toggleSwitch,
       child: Container(
-        width: 56.w,
-        height: 32.h,
+        width: 56,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(24.r),
           color: _isOn ? ColorName.secondary : Colors.grey,
         ),
         child: Padding(
-          padding: EdgeInsets.all(4.w),
+          padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 4),
           child: AnimatedAlign(
-            duration: Duration(milliseconds: 150),
+            duration: const Duration(milliseconds: 150),
             curve: Curves.easeInOut,
             alignment: _isOn ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
-              width: 24.w,
-              height: 24.h,
+              width: 24,
+              height: 24,
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,

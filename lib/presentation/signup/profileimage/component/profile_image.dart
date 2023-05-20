@@ -40,13 +40,13 @@ class ProfileImage extends StatelessWidget {
                   return ClipOval(
                     child: profileImage == null
                         ? Assets.icons.icCamera.svg(
-                            width: 69.w,
-                            height: 69.h,
+                            width: 69,
+                            height: 69,
                           )
                         : Image.file(
                             File(profileImage),
-                            width: 340.w,
-                            height: 340.h,
+                            width: 340,
+                            height: 340,
                             fit: BoxFit.cover,
                           ),
                   );

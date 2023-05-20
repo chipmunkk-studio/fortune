@@ -43,7 +43,7 @@ class MarkerStamps extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 16.w),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,7 +70,7 @@ class MarkerStamps extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 16.w),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,7 +116,7 @@ class _MarkerStampIcon extends StatelessWidget {
       child: Stack(
         children: [
           SizedBox.square(
-            dimension: 92,
+            dimension: 92.h,
             child: !isOpen
                 ? CustomPaint(
                     painter: SquirclePainter(color: ColorName.deActiveDark.withOpacity(0.4)),

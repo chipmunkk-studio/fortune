@@ -16,7 +16,7 @@ class DefaultSuffixIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 4.w),
+      padding: const EdgeInsets.only(right: 4),
       child: IconButton(
         icon: SvgPicture.asset(
           svgIcon ?? "",

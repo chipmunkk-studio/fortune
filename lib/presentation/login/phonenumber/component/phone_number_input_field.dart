@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 
 import '../../../../core/widgets/textform/fortune_text_form.dart';
@@ -28,7 +28,7 @@ class PhoneNumberInputField extends StatelessWidget {
       width: double.infinity,
       child: FortuneTextForm(
         textEditingController: textEditingController,
-        suffixIcon: "assets/icons/ic_cancel_circle.svg",
+        suffixIcon: Assets.icons.icCancelCircle.path,
         onSuffixIconClicked: () {
           textEditingController.clear();
           onSuffixIconClick();

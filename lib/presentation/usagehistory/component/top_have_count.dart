@@ -19,12 +19,12 @@ class TopHaveCount extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r),
         color: ColorName.backgroundLight,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("보유한 포춘", style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark)),
-          SizedBox(height: 8.h),
+          const SizedBox(height: 8),
           Text(fortuneCount, style: FortuneTextStyle.subTitle3Bold())
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -30,9 +31,8 @@ class TextFieldPin extends StatelessWidget {
       pinTheme: PinTheme(
         borderRadius: BorderRadius.zero,
         fieldHeight: 50,
-        fieldWidth: 40,
+        fieldWidth: 40.w,
         borderWidth: 1.5,
-        fieldOuterPadding: EdgeInsets.zero,
         shape: PinCodeFieldShape.underline,
         activeColor: ColorName.primary,
         selectedColor: Colors.transparent,

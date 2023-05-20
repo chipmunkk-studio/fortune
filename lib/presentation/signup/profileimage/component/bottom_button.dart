@@ -13,9 +13,9 @@ class BottomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: 20.w,
-        right: 20.w,
-        bottom: 40.h,
+        left: 20,
+        right: 20,
+        bottom: 40,
       ),
       child: FortuneScaleButton(
         text: 'next'.tr(),

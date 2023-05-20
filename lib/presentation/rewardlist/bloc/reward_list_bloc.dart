@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -9,7 +10,7 @@ import 'reward_list.dart';
 
 class RewardListBloc extends Bloc<RewardListEvent, RewardListState>
     with SideEffectBlocMixin<RewardListEvent, RewardListState, RewardListSideEffect> {
-  static const tag = "[CountryCodeBloc]";
+  static const _tag = "[RewardListBloc]";
 
   final ObtainRewardProductsUseCase obtainRewardProductsUseCase;
 

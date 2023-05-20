@@ -45,7 +45,7 @@ class _TopNoticeState extends State<TopNotice> {
             : Bounceable(
                 onTap: _onTap,
                 child: Container(
-                  height: 64.h,
+                  height: 64,
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
@@ -63,7 +63,7 @@ class _TopNoticeState extends State<TopNotice> {
                               (e) {
                                 return Row(
                                   children: [
-                                    SizedBox(width: 12.w),
+                                    const SizedBox(width: 12),
                                     SizedBox.square(
                                       dimension: 40,
                                       child: ClipOval(
@@ -73,7 +73,7 @@ class _TopNoticeState extends State<TopNotice> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 12.w),
+                                    const SizedBox(width: 12),
                                     Flexible(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,14 +100,14 @@ class _TopNoticeState extends State<TopNotice> {
                                                   style: FortuneTextStyle.body3Regular(),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
-                                                SizedBox(width: 40.w),
+                                                const SizedBox(width: 40),
                                               ],
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    SizedBox(width: 12.w),
+                                    const SizedBox(width: 12),
                                   ],
                                 );
                               },

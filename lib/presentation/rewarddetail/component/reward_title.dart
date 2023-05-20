@@ -20,7 +20,7 @@ class RewardTitle extends StatelessWidget {
             style: FortuneTextStyle.headLine3(),
           ),
         ),
-        SizedBox(width: 84.w),
+        const SizedBox(width: 84),
       ],
     );
   }

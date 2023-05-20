@@ -40,7 +40,7 @@ class _MyPageState extends State<_MyPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _isLoading = false;
       });
@@ -64,13 +64,13 @@ class _MyPageState extends State<_MyPage> {
               );
             },
           ),
-          SizedBox(height: 16.h),
+          const SizedBox(height: 24),
           TicketFortuneArea(
             onTicketClick: () => router.navigateTo(context, Routes.ticketHistoryRoute),
             onMoneyClick: () => router.navigateTo(context, Routes.moneyHistoryRoute),
             onFortuneClick: () => router.navigateTo(context, Routes.fortuneHistoryRoute),
           ),
-          SizedBox(height: 32.h),
+          const SizedBox(height: 32),
           InfoMenu(
             "스토어",
             icon: Assets.icons.icClock.svg(),

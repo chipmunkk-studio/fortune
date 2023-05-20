@@ -25,17 +25,17 @@ class InfoMenu extends StatelessWidget {
     return Bounceable(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 18.h),
+        padding: const EdgeInsets.symmetric(vertical: 18),
         child: IntrinsicHeight(
           child: Row(
             children: [
               icon,
-              SizedBox(width: 12.w),
+              const SizedBox(width: 12),
               Text(title, style: FortuneTextStyle.body1Regular()),
               Expanded(child: Container(color: Colors.transparent)),
               Assets.icons.icArrowRight16.svg(
-                width: 16.w,
-                height: 16.w,
+                width: 16,
+                height: 16,
                 color: ColorName.activeDark,
               ),
             ],

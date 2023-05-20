@@ -39,31 +39,31 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
           duration: 1500,
           reBounceDepth: 10,
           children: [
-            TopGradeArea(
+            const TopGradeArea(
               grade: "브론즈",
             ),
-            SizedBox(height: 24.h),
-            MiddlePercentage(
+            const SizedBox(height: 24),
+            const MiddlePercentage(
               percent: 0.9,
             ),
-            SizedBox(height: 12.h),
-            BottomGradeArea(
+            const SizedBox(height: 12),
+            const BottomGradeArea(
               target: '골드',
               remainCount: '3',
             ),
-            SizedBox(height: 40.h),
+            const SizedBox(height: 40),
             ItemGrade(getUserGradeIconInfo(1)),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             ItemGrade(getUserGradeIconInfo(2)),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             ItemGrade(getUserGradeIconInfo(3)),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             ItemGrade(getUserGradeIconInfo(4)),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             ItemGrade(getUserGradeIconInfo(5)),
-            SizedBox(height: 12.h),
+            const SizedBox(height: 12),
             Text("매월 1일, 누적 점수 기준으로 등급이 부여됩니다.", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
-            SizedBox(height: 6.h),
+            const SizedBox(height: 6),
             Text("등급별 혜택 및 선정 기준은 변경될 수 있습니다.", style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark)),
           ],
         ),
@@ -72,7 +72,7 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
           left: 0,
           right: 0,
           child: Container(
-            height: 50.h,
+            height: 50,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,

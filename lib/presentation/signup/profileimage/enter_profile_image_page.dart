@@ -2,9 +2,7 @@ import 'package:app_settings/app_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
-import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
@@ -75,9 +73,9 @@ class _EnterProfileImagePageState extends State<_EnterProfileImagePage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 100.h),
+            const SizedBox(height: 100),
             Text('enter_profile_image'.tr(), style: FortuneTextStyle.headLine3()),
-            SizedBox(height: 32.h),
+            const SizedBox(height: 32),
             Align(
               alignment: Alignment.center,
               child: ProfileImage(bloc),

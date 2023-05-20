@@ -22,7 +22,7 @@ class MyStampsFilter extends StatelessWidget {
           state: isChangeableChecked,
           onCheck: onCheck,
         ),
-        SizedBox(width: 8.w),
+        const SizedBox(width: 8),
         GestureDetector(
           onTap: () => onCheck(isChangeableChecked),
           child: Text(

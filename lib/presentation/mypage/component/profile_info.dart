@@ -29,14 +29,14 @@ class ProfileInfo extends StatelessWidget {
         _ProfileImage(
           onProfileTap: onProfileTap,
         ),
-        SizedBox(width: 12.w),
+        const SizedBox(width: 12),
         Flexible(
           child: Column(
             children: [
               _Nickname(
                 onNicknameModifyTap: onNicknameModifyTap,
               ),
-              SizedBox(height: 8.h),
+              const SizedBox(height: 8),
               _Grade(
                 onGradeGuideTap: onGradeGuideTap,
               ),
@@ -66,17 +66,17 @@ class _ProfileImage extends StatelessWidget {
             imageUrl: getSampleNetworkImageUrl(width: 84, height: 84),
             size: 84,
             placeHolder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
-            placeHolderPadding: EdgeInsets.all(16.w),
+            placeHolderPadding: const EdgeInsets.all(16),
           ),
           Positioned(
             bottom: 0,
             right: 0,
             child: SizedBox.square(
-              dimension: 20.w,
+              dimension: 20,
               child: ClipOval(
                 child: Container(
                   color: Colors.white,
-                  padding: EdgeInsets.all(4.w),
+                  padding: EdgeInsets.all(4),
                   child: Assets.icons.icPencil.svg(),
                 ),
               ),
@@ -108,11 +108,11 @@ class _Nickname extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 8.w),
+        const SizedBox(width: 8),
         Bounceable(
           onTap: onNicknameModifyTap,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.r),
               border: Border.all(color: ColorName.deActiveDark, width: 1),
@@ -145,7 +145,7 @@ class _Grade extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: ColorName.backgroundLight,
@@ -153,8 +153,8 @@ class _Grade extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getUserGradeIconInfo(1).icon.svg(width: 14.w, height: 14.w),
-                SizedBox(width: 8.w),
+                getUserGradeIconInfo(1).icon.svg(width: 14, height: 14),
+                const SizedBox(width: 8),
                 Text(
                   getUserGradeIconInfo(1).name,
                   style: FortuneTextStyle.body3Bold(),
@@ -162,13 +162,13 @@ class _Grade extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: 12),
           Text(
             "등급안내",
             style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
           ),
-          SizedBox(width: 4.w),
-          Assets.icons.icArrowRight12.svg(width: 12.w, height: 12.w),
+          SizedBox(width: 4),
+          Assets.icons.icArrowRight12.svg(width: 12, height: 12),
         ],
       ),
     );

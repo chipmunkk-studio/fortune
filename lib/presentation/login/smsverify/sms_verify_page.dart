@@ -155,21 +155,21 @@ class _SmsVerifyPageState extends State<_SmsVerifyPage> with WidgetsBindingObser
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Container(
                 padding: EdgeInsets.only(
-                  top: 20.h,
-                  bottom: isKeyboardVisible ? 0 : 20.h,
+                  top: 20,
+                  bottom: isKeyboardVisible ? 0 : 20,
                 ),
                 child: Column(
                   children: <Widget>[
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 100.h),
+                              const SizedBox(height: 100),
                               Text("문자로 전송된\n인증번호를 입력해주세요", style: FortuneTextStyle.headLine3()),
-                              SizedBox(height: 40.h),
+                              const SizedBox(height: 40),
                               Padding(
                                 padding: EdgeInsets.only(right: 120.w),
                                 child: TextFieldPin(
@@ -188,9 +188,9 @@ class _SmsVerifyPageState extends State<_SmsVerifyPage> with WidgetsBindingObser
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
                       padding: EdgeInsets.only(
-                        left: isKeyboardVisible ? 0 : 20.w,
-                        right: isKeyboardVisible ? 0 : 20.w,
-                        bottom: isKeyboardVisible ? 0 : 20.h,
+                        left: isKeyboardVisible ? 0 : 20,
+                        right: isKeyboardVisible ? 0 : 20,
+                        bottom: isKeyboardVisible ? 0 : 20,
                       ),
                       curve: Curves.easeInOut,
                       child: BlocBuilder<SmsVerifyBloc, SmsVerifyState>(

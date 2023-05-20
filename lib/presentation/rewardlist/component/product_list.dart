@@ -46,7 +46,7 @@ class _ProductListState extends State<ProductList> {
       controller: _scrollController,
       physics: const BouncingScrollPhysics(),
       itemCount: widget.rewards.length,
-      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 20.h),
+      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 20),
       itemBuilder: (BuildContext context, int index) {
         final item = widget.rewards[index];
         if (item is RewardProductEntity) {
@@ -55,10 +55,10 @@ class _ProductListState extends State<ProductList> {
             child: _ProductItem(item),
           );
         } else {
-          return Center(
+          return const Center(
             child: SizedBox.square(
-              dimension: 32.w,
-              child: const CircularProgressIndicator(
+              dimension: 32,
+              child: CircularProgressIndicator(
                 color: ColorName.primary,
               ),
             ),
@@ -89,7 +89,7 @@ class _ProductItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+          padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.r),
@@ -104,7 +104,7 @@ class _ProductItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(24.r),
                         border: Border.all(color: ColorName.deActiveDark, width: 1),
@@ -114,7 +114,7 @@ class _ProductItem extends StatelessWidget {
                         style: FortuneTextStyle.caption1SemiBold(),
                       ),
                     ),
-                    SizedBox(height: 12.h),
+                    const SizedBox(height: 12),
                     Text(
                       reward.name,
                       overflow: TextOverflow.ellipsis,
@@ -124,7 +124,7 @@ class _ProductItem extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 20.w),
+              const SizedBox(width: 20),
               SizedBox.square(
                 dimension: 92,
                 child: ClipOval(
@@ -138,16 +138,16 @@ class _ProductItem extends StatelessWidget {
           ),
         ),
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
                 color: ColorName.deActiveDark,
-                width: 0.5.h,
+                width: 0.5,
               ),
             ),
           ),
           child: Container(
-            padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 12.h, bottom: 12.h),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(24.r),
@@ -190,8 +190,8 @@ class _Recipe extends StatelessWidget {
           .map(
             (e) => Row(
               children: [
-                e.grade.icon.svg(width: 20.w, height: 20.w),
-                SizedBox(width: 4.w),
+                e.grade.icon.svg(width: 20, height: 20),
+                const SizedBox(width: 4),
                 Text.rich(
                   TextSpan(
                     children: [

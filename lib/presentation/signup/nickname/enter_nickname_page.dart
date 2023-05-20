@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
@@ -77,22 +76,22 @@ class _EnterNickNamePageState extends State<_EnterNickNamePage> {
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Container(
                 padding: EdgeInsets.only(
-                  top: 20.h,
-                  bottom: isKeyboardVisible ? 0 : 20.h,
+                  top: 20,
+                  bottom: isKeyboardVisible ? 0 : 20,
                 ),
                 child: Column(
                   children: <Widget>[
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(height: 100.h),
+                              const SizedBox(height: 100),
                               Text('enter_nickname'.tr(), style: FortuneTextStyle.headLine3()),
-                              SizedBox(height: 40.h),
+                              const SizedBox(height: 40),
                               NickNameInput(
                                 bloc,
                                 textEditingController: textEditingController,
@@ -105,9 +104,9 @@ class _EnterNickNamePageState extends State<_EnterNickNamePage> {
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 100),
                       padding: EdgeInsets.only(
-                        left: isKeyboardVisible ? 0 : 20.w,
-                        right: isKeyboardVisible ? 0 : 20.w,
-                        bottom: isKeyboardVisible ? 0 : 20.h,
+                        left: isKeyboardVisible ? 0 : 20,
+                        right: isKeyboardVisible ? 0 : 20,
+                        bottom: isKeyboardVisible ? 0 : 20,
                       ),
                       curve: Curves.easeInOut,
                       child: FortuneBottomButton(

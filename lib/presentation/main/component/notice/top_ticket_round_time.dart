@@ -78,7 +78,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 6.w, right: 12.w, top: 6.h, bottom: 6.h),
+                    padding: const EdgeInsets.only(left: 6, right: 12, top: 6, bottom: 6),
                     decoration: BoxDecoration(
                       color: ColorName.backgroundLight,
                       borderRadius: BorderRadius.circular(12.r),
@@ -88,22 +88,22 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                       builder: (context, state) {
                         return Row(
                           children: [
-                            Assets.icons.icFortuneTicket.svg(width: 24.w, height: 24.h),
-                            SizedBox(width: 8.w),
+                            Assets.icons.icFortuneTicket.svg(width: 24, height: 24),
+                            const SizedBox(width: 8),
                             Text("${state.ticketCount}", style: FortuneTextStyle.body3Bold())
                           ],
                         );
                       },
                     ),
                   ),
-                  SizedBox(width: 10.w),
+                  const SizedBox(width: 10),
                   Bounceable(
                     onTap: () async {
                       await router.navigateTo(context, Routes.storeRoute);
                       widget.bloc.add(MainRefresh());
                     },
                     child: Container(
-                      padding: EdgeInsets.only(left: 6.w, right: 8.w, top: 6.h, bottom: 6.h),
+                      padding: const EdgeInsets.only(left: 6, right: 8, top: 6, bottom: 6),
                       decoration: BoxDecoration(
                         color: ColorName.backgroundLight,
                         borderRadius: BorderRadius.circular(12.r),
@@ -113,31 +113,31 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                         builder: (context, state) {
                           return Row(
                             children: [
-                              Assets.icons.icFortuneMoney.svg(width: 24.w, height: 24.h),
-                              SizedBox(width: 8.w),
+                              Assets.icons.icFortuneMoney.svg(width: 24, height: 24),
+                              const SizedBox(width: 8),
                               Text("${state.coinCount}", style: FortuneTextStyle.body3Bold()),
-                              SizedBox(
-                                width: 8.w,
+                              const SizedBox(
+                                width: 8,
                               ),
-                              Assets.icons.icFortuneMoneyPlus.svg(width: 16.w, height: 16.h),
+                              Assets.icons.icFortuneMoneyPlus.svg(width: 16, height: 16),
                             ],
                           );
                         },
                       ),
                     ),
                   ),
-                  SizedBox(width: 10.w),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.only(left: 6.w, right: 8.w, top: 6.h, bottom: 6.h),
+                      padding: const EdgeInsets.only(left: 6, right: 8, top: 6, bottom: 6),
                       decoration: BoxDecoration(
                         color: ColorName.backgroundLight,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Row(
                         children: [
-                          Assets.icons.icTimer.svg(width: 24.w, height: 24.h),
-                          SizedBox(width: 8.w),
+                          Assets.icons.icTimer.svg(width: 24, height: 24),
+                          SizedBox(width: 8),
                           Expanded(
                             child: Stack(
                               children: [
@@ -151,7 +151,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                         borderRadius: BorderRadius.circular(12.r),
                                       ),
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                                        padding: const EdgeInsets.symmetric(vertical: 2.0),
                                         child: Text("", style: FortuneTextStyle.caption1SemiBold()),
                                       ),
                                     );
@@ -174,7 +174,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                             borderRadius: BorderRadius.circular(12.r),
                                           ),
                                           child: Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                                            padding: const EdgeInsets.symmetric(vertical: 2.0),
                                             child: Text("", style: FortuneTextStyle.caption1SemiBold()),
                                           ),
                                         );
@@ -188,7 +188,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                     return Container(
                                       alignment: Alignment.center,
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(vertical: 2.0.h),
+                                        padding: const EdgeInsets.symmetric(vertical: 2.0),
                                         child: Text(
                                           controller.value <= 0.01 ? "라운드 집계중" : _timerString,
                                           overflow: TextOverflow.ellipsis,

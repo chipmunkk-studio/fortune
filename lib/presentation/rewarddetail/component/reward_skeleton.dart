@@ -9,11 +9,11 @@ class RewardSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
+        const Align(
           alignment: Alignment.center,
           child: SizedBox.square(
-            dimension: 280.w,
-            child: const SkeletonAvatar(
+            dimension: 280,
+            child: SkeletonAvatar(
               style: SkeletonAvatarStyle(
                 shape: BoxShape.circle,
                 width: 84,
@@ -22,24 +22,24 @@ class RewardSkeleton extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 36.h),
+        const SizedBox(height: 36),
         Padding(
-          padding: EdgeInsets.only(left: 20.w),
+          padding: const EdgeInsets.only(left: 20),
           child: SkeletonLine(
             style: SkeletonLineStyle(
-              height: 80.h,
-              width: 256.w,
+              height: 80,
+              width: 256,
               borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ),
-        SizedBox(height: 21.h),
+        const SizedBox(height: 21),
         Padding(
-          padding: EdgeInsets.only(left: 20.w),
+          padding: const EdgeInsets.only(left: 20),
           child: SkeletonLine(
             style: SkeletonLineStyle(
-              height: 72.h,
-              width: 128.w,
+              height: 72,
+              width: 128,
               borderRadius: BorderRadius.circular(12.r),
             ),
           ),

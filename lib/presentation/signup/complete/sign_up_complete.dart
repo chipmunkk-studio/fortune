@@ -55,7 +55,7 @@ class _SignUpCompletePageState extends State<SignUpCompletePage> {
                 style: FortuneTextStyle.headLine3(),
               ),
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: 16),
             DelayedDisplay(
               delay: const Duration(milliseconds: 1000),
               child: Text(

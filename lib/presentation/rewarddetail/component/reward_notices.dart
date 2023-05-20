@@ -17,29 +17,21 @@ class RewardNotices extends StatelessWidget {
           .map(
             (e) => Column(
               children: [
-                Container(
-                  child: Text(
-                    "${e.title}",
-                    style: FortuneTextStyle.body2Regular(),
-                  ),
+                Text(
+                  "${e.title}",
+                  style: FortuneTextStyle.body2Regular(),
                 ),
-                Container(
-                  child: Text(
-                    "${e.title}",
-                    style: FortuneTextStyle.body2Regular(),
-                  ),
+                Text(
+                  "${e.title}",
+                  style: FortuneTextStyle.body2Regular(),
                 ),
-                Container(
-                  child: Text(
-                    "${e.title}",
-                    style: FortuneTextStyle.body2Regular(),
-                  ),
+                Text(
+                  "${e.title}",
+                  style: FortuneTextStyle.body2Regular(),
                 ),
-                Container(
-                  child: Text(
-                    "${e.title}",
-                    style: FortuneTextStyle.body2Regular(),
-                  ),
+                Text(
+                  "${e.title}",
+                  style: FortuneTextStyle.body2Regular(),
                 ),
               ],
             ),

@@ -63,7 +63,7 @@ class _RewardListPageState extends State<_RewardListPage> {
                   );
                 },
               ),
-              SizedBox(height: 32.h),
+              const SizedBox(height: 32),
               BlocBuilder<RewardListBloc, RewardListState>(
                 buildWhen: (previous, current) => previous.isChangeableChecked != current.isChangeableChecked,
                 builder: (context, state) {
@@ -73,7 +73,7 @@ class _RewardListPageState extends State<_RewardListPage> {
                   );
                 },
               ),
-              SizedBox(height: 16.h),
+              const SizedBox(height: 16),
               Expanded(
                 child: Stack(
                   children: [
@@ -101,7 +101,7 @@ class _RewardListPageState extends State<_RewardListPage> {
                       left: 0,
                       right: 0,
                       child: Container(
-                        height: 50.h,
+                        height: 50,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.bottomCenter,
