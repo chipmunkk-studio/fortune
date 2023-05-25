@@ -35,23 +35,22 @@ import 'package:foresh_flutter/domain/usecases/check_nickname_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_announcement_usecaase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_country_code_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_faq_usecaase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_product_detail_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
 import 'package:foresh_flutter/domain/usecases/request_reward_exchange_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/sign_up_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
 import 'package:foresh_flutter/firebase_options.dart';
+import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
-import 'package:foresh_flutter/presentation/login/phonenumber/bloc/phone_number.dart';
+import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
+import 'package:foresh_flutter/presentation/permission/bloc/request_permission.dart';
 import 'package:foresh_flutter/presentation/rewarddetail/bloc/reward_detail.dart';
 import 'package:foresh_flutter/presentation/rewardlist/bloc/reward_list.dart';
-import 'package:foresh_flutter/presentation/signup/bloc/sign_up.dart';
 import 'package:foresh_flutter/presentation/support/announcement/bloc/announcement.dart';
 import 'package:foresh_flutter/presentation/support/faq/bloc/faq.dart';
 import 'package:get_it/get_it.dart';
@@ -64,8 +63,6 @@ import 'package:single_item_storage/storage.dart';
 
 import 'core/notification/notification_manager.dart';
 import 'env.dart';
-import 'presentation/login/countrycode/bloc/country_code.dart';
-import 'presentation/login/smsverify/bloc/sms_verify.dart';
 import 'presentation/markerhistory/bloc/marker_history_bloc.dart';
 
 final serviceLocator = GetIt.instance;
@@ -197,32 +194,15 @@ _initService(ApiServiceProvider apiProvider) {
 _initBloc() {
   serviceLocator
     ..registerFactory(
-      () => PhoneNumberBloc(),
-    )
-    ..registerFactory(
-      () => CountryCodeBloc(
-        obtainCountryCodeUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => SmsVerifyBloc(
+      () => LoginBloc(
+        fcmManager: serviceLocator(),
         obtainSmsVerifyCodeUseCase: serviceLocator(),
         smsVerifyCodeConfirmUseCase: serviceLocator(),
         userStorage: serviceLocator(),
-        fcmManager: serviceLocator(),
       ),
     )
-    ..registerLazySingleton(
-      () => SignUpBloc(
-        checkNicknameUseCase: serviceLocator(),
-        signUpUseCase: serviceLocator(),
-        userStorage: serviceLocator(),
-        fcmManager: serviceLocator(),
-      ),
-      dispose: (bloc) {
-        FortuneLogger.debug(tag: "SignUpBloc", "close()");
-        bloc.close();
-      },
+    ..registerFactory(
+      () => AgreeTermsBloc(),
     )
     ..registerFactory(
       () => MainBloc(
@@ -254,6 +234,9 @@ _initBloc() {
         obtainRewardProductDetailUseCase: serviceLocator(),
         requestRewardExchangeUseCase: serviceLocator(),
       ),
+    )
+    ..registerFactory(
+      () => RequestPermissionBloc(),
     )
     ..registerFactory(
       () => FaqBloc(
@@ -324,9 +307,6 @@ _initRepository() {
 /// UseCase.
 _initUseCase() {
   serviceLocator
-    ..registerLazySingleton<ObtainCountryCodeUseCase>(
-      () => ObtainCountryCodeUseCase(serviceLocator()),
-    )
     ..registerLazySingleton<ObtainSmsVerifyCodeUseCase>(
       () => ObtainSmsVerifyCodeUseCase(serviceLocator()),
     )
@@ -335,9 +315,6 @@ _initUseCase() {
     )
     ..registerLazySingleton<CheckNicknameUseCase>(
       () => CheckNicknameUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<SignUpUseCase>(
-      () => SignUpUseCase(serviceLocator()),
     )
     ..registerLazySingleton<ClickMarkerUseCase>(
       () => ClickMarkerUseCase(serviceLocator()),

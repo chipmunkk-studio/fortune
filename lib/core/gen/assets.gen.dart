@@ -82,8 +82,15 @@ class $AssetsIconsGen {
   SvgGenImage get icArrowUp =>
       const SvgGenImage('assets/icons/ic_arrow_up.svg');
 
+  /// File path: assets/icons/ic_bell.svg
+  SvgGenImage get icBell => const SvgGenImage('assets/icons/ic_bell.svg');
+
   /// File path: assets/icons/ic_camera.svg
   SvgGenImage get icCamera => const SvgGenImage('assets/icons/ic_camera.svg');
+
+  /// File path: assets/icons/ic_camera_32.svg
+  SvgGenImage get icCamera32 =>
+      const SvgGenImage('assets/icons/ic_camera_32.svg');
 
   /// File path: assets/icons/ic_cancel.svg
   SvgGenImage get icCancel => const SvgGenImage('assets/icons/ic_cancel.svg');
@@ -135,6 +142,9 @@ class $AssetsIconsGen {
   SvgGenImage get icGradeSilver =>
       const SvgGenImage('assets/icons/ic_grade_silver.svg');
 
+  /// File path: assets/icons/ic_image.svg
+  SvgGenImage get icImage => const SvgGenImage('assets/icons/ic_image.svg');
+
   /// File path: assets/icons/ic_info.svg
   SvgGenImage get icInfo => const SvgGenImage('assets/icons/ic_info.svg');
 
@@ -145,12 +155,22 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
+  /// File path: assets/icons/ic_mappin.svg
+  SvgGenImage get icMappin => const SvgGenImage('assets/icons/ic_mappin.svg');
+
   /// File path: assets/icons/ic_megaphone.svg
   SvgGenImage get icMegaphone =>
       const SvgGenImage('assets/icons/ic_megaphone.svg');
 
+  /// File path: assets/icons/ic_onboarding.svg
+  SvgGenImage get icOnboarding =>
+      const SvgGenImage('assets/icons/ic_onboarding.svg');
+
   /// File path: assets/icons/ic_pencil.svg
   SvgGenImage get icPencil => const SvgGenImage('assets/icons/ic_pencil.svg');
+
+  /// File path: assets/icons/ic_phone.svg
+  SvgGenImage get icPhone => const SvgGenImage('assets/icons/ic_phone.svg');
 
   /// File path: assets/icons/ic_profile_setting.svg
   SvgGenImage get icProfileSetting =>
@@ -178,7 +198,9 @@ class $AssetsIconsGen {
         icArrowRight16,
         icArrowRight20,
         icArrowUp,
+        icBell,
         icCamera,
+        icCamera32,
         icCancel,
         icCancelCircle,
         icClock,
@@ -192,11 +214,15 @@ class $AssetsIconsGen {
         icGradeGold,
         icGradePlatinum,
         icGradeSilver,
+        icImage,
         icInfo,
         icInventory,
         icLock,
+        icMappin,
         icMegaphone,
+        icOnboarding,
         icPencil,
+        icPhone,
         icProfileSetting,
         icPushAlarm,
         icQuestion,

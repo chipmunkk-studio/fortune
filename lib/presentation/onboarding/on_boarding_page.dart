@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
@@ -19,14 +20,27 @@ class OnBoardingPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(tr("onboarding_greeting_title"), style: FortuneTextStyle.headLine3()),
-          Text(tr("onboarding_greeting_sub_title"), style: FortuneTextStyle.body1Regular()),
-          SizedBox(height: 24.h),
+          const Spacer(),
+          Text(
+            tr("onboarding_greeting_title"),
+            style: FortuneTextStyle.headLine3(),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            tr("onboarding_greeting_sub_title"),
+            style: FortuneTextStyle.subTitle3Regular(
+              fontColor: ColorName.activeDark,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Assets.icons.icOnboarding.svg(),
+          const Spacer(),
           FortuneScaleButton(
-            text: 'join_membership'.tr(),
+            text: 'next'.tr(),
             press: () => router.navigateTo(
               context,
-              Routes.phoneNumberRoute,
+              Routes.requestPermissionRoute,
             ),
           )
         ],

@@ -10,6 +10,7 @@ class InventoryState with _$InventoryState {
     required String profileImage,
     required List<InventoryMarkerEntity> markers,
     required bool isLoading,
+    required InventoryTabMission currentTab,
   }) = _InventoryState;
 
   factory InventoryState.initial() => InventoryState(
@@ -17,5 +18,11 @@ class InventoryState with _$InventoryState {
         profileImage: "",
         markers: List.empty(),
         isLoading: true,
+        currentTab: InventoryTabMission.round,
       );
+}
+
+enum InventoryTabMission {
+  ordinary,
+  round,
 }

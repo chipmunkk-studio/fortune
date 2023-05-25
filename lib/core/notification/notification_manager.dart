@@ -112,11 +112,11 @@ class FortuneNotificationsManager {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      FortuneLogger.debug(tag: _TAG, "User granted permission");
+      FortuneLogger.info(tag: _TAG, "User granted permission");
     } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-      FortuneLogger.debug(tag: _TAG, "User granted provisional permission");
+      FortuneLogger.info(tag: _TAG, "User granted provisional permission");
     } else {
-      FortuneLogger.debug(tag: _TAG, "User declined or not accepted permission");
+      FortuneLogger.info(tag: _TAG, "User declined or not accepted permission");
     }
 
     return settings;

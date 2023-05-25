@@ -16,7 +16,7 @@ theme() {
     fontFamily: FontFamily.pretendard,
     appBarTheme: appBarTheme(),
     elevatedButtonTheme: elevatedButtonTheme(),
-    // textTheme: textTheme(),
+    textButtonTheme: textButtonTheme(),
     bottomSheetTheme: bottomSheetTheme(),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: ColorName.primary),
     inputDecorationTheme: inputDecorationTheme(),
@@ -139,13 +139,21 @@ inputDecorationTheme() {
   );
 }
 
-/// 텍스트 종류가 많지 않아서 사용하지 않음.
-// TextTheme textTheme() {
-//   return const TextTheme(
-//     bodyText1: TextStyle(color: Colors.black),
-//     bodyText2: TextStyle(color: Colors.black),
-//   );
-// }
+textButtonTheme() {
+  return TextButtonThemeData(
+    style: TextButton.styleFrom(
+      // 버튼의 텍스트 색상을 변경
+      foregroundColor: Colors.white,
+      // 버튼의 배경색을 변경
+      backgroundColor: ColorName.backgroundLight,
+      disabledBackgroundColor: ColorName.deActive,
+      // 버튼의 최소 크기 설정
+      minimumSize: Size(88, 36),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+    ),
+  );
+}
 
 appBarTheme() {
   return AppBarTheme(

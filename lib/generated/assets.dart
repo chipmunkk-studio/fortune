@@ -18,7 +18,9 @@ class Assets {
   static const String iconsIcArrowRight16 = 'assets/icons/ic_arrow_right_16.svg';
   static const String iconsIcArrowRight20 = 'assets/icons/ic_arrow_right_20.svg';
   static const String iconsIcArrowUp = 'assets/icons/ic_arrow_up.svg';
+  static const String iconsIcBell = 'assets/icons/ic_bell.svg';
   static const String iconsIcCamera = 'assets/icons/ic_camera.svg';
+  static const String iconsIcCamera32 = 'assets/icons/ic_camera_32.svg';
   static const String iconsIcCancel = 'assets/icons/ic_cancel.svg';
   static const String iconsIcCancelCircle = 'assets/icons/ic_cancel_circle.svg';
   static const String iconsIcClock = 'assets/icons/ic_clock.svg';
@@ -32,11 +34,15 @@ class Assets {
   static const String iconsIcGradeGold = 'assets/icons/ic_grade_gold.svg';
   static const String iconsIcGradePlatinum = 'assets/icons/ic_grade_platinum.svg';
   static const String iconsIcGradeSilver = 'assets/icons/ic_grade_silver.svg';
+  static const String iconsIcImage = 'assets/icons/ic_image.svg';
   static const String iconsIcInfo = 'assets/icons/ic_info.svg';
   static const String iconsIcInventory = 'assets/icons/ic_inventory.svg';
   static const String iconsIcLock = 'assets/icons/ic_lock.svg';
+  static const String iconsIcMappin = 'assets/icons/ic_mappin.svg';
   static const String iconsIcMegaphone = 'assets/icons/ic_megaphone.svg';
+  static const String iconsIcOnboarding = 'assets/icons/ic_onboarding.svg';
   static const String iconsIcPencil = 'assets/icons/ic_pencil.svg';
+  static const String iconsIcPhone = 'assets/icons/ic_phone.svg';
   static const String iconsIcProfileSetting = 'assets/icons/ic_profile_setting.svg';
   static const String iconsIcPushAlarm = 'assets/icons/ic_push_alarm.svg';
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';

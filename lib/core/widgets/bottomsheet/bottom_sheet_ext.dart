@@ -7,13 +7,13 @@ extension FortuneBottomSheet on BuildContext {
   /// 기본 바텀시트.
   ///
   /// isShowTopBar 상단 센터 바.
-  showFortuneBottomSheet({
+  Future<T?> showFortuneBottomSheet<T>({
     required Widget Function(BuildContext) content,
     bool isShowCloseButton = true,
     bool isDismissible = true,
     bool isShowTopBar = false,
-  }) {
-    showModalBottomSheet(
+  }) async {
+    return await showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(

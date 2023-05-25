@@ -11,8 +11,6 @@ abstract class UserNormalDataSource {
   Future<CountryCodeListEntity> getCountryCode();
 
   Future<void> checkNickname(RequestNicknameCheck request);
-
-  Future<TokenEntity> signUp(RequestSignUp request);
 }
 
 class UserNormalRemoteDataSourceImpl extends UserNormalDataSource {
@@ -30,20 +28,5 @@ class UserNormalRemoteDataSourceImpl extends UserNormalDataSource {
   @override
   Future<void> checkNickname(RequestNicknameCheck request) async {
     await memberNormalService.checkNickName(request).then((value) => value.toResponseData());
-  }
-
-  @override
-  Future<TokenEntity> signUp(RequestSignUp request) async {
-    final tokenResponse = await memberNormalService
-        .signUp(
-          phoneNumber: request.data.phoneNumber,
-          countryCode: request.data.countryCode,
-          nickname: request.data.nickname,
-          profileImage: request.profileImage,
-          pushToken: request.pushToken,
-        )
-        .then((value) => value.toResponseData());
-    final tokenEntity = TokenEntity.fromJson(tokenResponse);
-    return tokenEntity;
   }
 }

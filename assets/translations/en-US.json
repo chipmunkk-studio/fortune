@@ -1,24 +1,16 @@
 {
-  "hello": "hello",
-  "name": "name",
-  "clear": "clear",
-  "english": "English",
-  "korean": "한국어",
-  "chandongi": "chandongi",
-  "myNameIs": "My Name is {}",
-  "namedArgs": "Named Args {name}",
-  "argsWithNamedArgs": "args: {}, {}, Named Args {name}",
-  "errorClientInternal": {
-    "title": "클라이언트 에러",
-    "common": "클라이언트에서 발생한 에러입니다."
-  },
   "errorClientUnknown": {
     "title": "알 수 없는 에러",
     "common": "예상하지 못한 에러가 발생했습니다."
   },
-  "errorClientCustom": {
-    "title": "에러 발생",
-    "common": "커스텀 에러입니다."
+  "errorClientInternal": {
+    "title": "클라이언트 에러",
+    "common": "클라이언트에서 발생한 에러입니다."
+  },
+  "loginGuideTitle": {
+    "phoneNumber": "본인 확인을 위해\n휴대폰 번호가 필요해요",
+    "signInWithOtp": "잘오신거에요!\n문자로 전송된 인증번호를 입력해주세요",
+    "signInWithOtpNewMember": "처음 오셨네요?\n문자로 전송된 인증번호를 입력해주세요"
   },
   "onboarding_greeting_title": "Nice to meet You!",
   "onboarding_greeting_sub_title": "Please login to use app",

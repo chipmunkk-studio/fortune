@@ -1,10 +1,9 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/presentation/login/login_page.dart';
+import 'package:foresh_flutter/presentation/permission/require_permission_page.dart';
 
 import 'gradeguide/grade_guide_page.dart';
-import 'login/countrycode/country_code_page.dart';
-import 'login/phonenumber/phone_number_page.dart';
-import 'login/smsverify/sms_verify_page.dart';
 import 'main/main_page.dart';
 import 'markerhistory/marker_history_page.dart';
 import 'markerobtain/marker_obtain_page.dart';
@@ -12,9 +11,7 @@ import 'mypage/my_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'rewarddetail/reward_detail_page.dart';
 import 'rewardlist/reward_list_page.dart';
-import 'signup/complete/sign_up_complete.dart';
-import 'signup/nickname/enter_nickname_page.dart';
-import 'signup/profileimage/enter_profile_image_page.dart';
+import 'login/login_complete_page.dart';
 import 'store/store_page.dart';
 import 'support/announcement/announcement_page.dart';
 import 'support/faq/faq_page.dart';
@@ -38,66 +35,15 @@ class FortuneRouter {
     },
   );
 
-  static var phoneNumberHandler = Handler(
-    handlerFunc: (context, params) {
-      final args = context?.settings?.arguments as CountryCodeArgs?;
-      final countryCode = args?.countryCode;
-      final countryName = args?.countryName;
-      return PhoneNumberPage(
-        countryCode: countryCode,
-        countryName: countryName,
-      );
+  static var loginHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const LoginPage();
     },
   );
 
-  static var countryCodeHandler = Handler(
+  static var loginCompleteHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as CountryCodeArgs?;
-      final countryCode = args?.countryCode;
-      final countryName = args?.countryName;
-      return CountryCodePage(
-        countryCode: countryCode,
-        countryName: countryName,
-      );
-    },
-  );
-
-  static var smsCertifyHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as SmsVerifyArgs?;
-      final phoneNumber = args?.phoneNumber ?? "";
-      final countryCode = args?.countryCode ?? "";
-      return SmsVerifyPage(
-        phoneNumber: phoneNumber,
-        countryCode: countryCode,
-      );
-    },
-  );
-
-  static var putNickNameHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      /// todo 이부분을 신중하게 고민해봐됨.
-      /// 블럭을 과연 싱글턴으로 사용해도 이슈가 없는 건지?
-      /// ActivityViewModel이 없다면 어떻게 구현하는게 좋은건지?! 잊지말아야함.
-      final args = context?.settings?.arguments as SmsVerifyArgs?;
-      final phoneNumber = args?.phoneNumber ?? "";
-      final countryCode = args?.countryCode ?? "";
-      return EnterNickNamePage(
-        phoneNumber: phoneNumber,
-        countryCode: countryCode,
-      );
-    },
-  );
-
-  static var enterProfileImageHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const EnterProfileImagePage();
-    },
-  );
-
-  static var signUpCompleteHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const SignUpCompletePage();
+      return const LoginCompletePage();
     },
   );
 
@@ -168,6 +114,12 @@ class FortuneRouter {
     },
   );
 
+  static var requestPermissionHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const RequestPermissionPage();
+    },
+  );
+
   static var markerObtainAnimationHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as MarkerObtainArgs?;
@@ -202,43 +154,15 @@ class FortuneRouter {
 
       /// 회원가입/로그인.
       ..define(
-        Routes.phoneNumberRoute,
-        handler: phoneNumberHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 국가코드
-      ..define(
-        Routes.countryCodeRoute,
-        handler: countryCodeHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// SMS 인증.
-      ..define(
-        Routes.smsCertifyRoute,
-        handler: smsCertifyHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 닉네임 입력.
-      ..define(
-        Routes.putNickNameRoute,
-        handler: putNickNameHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 프로필 이미지 등록.
-      ..define(
-        Routes.enterProfileImageRoute,
-        handler: enterProfileImageHandler,
+        Routes.loginRoute,
+        handler: loginHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 회원가입 완료.
       ..define(
-        Routes.signUpCompleteRoute,
-        handler: signUpCompleteHandler,
+        Routes.loginCompleteRoute,
+        handler: loginCompleteHandler,
         transitionType: TransitionType.fadeIn,
       )
 
@@ -319,6 +243,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 권한 요청 화면.
+      ..define(
+        Routes.requestPermissionRoute,
+        handler: requestPermissionHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 획득 시 애니메이션 화면 루트.
       ..define(
         Routes.markerObtainAnimationRoute,
@@ -332,13 +263,9 @@ class Routes {
   static const String paramLandingPage = "paramLandingPage";
   static const String mainRoute = 'main';
   static const String onBoardingRoute = 'onBoarding';
-  static const String phoneNumberRoute = 'phoneNumber';
-  static const String countryCodeRoute = 'countryCode';
-  static const String smsCertifyRoute = 'smsCertify';
-  static const String putNickNameRoute = 'putNickName';
+  static const String loginRoute = 'login';
   static const String markerHistoryRoute = 'markerHistory';
-  static const String enterProfileImageRoute = 'enterProfileImage';
-  static const String signUpCompleteRoute = 'signUpComplete';
+  static const String loginCompleteRoute = 'loginUpComplete';
   static const String rewardListRoute = 'rewardList';
   static const String markerObtainAnimationRoute = 'markerObtainAnimation';
   static const String storeRoute = 'store';
@@ -349,5 +276,6 @@ class Routes {
   static const String moneyHistoryRoute = 'moneyHistory';
   static const String fortuneHistoryRoute = 'fortuneHistory';
   static const String announcementRoute = 'announcement';
+  static const String requestPermissionRoute = 'requestPermission';
   static const String faqRoute = 'faq';
 }

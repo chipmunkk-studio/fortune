@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dartz/dartz.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,6 +16,7 @@ extension FortuneContextEx on BuildContext {
   void handleError(
     FortuneFailure error, {
     Function0? btnOkOnPress,
+    bool needToFinish = true,
   }) {
     final router = serviceLocator<FortuneRouter>().router;
 
@@ -57,12 +60,15 @@ extension FortuneContextEx on BuildContext {
         btnOkText: "확인",
         btnOkOnPress: btnOkOnPress ??
             () {
-              router.navigateTo(
-                    this,
-                    Routes.phoneNumberRoute,
-                    clearStack: true,
-                    replace: false,
-                  );
+              final errorCode = error.errorCode;
+              if ((errorCode == HttpStatus.unauthorized || errorCode == HttpStatus.forbidden) && needToFinish) {
+                router.navigateTo(
+                  this,
+                  Routes.loginRoute,
+                  clearStack: true,
+                  replace: false,
+                );
+              }
             },
       ).show();
     } else {

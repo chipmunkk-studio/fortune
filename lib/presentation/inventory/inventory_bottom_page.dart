@@ -1,15 +1,18 @@
+import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/inventory/bloc/inventory.dart';
 import 'package:foresh_flutter/presentation/inventory/component/profile.dart';
-import 'package:foresh_flutter/presentation/inventory/component/stamp_exchange.dart';
-import 'package:foresh_flutter/presentation/inventory/component/stamps.dart';
-import 'package:foresh_flutter/presentation/inventory/component/stamps_skeleton.dart';
 import 'package:skeletons/skeletons.dart';
+
+import 'component/stamp_exchange.dart';
 
 class InventoryBottomPage extends StatelessWidget {
   const InventoryBottomPage({Key? key}) : super(key: key);
@@ -63,26 +66,112 @@ class _InventoryBottomPageState extends State<_InventoryBottomPage> {
                   );
                 },
               ),
-              SizedBox(height: 36.h),
+              const SizedBox(height: 33),
+              BlocBuilder<InventoryBloc, InventoryState>(
+                buildWhen: (previous, current) => previous.currentTab != current.currentTab,
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: CustomSlidingSegmentedControl<int>(
+                      initialValue: 2,
+                      height: 48,
+                      children: {
+                        1: Text('상시 미션', style: () {
+                          if (state.currentTab == InventoryTabMission.ordinary) {
+                            return FortuneTextStyle.body1SemiBold(fontColor: ColorName.active);
+                          } else {
+                            return FortuneTextStyle.body1Medium(fontColor: ColorName.deActive);
+                          }
+                        }()),
+                        2: Text('라운드 미션', style: () {
+                          if (state.currentTab == InventoryTabMission.round) {
+                            return FortuneTextStyle.body1SemiBold(fontColor: ColorName.active);
+                          } else {
+                            return FortuneTextStyle.body1Medium(fontColor: ColorName.deActive);
+                          }
+                        }()),
+                      },
+                      isStretch: true,
+                      decoration: BoxDecoration(
+                        color: ColorName.deActiveDark,
+                        borderRadius: BorderRadius.circular(14.r),
+                      ),
+                      thumbDecoration: BoxDecoration(
+                        color: ColorName.background,
+                        borderRadius: BorderRadius.circular(14.r),
+                      ),
+                      duration: const Duration(milliseconds: 100),
+                      curve: Curves.easeInToLinear,
+                      onValueChanged: (v) => _bloc.add(InventoryTabSelected(v)),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 33.h),
               StampExchange(
                 onStampExchangeClick: () => _navigateToExchangePage(context),
               ),
-              SizedBox(height: 33.h),
-              BlocBuilder<InventoryBloc, InventoryState>(
-                buildWhen: (previous, current) => previous.markers != current.markers,
-                builder: (context, state) {
-                  return state.markers.isNotEmpty
-                      ? MarkerStamps(
-                          stamps: state.markers,
-                          onStampClick: () => _navigateToExchangePage(context),
-                        )
-                      : const MarkerStampsSkeleton(
-                          top: [0, 1],
-                          center: [2, 3, 4],
-                          bottom: [5, 6],
-                        );
-                },
-              )
+              SizedBox(height: 12.h),
+              DefaultTabController(
+                length: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ButtonsTabBar(
+                      physics: const BouncingScrollPhysics(),
+                      backgroundColor: Colors.red,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                      unselectedBackgroundColor: Colors.grey[300],
+                      labelSpacing: 8,
+                      radius: 24.r,
+                  buttonMargin:EdgeInsets.only(left: 20),
+                      unselectedLabelStyle: TextStyle(color: Colors.black),
+                      labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      tabs: [
+                        Tab(
+                          icon: Icon(Icons.directions_car),
+                          text: "아이스크림",
+                        ),
+                        Tab(
+                          icon: Icon(Icons.directions_transit),
+                          text: "아메리카노",
+                        ),
+                        Tab(icon: Icon(Icons.directions_bike)),
+                        Tab(icon: Icon(Icons.directions_car)),
+                        Tab(icon: Icon(Icons.directions_transit)),
+                        Tab(icon: Icon(Icons.directions_bike)),
+                      ],
+                    ),
+                    Container(
+                      height: 300,
+                      color: Colors.white,
+                      child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        children: <Widget>[
+                          Center(
+                            child: Icon(Icons.directions_car),
+                          ),
+                          Center(
+                            child: Icon(Icons.directions_transit),
+                          ),
+                          Center(
+                            child: Icon(Icons.directions_bike),
+                          ),
+                          Center(
+                            child: Icon(Icons.directions_car),
+                          ),
+                          Center(
+                            child: Icon(Icons.directions_transit),
+                          ),
+                          Center(
+                            child: Icon(Icons.directions_bike),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );

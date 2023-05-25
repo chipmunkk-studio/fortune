@@ -9,18 +9,21 @@ import '../di.dart';
 import '../fortune_app.dart';
 import 'env.dart';
 
-main() async {
-  /// di 설정.
-  await init();
-
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-  // 앱이 백그라운드 상태에서 알림을 클릭하여 시작된 경우 > 루트를 넘겨줘야함
-  RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-  String startRoute = await getStartRoute(initialMessage?.data);
-
+main() {
   runZonedGuarded(
     () async {
+      /// di 설정.
+      await init();
+      // Flutter 프레임워크에서 발생하는 특정 에러들, 예를 들어 위젯 라이프사이클에서 발생하는 에러
+      // 등은 runZonedGuarded를 통해 잡히지 않을 수 있음.
+      // FlutterError.onError는 Flutter 프레임워크 에러를 처리하고,
+      // runZonedGuarded는 그 외 Dart 수준에서 발생하는 예외를 처리함.
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+      // 앱이 백그라운드 상태에서 알림을 클릭하여 시작된 경우 > 루트를 넘겨줘야함
+      RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+      String startRoute = await getStartRoute(initialMessage?.data);
+
       runApp(
         EasyLocalization(
           // 지원 언어 리스트

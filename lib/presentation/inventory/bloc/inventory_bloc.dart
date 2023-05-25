@@ -16,6 +16,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState>
     required this.obtainInventoryUseCase,
   }) : super(InventoryState.initial()) {
     on<InventoryInit>(init);
+    on<InventoryTabSelected>(tabSelected);
   }
 
   FutureOr<void> init(InventoryInit event, Emitter<InventoryState> emit) async {
@@ -32,6 +33,20 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState>
             ),
           );
         },
+      ),
+    );
+  }
+
+  FutureOr<void> tabSelected(InventoryTabSelected event, Emitter<InventoryState> emit) {
+    emit(
+      state.copyWith(
+        currentTab: () {
+          if (event.select == 1) {
+            return InventoryTabMission.ordinary;
+          } else {
+            return InventoryTabMission.round;
+          }
+        }(),
       ),
     );
   }

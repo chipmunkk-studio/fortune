@@ -10,3 +10,12 @@ class InventoryInit extends InventoryEvent {
   @override
   List<Object?> get props => [];
 }
+
+class InventoryTabSelected extends InventoryEvent {
+  final int select;
+
+  InventoryTabSelected(this.select);
+
+  @override
+  List<Object?> get props => [];
+}

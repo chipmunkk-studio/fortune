@@ -56,7 +56,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
-    bool hasPermission = await FortunePermissionUtil().requestPermission([Permission.location]);
+    bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
     // 알람으로 랜딩할 경우 페이지.
     final landingPage = event.landingPage;
 
