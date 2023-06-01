@@ -40,6 +40,7 @@ import 'package:foresh_flutter/domain/usecases/obtain_inventory_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_product_detail_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_reward_products_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_terms_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/request_reward_exchange_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
 import 'package:foresh_flutter/firebase_options.dart';
@@ -199,6 +200,7 @@ _initBloc() {
         obtainSmsVerifyCodeUseCase: serviceLocator(),
         smsVerifyCodeConfirmUseCase: serviceLocator(),
         userStorage: serviceLocator(),
+        obtainTermsUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -336,6 +338,9 @@ _initUseCase() {
     )
     ..registerLazySingleton<ObtainAnnouncementUseCase>(
       () => ObtainAnnouncementUseCase(serviceLocator()),
+    )
+    ..registerLazySingleton<ObtainTermsUseCase>(
+      () => ObtainTermsUseCase(serviceLocator()),
     )
     ..registerLazySingleton<ObtainFaqUseCase>(
       () => ObtainFaqUseCase(serviceLocator()),

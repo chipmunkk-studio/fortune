@@ -7,6 +7,7 @@ import 'package:foresh_flutter/core/network/credential/user_credential.dart';
 import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
+import 'package:foresh_flutter/domain/usecases/obtain_terms_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -18,6 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   static const tag = "[PhoneNumberBloc]";
 
   final ObtainSmsVerifyCodeUseCase obtainSmsVerifyCodeUseCase;
+  final ObtainTermsUseCase obtainTermsUseCase;
   final SmsVerifyCodeConfirmUseCase smsVerifyCodeConfirmUseCase;
   final Storage<UserCredential> userStorage;
   final FortuneNotificationsManager fcmManager;
@@ -25,6 +27,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   LoginBloc({
     required this.obtainSmsVerifyCodeUseCase,
     required this.smsVerifyCodeConfirmUseCase,
+    required this.obtainTermsUseCase,
     required this.userStorage,
     required this.fcmManager,
   }) : super(LoginState.initial()) {
@@ -68,14 +71,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     switch (state.steppers[0]) {
       // 폰 번호 입력 상태.
       case LoginStepper.phoneNumber:
-        final nextState = state.copyWith(
-          steppers: [LoginStepper.signInWithOtp, ...state.steppers],
-          guideTitle: LoginGuideTitle.signInWithOtp,
-          isButtonEnabled: true,
-          isRequestVerifyCodeEnable: true,
+        await obtainTermsUseCase(state.phoneNumber).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(LoginError(l)),
+            (r) {
+              final nextState = state.copyWith(
+                steppers: [LoginStepper.signInWithOtp, ...state.steppers],
+                guideTitle: LoginGuideTitle.signInWithOtp,
+                isButtonEnabled: true,
+                terms: r.terms,
+                isRequestVerifyCodeEnable: true,
+              );
+              emit(nextState);
+              produceSideEffect(LoginNextStep());
+            },
+          ),
         );
-        emit(nextState);
-        produceSideEffect(LoginNextStep());
         break;
       // 인증 번호 입력 화면.
       case LoginStepper.signInWithOtp:

@@ -12,6 +12,11 @@ abstract class NormalUserService extends ChopperService {
   @Get(path: 'country')
   Future<Response> countryCode();
 
+  @Get(path: 'terms')
+  Future<Response> terms({
+    @Query('phoneNumber') required String phoneNumber,
+  });
+
   @Post(path: 'nickname/check')
   Future<Response> checkNickName(@Body() RequestNicknameCheck request);
 
