@@ -9,6 +9,4 @@ abstract class MainRepository {
   Future<FortuneResult<MarkerClickEntity>> clickMarker(RequestPostMarkerParams params);
 
   Future<FortuneResult<MainEntity>> getMarkerList(RequestMainParams params);
-
-  Future<FortuneResult<InventoryEntity>> getInventory();
 }

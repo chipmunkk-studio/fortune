@@ -31,10 +31,9 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
     int day = duration.inDays;
     int hour = duration.inHours % 24;
     int minutes = duration.inMinutes % 60;
-    return '${day.toString().padLeft(2, '0')}:'
-        '${hour.toString().padLeft(2, '0')}:'
-        '${minutes.toString().padLeft(2, '0')}:'
-        '${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+    return '${day.toString().padLeft(2, '0')}일 '
+        '${hour.toString().padLeft(2, '0')}시간 '
+        '${minutes.toString().padLeft(2, '0')}분 남았어요';
   }
 
   @override
@@ -97,36 +96,6 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Bounceable(
-                    onTap: () async {
-                      await router.navigateTo(context, Routes.storeRoute);
-                      widget.bloc.add(MainRefresh());
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 6, right: 8, top: 6, bottom: 6),
-                      decoration: BoxDecoration(
-                        color: ColorName.backgroundLight,
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
-                      child: BlocBuilder<MainBloc, MainState>(
-                        buildWhen: (previous, current) => previous.coinCount != current.coinCount,
-                        builder: (context, state) {
-                          return Row(
-                            children: [
-                              Assets.icons.icFortuneMoney.svg(width: 24, height: 24),
-                              const SizedBox(width: 8),
-                              Text("${state.coinCount}", style: FortuneTextStyle.body3Bold()),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Assets.icons.icFortuneMoneyPlus.svg(width: 16, height: 16),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.only(left: 6, right: 8, top: 6, bottom: 6),
@@ -169,7 +138,7 @@ class _TopTicketRoundTimeState extends State<TopTicketRoundTime> with TickerProv
                                               : constraints.maxWidth * controller.value,
                                           decoration: BoxDecoration(
                                             color: animationValue == 0.0 || animationValue > 0.2
-                                                ? ColorName.deActive
+                                                ? ColorName.positive
                                                 : ColorName.negative,
                                             borderRadius: BorderRadius.circular(12.r),
                                           ),

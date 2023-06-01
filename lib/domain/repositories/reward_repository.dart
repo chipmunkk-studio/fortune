@@ -1,10 +1,11 @@
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/entities/reward/reward_entity.dart';
-import 'package:foresh_flutter/domain/entities/reward/reward_product_entity.dart';
+import 'package:foresh_flutter/domain/entities/mission/mission_detail_entity.dart';
+import 'package:foresh_flutter/domain/entities/mission/mission_entity.dart';
 
-abstract class RewardRepository {
-  Future<FortuneResult<RewardEntity>> getRewardProducts(int page);
+abstract class MissionRepository {
+  Future<FortuneResult<MissionEntity>> getMissions(int page);
 
-  Future<FortuneResult<RewardProductEntity>> getRewardProductDetail(int id);
+  Future<FortuneResult<MissionDetailEntity>> getMissionDetail(int id);
+
   Future<FortuneResult<void>> requestRewardExchange(int id);
 }

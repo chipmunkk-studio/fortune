@@ -46,10 +46,4 @@ class MainRepositoryImpl implements MainRepository {
         .toRemoteDomainData(errorMapper);
     return remoteData;
   }
-
-  @override
-  Future<FortuneResult<InventoryEntity>> getInventory() async {
-    final remoteData = await markerRemoteDataSource.getInventory().toRemoteDomainData(errorMapper);
-    return remoteData;
-  }
 }

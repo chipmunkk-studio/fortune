@@ -1,6 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:foresh_flutter/core/network/api/service/common_service.dart';
-import 'package:foresh_flutter/core/network/api/service/reward_service.dart';
+import 'package:foresh_flutter/core/network/api/service/mission_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
@@ -55,7 +55,7 @@ class ApiServiceProvider {
       services: [
         UserService.create(),
         MainService.create(),
-        RewardService.create(),
+        MissionService.create(),
         CommonService.create(),
         // 여기에 인증이 필요한 api 추가.
       ],
@@ -94,7 +94,7 @@ class ApiServiceProvider {
 
   MainService getMarkerService() => _defaultClient.getService<MainService>();
 
-  RewardService getRewardService() => _defaultClient.getService<RewardService>();
+  MissionService getRewardService() => _defaultClient.getService<MissionService>();
 
   CommonService getCommonService() => _defaultClient.getService<CommonService>();
 }

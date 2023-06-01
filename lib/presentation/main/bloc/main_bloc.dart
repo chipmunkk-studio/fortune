@@ -112,7 +112,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 notices: r.histories,
                 profileImage: r.profileImageUrl,
                 ticketCount: r.ticketCount,
-                coinCount: r.coinCount,
                 roundTime: r.roundTime,
                 // clickableRadiusLength: 960,
                 // zoomThreshold: 14,
@@ -313,7 +312,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                   notices: r.histories,
                   profileImage: r.profileImageUrl,
                   ticketCount: r.ticketCount,
-                  coinCount: r.coinCount,
                 ),
               );
             } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/presentation/login/login_page.dart';
+import 'package:foresh_flutter/presentation/missiondetail/reward_detail_page.dart';
 import 'package:foresh_flutter/presentation/permission/require_permission_page.dart';
 
 import 'gradeguide/grade_guide_page.dart';
@@ -9,8 +10,6 @@ import 'markerhistory/marker_history_page.dart';
 import 'markerobtain/marker_obtain_page.dart';
 import 'mypage/my_page.dart';
 import 'onboarding/on_boarding_page.dart';
-import 'rewarddetail/reward_detail_page.dart';
-import 'rewardlist/reward_list_page.dart';
 import 'login/login_complete_page.dart';
 import 'store/store_page.dart';
 import 'support/announcement/announcement_page.dart';
@@ -53,12 +52,6 @@ class FortuneRouter {
     },
   );
 
-  static var rewardListHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const RewardListPage();
-    },
-  );
-
   static var storeHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const StorePage();
@@ -71,10 +64,10 @@ class FortuneRouter {
     },
   );
 
-  static var rewardDetailHandler = Handler(
+  static var missionDetailHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as int?;
-      return args != null ? RewardDetailPage(args) : null;
+      return args != null ? MissionDetailPage(args) : null;
     },
   );
 
@@ -173,13 +166,6 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 스탬프 교환소.
-      ..define(
-        Routes.rewardListRoute,
-        handler: rewardListHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
       /// 스토어.
       ..define(
         Routes.storeRoute,
@@ -196,8 +182,8 @@ class FortuneRouter {
 
       /// 상품 상세.
       ..define(
-        Routes.rewardDetailRoute,
-        handler: rewardDetailHandler,
+        Routes.missionDetailRoute,
+        handler: missionDetailHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -266,11 +252,10 @@ class Routes {
   static const String loginRoute = 'login';
   static const String markerHistoryRoute = 'markerHistory';
   static const String loginCompleteRoute = 'loginUpComplete';
-  static const String rewardListRoute = 'rewardList';
   static const String markerObtainAnimationRoute = 'markerObtainAnimation';
   static const String storeRoute = 'store';
   static const String myPageRoute = 'myPage';
-  static const String rewardDetailRoute = 'product';
+  static const String missionDetailRoute = 'missionDetail';
   static const String gradeGuideRoute = 'gradeGuide';
   static const String ticketHistoryRoute = 'ticketHistory';
   static const String moneyHistoryRoute = 'moneyHistory';

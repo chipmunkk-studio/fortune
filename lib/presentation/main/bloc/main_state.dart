@@ -14,7 +14,6 @@ class MainState with _$MainState {
     required LocationData? myLocation,
     required int userId,
     required String? profileImage,
-    required int coinCount,
     required int ticketCount,
     required int roundTime,
     required double clickableRadiusLength,
@@ -27,7 +26,6 @@ class MainState with _$MainState {
         userId: -1,
         myLocation: null,
         profileImage: "",
-        coinCount: 0,
         ticketCount: 0,
         roundTime: -1,
         // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)

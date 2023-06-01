@@ -14,8 +14,8 @@ import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/inventory/inventory_bottom_page.dart';
 import 'package:foresh_flutter/presentation/markerobtain/marker_obtain_page.dart';
+import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
@@ -270,7 +270,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   _onMyBagClick() {
     context.showFortuneBottomSheet(
-      content: (context) => const InventoryBottomPage(),
+      content: (context) => const MissionsBottomPage(),
     );
   }
 }

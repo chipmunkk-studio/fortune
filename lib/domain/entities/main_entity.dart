@@ -5,7 +5,6 @@ class MainEntity extends Equatable {
   final List<MainMarkerEntity> markers;
   final List<MainHistoryEntity> histories;
   final String profileImageUrl;
-  final int coinCount;
   final int ticketCount;
   final int roundTime;
 
@@ -13,7 +12,6 @@ class MainEntity extends Equatable {
     required this.id,
     required this.markers,
     required this.profileImageUrl,
-    required this.coinCount,
     required this.ticketCount,
     required this.roundTime,
     required this.histories,

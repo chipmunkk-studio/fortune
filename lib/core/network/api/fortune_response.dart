@@ -30,16 +30,10 @@ extension FortuneResponseMapper on Response {
     if (isSuccessful) {
       return response();
     } else {
-      if (base.statusCode >= HttpStatus.internalServerError) {
-        throw FortuneException(
-          errorCode: FortuneErrorStatus.internalServerError,
-          errorMessage: "${base.request?.url.path}",
-        );
-      }
       FortuneErrorResponse? errorResponse = this.errorResponse();
       throw FortuneException(
-        errorCode: errorResponse?.code ?? FortuneErrorStatus.clientInternal,
-        errorMessage: errorResponse?.message ?? "정의되지 않은 에러입니다.",
+        errorCode: errorResponse?.code ?? base.statusCode,
+        errorMessage: errorResponse?.message ?? error.toString(),
       );
     }
   }
