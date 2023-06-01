@@ -101,11 +101,9 @@ class Environment {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     FirebaseCrashlytics.instance
-      ..setCustomKey("appName", packageInfo.appName)
-      ..setCustomKey("packageName", packageInfo.packageName)
-      ..setCustomKey("version", packageInfo.version)
-      ..setCustomKey("buildNumber", packageInfo.buildNumber)
-      ..setCustomKey("buildType", buildType.toString())
+      ..setCustomKey("appName", packageInfo.appName)..setCustomKey(
+        "packageName", packageInfo.packageName)..setCustomKey("version", packageInfo.version)..setCustomKey(
+        "buildNumber", packageInfo.buildNumber)..setCustomKey("buildType", buildType.toString())
       ..setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
 
     /// 앱메트리카.
@@ -113,9 +111,9 @@ class Environment {
 
     FortuneLogger.info(
       "buildType: $buildType,\n"
-      "--------------configArgs--------------"
-      "${remoteConfig.toString()}"
-      "--------------------------------------",
+          "--------------configArgs--------------"
+          "${remoteConfig.toString()}"
+          "--------------------------------------",
     );
   }
 }
@@ -173,36 +171,40 @@ Future<String> getStartRoute(Map<String, dynamic>? data) async {
   FortuneLogger.info(tag: Environment.tag, "AccessToken: ${loggedInUser.token?.accessToken?.shortenForPrint()}");
   FortuneLogger.info(tag: Environment.tag, "Permission Status: $permissionStatus");
 
-  if (tokenResponse == null) {
-    // 토큰이 없는 경우 > 로그인 한 적이 없음 > 온보딩.
-    FortuneLogger.info(tag: Environment.tag, "토큰이 없음");
-    return Routes.onBoardingRoute;
-  } else if (permissionStatus) {
-    FortuneLogger.info(tag: Environment.tag, "사용 중 권한을 허용 하지 않음.");
-    // 권한을 허용 하지 않은 경우.
-    return Routes.requestPermissionRoute;
-  } else if (tokenResponse.isRefreshTokenExpired()) {
-    // 리프레시 토큰이 만료 된 경우 > 로그인 화면.
-    FortuneLogger.info(tag: Environment.tag, "리프레시토큰 만료.");
-    AppMetrica.reportEvent("리프레시토큰 만료");
-    return Routes.loginRoute;
-  } else {
-    // 액세스 토큰이 만료된 경우 > 리프레시 토큰으로 갱신.
-    try {
-      if (tokenResponse.isAccessTokenExpired()) {
-        await authHelperJwt.refreshIfTokenExpired(token: tokenResponse);
-      }
-      // 만료가 되지 않은 경우에는 메인화면 보여줌.
-      if (data != null) {
-        final entity = NotificationEntity.fromJson(data);
-        return "${Routes.mainRoute}/${entity.landingRoute}";
-      } else {
-        // return Routes.mainRoute;
-        return Routes.mainRoute;
-      }
-    } catch (e) {
-      // 리프레시 토큰 갱신 에러일 경우 다시 로그인.
+  try {
+    if (tokenResponse == null) {
+      // 토큰이 없는 경우 > 로그인 한 적이 없음 > 온보딩.
+      FortuneLogger.info(tag: Environment.tag, "토큰이 없음");
+      return Routes.onBoardingRoute;
+    } else if (permissionStatus) {
+      FortuneLogger.info(tag: Environment.tag, "사용 중 권한을 허용 하지 않음.");
+      // 권한을 허용 하지 않은 경우.
+      return Routes.requestPermissionRoute;
+    } else if (tokenResponse.isRefreshTokenExpired()) {
+      // 리프레시 토큰이 만료 된 경우 > 로그인 화면.
+      FortuneLogger.info(tag: Environment.tag, "리프레시토큰 만료.");
+      AppMetrica.reportEvent("리프레시토큰 만료");
       return Routes.loginRoute;
+    } else {
+      // 액세스 토큰이 만료된 경우 > 리프레시 토큰으로 갱신.
+      try {
+        if (tokenResponse.isAccessTokenExpired()) {
+          await authHelperJwt.refreshIfTokenExpired(token: tokenResponse);
+        }
+        // 만료가 되지 않은 경우에는 메인화면 보여줌.
+        if (data != null) {
+          final entity = NotificationEntity.fromJson(data);
+          return "${Routes.mainRoute}/${entity.landingRoute}";
+        } else {
+          // return Routes.mainRoute;
+          return Routes.mainRoute;
+        }
+      } catch (e) {
+        // 리프레시 토큰 갱신 에러일 경우 다시 로그인.
+        return Routes.loginRoute;
+      }
     }
+  } catch (e) {
+    return Routes.loginRoute;
   }
 }

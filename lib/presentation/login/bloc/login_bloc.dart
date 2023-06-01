@@ -6,6 +6,7 @@ import 'package:foresh_flutter/core/network/credential/token_response.dart';
 import 'package:foresh_flutter/core/network/credential/user_credential.dart';
 import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
+import 'package:foresh_flutter/domain/entities/agree_terms_entity.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
 import 'package:foresh_flutter/domain/usecases/obtain_terms_usecase.dart';
 import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
@@ -63,7 +64,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> verifyCodeInput(LoginVerifyCodeInput event, Emitter<LoginState> emit) {
-    final newState = state.copyWith(verifyCode: event.verifyCode);
+    final newState = state.copyWith(
+      verifyCode: event.verifyCode,
+      isButtonEnabled: FortuneValidator.isValidVerifyCode(event.verifyCode),
+    );
     emit(newState);
   }
 
@@ -71,29 +75,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     switch (state.steppers[0]) {
       // 폰 번호 입력 상태.
       case LoginStepper.phoneNumber:
-        await obtainTermsUseCase(state.phoneNumber).then(
-          (value) => value.fold(
-            (l) => produceSideEffect(LoginError(l)),
-            (r) {
-              final nextState = state.copyWith(
-                steppers: [LoginStepper.signInWithOtp, ...state.steppers],
-                guideTitle: LoginGuideTitle.signInWithOtp,
-                isButtonEnabled: true,
-                terms: r.terms,
-                isRequestVerifyCodeEnable: true,
-              );
-              emit(nextState);
-              produceSideEffect(LoginNextStep());
-            },
-          ),
+        final nextState = state.copyWith(
+          steppers: [LoginStepper.signInWithOtp, ...state.steppers],
+          guideTitle: LoginGuideTitle.signInWithOtp,
+          isButtonEnabled: false,
+          isRequestVerifyCodeEnable: true,
         );
+        emit(nextState);
+        produceSideEffect(LoginNextStep());
         break;
       // 인증 번호 입력 화면.
       case LoginStepper.signInWithOtp:
         await smsVerifyCodeConfirmUseCase(
           RequestConfirmSmsVerifyCodeParams(
             phoneNumber: state.phoneNumber,
-            countryCode: "82",
             authenticationNumber: int.parse(state.verifyCode),
             pushToken: await fcmManager.getFcmPushToken(),
           ),
@@ -110,7 +105,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
                   ),
                 ),
               );
-              produceSideEffect(LoginLandingRoute(Routes.loginCompleteRoute));
+              produceSideEffect(
+                LoginLandingRoute(
+                  r.registered ? Routes.mainRoute : Routes.loginCompleteRoute,
+                ),
+              );
             },
           ),
         );
@@ -121,21 +120,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
-    await obtainSmsVerifyCodeUseCase(
-      RequestSmsVerifyCodeParams(
-        phoneNumber: state.phoneNumber,
-        countryCode: "82",
-      ),
-    ).then(
+    await obtainTermsUseCase(state.phoneNumber).then(
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
-        (r) {
-          emit(
-            state.copyWith(
-              isRequestVerifyCodeEnable: false,
-              verifyTime: 10,
-            ),
-          );
+        (r) async {
+          if (r.terms.isEmpty || event.isTermsAgree) {
+            await obtainSmsVerifyCodeUseCase(
+              RequestSmsVerifyCodeParams(
+                phoneNumber: state.phoneNumber,
+              ),
+            ).then(
+              (value) => value.fold(
+                (l) => produceSideEffect(LoginError(l)),
+                (r) {
+                  emit(
+                    state.copyWith(
+                      isRequestVerifyCodeEnable: false,
+                      verifyTime: 30,
+                    ),
+                  );
+                  produceSideEffect(LoginShowSnackBar("인증 번호 요청 성공"));
+                },
+              ),
+            );
+          } else {
+            final terms = r.terms.map((e) => AgreeTermsEntity(title: e.title, content: e.content)).toList();
+            produceSideEffect(
+              LoginShowTermsBottomSheet(
+                terms: terms,
+                phoneNumber: state.phoneNumber,
+              ),
+            );
+          }
         },
       ),
     );

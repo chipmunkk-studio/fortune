@@ -25,7 +25,6 @@ class AuthNormalRepositoryImpl implements AuthNormalRemoteRepository {
         .requestSmsVerifyCode(
           RequestSmsVerifyCode(
             phoneNumber: params.phoneNumber,
-            countryCode: params.countryCode,
           ),
         )
         .toRemoteDomainData(errorMapper);
@@ -40,7 +39,6 @@ class AuthNormalRepositoryImpl implements AuthNormalRemoteRepository {
         .confirmSmsVerifyCode(
           RequestConfirmSmsVerifyCode(
             phoneNumber: params.phoneNumber,
-            countryCode: params.countryCode,
             authenticationNumber: params.authenticationNumber,
             pushToken: params.pushToken,
           ),

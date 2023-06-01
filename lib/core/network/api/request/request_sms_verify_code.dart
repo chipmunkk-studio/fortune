@@ -6,12 +6,9 @@ part 'request_sms_verify_code.g.dart';
 class RequestSmsVerifyCode {
   @JsonKey(name: 'phoneNumber')
   String phoneNumber;
-  @JsonKey(name: 'countryCode')
-  String countryCode;
 
   RequestSmsVerifyCode({
     required this.phoneNumber,
-    required this.countryCode,
   });
 
   factory RequestSmsVerifyCode.fromJson(Map<String, dynamic> json) => _$RequestSmsVerifyCodeFromJson(json);

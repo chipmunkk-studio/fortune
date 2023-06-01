@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
@@ -85,10 +87,12 @@ class _LoginPageState extends State<_LoginPage> {
             ),
           );
           if (result) {
-            _bloc.add(LoginRequestVerifyCode());
+            _bloc.add(LoginRequestVerifyCode(isTermsAgree: true));
           }
         } else if (sideEffect is LoginNextStep) {
           _stepperKey.currentState?.insertItem(0, duration: const Duration(milliseconds: 200));
+        } else if (sideEffect is LoginShowSnackBar) {
+          context.showSnackBar(sideEffect.text);
         }
       },
       child: KeyboardVisibilityBuilder(
@@ -144,7 +148,7 @@ class _LoginPageState extends State<_LoginPage> {
                                       String displayTime =
                                           "${min.toString().padLeft(2, '0')}분 ${sec.toString().padLeft(2, '0')}초";
                                       return Text("$displayTime 뒤에 다시 인증번호 요청을 할 수 있습니다",
-                                          style: FortuneTextStyle.body1Medium());
+                                          style: FortuneTextStyle.body3Bold(fontColor: ColorName.negative));
                                     }()
                                   : const SizedBox.shrink(),
                             ),
@@ -195,9 +199,7 @@ class _LoginPageState extends State<_LoginPage> {
                         isKeyboardVisible,
                         router,
                         isEnabled: state.isButtonEnabled,
-                        onPressed: () {
-                          _bloc.add(LoginBottomButtonClick());
-                        },
+                        onPressed: () => _bloc.add(LoginBottomButtonClick()),
                       );
                     },
                   ),
@@ -233,9 +235,7 @@ class _LoginPageState extends State<_LoginPage> {
           child: LoginVerifyCodeNumber(
             verifyCodeController: _verifyCodeController,
             verifyCode: state.verifyCode,
-            onTextChanged: (text) {
-              _bloc.add(LoginVerifyCodeInput(verifyCode: text));
-            },
+            onTextChanged: (text) => _bloc.add(LoginVerifyCodeInput(verifyCode: text)),
             isRequestVerifyCodeEnable: state.isRequestVerifyCodeEnable,
             onRequestClick: () => _bloc.add(LoginRequestVerifyCode()),
           ),

@@ -45,7 +45,7 @@ class LoginVerifyCodeNumber extends StatelessWidget {
                 counterText: "",
                 hintStyle: FortuneTextStyle.subTitle3Regular(fontColor: ColorName.deActive),
                 errorText:
-                    FortuneValidator.isValidVerifyCode(_verifyCode) || _verifyCode.isEmpty ? null : "인증번호는 숫자 6자리입니다.",
+                    FortuneValidator.isValidVerifyCode(_verifyCode) || _verifyCode.isEmpty ? null : "인증번호는 숫자 4자리입니다.",
                 errorStyle: FortuneTextStyle.body3Regular(fontColor: ColorName.negative),
               ),
             ),

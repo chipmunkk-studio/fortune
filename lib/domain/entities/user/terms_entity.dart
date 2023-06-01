@@ -7,11 +7,11 @@ class TermsEntity {
 }
 
 class Term {
-  final String? title;
-  final String? content;
+  final String title;
+  final String content;
 
   Term({
-    this.title,
-    this.content,
+    required this.title,
+    required this.content,
   });
 }

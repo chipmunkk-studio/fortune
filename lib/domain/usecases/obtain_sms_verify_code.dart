@@ -15,10 +15,8 @@ class ObtainSmsVerifyCodeUseCase implements UseCase1<void, RequestSmsVerifyCodeP
 
 class RequestSmsVerifyCodeParams {
   String phoneNumber;
-  String countryCode;
 
   RequestSmsVerifyCodeParams({
     required this.phoneNumber,
-    required this.countryCode,
   });
 }

@@ -6,8 +6,6 @@ part 'request_confirm_sms_verify_code.g.dart';
 class RequestConfirmSmsVerifyCode {
   @JsonKey(name: 'phoneNumber')
   String phoneNumber;
-  @JsonKey(name: 'countryCode')
-  String countryCode;
   @JsonKey(name: 'authenticationNumber')
   int authenticationNumber;
   @JsonKey(name: 'pushToken')
@@ -15,7 +13,6 @@ class RequestConfirmSmsVerifyCode {
 
   RequestConfirmSmsVerifyCode({
     required this.phoneNumber,
-    required this.countryCode,
     required this.authenticationNumber,
     required this.pushToken,
   });

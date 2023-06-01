@@ -29,7 +29,11 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       if (event.terms != term) return term;
       return term.copyWith(isChecked: !term.isChecked);
     }).toList();
-    emit(state.copyWith(agreeTerms: updatedAgreeTerms));
+    emit(
+      state.copyWith(
+        agreeTerms: updatedAgreeTerms,
+      ),
+    );
   }
 
   FutureOr<void> onAllTermsClick(AgreeTermsAllClick event, Emitter<AgreeTermsState> emit) async {
@@ -40,19 +44,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       }).toList();
       emit(state.copyWith(agreeTerms: updatedAgreeTerms));
       await Future.delayed(const Duration(milliseconds: 100));
-      final unCheckedTerms = state.agreeTerms.where((element) => !element.isChecked);
-      // if (unCheckedTerms.isEmpty) {
-      //   await authRepository
-      //       .agreeTerms(
-      //         phoneNumber: state.phoneNumber,
-      //       )
-      //       .then(
-      //         (value) => value.fold(
-      //           (l) => produceSideEffect(AgreeTermsError(l)),
-      //           (r) => produceSideEffect(AgreeTermsPop(true)),
-      //         ),
-      //       );
-      // }
     }
+    produceSideEffect(AgreeTermsPop(true));
   }
 }

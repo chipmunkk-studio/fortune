@@ -1,13 +1,9 @@
 class AgreeTermsEntity {
-  final double index;
-  final bool isRequire;
   final String title;
   final String content;
   final bool isChecked;
 
   AgreeTermsEntity({
-    required this.index,
-    required this.isRequire,
     required this.title,
     required this.content,
     this.isChecked = false,
@@ -21,8 +17,6 @@ class AgreeTermsEntity {
     bool? isChecked,
   }) {
     return AgreeTermsEntity(
-      index: index ?? this.index,
-      isRequire: isRequire ?? this.isRequire,
       title: title ?? this.title,
       content: content ?? this.content,
       isChecked: isChecked ?? this.isChecked,

@@ -33,9 +33,9 @@ class UserNormalRemoteDataSourceImpl extends UserNormalDataSource {
   }
 
   @override
-  Future<TermsEntity> getTerms(String phoneNumber) async{
+  Future<TermsEntity> getTerms(String phoneNumber) async {
     final response = await normalService.terms(phoneNumber: phoneNumber).then((value) => value.toResponseData());
-    final termsEntity = TermsResponse.fromJson(response);
+    final termsEntity = response != null ? TermsResponse.fromJson(response) : TermsEntity(terms: List.empty());
     return termsEntity;
   }
 }
