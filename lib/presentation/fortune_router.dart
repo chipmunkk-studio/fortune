@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/presentation/login/login_page.dart';
-import 'package:foresh_flutter/presentation/missiondetail/reward_detail_page.dart';
+import 'package:foresh_flutter/presentation/missiondetail/mission_detail_page.dart';
 import 'package:foresh_flutter/presentation/permission/require_permission_page.dart';
 
 import 'gradeguide/grade_guide_page.dart';
