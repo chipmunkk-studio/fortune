@@ -32,12 +32,12 @@ enum BuildType {
 }
 
 enum EnvKey {
-  PRODUCT_URL,
-  DEV_URL,
-  MAP_ACCESS_TOKEN,
-  MAP_STYLE_ID,
-  MAP_URL_TEMPLATE,
-  APP_METRICA_KEY,
+  product,
+  develop,
+  mapAccessToken,
+  mapStyleId,
+  mapUrlTemplate,
+  appMetrica,
 }
 
 class FortuneRemoteConfig {
@@ -132,18 +132,18 @@ getRemoteConfigArgs() async {
 
   try {
     await remoteConfig.fetchAndActivate();
-    final metricaKey = remoteConfig.getString(describeEnum(EnvKey.APP_METRICA_KEY));
-    final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.MAP_ACCESS_TOKEN));
-    final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.MAP_STYLE_ID));
-    final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.MAP_URL_TEMPLATE));
+    final metricaKey = remoteConfig.getString(describeEnum(EnvKey.appMetrica));
+    final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
+    final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
+    final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.PRODUCT_URL);
+          return describeEnum(EnvKey.product);
         case false:
-          return describeEnum(EnvKey.DEV_URL);
+          return describeEnum(EnvKey.develop);
         default:
-          return describeEnum(EnvKey.DEV_URL);
+          return describeEnum(EnvKey.develop);
       }
     }());
     return FortuneRemoteConfig(

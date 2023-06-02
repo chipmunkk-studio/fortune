@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAhRI6J2IhFd5tcmWZEhej5lLRk3CyPQTU',
-    appId: '1:961220732209:android:6b0419a71137e90c34fc10',
-    messagingSenderId: '961220732209',
-    projectId: 'fortune-79931',
-    storageBucket: 'fortune-79931.appspot.com',
+    apiKey: 'AIzaSyAMsyX3yngptd4A4mkiWrVV_in4DO07auo',
+    appId: '1:756092673843:android:c56f0cdc7a24b618786846',
+    messagingSenderId: '756092673843',
+    projectId: 'fortune-938ea',
+    storageBucket: 'fortune-938ea.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBrHPseBoffc61Xo0sTXfx0XY7yCFqqhPQ',
-    appId: '1:961220732209:ios:8a17b9dd35e62d4f34fc10',
-    messagingSenderId: '961220732209',
-    projectId: 'fortune-79931',
-    storageBucket: 'fortune-79931.appspot.com',
-    iosClientId: '961220732209-uoo8ffh5iakflsa8m3952eeub3m7bn6d.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBI9KdFJi33ynkCELOPP_njjDJFcRYvNo8',
+    appId: '1:756092673843:ios:6b13164f546879d1786846',
+    messagingSenderId: '756092673843',
+    projectId: 'fortune-938ea',
+    storageBucket: 'fortune-938ea.appspot.com',
+    iosClientId: '756092673843-aobbdelvomu1or34mmq429aqrnoko9pf.apps.googleusercontent.com',
     iosBundleId: 'com.foresh.fortune',
   );
 }
