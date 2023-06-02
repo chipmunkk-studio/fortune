@@ -57,6 +57,7 @@ import 'package:single_item_secure_storage/single_item_secure_storage.dart';
 import 'package:single_item_storage/cached_storage.dart';
 import 'package:single_item_storage/observed_storage.dart';
 import 'package:single_item_storage/storage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notification/notification_manager.dart';
 import 'env.dart';
@@ -71,9 +72,19 @@ Future<void> init() async {
   /// 앱로거
   initAppLogger();
 
-  ///  Firebase 초기화.
+  /// Firebase 초기화.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  /// 개발 환경 설정.
+  await initEnvironment();
+
+  /// Supabase
+  await Supabase.initialize(
+    url: serviceLocator<Environment>().remoteConfig.baseUrl,
+    anonKey: serviceLocator<Environment>().remoteConfig.anonKey,
+    debug: false,
   );
 
   /// 파이어 베이스 FCM
@@ -84,9 +95,6 @@ Future<void> init() async {
 
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
-
-  /// 개발 환경 설정.
-  await initEnvironment();
 
   /// 로컬 데이터 - Storage.
   final ObservedStorage<UserCredential> userStorage = ObservedStorage<UserCredential>(

@@ -32,6 +32,7 @@ enum BuildType {
 }
 
 enum EnvKey {
+  anonKey,
   product,
   develop,
   mapAccessToken,
@@ -41,6 +42,7 @@ enum EnvKey {
 }
 
 class FortuneRemoteConfig {
+  final String anonKey;
   final String baseUrl;
   final String mapAccessToken;
   final String mapStyleId;
@@ -53,6 +55,7 @@ class FortuneRemoteConfig {
     required this.mapStyleId,
     required this.mapUrlTemplate,
     required this.appMetricaKey,
+    required this.anonKey,
   });
 
   @override
@@ -61,7 +64,8 @@ class FortuneRemoteConfig {
         "mapAccessToken: ${mapAccessToken.shortenForPrint()},\n"
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
-        "appMetricaKey: $appMetricaKey\n";
+        "appMetricaKey: $appMetricaKey\n"
+        "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
 
@@ -101,9 +105,11 @@ class Environment {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     FirebaseCrashlytics.instance
-      ..setCustomKey("appName", packageInfo.appName)..setCustomKey(
-        "packageName", packageInfo.packageName)..setCustomKey("version", packageInfo.version)..setCustomKey(
-        "buildNumber", packageInfo.buildNumber)..setCustomKey("buildType", buildType.toString())
+      ..setCustomKey("appName", packageInfo.appName)
+      ..setCustomKey("packageName", packageInfo.packageName)
+      ..setCustomKey("version", packageInfo.version)
+      ..setCustomKey("buildNumber", packageInfo.buildNumber)
+      ..setCustomKey("buildType", buildType.toString())
       ..setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
 
     /// 앱메트리카.
@@ -111,9 +117,9 @@ class Environment {
 
     FortuneLogger.info(
       "buildType: $buildType,\n"
-          "--------------configArgs--------------"
-          "${remoteConfig.toString()}"
-          "--------------------------------------",
+      "--------------configArgs--------------"
+      "${remoteConfig.toString()}"
+      "--------------------------------------",
     );
   }
 }
@@ -136,6 +142,7 @@ getRemoteConfigArgs() async {
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
+    final anonKey = remoteConfig.getString(describeEnum(EnvKey.anonKey));
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
@@ -152,6 +159,7 @@ getRemoteConfigArgs() async {
       mapAccessToken: mapAccessToken,
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,
+      anonKey: anonKey,
     );
   } catch (e) {
     FortuneLogger.error("RemoteConfig Error:: $e");

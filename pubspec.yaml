@@ -21,10 +21,12 @@ dependencies:
   firebase_analytics:
   firebase_crashlytics:
   firebase_messaging:
+  supabase:
+  supabase_flutter:
   app_settings: ^4.2.0
   appmetrica_plugin: ^1.1.0
   package_info_plus: ^4.0.2
-  flutter_local_notifications: ^14.1.0
+  flutter_local_notifications: ^14.1.1
 
   # ui
   cupertino_icons: ^1.0.5
