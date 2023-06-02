@@ -45,7 +45,7 @@ class _MissionItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.r),
@@ -60,9 +60,7 @@ class _MissionItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      mission.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+                      "더울땐 역시 아메지!",
                       style: FortuneTextStyle.subTitle3Bold(),
                     ),
                     const SizedBox(height: 4),

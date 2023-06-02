@@ -70,13 +70,50 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
       child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
         builder: (context, state) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("숨겨진 행운 찾기", style: FortuneTextStyle.subTitle1SemiBold()),
-              const SizedBox(height: 8),
-              Text(
-                "숨겨진 행운을 찾아보아요",
-                style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark),
+              Expanded(
+                child: Stack(
+                  children: [
+                    ListView(
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        Text(
+                          "메인타이틀을 입력하세요",
+                          style: FortuneTextStyle.subTitle1SemiBold(),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "서브타이틀을 입력하세요",
+                          style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [
+                              ColorName.background.withOpacity(1.0),
+                              ColorName.background.withOpacity(0.0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              FortuneBottomButton(
+                isEnabled: true,
+                buttonText: "교환하기",
+                onPress: () => _showExchangeBottomSheet(),
+                isKeyboardVisible: false,
               ),
             ],
           );
