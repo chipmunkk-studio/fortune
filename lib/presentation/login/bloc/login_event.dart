@@ -39,10 +39,6 @@ class LoginBottomButtonClick extends LoginEvent {
 }
 
 class LoginRequestVerifyCode extends LoginEvent {
-  final bool isTermsAgree;
-
-  LoginRequestVerifyCode({this.isTermsAgree = false});
-
   @override
   List<Object?> get props => [];
 }

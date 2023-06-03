@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:foresh_flutter/domain/entities/user/terms_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'login_state.freezed.dart';
@@ -13,17 +12,15 @@ class LoginState with _$LoginState {
     required bool isRequestVerifyCodeEnable,
     required bool isButtonEnabled,
     required int verifyTime,
-    required List<Term> terms,
     required List<LoginStepper> steppers,
   }) = _LoginState;
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
         phoneNumber: phoneNumber ?? "01049307013",
-        isButtonEnabled: true,
+        isButtonEnabled: false,
         verifyCode: "",
         verifyTime: 0,
         isRequestVerifyCodeEnable: true,
-        terms: List.empty(),
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
         steppers: [LoginStepper.phoneNumber],
       );

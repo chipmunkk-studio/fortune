@@ -2,67 +2,26 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/error/fortune_error_mapper.dart';
-import 'package:foresh_flutter/core/network/api/service/common_service.dart';
-import 'package:foresh_flutter/core/network/api/service/main_service.dart';
-import 'package:foresh_flutter/core/network/api/service/mission_service.dart';
-import 'package:foresh_flutter/core/network/api/service/normal/normal_auth_service.dart';
-import 'package:foresh_flutter/core/network/api/service/normal/normal_user_service.dart';
-import 'package:foresh_flutter/core/network/api/service/user_service.dart';
-import 'package:foresh_flutter/core/network/api_service_provider.dart';
-import 'package:foresh_flutter/core/network/auth_helper_jwt.dart';
-import 'package:foresh_flutter/core/network/credential/user_credential.dart';
 import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/datasources/common_datasource.dart';
-import 'package:foresh_flutter/data/datasources/local_datasource.dart';
-import 'package:foresh_flutter/data/datasources/main_datasource.dart';
-import 'package:foresh_flutter/data/datasources/mission_datasource.dart';
-import 'package:foresh_flutter/data/datasources/user/auth_normal_datasource.dart';
-import 'package:foresh_flutter/data/datasources/user/user_normal_datasource.dart';
-import 'package:foresh_flutter/data/repositories/auth_normal_repository_impl.dart';
-import 'package:foresh_flutter/data/repositories/common_repository_impl.dart';
-import 'package:foresh_flutter/data/repositories/main_repository_impl.dart';
-import 'package:foresh_flutter/data/repositories/reward_repository_impl.dart';
-import 'package:foresh_flutter/data/repositories/user_normal_repository_impl.dart';
-import 'package:foresh_flutter/domain/repositories/auth_normal_remote_repository.dart';
-import 'package:foresh_flutter/domain/repositories/common_repository.dart';
-import 'package:foresh_flutter/domain/repositories/marker_repository.dart';
-import 'package:foresh_flutter/domain/repositories/reward_repository.dart';
-import 'package:foresh_flutter/domain/repositories/user_normal_remote_repository.dart';
-import 'package:foresh_flutter/domain/usecases/click_marker_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/main_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_announcement_usecaase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_faq_usecaase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_mission_detail_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_missions_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_sms_verify_code.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_terms_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/request_mission_exchange_usecase.dart';
-import 'package:foresh_flutter/domain/usecases/sms_verify_code_confirm_usecase.dart';
+import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
+import 'package:foresh_flutter/data/supabase/service/board_service.dart';
+import 'package:foresh_flutter/data/supabase/service/user_service.dart';
+import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_respository.dart';
 import 'package:foresh_flutter/firebase_options.dart';
-import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms.dart';
+import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/login/bloc/login.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main_bloc.dart';
-import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
-import 'package:foresh_flutter/presentation/permission/bloc/request_permission.dart';
-import 'package:foresh_flutter/presentation/support/announcement/bloc/announcement.dart';
-import 'package:foresh_flutter/presentation/support/faq/bloc/faq.dart';
+import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
+import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:single_item_secure_storage/single_item_secure_storage.dart';
-import 'package:single_item_storage/cached_storage.dart';
-import 'package:single_item_storage/observed_storage.dart';
-import 'package:single_item_storage/storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notification/notification_manager.dart';
 import 'env.dart';
-import 'presentation/markerhistory/bloc/marker_history_bloc.dart';
-import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -96,24 +55,6 @@ Future<void> init() async {
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
 
-  /// 로컬 데이터 - Storage.
-  final ObservedStorage<UserCredential> userStorage = ObservedStorage<UserCredential>(
-    CachedStorage(
-      SecureStorage(
-        itemKey: 'data.models.user-credential',
-        fromMap: (map) => UserCredential.fromJson(map),
-        toMap: (user) => user.toJson(),
-        iosOptions: const IOSOptions(
-          accessibility: KeychainAccessibility.first_unlock,
-          synchronizable: true,
-        ),
-        androidOptions: const AndroidOptions(
-          encryptedSharedPreferences: false,
-        ),
-      ),
-    ),
-  );
-
   /// 로컬 데이터 - Preference.
   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
@@ -123,21 +64,21 @@ Future<void> init() async {
   /// Router.
   serviceLocator.registerLazySingleton<FortuneRouter>(() => FortuneRouter()..init());
 
-  /// 서비스 프로바이더.
-  ApiServiceProvider apiProvider = ApiServiceProvider(
-    baseUrl: serviceLocator<Environment>().remoteConfig.baseUrl,
-    userStore: userStorage,
-  );
-
-  /// Preference & Storage.
-  serviceLocator.registerLazySingleton<Storage<UserCredential>>(() => userStorage);
+  /// SharedPreferences
   serviceLocator.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
-  _initService(apiProvider);
-  _initDataSource();
-  _initRepository();
-  _initBloc();
-  _initUseCase();
+  await initSupabase();
+}
+
+initSupabase() async {
+  /// data.
+  await _initService();
+
+  /// domain.
+  await _initRepository();
+
+  /// Bloc.
+  await _initBloc();
 }
 
 /// FCM
@@ -181,19 +122,42 @@ initAppLogger() {
 }
 
 /// Service.
-_initService(ApiServiceProvider apiProvider) {
+_initService() {
   serviceLocator
+    ..registerLazySingleton<UserService>(
+      () => UserService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<BoardService>(
+      () => BoardService(
+        Supabase.instance.client,
+        serviceLocator<UserService>(),
+      ),
+    )
+    ..registerLazySingleton<AuthService>(
+      () => AuthService(
+        client: Supabase.instance.client,
+        authClient: Supabase.instance.client.auth,
+        preferences: serviceLocator<SharedPreferences>(),
+      ),
+    );
+}
 
-    /// normal.(인증이 필요하지 않은 서비스)
-    ..registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt())
-    ..registerLazySingleton<NormalUserService>(() => apiProvider.getMemberNormalService())
-    ..registerLazySingleton<NormalAuthService>(() => apiProvider.getAuthNormalService())
-
-    /// abnormal.(인증이 필요한 서비스)
-    ..registerLazySingleton<UserService>(() => apiProvider.getUserService())
-    ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService())
-    ..registerLazySingleton<MissionService>(() => apiProvider.getRewardService())
-    ..registerLazySingleton<CommonService>(() => apiProvider.getCommonService());
+/// Repository
+_initRepository() {
+  serviceLocator
+    ..registerLazySingleton<UserRepository>(
+      () => UserRepository(
+        serviceLocator<UserService>(),
+      ),
+    )
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepository(
+        serviceLocator<AuthService>(),
+        serviceLocator<UserService>(),
+      ),
+    );
 }
 
 /// Bloc.
@@ -201,142 +165,17 @@ _initBloc() {
   serviceLocator
     ..registerFactory(
       () => LoginBloc(
-        fcmManager: serviceLocator(),
-        obtainSmsVerifyCodeUseCase: serviceLocator(),
-        smsVerifyCodeConfirmUseCase: serviceLocator(),
-        userStorage: serviceLocator(),
-        obtainTermsUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => AgreeTermsBloc(),
-    )
-    ..registerFactory(
-      () => MainBloc(
-        mainUseCase: serviceLocator(),
-        clickMarkerUseCase: serviceLocator(),
-        userStorage: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MarkerHistoryBloc(),
-    )
-    ..registerFactory(
-      () => AnnouncementBloc(
-        obtainAnnouncementUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MissionDetailBloc(
-        obtainMissionDetailUseCase: serviceLocator(),
-        requestRewardExchangeUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MissionsBloc(
-        obtainMissionsUseCase: serviceLocator(),
+        authRepository: serviceLocator<AuthRepository>(),
+        userRepository: serviceLocator<UserRepository>(),
       ),
     )
     ..registerFactory(
       () => RequestPermissionBloc(),
     )
     ..registerFactory(
-      () => FaqBloc(
-        obtainFaqUseCase: serviceLocator(),
+      () => AgreeTermsBloc(
+        authRepository: serviceLocator<AuthRepository>(),
+        userRepository: serviceLocator<UserRepository>(),
       ),
-    );
-}
-
-/// DataSource.
-_initDataSource() {
-  serviceLocator
-    ..registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl(sharedPreferences: serviceLocator()),
-    )
-    ..registerLazySingleton<UserNormalDataSource>(
-      () => UserNormalRemoteDataSourceImpl(serviceLocator()),
-    )
-    ..registerLazySingleton<AuthNormalDataSource>(
-      () => AuthNormalDataSourceImpl(serviceLocator()),
-    )
-    ..registerLazySingleton<MainDataSource>(
-      () => MainDataSourceImpl(serviceLocator()),
-    )
-    ..registerLazySingleton<MissionDataSource>(
-      () => MissionDataSourceImpl(serviceLocator()),
-    )
-    ..registerLazySingleton<CommonDataSource>(
-      () => CommonDataSourceImpl(serviceLocator()),
-    );
-}
-
-/// Repository.
-_initRepository() {
-  serviceLocator
-    ..registerLazySingleton<FortuneErrorMapper>(() => FortuneErrorMapper())
-    ..registerLazySingleton<UserNormalRemoteRepository>(
-      () => UserNormalRepositoryImpl(
-        userDataSource: serviceLocator(),
-        errorMapper: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<AuthNormalRemoteRepository>(
-      () => AuthNormalRepositoryImpl(
-        authDataSource: serviceLocator(),
-        errorMapper: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<MainRepository>(
-      () => MainRepositoryImpl(
-        markerRemoteDataSource: serviceLocator(),
-        errorMapper: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<MissionRepository>(
-      () => MissionRepositoryImpl(
-        missionDataSource: serviceLocator(),
-        errorMapper: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<CommonRepository>(
-      () => CommonRepositoryImpl(
-        commonDataSource: serviceLocator(),
-        errorMapper: serviceLocator(),
-      ),
-    );
-}
-
-/// UseCase.
-_initUseCase() {
-  serviceLocator
-    ..registerLazySingleton<ObtainSmsVerifyCodeUseCase>(
-      () => ObtainSmsVerifyCodeUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<SmsVerifyCodeConfirmUseCase>(
-      () => SmsVerifyCodeConfirmUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ClickMarkerUseCase>(
-      () => ClickMarkerUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<MainUseCase>(
-      () => MainUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ObtainMissionsUseCase>(
-      () => ObtainMissionsUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ObtainMissionDetailUseCase>(
-      () => ObtainMissionDetailUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<RequestRewardExchangeUseCase>(
-      () => RequestRewardExchangeUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ObtainAnnouncementUseCase>(
-      () => ObtainAnnouncementUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ObtainTermsUseCase>(
-      () => ObtainTermsUseCase(serviceLocator()),
-    )
-    ..registerLazySingleton<ObtainFaqUseCase>(
-      () => ObtainFaqUseCase(serviceLocator()),
     );
 }

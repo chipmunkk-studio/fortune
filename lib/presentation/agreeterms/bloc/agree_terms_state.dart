@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/entities/agree_terms_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'agree_terms_state.freezed.dart';

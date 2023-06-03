@@ -7,11 +7,10 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/checkbox/fortune_check_box.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/entities/agree_terms_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-
-import 'bloc/agree_terms.dart';
 
 class AgreeTermsBottomSheet extends StatelessWidget {
   final List<AgreeTermsEntity> terms;
@@ -110,8 +109,8 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                           state: item.isChecked,
                         ),
                         const SizedBox(width: 12),
-                        Text("${item.title}", style: FortuneTextStyle.body1Medium()),
-                        Spacer(),
+                        Text(item.title, style: FortuneTextStyle.body1Medium()),
+                        const Spacer(),
                         Assets.icons.icArrowRight16.svg(),
                         const SizedBox(width: 24),
                       ],

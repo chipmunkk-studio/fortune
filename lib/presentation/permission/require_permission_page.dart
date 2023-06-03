@@ -11,9 +11,10 @@ import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/permission/bloc/request_permission.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+
+import 'bloc/request_permission.dart';
 
 class _RequestPermissionEntity {
   final SvgPicture icon;
@@ -35,7 +36,7 @@ class RequestPermissionPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<RequestPermissionBloc>()..add(RequestPermissionInit()),
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context),
+        appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
         child: const _RequestPermissionPage(),
       ),
     );

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/domain/entities/notification_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/notification_entity.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
 import 'package:single_item_storage/storage.dart';
 

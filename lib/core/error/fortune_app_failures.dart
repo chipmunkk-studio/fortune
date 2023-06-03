@@ -1,12 +1,7 @@
-import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 
-import 'fortune_error_mapper.dart';
-
 class FortuneException {
-  final int? errorCode;
+  final String? errorCode;
   final String? errorMessage;
 
   FortuneException({
@@ -16,102 +11,74 @@ class FortuneException {
 }
 
 abstract class FortuneFailure extends Equatable {
-  final int code;
+  final String? code;
   final String? message;
+  final String? description;
 
   const FortuneFailure({
-    required this.message,
-    required this.code,
+    this.code,
+    this.message,
+    this.description,
   }) : super();
 }
 
-/// 인증에러.
+/// 인증 에러.
 class AuthFailure extends FortuneFailure {
-  final int? errorCode;
+  final String? errorCode;
   final String? errorMessage;
+  final String? exposureMessage;
 
-  const AuthFailure(
+  const AuthFailure({
     this.errorCode,
     this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.unauthorized,
-          message: errorMessage,
-        );
-
-  factory AuthFailure.internal({
-    int? errorCode,
-    String? errorType,
-    required String? errorMessage,
-  }) =>
-      AuthFailure(
-        errorCode ?? HttpStatus.unauthorized,
-        errorMessage,
-      );
+    this.exposureMessage,
+  }) : super(
+    code: errorCode,
+    message: errorMessage,
+    description: exposureMessage,
+  );
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [errorMessage, errorCode];
 }
 
-/// Bad Request.
-class BadRequestFailure extends FortuneFailure {
-  final int? errorCode;
+/// 공통 에러.
+class CommonFailure extends FortuneFailure {
+  final String? errorCode;
   final String? errorMessage;
+  final String? exposureMessage;
 
-  const BadRequestFailure(
+  const CommonFailure({
     this.errorCode,
     this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.badRequest,
-          message: errorMessage,
-        );
+    this.exposureMessage,
+  }) : super(
+    code: errorCode,
+    message: errorMessage,
+    description: exposureMessage,
+  );
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, errorCode];
 }
 
-/// 서버 에러.
-class InternalServerFailure extends FortuneFailure {
-  final int? errorCode;
+/// 알 수 없는 에러.
+class UnknownFailure extends FortuneFailure {
+  final String? errorCode;
   final String? errorMessage;
+  final String? exposureMessage;
 
-  const InternalServerFailure(
-    this.errorCode,
+  const UnknownFailure({
+    this.errorCode = '999',
     this.errorMessage,
-  ) : super(
-          code: errorCode ?? FortuneErrorStatus.internalServerError,
-          message: errorMessage,
-        );
+    this.exposureMessage = "알 수 없는 에러",
+  }) : super(
+    code: errorCode,
+    message: errorMessage,
+    description: exposureMessage,
+  );
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, errorCode];
 }
 
-/// 클라이언트 에러.
-class InternalClientFailure extends FortuneFailure {
-  final String? errorMessage;
-
-  InternalClientFailure(
-    this.errorMessage,
-  ) : super(
-          code: FortuneErrorStatus.clientInternal,
-          message: errorMessage ?? FortuneErrorDataReference.errorClientInternal.tr(),
-        );
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// 알수 없는 에러.
-class UnKnownFailure extends FortuneFailure {
-  final String? errorMessage;
-
-  UnKnownFailure(
-    this.errorMessage,
-  ) : super(
-          code: FortuneErrorStatus.unknown,
-          message: errorMessage ?? FortuneErrorDataReference.errorClientUnknown.tr(),
-        );
-
-  @override
-  List<Object?> get props => [errorMessage];
-}

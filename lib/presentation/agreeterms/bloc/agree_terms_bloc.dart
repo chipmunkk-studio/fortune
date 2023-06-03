@@ -1,15 +1,23 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_respository.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'agree_terms.dart';
 
 class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
     with SideEffectBlocMixin<AgreeTermsEvent, AgreeTermsState, AgreeTermsSideEffect> {
+  final AuthRepository authRepository;
+  final UserRepository userRepository;
+
   static const tag = "[PhoneNumberBloc]";
 
-  AgreeTermsBloc() : super(AgreeTermsState.initial()) {
+  AgreeTermsBloc({
+    required this.authRepository,
+    required this.userRepository,
+  }) : super(AgreeTermsState.initial()) {
     on<AgreeTermsInit>(init);
     on<AgreeTermsTermClick>(onTermsClick);
     on<AgreeTermsAllClick>(onAllTermsClick);
@@ -29,11 +37,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       if (event.terms != term) return term;
       return term.copyWith(isChecked: !term.isChecked);
     }).toList();
-    emit(
-      state.copyWith(
-        agreeTerms: updatedAgreeTerms,
-      ),
-    );
+    emit(state.copyWith(agreeTerms: updatedAgreeTerms));
   }
 
   FutureOr<void> onAllTermsClick(AgreeTermsAllClick event, Emitter<AgreeTermsState> emit) async {
@@ -44,7 +48,10 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       }).toList();
       emit(state.copyWith(agreeTerms: updatedAgreeTerms));
       await Future.delayed(const Duration(milliseconds: 100));
+      final unCheckedTerms = state.agreeTerms.where((element) => !element.isChecked);
+      if (unCheckedTerms.isEmpty) {
+        produceSideEffect(AgreeTermsPop(true));
+      }
     }
-    produceSideEffect(AgreeTermsPop(true));
   }
 }

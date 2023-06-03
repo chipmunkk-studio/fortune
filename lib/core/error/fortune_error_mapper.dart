@@ -1,66 +1,36 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 
 import 'fortune_app_failures.dart';
 
-abstract class FortuneErrorDataReference {
-  static const common = 'common';
-
-  static const errorClientInternal = 'errorClientInternal';
-  static const errorClientUnknown = 'errorClientUnknown';
-  static const errorClientAuth = 'errorClientAuth';
-}
-
-abstract class FortuneErrorStatus {
-  static const int unknown = 998;
-  static const int custom = 997;
-
-  // 클라이언트 에러.
-  static const int clientInternal = 996;
-
-  // 인증되지 않은 사용자 요청일 경우 발생하는 에러.
-  static const int unauthorized = 10003;
-
-  // 잘못된 요청.
-  static const int badRequest = 10000;
-
-  // 이미 획득한 마커
-  static const int markerAlreadyAcquired = 10016;
-
-  // 마커가 없을 경우.
-  static const int hasNoTicket = 10017;
-
-  // 서버에서 발생하는 에러.
-  static const int internalServerError = 20000;
-
-  // 서버에서 발생하는 스프링관련한 에러.
-  static const int internalServerSpringError = 20001;
-}
-
 class FortuneErrorMapper {
   FortuneFailure map(FortuneException error) {
     try {
-      final int? errorCode = error.errorCode;
+      final int errorCode = int.parse(error.errorCode ?? "");
       final String? errorMessage = error.errorMessage;
 
       FortuneLogger.error("$errorCode: $errorMessage");
       switch (errorCode) {
         // 인증에러.
-        case FortuneErrorStatus.unauthorized:
-          return AuthFailure(errorCode, errorMessage);
-        // 서버 에러.
-        case FortuneErrorStatus.internalServerSpringError:
-        case FortuneErrorStatus.internalServerError:
-          return InternalServerFailure(errorCode, errorMessage);
-        // 클라이언트 에러.
-        case FortuneErrorStatus.clientInternal:
-          return InternalClientFailure(errorMessage);
-        // 그 외.
+        case HttpStatus.forbidden:
+        case HttpStatus.unauthorized:
+          return AuthFailure(
+            errorCode: errorCode.toString(),
+            errorMessage: errorMessage,
+          );
+        // 공통에러
         default:
-          return BadRequestFailure(errorCode, errorMessage);
+          return CommonFailure(
+            errorCode: errorCode.toString(),
+            errorMessage: errorMessage,
+          );
       }
     } catch (e) {
-      return UnKnownFailure(e.toString());
+      return UnknownFailure(
+        errorMessage: e.toString(),
+      );
     }
   }
 

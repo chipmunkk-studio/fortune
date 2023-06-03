@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
@@ -22,7 +23,7 @@ main() {
 
       // 앱이 백그라운드 상태에서 알림을 클릭하여 시작된 경우 > 루트를 넘겨줘야함
       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-      String startRoute = await getStartRoute(initialMessage?.data);
+      String startRoute = await serviceLocator<AuthService>().recoverSession(initialMessage?.data);
 
       runApp(
         EasyLocalization(
