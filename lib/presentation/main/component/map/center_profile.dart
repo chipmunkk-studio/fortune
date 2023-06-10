@@ -1,0 +1,91 @@
+import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
+
+class CenterProfile extends StatelessWidget {
+  final String imageUrl;
+  final Color backgroundColor;
+
+  const CenterProfile({
+    Key? key,
+    required this.imageUrl,
+    required this.backgroundColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      SizedBox(
+        width: 48,
+        height: 53,
+        child: CustomPaint(
+          painter: _CenterProfileBackgroundPainter(),
+        ),
+      ),
+      Positioned(
+        left: 3,
+        right: 3,
+        top: 3,
+        child: SquircleNetworkImageView(
+          imageUrl: imageUrl,
+          size: 42,
+          backgroundColor: ColorName.deActiveDark,
+          placeHolder: Assets.images.ivDefaultProfile.svg(
+            fit: BoxFit.none,
+          ),
+        ),
+      ),
+    ]);
+  }
+}
+
+class _CenterProfileBackgroundPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Path path_0 = Path();
+    path_0.moveTo(0, size.height * 0.4500000);
+    path_0.cubicTo(0, size.height * 0.1125000, size.width * 0.1250000, 0, size.width * 0.5000000, 0);
+    path_0.cubicTo(size.width * 0.8750000, 0, size.width, size.height * 0.1125000, size.width, size.height * 0.4500000);
+    path_0.cubicTo(size.width, size.height * 0.7875000, size.width * 0.8750000, size.height * 0.9000000,
+        size.width * 0.5000000, size.height * 0.9000000);
+    path_0.cubicTo(
+        size.width * 0.1250000, size.height * 0.9000000, 0, size.height * 0.7875000, 0, size.height * 0.4500000);
+    path_0.close();
+
+    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
+    paint_0_fill.color = Color(0xff7367FF).withOpacity(1.0);
+    canvas.drawPath(path_0, paint_0_fill);
+
+    Path path_1 = Path();
+    path_1.moveTo(size.width * 0.5622019, size.height * 0.9122133);
+    path_1.cubicTo(size.width * 0.5400019, size.height * 0.9385317, size.width * 0.5289000, size.height * 0.9516917,
+        size.width * 0.5156000, size.height * 0.9569033);
+    path_1.cubicTo(size.width * 0.5014574, size.height * 0.9624467, size.width * 0.4853889, size.height * 0.9624467,
+        size.width * 0.4712463, size.height * 0.9569033);
+    path_1.cubicTo(size.width * 0.4579463, size.height * 0.9516917, size.width * 0.4468444, size.height * 0.9385317,
+        size.width * 0.4246444, size.height * 0.9122133);
+    path_1.cubicTo(size.width * 0.3925148, size.height * 0.8741233, size.width * 0.3764500, size.height * 0.8550783,
+        size.width * 0.3758500, size.height * 0.8391983);
+    path_1.cubicTo(size.width * 0.3752148, size.height * 0.8223733, size.width * 0.3840296, size.height * 0.8063917,
+        size.width * 0.3993037, size.height * 0.7966733);
+    path_1.cubicTo(size.width * 0.4137185, size.height * 0.7875017, size.width * 0.4402870, size.height * 0.7875017,
+        size.width * 0.4934222, size.height * 0.7875017);
+    path_1.cubicTo(size.width * 0.5465593, size.height * 0.7875017, size.width * 0.5731259, size.height * 0.7875017,
+        size.width * 0.5875426, size.height * 0.7966733);
+    path_1.cubicTo(size.width * 0.6028167, size.height * 0.8063917, size.width * 0.6116296, size.height * 0.8223733,
+        size.width * 0.6109944, size.height * 0.8391983);
+    path_1.cubicTo(size.width * 0.6103963, size.height * 0.8550783, size.width * 0.5943315, size.height * 0.8741233,
+        size.width * 0.5622019, size.height * 0.9122133);
+    path_1.close();
+
+    Paint paint1 = Paint()..style = PaintingStyle.fill;
+    paint1.color = const Color(0xff7367FF).withOpacity(1.0);
+    canvas.drawPath(path_1, paint1);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}

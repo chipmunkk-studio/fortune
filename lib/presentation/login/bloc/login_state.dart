@@ -11,16 +11,18 @@ class LoginState with _$LoginState {
     required String guideTitle,
     required bool isRequestVerifyCodeEnable,
     required bool isButtonEnabled,
+    required LoginUserState loginUserState,
     required int verifyTime,
     required List<LoginStepper> steppers,
   }) = _LoginState;
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
-        phoneNumber: phoneNumber ?? "01049307013",
-        isButtonEnabled: false,
+        phoneNumber: "",
+        isButtonEnabled: true,
         verifyCode: "",
         verifyTime: 0,
         isRequestVerifyCodeEnable: true,
+        loginUserState: LoginUserState.none,
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
         steppers: [LoginStepper.phoneNumber],
       );
@@ -29,6 +31,12 @@ class LoginState with _$LoginState {
 enum LoginStepper {
   phoneNumber,
   signInWithOtp,
+}
+
+enum LoginUserState {
+  sessionExpired,
+  needToLogin,
+  none,
 }
 
 abstract class LoginGuideTitle {

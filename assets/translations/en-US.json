@@ -1,12 +1,4 @@
 {
-  "errorClientUnknown": {
-    "title": "알 수 없는 에러",
-    "common": "예상하지 못한 에러가 발생했습니다."
-  },
-  "errorClientInternal": {
-    "title": "클라이언트 에러",
-    "common": "클라이언트에서 발생한 에러입니다."
-  },
   "loginGuideTitle": {
     "phoneNumber": "본인 확인을 위해\n휴대폰 번호가 필요해요",
     "signInWithOtp": "잘오신거에요!\n문자로 전송된 인증번호를 입력해주세요",
@@ -14,26 +6,14 @@
   },
   "onboarding_greeting_title": "Nice to meet You!",
   "onboarding_greeting_sub_title": "Please login to use app",
-  "require_certify_phone_number": "For identification\nI need a cell phone number",
-  "require_certify_phone_number_hint": "Please enter your cell phone number",
-  "require_certify_phone_number_error": "Please enter a valid number",
-  "require_input_nickname_error": "Please input correct nickname.",
-  "select_country_code": "Please select the country code",
-  "join_membership": "JOIN",
-  "next": "NEXT",
-  "default_country_name": "South Korea",
-  "cert_expiration": "Certification expiration",
-  "enter_nickname": "Please enter a nickname",
-  "enter_nickname_hint": "your nickname",
-  "enter_profile_image": "Please set\nthe profile image",
-  "sign_up_complete": "Sign up completed!",
-  "move_in_few_minutes": "Move in a few minutes",
-  "home": "홈",
-  "fortune_radar": "포춘레이더",
-  "my_page": "마이페이지",
+  "cert_expiration": "Certification Expiration",
   "bronze": "Bronze",
   "silver": "Silver",
   "gold": "Gold",
   "platinum": "Platinum",
-  "diamond": "Diamond"
+  "diamond": "Diamond",
+  "cup": "Cup",
+  "bean": "Bean",
+  "ice": "Ice",
+  "ticket": "Ticket"
 }

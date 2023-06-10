@@ -52,6 +52,7 @@ class _AgreeTermsBottomSheet extends StatefulWidget {
 class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   late AgreeTermsBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
+  final FortuneDialogService dialogService = FortuneDialogService();
 
   @override
   void initState() {
@@ -66,7 +67,8 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
         if (sideEffect is AgreeTermsPop) {
           router.pop(context, sideEffect.flag);
         } else if (sideEffect is AgreeTermsError) {
-          context.handleError(
+          dialogService.showErrorDialog(
+            context,
             sideEffect.error,
             btnOkOnPress: () {
               router.pop(context, false);

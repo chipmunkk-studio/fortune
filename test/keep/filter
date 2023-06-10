@@ -35,7 +35,25 @@
   }
 
 
-
+    // 재료 아이디들만 뽑음.
+      final ingredientIds = markersNearByMe.map((e) => e.ingredientId).toList();
+      // 재료 리스트.
+      final ingredientsList = await ingredientRepository.getIngredientByIds(ingredientIds);
+      // 마커 목록을 뽑아옴.
+      final List<MarkerMapEntity> markerEntities = markersNearByMe.map(
+        (e) {
+          final matchedElement = ingredientsList.where((element) => element.id == e.ingredientId).single;
+          return MarkerMapEntity(
+            id: e.id,
+            ingredient: matchedElement,
+            latitude: e.latitude,
+            longitude: e.longitude,
+            isExtinct: e.isExtinct,
+            isRandomLocation: e.isRandomLocation,
+            lastObtainUser: e.lastObtainUser,
+          );
+        },
+      ).toList();
 
 
 

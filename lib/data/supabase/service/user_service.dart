@@ -1,7 +1,8 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/response/user_response.dart';
+import 'package:foresh_flutter/data/supabase/request/request_user_update.dart';
+import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/user_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {
@@ -18,56 +19,55 @@ class UserService {
   }) async {
     try {
       await _client.from(_userTableName).insert(
-            UserResponse(
-              phone_: phone,
-              nickname_: 'clover${DateTime.now().millisecondsSinceEpoch}',
+            RequestFortuneUserUpdate(
+              phone: phone.replaceFirst('+', ''),
+              nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
+              ticket: 100,
+              countryCode: "82",
+              markerObtainCount: 0,
+              trashObtainCount: 0,
+              level: 1,
             ).toJson(),
           );
-    } on PostgrestException catch (e) {
-      throw CommonFailure(
-        errorCode: e.code,
-        errorMessage: e.message,
-        exposureMessage: "회원가입 실패.",
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
   // 사용자 업데이트.
-  Future<void> update(
+  Future<FortuneUserEntity> update(
     String phoneNumber, {
     String? nickName,
+    int? ticket,
+    String? countryCode,
+    int? markerObtainCount,
+    int? trashObtainCount,
   }) async {
     try {
-      UserEntity? user = await findUserByPhone(phoneNumber);
+      FortuneUserEntity? user = await findUserByPhone(phoneNumber);
       if (user != null) {
-        await _client
+        final level = assignLevel(markerObtainCount ?? user.markerObtainCount);
+        final updateUser = await _client
             .from(_userTableName)
             .update(
-              UserResponse(
-                phone_: user.phone,
-                nickname_: nickName ?? user.nickname,
+              RequestFortuneUserUpdate(
+                phone: user.phone,
+                nickname: nickName ?? user.nickname,
+                ticket: ticket ?? user.ticket,
+                countryCode: countryCode ?? user.countryCode,
+                markerObtainCount: markerObtainCount ?? user.markerObtainCount,
+                trashObtainCount: trashObtainCount ?? user.trashObtainCount,
+                level: level,
               ).toJson(),
             )
-            .eq("phone", user.phone);
+            .eq('phone', phoneNumber)
+            .select();
+        return updateUser.map((e) => FortuneUserResponse.fromJson(e)).toList().single;
       } else {
         throw const PostgrestException(message: '사용자가 존재하지 않습니다');
       }
-    } on PostgrestException catch (e) {
-      throw CommonFailure(
-        errorCode: e.code,
-        errorMessage: e.message,
-        exposureMessage: "사용자 정보 업데이트 실패",
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
@@ -90,26 +90,24 @@ class UserService {
   // }
 
   // 휴대폰 번호로 사용자를 찾음.
-  Future<UserEntity?> findUserByPhone(String phone) async {
+  Future<FortuneUserEntity?> findUserByPhone(String? phone) async {
     try {
-      final List<dynamic> response = await _client.from(_userTableName).select("*").eq("phone", phone).toSelect();
+      final List<dynamic> response = await _client
+          .from(_userTableName)
+          .select("*")
+          .eq(
+            'phone',
+            phone?.replaceFirst('+', ''),
+          )
+          .toSelect();
       if (response.isEmpty) {
         return null;
       } else {
-        final user = response.map((e) => UserResponse.fromJson(e)).toList();
+        final user = response.map((e) => FortuneUserResponse.fromJson(e)).toList();
         return user.single;
       }
-    } on PostgrestException catch (e) {
-      throw CommonFailure(
-        errorCode: e.code,
-        errorMessage: e.message,
-        exposureMessage: "사용자를 찾을 수 없습니다.",
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 }

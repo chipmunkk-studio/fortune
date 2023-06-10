@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'agree_terms.dart';

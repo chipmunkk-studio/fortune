@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_messaging_platform_interface/src/remote_message.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
@@ -9,6 +8,8 @@ import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/notification_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/login/bloc/login.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -33,23 +34,8 @@ class AuthService {
   }) async {
     try {
       return await authClient.signInWithOtp(phone: phoneNumber);
-    } on AuthException catch (e) {
-      throw AuthFailure(
-        errorCode: e.statusCode,
-        errorMessage: e.message,
-        exposureMessage: () {
-          if (e.message.contains('Invalid login')) {
-            return "인증번호 전송에 실패 했습니다.";
-          } else {
-            return "로그인 실패";
-          }
-        }(),
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
@@ -64,23 +50,8 @@ class AuthService {
         password: password,
       );
       return response;
-    } on AuthException catch (e) {
-      throw AuthFailure(
-        errorCode: e.statusCode,
-        errorMessage: e.message,
-        exposureMessage: () {
-          if (e.message.contains('already registered')) {
-            return "이미 가입된 사용자 입니다.";
-          } else {
-            return "회원가입 실패";
-          }
-        }(),
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
@@ -96,17 +67,8 @@ class AuthService {
         type: OtpType.sms,
       );
       return response;
-    } on AuthException catch (e) {
-      throw AuthFailure(
-        errorCode: e.statusCode,
-        errorMessage: e.message,
-        exposureMessage: "휴대폰번호 인증 실패",
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
@@ -118,13 +80,9 @@ class AuthService {
       throw AuthFailure(
         errorCode: e.statusCode,
         errorMessage: e.message,
-        exposureMessage: "로그아웃 실패",
       );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
   }
 
@@ -134,24 +92,9 @@ class AuthService {
       final List<dynamic> response = await client.from(_termsTableName).select("*").toSelect();
       final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
       return terms;
-    } on PostgrestException catch (e) {
-      throw CommonFailure(
-        errorCode: e.code,
-        errorMessage: e.message,
-        exposureMessage: "사용자를 찾을 수 없습니다.",
-      );
-    } catch (e) {
-      throw UnknownFailure(
-        errorCode: null,
-        errorMessage: e.toString(),
-      );
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
     }
-  }
-
-  // 세션 유지.
-  Future<void> persistSession(Session session) async {
-    FortuneLogger.info('PersistSession:: ${session.persistSessionString}');
-    await preferences.setString(supabaseSessionKey, session.persistSessionString);
   }
 
   // 세션 복구
@@ -176,21 +119,47 @@ class AuthService {
 
   Future<String> handleJoinMemberState(Map<String, dynamic>? data) async {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음.');
-    final jsonStr = preferences.getString(supabaseSessionKey)!;
-    final response = await authClient.recoverSession(jsonStr);
-    FortuneLogger.info('RecoverSession:: 계정 복구 성공. ${response.user!.email}');
-    persistSession(response.session!);
+    // 세션이 만료된 경우.
+    final currentLoginUserState = await refreshSession();
+    if (currentLoginUserState == LoginUserState.needToLogin || currentLoginUserState == LoginUserState.sessionExpired) {
+      return "${Routes.loginRoute}/${currentLoginUserState.name}";
+    }
     if (data != null) {
       FortuneLogger.info('RecoverSession:: 푸시 알림으로 진입');
       final entity = NotificationEntity.fromJson(data);
-      return "${Routes.homeRoute}/${entity.landingRoute}";
+      return "${Routes.mainRoute}/${entity.landingRoute}";
     } else {
-      return Routes.homeRoute;
+      return Routes.mainRoute;
     }
   }
 
   Future<String> handleNoLoginState() {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 없음.');
     return Future.value(Routes.onBoardingRoute);
+  }
+
+  Future<LoginUserState> refreshSession() async {
+    try {
+      final authClient = Supabase.instance.client.auth;
+      final session = authClient.currentSession;
+      if (session == null || JwtDecoder.isExpired(session.accessToken)) {
+        FortuneLogger.info('RecoverSession:: 세션 만료. ${session?.accessToken}');
+        return LoginUserState.sessionExpired;
+      } else {
+        final jsonStr = preferences.getString(supabaseSessionKey)!;
+        final response = await authClient.recoverSession(jsonStr);
+        FortuneLogger.info('RecoverSession:: 계정 복구 성공. ${response.user?.phone}');
+        await persistSession(response.session!);
+        return LoginUserState.none;
+      }
+    } catch (e) {
+      FortuneLogger.info('refreshSession:: 계정 복구 실패. ${e.toString()}');
+      return LoginUserState.needToLogin;
+    }
+  }
+
+  Future<void> persistSession(Session session) async {
+    FortuneLogger.info('PersistSession:: ${session.persistSessionString}');
+    await preferences.setString(supabaseSessionKey, session.persistSessionString);
   }
 }

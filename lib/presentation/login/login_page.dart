@@ -19,14 +19,17 @@ import 'component/login_phone_number.dart';
 import 'component/login_verify_code_number.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({
+  final LoginUserState isSessionExpired;
+
+  const LoginPage(
+    this.isSessionExpired, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<LoginBloc>(),
+      create: (_) => serviceLocator<LoginBloc>()..add(LoginInit(isSessionExpired)),
       child: const Scaffold(
         appBar: FortuneEmptyAppBar(),
         body: SafeArea(
@@ -48,6 +51,7 @@ class _LoginPage extends StatefulWidget {
 class _LoginPageState extends State<_LoginPage> {
   late LoginBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
+  final FortuneDialogService dialogService = FortuneDialogService();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _verifyCodeController = TextEditingController();
   final GlobalKey<AnimatedListState> _stepperKey = GlobalKey();
@@ -71,12 +75,12 @@ class _LoginPageState extends State<_LoginPage> {
     return BlocSideEffectListener<LoginBloc, LoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is LoginError) {
-          context.handleError(sideEffect.error, needToFinish: false);
+          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
         } else if (sideEffect is LoginLandingRoute) {
           router.navigateTo(
             context,
             sideEffect.landingRoute,
-            clearStack: sideEffect.landingRoute == Routes.homeRoute ? true : false,
+            clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
           );
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showFortuneBottomSheet(

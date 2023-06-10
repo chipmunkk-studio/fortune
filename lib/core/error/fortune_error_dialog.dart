@@ -1,28 +1,31 @@
-import 'dart:io';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dartz/dartz.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'fortune_app_failures.dart';
 
-extension FortuneContextEx on BuildContext {
-  void handleError(
+class FortuneDialogService {
+  bool _isDialogShowing = false;
+
+  Future<void> showErrorDialog(
+    BuildContext context,
     FortuneFailure error, {
     Function0? btnOkOnPress,
     bool needToFinish = true,
-  }) {
+  }) async {
+    if (_isDialogShowing) return;
+    _isDialogShowing = true;
     final router = serviceLocator<FortuneRouter>().router;
 
     if (error is AuthFailure) {
       AwesomeDialog(
-        context: this,
+        context: context,
         animType: AnimType.scale,
         dialogType: DialogType.noHeader,
         dialogBackgroundColor: ColorName.backgroundLight,
@@ -37,7 +40,7 @@ extension FortuneContextEx on BuildContext {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 32.h),
-              Text("cert_expiration".tr(), style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active)),
+              Text(error.code.toString(), style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active)),
               SizedBox(height: 8.h),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -59,12 +62,12 @@ extension FortuneContextEx on BuildContext {
         btnOkColor: ColorName.primary,
         btnOkText: "확인",
         btnOkOnPress: btnOkOnPress ??
-            () {
-              final errorCode = error.errorCode;
-              if ((errorCode == HttpStatus.unauthorized || errorCode == HttpStatus.forbidden) && needToFinish) {
+            () async {
+              _isDialogShowing = false;
+              if (needToFinish) {
                 router.navigateTo(
-                  this,
-                  Routes.loginRoute,
+                  context,
+                  "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
                   clearStack: true,
                   replace: false,
                 );
@@ -73,7 +76,7 @@ extension FortuneContextEx on BuildContext {
       ).show();
     } else {
       AwesomeDialog(
-        context: this,
+        context: context,
         animType: AnimType.scale,
         dialogType: DialogType.noHeader,
         dialogBackgroundColor: ColorName.backgroundLight,
@@ -93,7 +96,7 @@ extension FortuneContextEx on BuildContext {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Text(
-                  error.message ?? 'No message',
+                  error.message ?? "Unknown Message",
                   style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
                   textAlign: TextAlign.center,
                 ),
@@ -110,7 +113,10 @@ extension FortuneContextEx on BuildContext {
         ),
         btnOkColor: ColorName.primary,
         btnOkText: "확인",
-        btnOkOnPress: btnOkOnPress ?? () {},
+        btnOkOnPress: () {
+          _isDialogShowing = false;
+          btnOkOnPress?.call();
+        },
       ).show();
     }
   }

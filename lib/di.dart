@@ -5,22 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/obtain_history_respository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/user_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
+import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
+import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
+import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_ingredients_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/obtain_fortune_user_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
+import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
+import 'package:foresh_flutter/presentation/rewardhistory/bloc/reward_history.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notification/notification_manager.dart';
+import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'env.dart';
 
 final serviceLocator = GetIt.instance;
@@ -76,6 +94,9 @@ initSupabase() async {
 
   /// domain.
   await _initRepository();
+
+  /// UseCase.
+  await _initUseCase();
 
   /// Bloc.
   await _initBloc();
@@ -135,6 +156,21 @@ _initService() {
         serviceLocator<UserService>(),
       ),
     )
+    ..registerLazySingleton<IngredientService>(
+      () => IngredientService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<ObtainHistoryService>(
+      () => ObtainHistoryService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<MarkerService>(
+      () => MarkerService(
+        Supabase.instance.client,
+      ),
+    )
     ..registerLazySingleton<AuthService>(
       () => AuthService(
         client: Supabase.instance.client,
@@ -148,14 +184,61 @@ _initService() {
 _initRepository() {
   serviceLocator
     ..registerLazySingleton<UserRepository>(
-      () => UserRepository(
+      () => UserRepositoryImpl(
         serviceLocator<UserService>(),
       ),
     )
+    ..registerLazySingleton<IngredientRepository>(
+      () => IngredientRepositoryImpl(
+        serviceLocator<IngredientService>(),
+      ),
+    )
+    ..registerLazySingleton<MarkerRepository>(
+      () => MarkerRepositoryImpl(
+        serviceLocator<MarkerService>(),
+        serviceLocator<UserService>(),
+      ),
+    )
+    ..registerLazySingleton<ObtainHistoryRepository>(
+      () => ObtainHistoryRepositoryImpl(
+        serviceLocator<ObtainHistoryService>(),
+      ),
+    )
     ..registerLazySingleton<AuthRepository>(
-      () => AuthRepository(
+      () => AuthRepositoryImpl(
         serviceLocator<AuthService>(),
         serviceLocator<UserService>(),
+      ),
+    );
+}
+
+_initUseCase() async {
+  serviceLocator
+    ..registerLazySingleton<GetIngredientsUseCase>(
+      () => GetIngredientsUseCase(
+        ingredientRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<ObtainMarkerUseCase>(
+      () => ObtainMarkerUseCase(
+        markerRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<ObtainFortuneUserUseCase>(
+      () => ObtainFortuneUserUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<InsertObtainHistoryUseCase>(
+      () => InsertObtainHistoryUseCase(
+        obtainHistoryRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MainUseCase>(
+      () => MainUseCase(
+        ingredientRepository: serviceLocator(),
+        markerRepository: serviceLocator(),
+        userRepository: serviceLocator(),
       ),
     );
 }
@@ -171,6 +254,17 @@ _initBloc() {
     )
     ..registerFactory(
       () => RequestPermissionBloc(),
+    )
+    ..registerFactory(
+      () => RewardHistoryBloc(),
+    )
+    ..registerFactory(
+      () => MainBloc(
+        mainUseCase: serviceLocator(),
+        getIngredientsUseCase: serviceLocator(),
+        obtainMarkerUseCase: serviceLocator(),
+        insertObtainHistoryUseCase: serviceLocator(),
+      ),
     )
     ..registerFactory(
       () => AgreeTermsBloc(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FortuneException {
   final String? errorCode;
@@ -13,12 +16,10 @@ class FortuneException {
 abstract class FortuneFailure extends Equatable {
   final String? code;
   final String? message;
-  final String? description;
 
   const FortuneFailure({
     this.code,
     this.message,
-    this.description,
   }) : super();
 }
 
@@ -26,17 +27,14 @@ abstract class FortuneFailure extends Equatable {
 class AuthFailure extends FortuneFailure {
   final String? errorCode;
   final String? errorMessage;
-  final String? exposureMessage;
 
   const AuthFailure({
     this.errorCode,
     this.errorMessage,
-    this.exposureMessage,
   }) : super(
-    code: errorCode,
-    message: errorMessage,
-    description: exposureMessage,
-  );
+          code: errorCode,
+          message: errorMessage,
+        );
 
   @override
   List<Object?> get props => [errorMessage, errorCode];
@@ -44,41 +42,58 @@ class AuthFailure extends FortuneFailure {
 
 /// 공통 에러.
 class CommonFailure extends FortuneFailure {
-  final String? errorCode;
   final String? errorMessage;
-  final String? exposureMessage;
 
-  const CommonFailure({
-    this.errorCode,
+  CommonFailure({
     this.errorMessage,
-    this.exposureMessage,
   }) : super(
-    code: errorCode,
-    message: errorMessage,
-    description: exposureMessage,
-  );
+          code: HttpStatus.badRequest.toString(),
+          message: errorMessage,
+        );
 
   @override
-  List<Object?> get props => [message, errorCode];
+  List<Object?> get props => [message];
 }
 
 /// 알 수 없는 에러.
 class UnknownFailure extends FortuneFailure {
   final String? errorCode;
   final String? errorMessage;
-  final String? exposureMessage;
 
   const UnknownFailure({
     this.errorCode = '999',
     this.errorMessage,
-    this.exposureMessage = "알 수 없는 에러",
   }) : super(
-    code: errorCode,
-    message: errorMessage,
-    description: exposureMessage,
-  );
+          code: errorCode,
+          message: errorMessage,
+        );
 
   @override
   List<Object?> get props => [message, errorCode];
 }
 
+extension FortuneExceptionX on Exception {
+  FortuneFailure handleException() {
+    if (this is PostgrestException) {
+      final postgrestException = this as PostgrestException;
+      if (postgrestException.message.contains("Token") || postgrestException.message.contains("JWT")) {
+        return AuthFailure(
+          errorCode: postgrestException.code,
+          errorMessage: postgrestException.message,
+        );
+      } else {
+        return CommonFailure(
+          errorMessage: postgrestException.message,
+        );
+      }
+    } else if (this is AuthException) {
+      final authException = this as AuthException;
+      return AuthFailure(
+        errorCode: authException.statusCode,
+        errorMessage: "인증 정보를 갱신합니다.",
+      );
+    } else {
+      return const UnknownFailure();
+    }
+  }
+}

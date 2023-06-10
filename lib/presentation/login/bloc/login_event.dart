@@ -1,13 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+import 'login.dart';
+
 @immutable
 abstract class LoginEvent extends Equatable {}
 
 class LoginInit extends LoginEvent {
-  final String phoneNumber;
+  final LoginUserState loginUserState;
 
-  LoginInit(this.phoneNumber);
+  LoginInit(
+    this.loginUserState,
+  );
 
   @override
   List<Object?> get props => [];

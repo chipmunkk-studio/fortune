@@ -4,11 +4,12 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
+import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final AuthRepository authRepository;
@@ -38,8 +39,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     on<LoginRequestVerifyCodeCountdown>(verifyCodeCountdown);
   }
 
-  FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) {
-    emit(LoginState.initial(event.phoneNumber));
+  FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
+    emit(state.copyWith(loginUserState: event.loginUserState));
   }
 
   FutureOr<void> phoneNumberInput(LoginPhoneNumberInput event, Emitter<LoginState> emit) {
@@ -63,43 +64,54 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     switch (currentStep) {
       // 폰 번호 입력 상태.
       case LoginStepper.phoneNumber:
-        await userRepository.findUserByPhone(convertedPhoneNumber).then(
-              (value) => value.fold(
-                (l) {
-                  // 회원가입을 할 수 없을 경우 에러를 보냄.
-                  produceSideEffect(LoginError(l));
-                },
-                (r) async {
-                  // 버튼 비활성화.
-                  emit(state.copyWith(isButtonEnabled: false));
-                  // 회원 등록이 되지 않았을 경우.
-                  if (r == null) {
-                    await authRepository.getTerms().then(
-                          (value) => value.fold(
-                            (l) => produceSideEffect(LoginError(l)),
-                            (terms) => produceSideEffect(
-                              LoginShowTermsBottomSheet(
-                                terms,
-                                convertedPhoneNumber,
+        if (state.loginUserState == LoginUserState.none) {
+          await userRepository.findUserByPhone(convertedPhoneNumber).then(
+                (value) => value.fold(
+                  (l) {
+                    // 회원가입을 할 수 없을 경우 에러를 보냄.
+                    produceSideEffect(LoginError(l));
+                  },
+                  (r) async {
+                    // 버튼 비활성화.
+                    emit(state.copyWith(isButtonEnabled: false));
+                    // 회원 등록이 되지 않았을 경우.
+                    if (r == null) {
+                      await authRepository.getTerms().then(
+                            (value) => value.fold(
+                              (l) => produceSideEffect(LoginError(l)),
+                              (terms) => produceSideEffect(
+                                LoginShowTermsBottomSheet(
+                                  terms,
+                                  convertedPhoneNumber,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                  } else {
-                    final nextState = state.copyWith(
-                      steppers: [LoginStepper.signInWithOtp, ...state.steppers],
-                      guideTitle: LoginGuideTitle.signInWithOtp,
-                      isButtonEnabled: true,
-                      isRequestVerifyCodeEnable: true,
-                    );
-                    emit(nextState);
-                    produceSideEffect(LoginNextStep());
-                  }
-                },
-              ),
-            );
+                          );
+                    } else {
+                      final nextState = state.copyWith(
+                        steppers: [LoginStepper.signInWithOtp, ...state.steppers],
+                        guideTitle: LoginGuideTitle.signInWithOtp,
+                        isButtonEnabled: true,
+                        isRequestVerifyCodeEnable: true,
+                      );
+                      emit(nextState);
+                      produceSideEffect(LoginNextStep());
+                    }
+                  },
+                ),
+              );
+        } else {
+          emit(state.copyWith(isButtonEnabled: false));
+          final nextState = state.copyWith(
+            steppers: [LoginStepper.signInWithOtp, ...state.steppers],
+            guideTitle: LoginGuideTitle.signInWithOtp,
+            isButtonEnabled: true,
+            isRequestVerifyCodeEnable: true,
+          );
+          emit(nextState);
+          produceSideEffect(LoginNextStep());
+        }
         break;
-
       case LoginStepper.signInWithOtp:
         await authRepository
             .verifyPhoneNumber(
@@ -109,7 +121,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
             .then(
               (value) => value.fold(
                 (l) => produceSideEffect(LoginError(l)),
-                (r) => produceSideEffect(LoginLandingRoute(Routes.homeRoute)),
+                (r) => produceSideEffect(LoginLandingRoute(Routes.mainRoute)),
               ),
             );
         break;
