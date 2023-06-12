@@ -7,7 +7,6 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_ingredients_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -23,13 +22,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   static const tag = "[CountryCodeBloc]";
 
   final MainUseCase mainUseCase;
-  final GetIngredientsUseCase getIngredientsUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
 
   MainBloc({
     required this.mainUseCase,
-    required this.getIngredientsUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
   }) : super(MainState.initial()) {
@@ -106,7 +103,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 markers: markerList,
                 userId: entity.user.id,
                 profileImage: entity.user.profileImage,
-                refreshTime: const RefreshTime(time: 10),
+                refreshTime: 10,
+                refreshCount: state.refreshCount + 1,
+                histories: entity.histories,
                 ticketCount: entity.user.ticket,
               ),
             );
@@ -153,17 +152,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           emit(state.copyWith(ticketCount: r.ticket));
           FortuneLogger.info("레벨: ${r.level}, 다음 레벨 까지: ${r.percentageNextLevel},등급: ${r.grade.name}");
           // 획득 응답 속도 때문에 usecase로 따로 실행하고 에러는 무시.
-          await insertObtainHistoryUseCase(
-            RequestInsertHistoryParam(
-              nickName: r.nickname,
-              enIngredientName: data.ingredient.enName,
-              krIngredientName: data.ingredient.krName,
-              ingredientImage: data.ingredient.imageUrl,
-              ingredientType: data.ingredient.type.name,
-              locationKr: await getLocationName(latitude, longitude),
-              location: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
-            ),
-          ).then((value) => value.getOrElse(() {}));
+          if (data.ingredient.type != IngredientType.ticket) {
+            await insertObtainHistoryUseCase(
+              RequestInsertHistoryParam(
+                userId: r.id,
+                markerId: data.id.toString(),
+                ingredientId: data.ingredient.id,
+                krIngredientName: data.ingredient.krName,
+                enIngredientName: data.ingredient.enName,
+                nickname: r.nickname,
+                krLocationName: await getLocationName(latitude, longitude),
+                enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
+              ),
+            ).then((value) => value.getOrElse(() {}));
+          }
         },
       ),
     );
@@ -174,9 +176,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
-    final currentTime = state.refreshTime;
-    final nextTime = currentTime.copyWith(count: currentTime.count + 1);
-    emit(state.copyWith(refreshTime: nextTime));
     await getMain(emit);
   }
 }

@@ -4,9 +4,9 @@ import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'login/login_page.dart';
 import 'main/main_page.dart';
+import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
-import 'rewardhistory/reward_history_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;
@@ -49,9 +49,9 @@ class FortuneRouter {
     },
   );
 
-  static var rewardHistoryHandler = Handler(
+  static var obtainHistoryHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const RewardHistoryPage();
+      return const ObtainHistoryPage();
     },
   );
 
@@ -102,8 +102,8 @@ class FortuneRouter {
 
       /// 마커 히스토리.
       ..define(
-        Routes.rewardHistoryRoute,
-        handler: rewardHistoryHandler,
+        Routes.obtainHistoryRoute,
+        handler: obtainHistoryHandler,
         transitionType: TransitionType.cupertino,
       );
   }
@@ -114,5 +114,5 @@ class Routes {
   static const String loginRoute = 'loginRoute';
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
-  static const String rewardHistoryRoute = 'rewardHistory';
+  static const String obtainHistoryRoute = 'obtainHistory';
 }

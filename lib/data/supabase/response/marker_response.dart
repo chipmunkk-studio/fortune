@@ -15,6 +15,8 @@ class MarkerResponse extends MarkerEntity {
   final double latitude_;
   @JsonKey(name: 'longitude')
   final double longitude_;
+  @JsonKey(name: 'hit_count')
+  final int hitCount_;
   @JsonKey(name: 'last_obtain_user')
   final int? lastObtainUser_;
 
@@ -22,11 +24,13 @@ class MarkerResponse extends MarkerEntity {
     required this.id_,
     required this.ingredient_,
     required this.latitude_,
+    required this.hitCount_,
     required this.longitude_,
     required this.lastObtainUser_,
   }) : super(
           id: id_.toInt(),
           ingredient: ingredient_,
+          hitCount: hitCount_.toInt(),
           latitude: latitude_,
           longitude: longitude_,
           lastObtainUser: lastObtainUser_,

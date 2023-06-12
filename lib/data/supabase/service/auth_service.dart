@@ -16,7 +16,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthService {
   static const _termsTableName = "terms";
   static const supabaseSessionKey = 'supabase_session';
-  static const _tag = '[AuthService] ';
 
   final GoTrueClient authClient;
   final SharedPreferences preferences;

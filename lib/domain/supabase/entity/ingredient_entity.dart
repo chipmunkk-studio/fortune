@@ -24,4 +24,17 @@ class IngredientEntity {
     required this.distance,
     required this.isExtinct,
   });
+
+  factory IngredientEntity.empty() => IngredientEntity(
+        id: -1,
+        krName: '',
+        enName: '',
+        imageUrl: '',
+        disappearImage: '',
+        type: IngredientType.ticket,
+        rewardTicket: 0,
+        adUrl: '',
+        distance: 0,
+        isExtinct: true,
+      );
 }

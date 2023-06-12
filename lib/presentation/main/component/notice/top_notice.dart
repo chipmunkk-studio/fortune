@@ -35,12 +35,12 @@ class _TopNoticeState extends State<TopNotice> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainBloc, MainState>(
-      listenWhen: (previous, current) => previous.notices != current.notices,
+      listenWhen: (previous, current) => previous.histories != current.histories,
       listener: (context, state) {
         _initTimer(state);
       },
       builder: (context, state) {
-        return state.notices.isEmpty
+        return state.histories.isEmpty
             ? Container()
             : Bounceable(
                 onTap: _onTap,
@@ -59,7 +59,7 @@ class _TopNoticeState extends State<TopNotice> {
                           child: TopNoticeAutoSlide(
                             widget._bloc,
                             pageController,
-                            items: state.notices.map(
+                            items: state.histories.map(
                               (e) {
                                 return Row(
                                   children: [
@@ -69,7 +69,9 @@ class _TopNoticeState extends State<TopNotice> {
                                       child: ClipOval(
                                         child: FadeInImage.memoryNetwork(
                                           placeholder: kTransparentImage,
-                                          image: e.rewardImage.isEmpty ? transparentImageUrl : e.rewardImage,
+                                          image: e.ingredient.imageUrl.isEmpty
+                                              ? transparentImageUrl
+                                              : e.ingredient.imageUrl,
                                         ),
                                       ),
                                     ),
@@ -80,7 +82,7 @@ class _TopNoticeState extends State<TopNotice> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "${e.nickname}님",
+                                            "${e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname}님이",
                                             style: FortuneTextStyle.body3Bold(),
                                           ),
                                           Flexible(
@@ -89,14 +91,14 @@ class _TopNoticeState extends State<TopNotice> {
                                               children: [
                                                 Flexible(
                                                   child: Text(
-                                                    e.rewardName,
+                                                    e.ingredient.krName,
                                                     style: FortuneTextStyle.body3Regular(),
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                                 Text(
-                                                  " 신청 완료!",
+                                                  "를 획득했어요!",
                                                   style: FortuneTextStyle.body3Regular(),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
@@ -141,17 +143,17 @@ class _TopNoticeState extends State<TopNotice> {
         if (pageController.hasClients) {
           if (currentPage == 0) {
             pageController.jumpToPage(currentPage);
-          } else if (currentPage < state.notices.length) {
+          } else if (currentPage < state.histories.length) {
             pageController.animateToPage(
               currentPage,
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeIn,
             );
-            if (currentPage == state.notices.length - 1) {
+            if (currentPage == state.histories.length - 1) {
               // widget._bloc.add(MainRefresh());
             }
           }
-          if (currentPage < state.notices.length - 1) {
+          if (currentPage < state.histories.length - 1) {
             currentPage++;
           }
         }
@@ -162,7 +164,7 @@ class _TopNoticeState extends State<TopNotice> {
   void _onTap() {
     router.navigateTo(
       context,
-      Routes.rewardHistoryRoute,
+      Routes.obtainHistoryRoute,
     );
   }
 }

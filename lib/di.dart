@@ -22,16 +22,16 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_ingredients_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/obtain_fortune_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
+import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
-import 'package:foresh_flutter/presentation/rewardhistory/bloc/reward_history.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -224,13 +224,14 @@ _initUseCase() async {
         markerRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<ObtainFortuneUserUseCase>(
-      () => ObtainFortuneUserUseCase(
-        userRepository: serviceLocator(),
-      ),
-    )
     ..registerLazySingleton<InsertObtainHistoryUseCase>(
       () => InsertObtainHistoryUseCase(
+        obtainHistoryRepository: serviceLocator(),
+        markerRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetObtainHistoriesUseCase>(
+      () => GetObtainHistoriesUseCase(
         obtainHistoryRepository: serviceLocator(),
       ),
     )
@@ -239,6 +240,7 @@ _initUseCase() async {
         ingredientRepository: serviceLocator(),
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
       ),
     );
 }
@@ -256,12 +258,13 @@ _initBloc() {
       () => RequestPermissionBloc(),
     )
     ..registerFactory(
-      () => RewardHistoryBloc(),
+      () => ObtainHistoryBloc(
+        getObtainHistoriesUseCase: serviceLocator(),
+      ),
     )
     ..registerFactory(
       () => MainBloc(
         mainUseCase: serviceLocator(),
-        getIngredientsUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
       ),

@@ -6,6 +6,7 @@ class MarkerEntity {
   final double latitude;
   final double longitude;
   final int? lastObtainUser;
+  final int hitCount;
 
   MarkerEntity({
     required this.id,
@@ -13,5 +14,6 @@ class MarkerEntity {
     required this.latitude,
     required this.longitude,
     required this.lastObtainUser,
+    required this.hitCount,
   });
 }

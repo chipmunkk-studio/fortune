@@ -15,9 +15,17 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
 
   // 모든 마커 히스토리 불러오기
   @override
-  Future<FortuneResult<List<ObtainHistoryEntity>>> getAllHistories(double? latitude, double? longitude) async {
+  Future<FortuneResult<List<ObtainHistoryEntity>>> getAllHistories({
+    int start = 0,
+    int end = 19,
+    String query = '',
+  }) async {
     try {
-      final List<ObtainHistoryEntity> histories = await _obtainHistoryService.findObtainHistories();
+      final List<ObtainHistoryEntity> histories = await _obtainHistoryService.findObtainHistories(
+        start: start,
+        end: end,
+        query: query,
+      );
       return Right(histories);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
@@ -28,23 +36,25 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
   // 마커 히스토리 삽입.
   @override
   Future<FortuneResult<void>> insertObtainHistory({
-    required String nickName,
-    required String enIngredientName,
+    required int ingredientId,
+    required int userId,
+    required String markerId,
+    required String krLocationName,
+    required String enLocationName,
     required String krIngredientName,
-    required String ingredientImage,
-    required String ingredientType,
-    required String location,
-    required String locationKr,
+    required String enIngredientName,
+    required String nickname,
   }) async {
     try {
       final result = await _obtainHistoryService.insert(
-        nickname: nickName,
+        userId: userId,
+        markerId: markerId,
+        ingredientId: ingredientId,
+        nickname: nickname,
+        krLocationName: krLocationName,
+        enLocationName: enLocationName,
         enIngredientName: enIngredientName,
         krIngredientName: krIngredientName,
-        ingredientImage: ingredientImage,
-        ingredientType: ingredientType,
-        location: location,
-        locationKr: locationKr,
       );
       return Right(result);
     } on FortuneFailure catch (e) {

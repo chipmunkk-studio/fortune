@@ -5,7 +5,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IngredientService {
   static const _ingredientTableName = "ingredients";
-  static const _tag = '[IngredientService] ';
 
   final SupabaseClient _client;
 

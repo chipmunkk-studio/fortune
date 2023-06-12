@@ -21,4 +21,7 @@ abstract class MarkerRepository {
     required int ticketCount,
     required int markerCount,
   });
+
+  // 마커 기록
+  Future<FortuneResult<void>> hitMarker(int id);
 }

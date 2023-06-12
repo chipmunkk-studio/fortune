@@ -1,19 +1,21 @@
 class RequestInsertHistoryParam {
-  final String nickName;
+  final int ingredientId;
+  final int userId;
+  final String markerId;
+  final String krLocationName;
+  final String enLocationName;
   final String krIngredientName;
   final String enIngredientName;
-  final String ingredientImage;
-  final String ingredientType;
-  final String location;
-  final String locationKr;
+  final String nickname;
 
   RequestInsertHistoryParam({
-    required this.nickName,
+    required this.ingredientId,
+    required this.userId,
+    required this.markerId,
+    required this.krLocationName,
+    required this.enLocationName,
     required this.krIngredientName,
     required this.enIngredientName,
-    required this.ingredientImage,
-    required this.location,
-    required this.locationKr,
-    required this.ingredientType,
+    required this.nickname,
   });
 }

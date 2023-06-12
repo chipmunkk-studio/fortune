@@ -31,7 +31,7 @@ class FortuneScaffold extends StatelessWidget {
         bottom: bottom ?? true,
         top: top ?? true,
         child: Container(
-          padding: padding ?? EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+          padding: padding ?? const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
           child: child,
         ),
       ),

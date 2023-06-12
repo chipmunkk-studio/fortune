@@ -4,29 +4,32 @@ part 'request_obtain_history_update.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class RequestObtainHistoryUpdate {
+  @JsonKey(name: 'ingredient')
+  final int ingredientId;
+  @JsonKey(name: 'user')
+  final int userId;
+  @JsonKey(name: 'marker_id')
+  final String markerId;
   @JsonKey(name: 'nickname')
-  final String nickname;
-  @JsonKey(name: 'ingredient_image')
-  final String ingredientImage;
+  final String nickName;
   @JsonKey(name: 'kr_ingredient_name')
   final String krIngredientName;
   @JsonKey(name: 'en_ingredient_name')
   final String enIngredientName;
-  @JsonKey(name: 'ingredient_type')
-  final String ingredientType;
-  @JsonKey(name: 'location')
-  final String location;
-  @JsonKey(name: 'location_kr')
-  final String locationKr;
+  @JsonKey(name: 'kr_location_name')
+  final String krLocationName;
+  @JsonKey(name: 'en_location_name')
+  final String enLocationName;
 
   RequestObtainHistoryUpdate({
-    required this.nickname,
-    required this.ingredientImage,
+    required this.ingredientId,
+    required this.userId,
+    required this.nickName,
     required this.krIngredientName,
     required this.enIngredientName,
-    required this.location,
-    required this.locationKr,
-    required this.ingredientType,
+    required this.markerId,
+    required this.krLocationName,
+    required this.enLocationName,
   });
 
   factory RequestObtainHistoryUpdate.fromJson(Map<String, dynamic> json) => _$RequestObtainHistoryUpdateFromJson(json);

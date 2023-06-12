@@ -7,11 +7,9 @@ import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:synchronized/synchronized.dart';
 
 class MarkerService {
   static const _markerTableName = "markers";
-  static const _tag = '[MarkerService] ';
 
   final SupabaseClient _client;
 
@@ -29,7 +27,7 @@ class MarkerService {
       const double oneDegOfLatInKm = 111.0;
       const double oneDegOfLngInKm = 79.0;
       // 직사각형의 한 변의 길이 (m -> km)
-      const double rectangleSideLengthInMeters = 5000.0;
+      const double rectangleSideLengthInMeters = 1000;
       // 직사각형 영역의 위아래 좌우 경계값 계산
       double latDiff = rectangleSideLengthInMeters / (oneDegOfLatInKm * 1000);
       double lngDiff = rectangleSideLengthInMeters / (oneDegOfLngInKm * 1000);
@@ -92,7 +90,7 @@ class MarkerService {
       final List<dynamic> response = await _client
           .from(_markerTableName)
           .select(
-            "*,ingredient(*)",
+            "*, ingredient(*)",
           )
           .eq("id", id)
           .toSelect();
@@ -112,6 +110,7 @@ class MarkerService {
     int id, {
     LatLng? location,
     int? lastObtainUser,
+    int? hitCount,
   }) async {
     try {
       MarkerEntity? marker = await findMarkerById(id);
@@ -120,9 +119,10 @@ class MarkerService {
             .from(_markerTableName)
             .update(
               RequestMarkerUpdate(
-                latitude_: location?.latitude ?? marker.latitude,
-                longitude_: location?.longitude ?? marker.longitude,
-                lastObtainUser_: lastObtainUser ?? marker.lastObtainUser,
+                latitude: location?.latitude ?? marker.latitude,
+                longitude: location?.longitude ?? marker.longitude,
+                lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
+                hitCount: hitCount ?? marker.hitCount,
               ).toJson(),
             )
             .eq("id", id)

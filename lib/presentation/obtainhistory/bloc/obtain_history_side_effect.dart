@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../../../../core/error/fortune_app_failures.dart';
 
 @immutable
-abstract class RewardHistorySideEffect extends Equatable {}
+abstract class ObtainHistorySideEffect extends Equatable {}
 
-class MarkerHistoryError extends RewardHistorySideEffect {
+class ObtainHistoryError extends ObtainHistorySideEffect {
   final FortuneFailure error;
 
-  MarkerHistoryError(this.error);
+  ObtainHistoryError(this.error);
 
   @override
   List<Object?> get props => [];

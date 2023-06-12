@@ -54,12 +54,12 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainBloc, MainState>(
-      listenWhen: (previous, current) => previous.refreshTime != current.refreshTime,
+      listenWhen: (previous, current) => previous.refreshCount != current.refreshCount,
       listener: (context, state) {
         controller.dispose();
         controller = AnimationController(
           vsync: this,
-          duration: Duration(seconds: state.refreshTime.time),
+          duration: Duration(seconds: state.refreshTime),
         );
         controller.reverse(from: controller.value == 0.0 ? 1.0 : controller.value);
         controller.addListener(() {
@@ -68,7 +68,7 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
           }
         });
       },
-      buildWhen: (previous, current) => previous.refreshTime != current.refreshTime,
+      buildWhen: (previous, current) => previous.refreshCount != current.refreshCount,
       builder: (context, state) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,

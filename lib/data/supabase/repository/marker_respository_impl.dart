@@ -140,4 +140,21 @@ class MarkerRepositoryImpl extends MarkerRepository {
       return Left(e);
     }
   }
+
+  @override
+  Future<FortuneResult<void>> hitMarker(int id) async {
+    try {
+      final marker = await _markerService.findMarkerById(id);
+      if (marker == null) {
+        throw CommonFailure(
+          errorMessage: "마커가 존재하지 않습니다",
+        );
+      }
+      await _markerService.update(id, hitCount: marker.hitCount + 1);
+      return const Right(null);
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      return Left(e);
+    }
+  }
 }

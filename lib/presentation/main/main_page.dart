@@ -208,6 +208,25 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ],
               ),
             ),
+            // 하단 그라데이션.
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      ColorName.background.withOpacity(1.0),
+                      ColorName.background.withOpacity(0.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

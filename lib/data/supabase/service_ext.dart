@@ -6,14 +6,14 @@ import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 
+enum IngredientType { normal, ticket, adVideo, adBanner }
+
 extension SupabaseExt on Future<dynamic> {
   Future<List<dynamic>> toSelect() async {
     final encoded = jsonEncode(await this);
     return await jsonDecode(encoded);
   }
 }
-
-enum IngredientType { normal, ticket, adVideo, adBanner }
 
 getIngredientType(String type) {
   if (IngredientType.ticket.name == type) {
@@ -63,7 +63,7 @@ getLocationName(
 }
 
 // 레벨 부여 하기.
-int assignLevel(int markerCount) {
+assignLevel(int markerCount) {
   int level = 1;
   while (markerCount >= level * 3) {
     markerCount -= level * 3;
@@ -73,7 +73,7 @@ int assignLevel(int markerCount) {
 }
 
 // 다음 레벨 까지 경험치 퍼센트.
-double calculateLevelProgress(int markerCount) {
+calculateLevelProgress(int markerCount) {
   int level = 1;
 
   while (markerCount >= level * 3) {
@@ -84,7 +84,7 @@ double calculateLevelProgress(int markerCount) {
 }
 
 // 등급 할당.
-int assignGrade(int level) {
+assignGrade(int level) {
   if (level >= 120) {
     return 5;
   } else if (level >= 90) {
@@ -99,7 +99,7 @@ int assignGrade(int level) {
 }
 
 // 랜덤 마커 리퀘스트 생성
-RequestMarkerRandomInsert generateRandomMarker({
+generateRandomMarker({
   required double lat,
   required double lon,
   required IngredientEntity ingredient,

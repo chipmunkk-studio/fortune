@@ -5,8 +5,7 @@ import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ObtainHistoryService {
-  static const _obtainHistoryTableName = "obtain_history";
-  static const _tag = '[ObtainHistoryService] ';
+  static const _obtainHistoryTableName = "obtain_histories";
 
   final SupabaseClient _client;
 
@@ -14,10 +13,27 @@ class ObtainHistoryService {
     this._client,
   );
 
-  //
-  Future<List<ObtainHistoryResponse>> findObtainHistories() async {
+  Future<List<ObtainHistoryResponse>> findObtainHistories({
+    required int start,
+    required int end,
+    required String query,
+  }) async {
     try {
-      final List<dynamic> response = await _client.from(_obtainHistoryTableName).select("*").toSelect();
+      final convertedQuery = '%$query%';
+      final List<dynamic> response = await _client
+          .from(_obtainHistoryTableName)
+          .select("*,ingredient(*),user(*)")
+          .or(
+            'kr_location_name.ilike.$convertedQuery, '
+            'en_location_name.ilike.$convertedQuery, '
+            'en_ingredient_name.ilike.$convertedQuery, '
+            'kr_ingredient_name.ilike.$convertedQuery, '
+            'marker_id.ilike.$convertedQuery, '
+            'nickname.ilike.$convertedQuery',
+          )
+          .order('created_at', ascending: false)
+          .range(start, end)
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -31,24 +47,26 @@ class ObtainHistoryService {
 
   // 마커 히스토리 삽입.
   Future<void> insert({
-    required String nickname,
-    required String ingredientImage,
-    required String location,
-    required String locationKr,
+    required int userId,
+    required String markerId,
+    required int ingredientId,
+    required String krLocationName,
+    required String enLocationName,
     required String krIngredientName,
     required String enIngredientName,
-    required String ingredientType,
+    required String nickname,
   }) async {
     try {
       await _client.from(_obtainHistoryTableName).insert(
             RequestObtainHistoryUpdate(
-              nickname: nickname,
-              ingredientImage: ingredientImage,
-              krIngredientName: krIngredientName,
+              userId: userId,
+              markerId: markerId,
+              ingredientId: ingredientId,
+              nickName: nickname,
+              krLocationName: krLocationName,
+              enLocationName: enLocationName,
               enIngredientName: enIngredientName,
-              location: location,
-              locationKr: locationKr,
-              ingredientType: ingredientType,
+              krIngredientName: krIngredientName,
             ).toJson(),
           );
     } on Exception catch (e) {

@@ -6,10 +6,9 @@ import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {
-  static const _tag = '[UserService] ';
   final SupabaseClient _client;
 
-  final _userTableName = "user";
+  final _userTableName = "users";
 
   UserService(this._client);
 
