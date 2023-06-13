@@ -8,8 +8,6 @@ class RequestMissionClearHistoryUpdate {
   final String title;
   @JsonKey(name: 'subtitle')
   final String subtitle;
-  @JsonKey(name: 'created_at')
-  final String createdAt;
   @JsonKey(name: 'reward_image')
   final String rewardImage;
   @JsonKey(name: 'nickname')
@@ -18,7 +16,6 @@ class RequestMissionClearHistoryUpdate {
   RequestMissionClearHistoryUpdate({
     required this.title,
     required this.subtitle,
-    required this.createdAt,
     required this.rewardImage,
     required this.nickname,
   });

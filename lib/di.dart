@@ -14,6 +14,8 @@ import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_clear_conditions_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_clear_user_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
@@ -39,6 +41,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notification/notification_manager.dart';
+import 'data/supabase/service/mission_clear_history_service.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'env.dart';
 
@@ -174,6 +177,21 @@ _initService() {
     )
     ..registerLazySingleton<MissionService>(
       () => MissionService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<MissionClearUserService>(
+      () => MissionClearUserService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<MissionClearConditionsService>(
+      () => MissionClearConditionsService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<MissionClearHistoryService>(
+      () => MissionClearHistoryService(
         Supabase.instance.client,
       ),
     )

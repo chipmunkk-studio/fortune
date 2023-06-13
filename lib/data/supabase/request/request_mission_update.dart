@@ -4,23 +4,11 @@ part 'request_mission_update.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class RequestMissionUpdate {
-  @JsonKey(name: 'title')
-  final String title;
-  @JsonKey(name: 'subtitle')
-  final String subtitle;
-  @JsonKey(name: 'reward_count')
-  final double rewardCount;
   @JsonKey(name: 'remain_count')
-  final double remainCount;
-  @JsonKey(name: 'reward_image')
-  final String rewardImage;
+  final int remainCount;
 
   RequestMissionUpdate({
-    required this.title,
-    required this.subtitle,
-    required this.rewardCount,
     required this.remainCount,
-    required this.rewardImage,
   });
 
   factory RequestMissionUpdate.fromJson(Map<String, dynamic> json) => _$RequestMissionUpdateFromJson(json);
