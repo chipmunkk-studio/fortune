@@ -56,8 +56,8 @@ class MarkerRepositoryImpl extends MarkerRepository {
         }
         final ingredient = marker.ingredient;
         final FortuneUserEntity? user = await _userService.findUserByPhone(authClient.currentUser?.phone);
-        if (user!.ticket <= 0 && !(marker.lastObtainUser != null && ingredient.isExtinct)) {
-          // 티켓이 없을 경우 & 누군가 획득한 마커가 아니라면, 에러 출력.
+        if (user!.ticket <= 0 && ingredient.type != IngredientType.ticket) {
+          // 티켓이 없고, 마커가 티켓이 아닐 경우.
           throw CommonFailure(
             errorMessage: "보유한 티켓이 없습니다",
           );
@@ -69,9 +69,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
         int updatedTicket = user.ticket;
         int updatedTrashObtainCount = user.trashObtainCount;
         int markerObtainCount = user.markerObtainCount;
-        bool isNotTrashMarker = (marker.lastObtainUser == null && ingredient.isExtinct) || !ingredient.isExtinct;
+        bool isTrashMarker = marker.lastObtainUser != null && ingredient.type == IngredientType.ticket;
 
-        if (isNotTrashMarker) {
+        if (!isTrashMarker) {
           updatedTicket = user.ticket + ingredient.rewardTicket;
           markerObtainCount = markerObtainCount + 1;
         } else {

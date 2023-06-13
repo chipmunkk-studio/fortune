@@ -38,7 +38,7 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
           .then((value) => value.getOrElse(() => List.empty()));
 
       // 마커 리스트.
-      final markersNearsByMeWithTicket = markersNearByMe
+      final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) => element.ingredient.type != IngredientType.ticket,
           )
@@ -55,12 +55,13 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
           );
 
       // 주변에 마커가 없으면 1개 있으면 0개.
-      final markerCount = markersNearsByMeWithTicket.isEmpty || markersNearsByMeWithTicket.length < 2 ? 1 : 0;
+      final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 1 : 0;
       final isTicketEmpty =
-          markersNearByMe.where((element) => element.ingredient.type == IngredientType.ticket).toList().isEmpty;
+          markersNearByMe.where((element) => element.ingredient.type == IngredientType.ticket).toList();
 
-      // 티켓이 없으면 3개 뿌려 주고 아니면 0개 뿌려줌.
-      final ticketCount = isTicketEmpty ? 3 : 0;
+      // 티켓이 없으면 3개 뿌려주고 아니면 3-N개 뿌려줌.
+      final ticketCount = isTicketEmpty.length < 3 ? 3 - isTicketEmpty.length : 0;
+
       FortuneLogger.info(
           "markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");
 

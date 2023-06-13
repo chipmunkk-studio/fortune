@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_update.dart';
@@ -21,21 +23,20 @@ class MarkerService {
     double? longitude,
   ) async {
     try {
-      double lat = latitude ?? 0;
-      double lng = longitude ?? 0;
       // 위도와 경도 1도당 대략적인 거리 (km)
       const double oneDegOfLatInKm = 111.0;
-      const double oneDegOfLngInKm = 79.0;
-      // 직사각형의 한 변의 길이 (m -> km)
-      const double rectangleSideLengthInMeters = 1000;
-      // 직사각형 영역의 위아래 좌우 경계값 계산
-      double latDiff = rectangleSideLengthInMeters / (oneDegOfLatInKm * 1000);
-      double lngDiff = rectangleSideLengthInMeters / (oneDegOfLngInKm * 1000);
-      // 직사각형 영역의 경계값 계산
-      double minLat = lat - (latDiff / 2);
-      double maxLat = lat + (latDiff / 2);
-      double minLng = lng - (lngDiff / 2);
-      double maxLng = lng + (lngDiff / 2);
+      const double oneDegOfLngInKm = 111.0; // 적도에서의 값으로, 실제로는 위도에 따라 다름.
+      // 정사각형의 한 변의 길이 (m -> km)
+      double rectangleSideLengthInKm = sqrt(2) * 0.5; // 707m
+      // 정사각형 영역의 위아래 좌우 경계값 계산
+      double latDiff = rectangleSideLengthInKm / oneDegOfLatInKm;
+      double lngDiff = rectangleSideLengthInKm / oneDegOfLngInKm;
+      // 정사각형 영역의 경계값 계산
+      double minLat = latitude! - (latDiff / 2);
+      double maxLat = latitude + (latDiff / 2);
+      double minLng = longitude! - (lngDiff / 2);
+      double maxLng = longitude + (lngDiff / 2);
+
       final response = await _client
           .from(_markerTableName)
           .select("*,ingredient(*)")
