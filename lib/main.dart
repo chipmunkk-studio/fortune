@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_service.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
@@ -15,6 +16,9 @@ main() {
     () async {
       /// di 설정.
       await init();
+
+      final service = serviceLocator<MissionService>();
+
       // Flutter 프레임워크에서 발생하는 특정 에러들, 예를 들어 위젯 라이프사이클에서 발생하는 에러
       // 등은 runZonedGuarded를 통해 잡히지 않을 수 있음.
       // FlutterError.onError는 Flutter 프레임워크 에러를 처리하고,
