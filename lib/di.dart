@@ -14,6 +14,7 @@ import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
@@ -168,6 +169,11 @@ _initService() {
     )
     ..registerLazySingleton<MarkerService>(
       () => MarkerService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<MissionService>(
+      () => MissionService(
         Supabase.instance.client,
       ),
     )
