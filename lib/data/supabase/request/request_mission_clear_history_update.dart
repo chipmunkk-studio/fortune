@@ -4,20 +4,20 @@ part 'request_mission_clear_history_update.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class RequestMissionClearHistoryUpdate {
+  @JsonKey(name: 'user_id')
+  final int userId;
   @JsonKey(name: 'title')
   final String title;
   @JsonKey(name: 'subtitle')
   final String subtitle;
   @JsonKey(name: 'reward_image')
   final String rewardImage;
-  @JsonKey(name: 'nickname')
-  final String nickname;
 
   RequestMissionClearHistoryUpdate({
     required this.title,
+    required this.userId,
     required this.subtitle,
     required this.rewardImage,
-    required this.nickname,
   });
 
   factory RequestMissionClearHistoryUpdate.fromJson(Map<String, dynamic> json) =>

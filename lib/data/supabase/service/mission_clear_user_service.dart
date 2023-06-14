@@ -43,21 +43,23 @@ class MissionClearUserService {
     }
   }
 
-  // 미션 클리어 사용자 업데이트 및 가져오기
+  // 미션 클리어 사용자 업데이트.
   Future<MissionClearUserEntity> update(
     int id, {
     String? email,
     bool? isReceived,
   }) async {
     try {
-      MissionClearUserEntity? user = await findAllMissionClearUserById(id);
-      if (user != null) {
+      MissionClearUserEntity? clearUser = await findAllMissionClearUserById(id);
+      if (clearUser != null) {
         final updateUser = await _client
             .from(_missionClearUserTableName)
-            .update(
+            .upsert(
               RequestMissionClearUserUpdate(
-                email: email ?? user.email,
-                isReceived: isReceived ?? user.isReceive,
+                missionId: clearUser.mission.id,
+                userId: clearUser.user.id,
+                email: email ?? clearUser.email,
+                isReceived: isReceived ?? clearUser.isReceive,
               ).toJson(),
             )
             .eq('id', id)
@@ -66,6 +68,30 @@ class MissionClearUserService {
       } else {
         throw const PostgrestException(message: '사용자가 존재하지 않습니다');
       }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  // 미션 클리어 사용자 추가.
+  Future<void> insert({
+    required String email,
+    required int missionId,
+    required int userId,
+  }) async {
+    try {
+      final insertUser = await _client
+          .from(_missionClearUserTableName)
+          .insert(
+            RequestMissionClearUserUpdate(
+              missionId: missionId,
+              userId: userId,
+              isReceived: false,
+              email: email,
+            ).toJson(),
+          )
+          .select('*,user(*),mission(*)');
+      return insertUser.map((e) => MissionClearUserResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

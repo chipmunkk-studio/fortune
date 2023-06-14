@@ -41,7 +41,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/notification/notification_manager.dart';
+import 'data/supabase/repository/mission_respository_impl.dart';
 import 'data/supabase/service/mission_clear_history_service.dart';
+import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'env.dart';
 
@@ -226,6 +228,15 @@ _initRepository() {
     ..registerLazySingleton<ObtainHistoryRepository>(
       () => ObtainHistoryRepositoryImpl(
         serviceLocator<ObtainHistoryService>(),
+      ),
+    )
+    ..registerLazySingleton<MissionRepository>(
+      () => MissionRepositoryImpl(
+        missionService: serviceLocator<MissionService>(),
+        missionClearConditionsService: serviceLocator<MissionClearConditionsService>(),
+        missionClearHistoryService: serviceLocator<MissionClearHistoryService>(),
+        missionClearUserService: serviceLocator<MissionClearUserService>(),
+        userService: serviceLocator<UserService>(),
       ),
     )
     ..registerLazySingleton<AuthRepository>(
