@@ -1,7 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_clear_conditions_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_clear_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_clear_user_service.dart';
@@ -28,29 +26,29 @@ class MissionRepositoryImpl extends MissionRepository {
   });
 
   @override
-  Future<FortuneResult<List<MissionEntity>>> getAllMissions() async {
+  Future<List<MissionEntity>> getAllMissions() async {
     try {
       final result = await missionService.findAllMissions();
-      return Right(result);
+      return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 
   @override
-  Future<FortuneResult<List<MissionClearConditionEntity>>> getMissionClearConditions(int missionId) async {
+  Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
-      return Right(result);
+      return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 
   @override
-  Future<FortuneResult<void>> postMissionClear({
+  Future<void> postMissionClear({
     required int missionId,
     required String email,
   }) async {
@@ -85,11 +83,9 @@ class MissionRepositoryImpl extends MissionRepository {
         subtitle: mission.subtitle,
         rewardImage: mission.rewardImage,
       );
-
-      return const Right(null);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 }

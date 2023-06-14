@@ -1,7 +1,6 @@
-import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 
 abstract class IngredientRepository {
   // 맵에 뿌릴 재료들 찾기.
-  Future<FortuneResult<List<IngredientEntity>>> getIngredients();
+  Future<List<IngredientEntity>> getIngredients();
 }

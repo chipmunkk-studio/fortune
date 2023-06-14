@@ -28,23 +28,23 @@ class MarkerRepositoryImpl extends MarkerRepository {
 
   // 마커 목록 불러오기.
   @override
-  Future<FortuneResult<List<MarkerEntity>>> getAllMarkers(
+  Future<List<MarkerEntity>> getAllMarkers(
     double? latitude,
     double? longitude,
   ) async {
     try {
       final List<MarkerEntity> markers = await _markerService.findAllMarkersNearByMyLocation(latitude, longitude);
-      return Right(markers);
+      return markers;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 
   // 마커 획득 하기.
   @override
-  Future<FortuneResult<FortuneUserEntity>> obtainMarker(int id) {
-    return _lock.synchronized<FortuneResult<FortuneUserEntity>>(() async {
+  Future<FortuneUserEntity> obtainMarker(int id) {
+    return _lock.synchronized<FortuneUserEntity>(() async {
       try {
         final authClient = Supabase.instance.client.auth;
         final marker = await _markerService.findMarkerById(id);
@@ -86,16 +86,16 @@ class MarkerRepositoryImpl extends MarkerRepository {
           markerObtainCount: markerObtainCount,
         );
 
-        return Right(updateUser);
+        return updateUser;
       } on FortuneFailure catch (e) {
         FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-        return Left(e);
+        rethrow;
       }
     });
   }
 
   @override
-  Future<FortuneResult<bool>> getRandomMarkers({
+  Future<bool> getRandomMarkers({
     required double latitude,
     required double longitude,
     required List<IngredientEntity> ingredients,
@@ -134,15 +134,15 @@ class MarkerRepositoryImpl extends MarkerRepository {
       }
 
       await _markerService.insertRandomMarkers(markers: markers);
-      return Right(markers.isNotEmpty);
+      return markers.isNotEmpty;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 
   @override
-  Future<FortuneResult<void>> hitMarker(int id) async {
+  Future<void> hitMarker(int id) async {
     try {
       final marker = await _markerService.findMarkerById(id);
       if (marker == null) {
@@ -151,10 +151,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
         );
       }
       await _markerService.update(id, hitCount: marker.hitCount + 1);
-      return const Right(null);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 }

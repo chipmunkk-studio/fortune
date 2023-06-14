@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -12,10 +14,15 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryEntity>, R
 
   @override
   Future<FortuneResult<List<ObtainHistoryEntity>>> call(RequestObtainHistoriesParam param) async {
-    return await obtainHistoryRepository.getAllHistories(
-      start: param.start,
-      end: param.end,
-      query: param.query,
-    );
+    try {
+      final missions = await obtainHistoryRepository.getAllHistories(
+        start: param.start,
+        end: param.end,
+        query: param.query,
+      );
+      return Right(missions);
+    } on FortuneFailure catch (e) {
+      return Left(e);
+    }
   }
 }

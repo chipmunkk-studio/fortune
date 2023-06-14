@@ -14,7 +14,7 @@ class GetIngredientsUseCase implements UseCase0<List<IngredientEntity>> {
   @override
   Future<FortuneResult<List<IngredientEntity>>> call() async {
     try {
-      final ingredientsList = await ingredientRepository.getIngredients().then((value) => value.getOrElse(() => List.empty()));
+      final ingredientsList = await ingredientRepository.getIngredients();
       return Right(ingredientsList);
     } on FortuneFailure catch (e) {
       return Left(e);

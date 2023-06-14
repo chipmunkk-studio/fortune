@@ -33,9 +33,7 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
           .then((value) => value.getOrElse(() => null)!);
 
       // 내 주변의 마커를 가져옴.
-      var markersNearByMe = await markerRepository
-          .getAllMarkers(param.latitude, param.longitude)
-          .then((value) => value.getOrElse(() => List.empty()));
+      var markersNearByMe = await markerRepository.getAllMarkers(param.latitude, param.longitude);
 
       // 마커 리스트.
       final markersNearsByMeWithNotTicket = markersNearByMe
@@ -45,14 +43,10 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
           .toList();
 
       // 히스토리 목록 가져옴.
-      final histories = await obtainHistoryRepository.getAllHistories(start: 0, end: 10).then(
-            (value) => value.getOrElse(() => List.empty()),
-          );
+      final histories = await obtainHistoryRepository.getAllHistories(start: 0, end: 10);
 
       // 재료 목록 가져옴.
-      final ingredients = await ingredientRepository.getIngredients().then(
-            (value) => value.getOrElse(() => List.empty()),
-          );
+      final ingredients = await ingredientRepository.getIngredients();
 
       // 주변에 마커가 없으면 1개 있으면 0개.
       final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 1 : 0;
@@ -67,21 +61,17 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
 
       // 주변에 마커가 없다면 랜덤 생성.
       // 내 위치를 중심으로 랜덤 생성.
-      final result = await markerRepository
-          .getRandomMarkers(
-            latitude: param.latitude,
-            longitude: param.longitude,
-            ingredients: ingredients,
-            ticketCount: ticketCount,
-            markerCount: markerCount,
-          )
-          .then((value) => value.getOrElse(() => false));
+      final result = await markerRepository.getRandomMarkers(
+        latitude: param.latitude,
+        longitude: param.longitude,
+        ingredients: ingredients,
+        ticketCount: ticketCount,
+        markerCount: markerCount,
+      );
 
       // 내 주변의 마커 가져옴
       if (result) {
-        markersNearByMe = await markerRepository
-            .getAllMarkers(param.latitude, param.longitude)
-            .then((value) => value.getOrElse(() => List.empty()));
+        markersNearByMe = await markerRepository.getAllMarkers(param.latitude, param.longitude);
       }
 
       return Right(

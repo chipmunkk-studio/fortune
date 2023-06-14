@@ -15,7 +15,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
 
   // 모든 마커 히스토리 불러오기
   @override
-  Future<FortuneResult<List<ObtainHistoryEntity>>> getAllHistories({
+  Future<List<ObtainHistoryEntity>> getAllHistories({
     int start = 0,
     int end = 19,
     String query = '',
@@ -26,16 +26,16 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
         end: end,
         query: query,
       );
-      return Right(histories);
+      return histories;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      return Left(e);
+      rethrow;
     }
   }
 
   // 마커 히스토리 삽입.
   @override
-  Future<FortuneResult<void>> insertObtainHistory({
+  Future<void> insertObtainHistory({
     required int ingredientId,
     required int userId,
     required String markerId,
@@ -56,10 +56,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
         enIngredientName: enIngredientName,
         krIngredientName: krIngredientName,
       );
-      return Right(result);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 }
