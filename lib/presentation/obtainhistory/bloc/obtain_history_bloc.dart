@@ -4,12 +4,11 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_obtain_histories_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-import '../../main/bloc/main_state.dart';
 import 'obtain_history.dart';
 
 class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
@@ -73,26 +72,12 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
           },
           (r) async {
             // 뷰스테이트가 로딩 상태로 바뀌기 전까지 1초정도 딜레이를 줌.
-            final convertedHistories = r
-                .map(
-                  (e) => ObtainHistoryContentViewItem(
-                    id: e.id,
-                    markerId: e.markerId,
-                    user: e.user,
-                    ingredient: e.ingredient,
-                    createdAt: e.createdAt,
-                    ingredientName: e.ingredientName,
-                    locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
-                    nickName: e.nickName,
-                  ),
-                )
-                .toList();
             final filteredItems = state.histories.whereNot((item) => item is ObtainHistoryLoadingViewItem).toList();
             await Future.delayed(const Duration(milliseconds: 200));
             FortuneLogger.info("load");
             emit(
               state.copyWith(
-                histories: List.of(filteredItems)..addAll(convertedHistories),
+                histories: List.of(filteredItems)..addAll(r),
                 start: r.isEmpty ? state.start : nextStart,
                 end: r.isEmpty ? state.end : nextEnd,
                 isLoading: false,
@@ -126,20 +111,7 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
           emit(
             state.copyWith(
               isLoading: false,
-              histories: r
-                  .map(
-                    (e) => ObtainHistoryContentViewItem(
-                      id: e.id,
-                      markerId: e.markerId,
-                      user: e.user,
-                      ingredient: e.ingredient,
-                      createdAt: e.createdAt,
-                      ingredientName: e.ingredientName,
-                      locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
-                      nickName: e.nickName,
-                    ),
-                  )
-                  .toList(),
+              histories: r,
               query: query,
             ),
           );

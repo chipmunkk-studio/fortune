@@ -1,15 +1,16 @@
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
@@ -47,7 +48,20 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
           .toList();
 
       // 히스토리 목록 가져옴.
-      final histories = await obtainHistoryRepository.getAllHistories(start: 0, end: 10);
+      final histories = (await obtainHistoryRepository.getAllHistories(start: 0, end: 10))
+          .map(
+            (e) => ObtainHistoryContentViewItem(
+              id: e.id,
+              markerId: e.markerId,
+              user: e.user,
+              ingredient: e.ingredient,
+              createdAt: e.createdAt,
+              ingredientName: e.ingredientName,
+              locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
+              nickName: e.nickName,
+            ),
+          )
+          .toList();
 
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.getIngredients(user.isGlobal);
@@ -94,4 +108,16 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
       return Left(e);
     }
   }
+}
+
+class MainViewItem {
+  final FortuneUserEntity user;
+  final List<MarkerEntity> markers;
+  final List<ObtainHistoryContentViewItem> histories;
+
+  MainViewItem({
+    required this.user,
+    required this.markers,
+    required this.histories,
+  });
 }

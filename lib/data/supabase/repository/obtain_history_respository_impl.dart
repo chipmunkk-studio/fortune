@@ -1,7 +1,7 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 
 class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
@@ -67,6 +67,19 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       final List<ObtainHistoryEntity> histories = await _obtainHistoryService.findObtainHistoryByUserAndIngredient(
         userId: userId,
         ingredientId: ingredientId,
+      );
+      return histories;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<ObtainHistoryEntity>> getHistoriesByUser({required int userId}) async {
+    try {
+      final List<ObtainHistoryEntity> histories = await _obtainHistoryService.findObtainHistoryByUser(
+        userId: userId,
       );
       return histories;
     } on FortuneFailure catch (e) {

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-import '../../main/bloc/main_state.dart';
 
 class ItemObtainHistory extends StatelessWidget {
   final ObtainHistoryContentViewItem item;

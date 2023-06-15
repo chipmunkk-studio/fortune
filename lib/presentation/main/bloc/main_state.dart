@@ -1,7 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:location/location.dart';
 
@@ -38,41 +35,3 @@ class MainState with _$MainState {
         zoomThreshold: 18,
       );
 }
-
-class MainViewItem {
-  final FortuneUserEntity user;
-  final List<MarkerEntity> markers;
-  final List<ObtainHistoryEntity> histories;
-
-  MainViewItem({
-    required this.user,
-    required this.markers,
-    required this.histories,
-  });
-}
-
-abstract class ObtainHistoryPagingViewItem {}
-
-class ObtainHistoryContentViewItem extends ObtainHistoryPagingViewItem {
-  final int id;
-  final String markerId;
-  final FortuneUserEntity user;
-  final IngredientEntity ingredient;
-  final String nickName;
-  final String ingredientName;
-  final String locationName;
-  final String createdAt;
-
-  ObtainHistoryContentViewItem({
-    required this.id,
-    required this.markerId,
-    required this.user,
-    required this.ingredient,
-    required this.createdAt,
-    required this.ingredientName,
-    required this.locationName,
-    required this.nickName,
-  });
-}
-
-class ObtainHistoryLoadingViewItem extends ObtainHistoryPagingViewItem {}

@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 
 abstract class ObtainHistoryRepository {
   // 히스토리 목록 불러오기
@@ -23,5 +23,10 @@ abstract class ObtainHistoryRepository {
   Future<List<ObtainHistoryEntity>> getHistoriesByUserAndIngredient({
     required int userId,
     required int ingredientId,
+  });
+
+  // 사용자 아이디로 조회.
+  Future<List<ObtainHistoryEntity>> getHistoriesByUser({
+    required int userId,
   });
 }

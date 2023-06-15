@@ -1,6 +1,5 @@
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../../main/bloc/main_state.dart';
 
 part 'obtain_history_state.freezed.dart';
 

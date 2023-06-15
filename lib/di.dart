@@ -27,6 +27,7 @@ import 'package:foresh_flutter/domain/supabase/repository/obtain_history_reposit
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_all_missions_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_mission_clear_conditions.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -280,6 +281,13 @@ _initUseCase() async {
     ..registerLazySingleton<GetMissionClearConditions>(
       () => GetMissionClearConditions(
         missionRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetMissionDetailUseCase>(
+      () => GetMissionDetailUseCase(
+        missionRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<PostMissionClearUseCase>(

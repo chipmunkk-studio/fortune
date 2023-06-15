@@ -105,20 +105,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 profileImage: entity.user.profileImage,
                 refreshTime: 10,
                 refreshCount: state.refreshCount + 1,
-                histories: entity.histories
-                    .map(
-                      (e) => ObtainHistoryContentViewItem(
-                        id: e.id,
-                        markerId: e.markerId,
-                        user: e.user,
-                        ingredient: e.ingredient,
-                        createdAt: e.createdAt,
-                        ingredientName: e.ingredientName,
-                        locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
-                        nickName: e.nickName,
-                      ),
-                    )
-                    .toList(),
+                histories: entity.histories,
                 ticketCount: entity.user.ticket,
               ),
             );

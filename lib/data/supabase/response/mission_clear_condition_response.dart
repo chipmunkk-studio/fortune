@@ -33,7 +33,7 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
   }) : super(
           id: id_.toInt(),
           mission: mission_,
-          count: count_,
+          count: count_.toInt(),
           title: title_,
           subtitle: subtitle_,
           content: content_,

@@ -5,8 +5,7 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main.dart';
+import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 

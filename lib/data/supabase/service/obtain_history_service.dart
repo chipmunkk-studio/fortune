@@ -23,9 +23,9 @@ class ObtainHistoryService {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
           .select("*,ingredient(*),user(*)")
-            .or(
-              'kr_location_name.ilike.$convertedQuery, '
-              'en_location_name.ilike.$convertedQuery, '
+          .or(
+            'kr_location_name.ilike.$convertedQuery, '
+            'en_location_name.ilike.$convertedQuery, '
             'ingredient_name.ilike.$convertedQuery, '
             'marker_id.ilike.$convertedQuery, '
             'nickname.ilike.$convertedQuery',
@@ -54,6 +54,29 @@ class ObtainHistoryService {
           .select("*,ingredient(*),user(*)")
           .eq('user', userId)
           .eq('ingredient', ingredientId)
+          .toSelect();
+      if (response.isEmpty) {
+        return List.empty();
+      } else {
+        final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
+        return histories;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  Future<List<ObtainHistoryResponse>> findObtainHistoryByUser({
+    required int userId,
+  }) async {
+    try {
+      final List<dynamic> response = await _client
+          .from(_obtainHistoryTableName)
+          .select("*,ingredient(*),user(*)")
+          .eq(
+            'user',
+            userId,
+          )
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

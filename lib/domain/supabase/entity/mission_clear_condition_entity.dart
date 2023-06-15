@@ -5,7 +5,7 @@ class MissionClearConditionEntity {
   final int id;
   final MissionEntity mission;
   final IngredientEntity ingredient;
-  final double count;
+  final int count;
   final String title;
   final String subtitle;
   final String content;
