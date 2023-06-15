@@ -2,8 +2,7 @@ import 'package:foresh_flutter/data/supabase/service_ext.dart';
 
 class IngredientEntity {
   final int id;
-  final String krName;
-  final String enName;
+  final String name;
   final String imageUrl;
   final String disappearImage;
   final int rewardTicket;
@@ -11,11 +10,11 @@ class IngredientEntity {
   final String adUrl;
   final int distance;
   final bool isExtinct;
+  final bool isGlobal;
 
   IngredientEntity({
     required this.id,
-    required this.krName,
-    required this.enName,
+    required this.name,
     required this.imageUrl,
     required this.disappearImage,
     required this.type,
@@ -23,18 +22,6 @@ class IngredientEntity {
     required this.adUrl,
     required this.distance,
     required this.isExtinct,
+    required this.isGlobal,
   });
-
-  factory IngredientEntity.empty() => IngredientEntity(
-        id: -1,
-        krName: '',
-        enName: '',
-        imageUrl: '',
-        disappearImage: '',
-        type: IngredientType.ticket,
-        rewardTicket: 0,
-        adUrl: '',
-        distance: 0,
-        isExtinct: true,
-      );
 }

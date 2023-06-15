@@ -52,7 +52,6 @@ class _AgreeTermsBottomSheet extends StatefulWidget {
 class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   late AgreeTermsBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
-  final FortuneDialogService dialogService = FortuneDialogService();
 
   @override
   void initState() {

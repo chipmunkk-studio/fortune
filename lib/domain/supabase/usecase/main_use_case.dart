@@ -1,17 +1,18 @@
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/main_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/presentation/main/bloc/main_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
+class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
   final IngredientRepository ingredientRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MarkerRepository markerRepository;
@@ -25,15 +26,18 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
   });
 
   @override
-  Future<FortuneResult<MainEntity>> call(RequestMainParam param) async {
+  Future<FortuneResult<MainViewItem>> call(RequestMainParam param) async {
     try {
-      // 유저 정보 가져오기.(무조건 가져옴)
-      final user = await userRepository
-          .findUserByPhone(Supabase.instance.client.auth.currentUser?.phone)
-          .then((value) => value.getOrElse(() => null)!);
+      // 유저 정보 가져오기.
+      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
 
-      // 내 주변의 마커를 가져옴.
-      var markersNearByMe = await markerRepository.getAllMarkers(param.latitude, param.longitude);
+      // 내 주변의 마커를 가져옴. (글로벌 여부 확인)
+      var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))
+          .where(
+            (element) =>
+                user.isGlobal == element.ingredient.isGlobal || element.ingredient.type == IngredientType.ticket,
+          )
+          .toList();
 
       // 마커 리스트.
       final markersNearsByMeWithNotTicket = markersNearByMe
@@ -46,7 +50,7 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
       final histories = await obtainHistoryRepository.getAllHistories(start: 0, end: 10);
 
       // 재료 목록 가져옴.
-      final ingredients = await ingredientRepository.getIngredients();
+      final ingredients = await ingredientRepository.getIngredients(user.isGlobal);
 
       // 주변에 마커가 없으면 1개 있으면 0개.
       final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 1 : 0;
@@ -69,13 +73,18 @@ class MainUseCase implements UseCase1<MainEntity, RequestMainParam> {
         markerCount: markerCount,
       );
 
-      // 내 주변의 마커 가져옴
+      // 내 주변의 마커 가져옴 (티켓, 글로벌 여부 확인)
       if (result) {
-        markersNearByMe = await markerRepository.getAllMarkers(param.latitude, param.longitude);
+        markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))
+            .where(
+              (element) =>
+                  user.isGlobal == element.ingredient.isGlobal || element.ingredient.type == IngredientType.ticket,
+            )
+            .toList();
       }
 
       return Right(
-        MainEntity(
+        MainViewItem(
           user: user,
           markers: markersNearByMe,
           histories: histories,

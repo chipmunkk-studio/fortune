@@ -25,8 +25,7 @@ class InsertObtainHistoryUseCase implements UseCase1<void, RequestInsertHistoryP
         nickname: param.nickname,
         krLocationName: param.krLocationName,
         enLocationName: param.enLocationName,
-        enIngredientName: param.enIngredientName,
-        krIngredientName: param.krIngredientName,
+        ingredientName: param.ingredientName,
       );
       return Right(response);
     } on FortuneFailure catch (e) {

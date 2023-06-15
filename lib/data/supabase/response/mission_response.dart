@@ -17,6 +17,8 @@ class MissionResponse extends MissionEntity {
   final double remainCount_;
   @JsonKey(name: 'reward_image')
   final String rewardImage_;
+  @JsonKey(name: 'is_global')
+  final bool isGlobal_;
 
   MissionResponse({
     required this.id_,
@@ -25,13 +27,15 @@ class MissionResponse extends MissionEntity {
     required this.rewardCount_,
     required this.remainCount_,
     required this.rewardImage_,
+    required this.isGlobal_,
   }) : super(
           id: id_.toInt(),
           title: title_,
           subtitle: subtitle_,
           remainCount: remainCount_.toInt(),
-          rewardCount: remainCount_.toInt(),
+          rewardCount: rewardCount_.toInt(),
           rewardImage: rewardImage_,
+          isGlobal: isGlobal_,
         );
 
   factory MissionResponse.fromJson(Map<String, dynamic> json) => _$MissionResponseFromJson(json);

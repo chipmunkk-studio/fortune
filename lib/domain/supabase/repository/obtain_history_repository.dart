@@ -15,8 +15,13 @@ abstract class ObtainHistoryRepository {
     required String markerId,
     required String krLocationName,
     required String enLocationName,
-    required String krIngredientName,
-    required String enIngredientName,
+    required String ingredientName,
     required String nickname,
+  });
+
+  // 사용자 아이디와 재료 아이디로 조회.
+  Future<List<ObtainHistoryEntity>> getHistoriesByUserAndIngredient({
+    required int userId,
+    required int ingredientId,
   });
 }

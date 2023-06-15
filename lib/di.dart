@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
@@ -24,15 +25,18 @@ import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_ingredients_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_all_missions_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_mission_clear_conditions.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
+import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -48,6 +52,7 @@ import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'env.dart';
 
 final serviceLocator = GetIt.instance;
+final FortuneDialogService dialogService = FortuneDialogService();
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -249,11 +254,6 @@ _initRepository() {
 
 _initUseCase() async {
   serviceLocator
-    ..registerLazySingleton<GetIngredientsUseCase>(
-      () => GetIngredientsUseCase(
-        ingredientRepository: serviceLocator(),
-      ),
-    )
     ..registerLazySingleton<ObtainMarkerUseCase>(
       () => ObtainMarkerUseCase(
         markerRepository: serviceLocator(),
@@ -268,6 +268,23 @@ _initUseCase() async {
     ..registerLazySingleton<GetObtainHistoriesUseCase>(
       () => GetObtainHistoriesUseCase(
         obtainHistoryRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetAllMissionsUseCase>(
+      () => GetAllMissionsUseCase(
+        missionRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetMissionClearConditions>(
+      () => GetMissionClearConditions(
+        missionRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<PostMissionClearUseCase>(
+      () => PostMissionClearUseCase(
+        missionRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MainUseCase>(
@@ -302,6 +319,11 @@ _initBloc() {
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MissionsBloc(
+        getAllMissionsUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

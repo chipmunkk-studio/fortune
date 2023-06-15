@@ -25,6 +25,9 @@ class ColorName {
   /// Color: #D91B1C24
   static const Color backgroundBlur = Color(0xD91B1C24);
 
+  /// Color: #FF2B2D3C
+  static const Color backgroundDark = Color(0xFF2B2D3C);
+
   /// Color: #FF262734
   static const Color backgroundLight = Color(0xFF262734);
 

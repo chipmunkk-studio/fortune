@@ -13,6 +13,7 @@ class FortuneUserEntity {
   final int level;
   final FortuneUserGradeEntity grade;
   final double percentageNextLevel;
+  final bool isGlobal;
 
   FortuneUserEntity({
     required this.id,
@@ -25,5 +26,6 @@ class FortuneUserEntity {
     required this.trashObtainCount,
     required this.level,
   })  : percentageNextLevel = calculateLevelProgress(markerObtainCount),
+        isGlobal = countryCode != '82',
         grade = getUserGradeIconInfo(assignGrade(level));
 }

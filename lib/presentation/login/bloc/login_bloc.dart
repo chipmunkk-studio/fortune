@@ -9,7 +9,6 @@ import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
-import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final AuthRepository authRepository;
@@ -65,7 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       // 폰 번호 입력 상태.
       case LoginStepper.phoneNumber:
         if (state.loginUserState == LoginUserState.none) {
-          await userRepository.findUserByPhone(convertedPhoneNumber).then(
+          await userRepository.findUserByPhoneEither(convertedPhoneNumber).then(
                 (value) => value.fold(
                   (l) {
                     // 회원가입을 할 수 없을 경우 에러를 보냄.
@@ -132,7 +131,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
     final convertedPhoneNumber = _getConvertedPhoneNumber(state.phoneNumber);
-    await userRepository.findUserByPhone(convertedPhoneNumber).then(
+    await userRepository.findUserByPhoneEither(convertedPhoneNumber).then(
           (value) => value.fold(
             (l) => produceSideEffect(LoginError(l)),
             (r) async {

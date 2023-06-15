@@ -6,6 +6,7 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
+import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -74,7 +75,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                 closeIconColor: Colors.white,
                 cursorColor: Colors.white,
                 hintText: "검색어를 입력하세요",
-                centerTitleStyle: FortuneTextStyle.subTitle3Bold(),
+                centerTitleStyle: FortuneTextStyle.subTitle3SemiBold(),
                 onChanged: (text) => _bloc.add(ObtainHistorySearchText(text)),
                 searchTextEditingController: _controller,
                 horizontalPadding: 8,
@@ -96,7 +97,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                       separatorBuilder: (context, index) => const SizedBox(height: 20),
                       itemBuilder: (context, index) {
                         final item = state.histories[index];
-                        if (item is ObtainHistoryEntity) {
+                        if (item is ObtainHistoryContentViewItem) {
                           return ItemObtainHistory(item);
                         } else {
                           return const Center(
@@ -113,7 +114,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                   : Center(
                       child: Text(
                         "히스토리가 없습니다",
-                        style: FortuneTextStyle.subTitle3Bold(),
+                        style: FortuneTextStyle.subTitle3SemiBold(),
                       ),
                     ),
             );

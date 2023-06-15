@@ -26,9 +26,9 @@ class MissionRepositoryImpl extends MissionRepository {
   });
 
   @override
-  Future<List<MissionEntity>> getAllMissions() async {
+  Future<List<MissionEntity>> getAllMissions(bool isGlobal) async {
     try {
-      final result = await missionService.findAllMissions();
+      final result = await missionService.findAllMissions(isGlobal);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -40,6 +40,9 @@ class MissionRepositoryImpl extends MissionRepository {
   Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
+      if (result.isEmpty) {
+        throw CommonFailure(errorMessage: '클리어 조건이 없는 미션이 있습니다. $missionId');
+      }
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

@@ -86,7 +86,7 @@ class MarkerService {
   }
 
   // 아이디로 마커를 찾음.
-  Future<MarkerEntity?> findMarkerById(int id) async {
+  Future<MarkerEntity> findMarkerById(int id) async {
     try {
       final List<dynamic> response = await _client
           .from(_markerTableName)
@@ -96,7 +96,9 @@ class MarkerService {
           .eq("id", id)
           .toSelect();
       if (response.isEmpty) {
-        return null;
+        throw CommonFailure(
+          errorMessage: "마커가 존재하지 않습니다.",
+        );
       } else {
         final marker = response.map((e) => MarkerResponse.fromJson(e)).toList();
         return marker.single;
@@ -114,24 +116,20 @@ class MarkerService {
     int? hitCount,
   }) async {
     try {
-      MarkerEntity? marker = await findMarkerById(id);
-      if (marker != null) {
-        final updateMarker = await _client
-            .from(_markerTableName)
-            .update(
-              RequestMarkerUpdate(
-                latitude: location?.latitude ?? marker.latitude,
-                longitude: location?.longitude ?? marker.longitude,
-                lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
-                hitCount: hitCount ?? marker.hitCount,
-              ).toJson(),
-            )
-            .eq("id", id)
-            .select("*,ingredient(*)");
-        return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
-      } else {
-        throw const PostgrestException(message: '마커를 업데이트 하지못했습니다.');
-      }
+      MarkerEntity marker = await findMarkerById(id);
+      final updateMarker = await _client
+          .from(_markerTableName)
+          .update(
+            RequestMarkerUpdate(
+              latitude: location?.latitude ?? marker.latitude,
+              longitude: location?.longitude ?? marker.longitude,
+              lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
+              hitCount: hitCount ?? marker.hitCount,
+            ).toJson(),
+          )
+          .eq("id", id)
+          .select("*,ingredient(*)");
+      return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
@@ -140,12 +138,8 @@ class MarkerService {
   // 마커 삭제.
   Future<void> delete(int id) async {
     try {
-      MarkerEntity? marker = await findMarkerById(id);
-      if (marker != null) {
-        await _client.from(_markerTableName).delete().eq("id", id);
-      } else {
-        throw const PostgrestException(message: '마커를 삭제하지 못했습니다.');
-      }
+      MarkerEntity marker = await findMarkerById(id);
+      await _client.from(_markerTableName).delete().eq("id", marker.id);
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

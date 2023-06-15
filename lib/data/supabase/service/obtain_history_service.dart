@@ -23,16 +23,37 @@ class ObtainHistoryService {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
           .select("*,ingredient(*),user(*)")
-          .or(
-            'kr_location_name.ilike.$convertedQuery, '
-            'en_location_name.ilike.$convertedQuery, '
-            'en_ingredient_name.ilike.$convertedQuery, '
-            'kr_ingredient_name.ilike.$convertedQuery, '
+            .or(
+              'kr_location_name.ilike.$convertedQuery, '
+              'en_location_name.ilike.$convertedQuery, '
+            'ingredient_name.ilike.$convertedQuery, '
             'marker_id.ilike.$convertedQuery, '
             'nickname.ilike.$convertedQuery',
           )
           .order('created_at', ascending: false)
           .range(start, end)
+          .toSelect();
+      if (response.isEmpty) {
+        return List.empty();
+      } else {
+        final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
+        return histories;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  Future<List<ObtainHistoryResponse>> findObtainHistoryByUserAndIngredient({
+    required int userId,
+    required int ingredientId,
+  }) async {
+    try {
+      final List<dynamic> response = await _client
+          .from(_obtainHistoryTableName)
+          .select("*,ingredient(*),user(*)")
+          .eq('user', userId)
+          .eq('ingredient', ingredientId)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
@@ -52,8 +73,7 @@ class ObtainHistoryService {
     required int ingredientId,
     required String krLocationName,
     required String enLocationName,
-    required String krIngredientName,
-    required String enIngredientName,
+    required String ingredientName,
     required String nickname,
   }) async {
     try {
@@ -65,8 +85,7 @@ class ObtainHistoryService {
               nickName: nickname,
               krLocationName: krLocationName,
               enLocationName: enLocationName,
-              enIngredientName: enIngredientName,
-              krIngredientName: krIngredientName,
+              ingredientName: ingredientName,
             ).toJson(),
           );
     } on Exception catch (e) {

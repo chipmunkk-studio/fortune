@@ -4,10 +4,10 @@ import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
 
-class PostMissionClear implements UseCase1<void, RequestPostMissionClear> {
+class PostMissionClearUseCase implements UseCase1<void, RequestPostMissionClear> {
   final MissionRepository missionRepository;
 
-  PostMissionClear({
+  PostMissionClearUseCase({
     required this.missionRepository,
   });
 

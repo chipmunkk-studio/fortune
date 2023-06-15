@@ -12,10 +12,8 @@ class RequestObtainHistoryUpdate {
   final String markerId;
   @JsonKey(name: 'nickname')
   final String nickName;
-  @JsonKey(name: 'kr_ingredient_name')
-  final String krIngredientName;
-  @JsonKey(name: 'en_ingredient_name')
-  final String enIngredientName;
+  @JsonKey(name: 'ingredient_name')
+  final String ingredientName;
   @JsonKey(name: 'kr_location_name')
   final String krLocationName;
   @JsonKey(name: 'en_location_name')
@@ -25,8 +23,7 @@ class RequestObtainHistoryUpdate {
     required this.ingredientId,
     required this.userId,
     required this.nickName,
-    required this.krIngredientName,
-    required this.enIngredientName,
+    required this.ingredientName,
     required this.markerId,
     required this.krLocationName,
     required this.enLocationName,

@@ -51,7 +51,6 @@ class _LoginPage extends StatefulWidget {
 class _LoginPageState extends State<_LoginPage> {
   late LoginBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
-  final FortuneDialogService dialogService = FortuneDialogService();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _verifyCodeController = TextEditingController();
   final GlobalKey<AnimatedListState> _stepperKey = GlobalKey();

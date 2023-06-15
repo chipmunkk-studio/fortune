@@ -5,17 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
+import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
+import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
@@ -51,7 +52,6 @@ class _MainPage extends StatefulWidget {
 
 class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, TickerProviderStateMixin {
   final MapController _mapController = MapController();
-  final FortuneDialogService dialogService = FortuneDialogService();
   late MainBloc bloc;
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
@@ -214,7 +214,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               left: 0,
               right: 0,
               child: Container(
-                height: 50,
+                height: 24,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
@@ -289,8 +289,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   _onMyBagClick() {
-    // context.showFortuneBottomSheet(
-    //   content: (context) => const MissionsBottomPage(),
-    // );
+    context.showFortuneBottomSheet(
+      content: (context) => const MissionsBottomPage(),
+    );
   }
 }

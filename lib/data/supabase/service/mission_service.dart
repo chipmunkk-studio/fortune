@@ -13,9 +13,9 @@ class MissionService {
   MissionService(this._client);
 
   // 모든 미션을 조회.
-  Future<List<MissionEntity>> findAllMissions() async {
+  Future<List<MissionEntity>> findAllMissions(bool isGlobal) async {
     try {
-      final response = await _client.from(_missionsTableName).select("*").toSelect();
+      final response = await _client.from(_missionsTableName).select("*").eq('is_global', isGlobal).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {

@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../main/bloc/main_state.dart';
+
 class ItemObtainHistory extends StatelessWidget {
-  final ObtainHistoryEntity item;
+  final ObtainHistoryContentViewItem item;
 
   const ItemObtainHistory(
     this.item, {
@@ -30,10 +31,10 @@ class ItemObtainHistory extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${item.ingredient.krName} (${item.markerId})", style: FortuneTextStyle.body1SemiBold()),
+                Text("${item.ingredient.name} (${item.markerId})", style: FortuneTextStyle.body1SemiBold()),
                 const SizedBox(height: 6),
                 Text(
-                  item.krLocationName,
+                  item.locationName,
                   style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

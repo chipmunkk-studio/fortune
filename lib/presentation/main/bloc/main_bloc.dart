@@ -105,7 +105,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 profileImage: entity.user.profileImage,
                 refreshTime: 10,
                 refreshCount: state.refreshCount + 1,
-                histories: entity.histories,
+                histories: entity.histories
+                    .map(
+                      (e) => ObtainHistoryContentViewItem(
+                        id: e.id,
+                        markerId: e.markerId,
+                        user: e.user,
+                        ingredient: e.ingredient,
+                        createdAt: e.createdAt,
+                        ingredientName: e.ingredientName,
+                        locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
+                        nickName: e.nickName,
+                      ),
+                    )
+                    .toList(),
                 ticketCount: entity.user.ticket,
               ),
             );
@@ -158,13 +171,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 userId: r.id,
                 markerId: data.id.toString(),
                 ingredientId: data.ingredient.id,
-                krIngredientName: data.ingredient.krName,
-                enIngredientName: data.ingredient.enName,
+                ingredientName: data.ingredient.name,
                 nickname: r.nickname,
                 krLocationName: await getLocationName(latitude, longitude),
                 enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
               ),
-            ).then((value) => value.getOrElse(() {}));
+            ).then((value) => value.getOrElse(() {
+                  // 에러 무시
+                }));
           }
         },
       ),

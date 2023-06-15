@@ -48,14 +48,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
       try {
         final authClient = Supabase.instance.client.auth;
         final marker = await _markerService.findMarkerById(id);
-        // 마커가 존재하지 않을 경우.
-        if (marker == null) {
-          throw CommonFailure(
-            errorMessage: "이미 누군가 마커를 획득했습니다",
-          );
-        }
         final ingredient = marker.ingredient;
         final FortuneUserEntity? user = await _userService.findUserByPhone(authClient.currentUser?.phone);
+
         if (user!.ticket <= 0 && ingredient.type != IngredientType.ticket) {
           // 티켓이 없고, 마커가 티켓이 아닐 경우.
           throw CommonFailure(
@@ -145,11 +140,6 @@ class MarkerRepositoryImpl extends MarkerRepository {
   Future<void> hitMarker(int id) async {
     try {
       final marker = await _markerService.findMarkerById(id);
-      if (marker == null) {
-        throw CommonFailure(
-          errorMessage: "마커가 존재하지 않습니다",
-        );
-      }
       await _markerService.update(id, hitCount: marker.hitCount + 1);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

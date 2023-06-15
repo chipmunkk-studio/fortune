@@ -8,10 +8,8 @@ part 'ingredient_response.g.dart';
 class IngredientResponse extends IngredientEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'kr_name')
-  final String krName_;
-  @JsonKey(name: 'en_name')
-  final String enName_;
+  @JsonKey(name: 'name')
+  final String name_;
   @JsonKey(name: 'type')
   final String type_;
   @JsonKey(name: 'reward_ticket')
@@ -24,13 +22,14 @@ class IngredientResponse extends IngredientEntity {
   final String disappearImageUrl_;
   @JsonKey(name: 'is_extinct')
   final bool isExtinct_;
+  @JsonKey(name: 'is_global')
+  final bool isGlobal_;
   @JsonKey(name: 'distance')
   final int distance_;
 
   IngredientResponse({
     required this.id_,
-    required this.krName_,
-    required this.enName_,
+    required this.name_,
     required this.type_,
     required this.imageUrl_,
     required this.disappearImageUrl_,
@@ -38,10 +37,10 @@ class IngredientResponse extends IngredientEntity {
     required this.adUrl_,
     required this.distance_,
     required this.isExtinct_,
+    required this.isGlobal_,
   }) : super(
           id: id_.toInt(),
-          krName: krName_,
-          enName: enName_,
+          name: name_,
           imageUrl: imageUrl_,
           disappearImage: disappearImageUrl_,
           rewardTicket: rewardTicket_,
@@ -49,6 +48,7 @@ class IngredientResponse extends IngredientEntity {
           type: getIngredientType(type_),
           distance: distance_,
           isExtinct: isExtinct_,
+          isGlobal: isGlobal_,
         );
 
   factory IngredientResponse.fromJson(Map<String, dynamic> json) => _$IngredientResponseFromJson(json);

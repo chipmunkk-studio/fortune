@@ -13,9 +13,9 @@ class IngredientRepositoryImpl extends IngredientRepository {
 
   // 맵에 뿌릴 재료들 찾기.
   @override
-  Future<List<IngredientEntity>> getIngredients() async {
+  Future<List<IngredientEntity>> getIngredients(bool isGlobal) async {
     try {
-      final List<IngredientEntity> ingredients = await _ingredientService.findIngredients();
+      final List<IngredientEntity> ingredients = await _ingredientService.findIngredients(isGlobal);
       return ingredients;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

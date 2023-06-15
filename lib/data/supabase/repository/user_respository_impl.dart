@@ -15,7 +15,21 @@ class UserRepositoryImpl extends UserRepository {
 
   // 사용자 찾기.
   @override
-  Future<FortuneResult<FortuneUserEntity?>> findUserByPhone(phoneNumber) async {
+  Future<FortuneUserEntity> findUserByPhone(phoneNumber) async {
+    try {
+      final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
+      if (user == null) {
+        throw CommonFailure(errorMessage: '사용자가 존재하지 않습니다');
+      }
+      return user;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<FortuneResult<FortuneUserEntity?>> findUserByPhoneEither(phoneNumber) async {
     try {
       final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
       return Right(user);

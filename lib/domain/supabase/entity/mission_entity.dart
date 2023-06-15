@@ -5,6 +5,7 @@ class MissionEntity {
   final int rewardCount;
   final int remainCount;
   final String rewardImage;
+  final bool isGlobal;
 
   MissionEntity({
     required this.id,
@@ -13,5 +14,6 @@ class MissionEntity {
     required this.rewardCount,
     required this.remainCount,
     required this.rewardImage,
+    required this.isGlobal,
   });
 }

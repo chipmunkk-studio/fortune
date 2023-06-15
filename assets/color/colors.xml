@@ -2,6 +2,7 @@
 <resources>
     <color name="background">#FF1b1c24</color>
     <color name="backgroundLight">#FF262734</color>
+    <color name="backgroundDark">#FF2B2D3C</color>
     <color name="backgroundBlur">#D91B1C24</color>
     <color name="primary">#FF4bf0c8</color>
     <color name="secondary">#FF7367FF</color>

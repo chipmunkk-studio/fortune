@@ -12,9 +12,16 @@ class IngredientService {
     this._client,
   );
 
-  Future<List<IngredientResponse>> findIngredients() async {
+  Future<List<IngredientResponse>> findIngredients(bool isGlobal) async {
     try {
-      final List<dynamic> response = await _client.from(_ingredientTableName).select("*").toSelect();
+      final List<dynamic> response = await _client
+          .from(_ingredientTableName)
+          .select("*")
+          .or(
+            'type.eq.ticket,'
+            'is_global.eq.$isGlobal',
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {

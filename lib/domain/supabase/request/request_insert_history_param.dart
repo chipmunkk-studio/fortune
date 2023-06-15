@@ -4,8 +4,7 @@ class RequestInsertHistoryParam {
   final String markerId;
   final String krLocationName;
   final String enLocationName;
-  final String krIngredientName;
-  final String enIngredientName;
+  final String ingredientName;
   final String nickname;
 
   RequestInsertHistoryParam({
@@ -14,8 +13,7 @@ class RequestInsertHistoryParam {
     required this.markerId,
     required this.krLocationName,
     required this.enLocationName,
-    required this.krIngredientName,
-    required this.enIngredientName,
+    required this.ingredientName,
     required this.nickname,
   });
 }

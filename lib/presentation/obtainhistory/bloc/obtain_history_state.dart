@@ -1,12 +1,13 @@
-import 'package:foresh_flutter/domain/supabase/entity/obtain_marker_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../main/bloc/main_state.dart';
 
 part 'obtain_history_state.freezed.dart';
 
 @freezed
 class ObtainHistoryState with _$ObtainHistoryState {
   factory ObtainHistoryState({
-    required List<ObtainHistoryPagingEntity> histories,
+    required List<ObtainHistoryPagingViewItem> histories,
     required int start,
     required int end,
     required String query,
