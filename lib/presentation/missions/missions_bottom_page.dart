@@ -65,12 +65,12 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                       builder: (context, state) {
                         return MissionCardList(
                           missions: state.missions,
-                          onItemClick: (item) async {
+                          onItemClick: (missionId) async {
                             final exchangeStatus = await router.navigateTo(
                               context,
-                              Routes.obtainHistoryRoute,
+                              Routes.missionDetailRoute,
                               routeSettings: RouteSettings(
-                                arguments: item,
+                                arguments: missionId,
                               ),
                             );
                             _bloc.add(MissionsInit());

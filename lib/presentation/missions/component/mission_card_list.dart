@@ -167,7 +167,7 @@ class _MissionItem extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.userHaveCount}",
-                        style: FortuneTextStyle.body3Regular(fontColor: ColorName.secondary),
+                        style: FortuneTextStyle.body3Regular(fontColor: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.requiredTotalCount}",

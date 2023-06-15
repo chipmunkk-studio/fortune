@@ -4,6 +4,7 @@ import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'login/login_page.dart';
 import 'main/main_page.dart';
+import 'missiondetail/mission_detail_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
@@ -24,6 +25,13 @@ class FortuneRouter {
   static var permissionHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const RequestPermissionPage();
+    },
+  );
+
+  static var missionDetailHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as int?;
+      return args != null ? MissionDetailPage(args) : null;
     },
   );
 
@@ -100,6 +108,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 미션 상세..
+      ..define(
+        Routes.missionDetailRoute,
+        handler: missionDetailHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
@@ -115,4 +130,5 @@ class Routes {
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
+  static const String missionDetailRoute = 'missionDetail';
 }

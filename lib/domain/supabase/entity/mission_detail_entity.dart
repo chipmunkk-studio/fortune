@@ -9,6 +9,10 @@ class MissionDetailEntity {
     required this.markers,
   })  : isEnableMissionClear = markers.where((element) => !element.isConditionSatisfied).isEmpty,
         ingredientLength = markers.length;
+
+  factory MissionDetailEntity.initial() => MissionDetailEntity(
+        markers: [],
+      );
 }
 
 class MissionDetailViewItemEntity {

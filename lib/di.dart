@@ -37,6 +37,7 @@ import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dar
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
+import 'package:foresh_flutter/presentation/missiondetail/bloc/mission_detail.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
@@ -332,6 +333,11 @@ _initBloc() {
     ..registerFactory(
       () => MissionsBloc(
         getAllMissionsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MissionDetailBloc(
+        getMissionDetailUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
