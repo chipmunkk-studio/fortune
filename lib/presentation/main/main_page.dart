@@ -15,6 +15,7 @@ import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
@@ -157,6 +158,24 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               },
             ),
             // 카트.
+            Positioned(
+              bottom: 8,
+              right: 8,
+              child: GestureDetector(
+                onTap: _onMyBagClick,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: ColorName.backgroundLight,
+                    borderRadius: BorderRadius.circular(50.r),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Assets.icons.icInventory.svg(),
+                  ),
+                ),
+              ),
+            ),
             Positioned.fill(
               child: AddToCartAnimation(
                 cartKey: cartKey,
@@ -171,46 +190,27 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   this.runAddToCartAnimation = runAddToCartAnimation;
                 },
                 child: Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: _onMyBagClick,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: ColorName.backgroundLight,
-                        borderRadius: BorderRadius.circular(50.r),
+                  top: 13,
+                  right: 20,
+                  left: 20,
+                  child: Column(
+                    children: [
+                      TopNotice(bloc),
+                      const SizedBox(height: 10),
+                      TopInformationArea(
+                        bloc,
+                        cartKey,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Assets.icons.icInventory.svg(),
-                      ),
-                    ),
+                      const SizedBox(height: 10),
+                    ],
                   ),
                 ),
               ),
             ),
-            BlocBuilder<MainBloc, MainState>(
-              buildWhen: (previous, current) => previous.isLoading != current.isLoading,
-              builder: (context, state) {
-                return state.isLoading
-                    ? const SizedBox.shrink()
-                    : Positioned(
-                        top: 13,
-                        right: 20,
-                        left: 20,
-                        child: Column(
-                          children: [
-                            TopNotice(bloc),
-                            const SizedBox(height: 10),
-                            TopInformationArea(
-                              bloc,
-                              cartKey,
-                            ),
-                          ],
-                        ),
-                      );
-              },
+            Positioned(
+              left: 16,
+              bottom: 16,
+              child: TopRefreshTime(bloc),
             ),
             // 하단 그라데이션.
             Positioned(

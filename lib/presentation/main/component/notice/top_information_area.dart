@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -28,19 +29,24 @@ class TopInformationArea extends StatelessWidget {
           child: BlocBuilder<MainBloc, MainState>(
             buildWhen: (previous, current) => previous.user?.percentageNextLevel != current.user?.percentageNextLevel,
             builder: (context, state) {
-              return _UserLevel(
-                state.user?.percentageNextLevel,
-                state.user?.level,
-              );
+              final user = state.user;
+              return user != null
+                  ? _UserLevel(
+                      user.grade,
+                      user.percentageNextLevel,
+                      user.level,
+                    )
+                  : const SizedBox.shrink();
             },
           ),
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 10),
         // 티켓 카운트.
         BlocBuilder<MainBloc, MainState>(
           buildWhen: (previous, current) => previous.user?.ticket != current.user?.ticket,
           builder: (context, state) {
-            return _TicketCount(state.user?.ticket);
+            final user = state.user;
+            return user != null ? _TicketCount(user.ticket) : const SizedBox.shrink();
           },
         ),
         const SizedBox(width: 10),
@@ -48,10 +54,8 @@ class TopInformationArea extends StatelessWidget {
         BlocBuilder<MainBloc, MainState>(
           buildWhen: (previous, current) => previous.user?.markerObtainCount != current.user?.markerObtainCount,
           builder: (context, state) {
-            return _ObtainMarkerCount(
-              _cartKey,
-              state.user?.markerObtainCount,
-            );
+            final user = state.user;
+            return user != null ? _ObtainMarkerCount(_cartKey, user.markerObtainCount) : const SizedBox.shrink();
           },
         ),
       ],
@@ -137,8 +141,10 @@ class _TicketCount extends StatelessWidget {
 class _UserLevel extends StatelessWidget {
   final double? _percentageNextLevel;
   final int? _level;
+  final FortuneUserGradeEntity _grade;
 
   const _UserLevel(
+    this._grade,
     this._percentageNextLevel,
     this._level, {
     super.key,
@@ -147,14 +153,14 @@ class _UserLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 12, top: 8, bottom: 8),
+      padding: const EdgeInsets.only(left: 10, right: 8, top: 8, bottom: 8),
       decoration: BoxDecoration(
         color: ColorName.backgroundLight,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
-          Assets.icons.icFortuneMoney.svg(width: 20, height: 20),
+          _grade.icon.svg(width: 20, height: 20),
           const SizedBox(width: 10),
           Flexible(
             child: FittedBox(
@@ -163,19 +169,19 @@ class _UserLevel extends StatelessWidget {
                 children: [
                   LinearPercentIndicator(
                     width: 87,
-                    animation: true,
-                    lineHeight: 16,
+                    animation: false,
+                    lineHeight: 20,
                     animationDuration: 2000,
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
-                    barRadius: Radius.circular(16.r),
+                    barRadius: Radius.circular(100.r),
                     backgroundColor: ColorName.deActive.withOpacity(0.3),
-                    progressColor: ColorName.primary,
+                    progressColor: ColorName.secondary,
                   ),
                   Positioned.fill(
                     child: Center(
                       child: Text(
-                        "Lv. ${_level}",
+                        "Lv. $_level",
                         style: FortuneTextStyle.caption1SemiBold(),
                       ),
                     ),
