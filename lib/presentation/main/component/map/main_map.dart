@@ -1,4 +1,4 @@
-  import 'package:avatar_glow/avatar_glow.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,11 +119,11 @@ class MainMap extends StatelessWidget {
                     repeatPauseDuration: const Duration(milliseconds: 5),
                     endRadius: 120,
                     child: BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.profileImage != current.profileImage,
+                      buildWhen: (previous, current) => previous.user?.profileImage != current.user?.profileImage,
                       builder: (context, state) {
                         return ScaleAnimation(
                           child: CenterProfile(
-                            imageUrl: state.profileImage ?? "",
+                            imageUrl: state.user?.profileImage ?? "",
                             backgroundColor: const Color(0xff7367FF).withOpacity(1.0),
                           ),
                         );

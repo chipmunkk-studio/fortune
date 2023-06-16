@@ -101,12 +101,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             emit(
               state.copyWith(
                 markers: markerList,
-                userId: entity.user.id,
-                profileImage: entity.user.profileImage,
+                user: entity.user,
                 refreshTime: 10,
                 refreshCount: state.refreshCount + 1,
                 histories: entity.histories,
-                ticketCount: entity.user.ticket,
+                isLoading: false,
               ),
             );
           },
@@ -129,7 +128,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
     // 티켓이 있을 경우만.
     // 먼저 처리 하고 api를 나중에 쏨. 아니면 느림.
-    if (state.ticketCount != 0 || (data.ingredient.isExtinct && data.isObtainedUser)) {
+    if (state.user?.ticket != 0 || (data.ingredient.isExtinct && data.isObtainedUser)) {
       List<MainLocationData> newList = List.from(state.markers);
       var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
       if (loc != null) {
@@ -149,7 +148,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
-          emit(state.copyWith(ticketCount: r.ticket));
+          emit(state.copyWith(user: r));
           FortuneLogger.info("레벨: ${r.level}, 다음 레벨 까지: ${r.percentageNextLevel},등급: ${r.grade.name}");
           // 획득 응답 속도 때문에 usecase로 따로 실행하고 에러는 무시.
           if (data.ingredient.type != IngredientType.ticket) {

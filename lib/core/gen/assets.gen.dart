@@ -148,6 +148,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_info.svg
   SvgGenImage get icInfo => const SvgGenImage('assets/icons/ic_info.svg');
 
+  /// File path: assets/icons/ic_ingredient_bag.svg
+  SvgGenImage get icIngredientBag =>
+      const SvgGenImage('assets/icons/ic_ingredient_bag.svg');
+
   /// File path: assets/icons/ic_inventory.svg
   SvgGenImage get icInventory =>
       const SvgGenImage('assets/icons/ic_inventory.svg');
@@ -171,6 +175,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_phone.svg
   SvgGenImage get icPhone => const SvgGenImage('assets/icons/ic_phone.svg');
+
+  /// File path: assets/icons/ic_plus.svg
+  SvgGenImage get icPlus => const SvgGenImage('assets/icons/ic_plus.svg');
 
   /// File path: assets/icons/ic_profile_setting.svg
   SvgGenImage get icProfileSetting =>
@@ -216,6 +223,7 @@ class $AssetsIconsGen {
         icGradeSilver,
         icImage,
         icInfo,
+        icIngredientBag,
         icInventory,
         icLock,
         icMappin,
@@ -223,6 +231,7 @@ class $AssetsIconsGen {
         icOnboarding,
         icPencil,
         icPhone,
+        icPlus,
         icProfileSetting,
         icPushAlarm,
         icQuestion,

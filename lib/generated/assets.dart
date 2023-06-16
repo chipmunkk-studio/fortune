@@ -36,6 +36,7 @@ class Assets {
   static const String iconsIcGradeSilver = 'assets/icons/ic_grade_silver.svg';
   static const String iconsIcImage = 'assets/icons/ic_image.svg';
   static const String iconsIcInfo = 'assets/icons/ic_info.svg';
+  static const String iconsIcIngredientBag = 'assets/icons/ic_ingredient_bag.svg';
   static const String iconsIcInventory = 'assets/icons/ic_inventory.svg';
   static const String iconsIcLock = 'assets/icons/ic_lock.svg';
   static const String iconsIcMappin = 'assets/icons/ic_mappin.svg';
@@ -43,6 +44,7 @@ class Assets {
   static const String iconsIcOnboarding = 'assets/icons/ic_onboarding.svg';
   static const String iconsIcPencil = 'assets/icons/ic_pencil.svg';
   static const String iconsIcPhone = 'assets/icons/ic_phone.svg';
+  static const String iconsIcPlus = 'assets/icons/ic_plus.svg';
   static const String iconsIcProfileSetting = 'assets/icons/ic_profile_setting.svg';
   static const String iconsIcPushAlarm = 'assets/icons/ic_push_alarm.svg';
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';

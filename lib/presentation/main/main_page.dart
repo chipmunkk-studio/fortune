@@ -15,7 +15,6 @@ import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
@@ -24,6 +23,7 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
+import 'component/notice/top_information_area.dart';
 import 'component/notice/top_notice.dart';
 
 class MainPage extends StatelessWidget {
@@ -108,7 +108,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       listener: (context, sideEffect) async {
         if (sideEffect is MainLocationChangeListenSideEffect) {
           locationChangeSubscription = await listenLocationChange(sideEffect.myLocation);
-          // 내 위치 잡고 최초에  한번만 다시 그림.
+          // 내 위치 잡고 최초에 한번만 다시 그림.
           if (myLocation == null) {
             setState(() {
               myLocation = sideEffect.myLocationData;
@@ -177,36 +177,40 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     onTap: _onMyBagClick,
                     child: Container(
                       padding: const EdgeInsets.all(16),
-                      child: AddToCartIcon(
-                        key: cartKey,
-                        icon: Container(
-                          decoration: BoxDecoration(
-                            color: ColorName.backgroundLight,
-                            borderRadius: BorderRadius.circular(50.r),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Assets.icons.icInventory.svg(),
-                          ),
-                        ),
-                        badgeOptions: const BadgeOptions(active: false),
+                      decoration: BoxDecoration(
+                        color: ColorName.backgroundLight,
+                        borderRadius: BorderRadius.circular(50.r),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Assets.icons.icInventory.svg(),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            Positioned(
-              top: 13,
-              right: 20,
-              left: 20,
-              child: Column(
-                children: [
-                  TopNotice(bloc),
-                  const SizedBox(height: 10),
-                  TopRefreshTime(bloc),
-                ],
-              ),
+            BlocBuilder<MainBloc, MainState>(
+              buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+              builder: (context, state) {
+                return state.isLoading
+                    ? const SizedBox.shrink()
+                    : Positioned(
+                        top: 13,
+                        right: 20,
+                        left: 20,
+                        child: Column(
+                          children: [
+                            TopNotice(bloc),
+                            const SizedBox(height: 10),
+                            TopInformationArea(
+                              bloc,
+                              cartKey,
+                            ),
+                          ],
+                        ),
+                      );
+              },
             ),
             // 하단 그라데이션.
             Positioned(
