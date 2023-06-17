@@ -41,7 +41,7 @@ class MissionRepositoryImpl extends MissionRepository {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
-        throw CommonFailure(errorMessage: '클리어 조건이 없는 미션이 있습니다. $missionId');
+        throw CommonFailure(errorMessage: '현재 미션 카드를 불러 올 수 없습니다');
       }
       return result;
     } on FortuneFailure catch (e) {
@@ -59,17 +59,17 @@ class MissionRepositoryImpl extends MissionRepository {
       final mission = await missionService.findMissionById(missionId);
       final user = await userService.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
 
-      if (mission == null || user == null) {
-        throw CommonFailure(errorMessage: "사용자 혹은 미션이 존재 하지 않습니다.");
+      if (user == null) {
+        throw CommonFailure(errorMessage: "사용자가 존재 하지 않습니다.");
       }
       if (mission.remainCount == 0) {
         throw CommonFailure(errorMessage: "리워드가 모두 소진 되었습니다.");
       }
 
       // 미션 상태 업데이트.
-      final missionUpdate = missionService.update(
+      final missionUpdate = await missionService.update(
         missionId,
-        remainCount: mission.rewardCount - 1,
+        remainCount: mission.remainCount - 1,
       );
 
       // 미션 클리어 사용자 추가.
@@ -82,10 +82,21 @@ class MissionRepositoryImpl extends MissionRepository {
       // 클리어 히스토리 추가.
       final clearHistory = await missionClearHistoryService.insert(
         userId: user.id,
-        title: mission.title,
-        subtitle: mission.subtitle,
+        title: mission.bigTitle,
+        subtitle: mission.bigSubtitle,
         rewardImage: mission.rewardImage,
       );
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MissionEntity> getMissionsById(int missionId) async {
+    try {
+      final result = await missionService.findMissionById(missionId);
+      return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;

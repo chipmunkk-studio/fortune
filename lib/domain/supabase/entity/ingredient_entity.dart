@@ -24,4 +24,19 @@ class IngredientEntity {
     required this.isExtinct,
     required this.isGlobal,
   });
+
+  factory IngredientEntity.empty() {
+    return IngredientEntity(
+      id: 0,
+      name: '',
+      imageUrl: '',
+      disappearImage: '',
+      rewardTicket: 0,
+      type: IngredientType.ticket,  // assuming 'undefined' is a valid enum value for IngredientType
+      adUrl: '',
+      distance: 0,
+      isExtinct: false,
+      isGlobal: false,
+    );
+  }
 }

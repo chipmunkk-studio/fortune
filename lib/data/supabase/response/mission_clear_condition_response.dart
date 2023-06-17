@@ -15,29 +15,17 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
   final IngredientResponse ingredient_;
   @JsonKey(name: 'count')
   final double count_;
-  @JsonKey(name: 'title')
-  final String title_;
-  @JsonKey(name: 'subtitle')
-  final String subtitle_;
-  @JsonKey(name: 'content')
-  final String content_;
 
   MissionClearConditionResponse({
     required this.id_,
     required this.mission_,
     required this.count_,
-    required this.title_,
-    required this.subtitle_,
-    required this.content_,
     required this.ingredient_,
   }) : super(
           id: id_.toInt(),
           mission: mission_,
-          count: count_.toInt(),
-          title: title_,
-          subtitle: subtitle_,
-          content: content_,
           ingredient: ingredient_,
+          count: count_.toInt(),
         );
 
   factory MissionClearConditionResponse.fromJson(Map<String, dynamic> json) =>

@@ -22,6 +22,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
   Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
     try {
       final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final mission = await missionRepository.getMissionsById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditions(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 
@@ -41,7 +42,17 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
         );
       }).toList();
 
-      return Right(MissionDetailEntity(markers: markers));
+      // 7개까지 무조건 채움.
+      while (markers.length < 7) {
+        markers.add(MissionDetailViewItemEntity.empty());
+      }
+
+      return Right(
+        MissionDetailEntity(
+          markers: markers,
+          mission: mission,
+        ),
+      );
     } on FortuneFailure catch (e) {
       return Left(e);
     }

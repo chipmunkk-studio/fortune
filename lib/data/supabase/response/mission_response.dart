@@ -7,10 +7,16 @@ part 'mission_response.g.dart';
 class MissionResponse extends MissionEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'title')
-  final String title_;
-  @JsonKey(name: 'subtitle')
-  final String subtitle_;
+  @JsonKey(name: 'big_title')
+  final String bigTitle_;
+  @JsonKey(name: 'big_subtitle')
+  final String bigSubtitle_;
+  @JsonKey(name: 'detail_title')
+  final String detailTitle_;
+  @JsonKey(name: 'detail_subtitle')
+  final String detailSubtitle_;
+  @JsonKey(name: 'detail_content')
+  final String detailContent_;
   @JsonKey(name: 'reward_count')
   final double rewardCount_;
   @JsonKey(name: 'remain_count')
@@ -22,16 +28,22 @@ class MissionResponse extends MissionEntity {
 
   MissionResponse({
     required this.id_,
-    required this.title_,
-    required this.subtitle_,
+    required this.bigTitle_,
+    required this.bigSubtitle_,
     required this.rewardCount_,
     required this.remainCount_,
     required this.rewardImage_,
+    required this.detailTitle_,
+    required this.detailSubtitle_,
+    required this.detailContent_,
     required this.isGlobal_,
   }) : super(
           id: id_.toInt(),
-          title: title_,
-          subtitle: subtitle_,
+          bigTitle: bigTitle_,
+          bigSubtitle: bigSubtitle_,
+          detailTitle: detailTitle_,
+          detailSubtitle: detailSubtitle_,
+          detailContent: detailContent_,
           remainCount: remainCount_.toInt(),
           rewardCount: rewardCount_.toInt(),
           rewardImage: rewardImage_,

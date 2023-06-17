@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
+import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/di.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/mission_detail.dart';
+import 'component/ingredient_layout.dart';
 
 class MissionDetailPage extends StatelessWidget {
   const MissionDetailPage(
@@ -25,6 +29,7 @@ class MissionDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<MissionDetailBloc>()..add(MissionDetailInit(missionId)),
       child: FortuneScaffold(
+        padding: const EdgeInsets.all(0),
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
         child: const _MissionDetailPage(),
       ),
@@ -76,14 +81,30 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                     ListView(
                       physics: const BouncingScrollPhysics(),
                       children: [
-                        Text(
-                          "메인타이틀을 입력하세요",
-                          style: FortuneTextStyle.subTitle1SemiBold(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            state.entity.mission.detailTitle,
+                            style: FortuneTextStyle.subTitle1SemiBold(),
+                          ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "서브타이틀을 입력하세요",
-                          style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            state.entity.mission.detailSubtitle,
+                            style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        IngredientLayout(state.entity.markers),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            state.entity.mission.detailContent,
+                            style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                          ),
                         ),
                       ],
                     ),
@@ -108,11 +129,14 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                   ],
                 ),
               ),
-              FortuneBottomButton(
-                isEnabled: state.isEnableButton,
-                buttonText: "교환하기",
-                onPress: () => _showExchangeBottomSheet(),
-                isKeyboardVisible: false,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16,left: 20,right: 20),
+                child: FortuneBottomButton(
+                  isEnabled: state.isEnableButton,
+                  buttonText: "교환하기",
+                  onPress: () => _showExchangeBottomSheet(),
+                  isKeyboardVisible: false,
+                ),
               ),
             ],
           );
@@ -155,6 +179,50 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
           ),
         );
       },
+    );
+  }
+}
+
+class LayoutExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      padding: EdgeInsets.all(10.0),
+      crossAxisCount: 3,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 4.0,
+      crossAxisSpacing: 4.0,
+      children: <Widget>[
+        _buildGridTile(1),
+        _buildGridTile(2),
+        SizedBox.shrink(),
+        _buildGridTile(3),
+        _buildGridTile(4),
+        _buildGridTile(5),
+        SizedBox.shrink(),
+        _buildGridTile(6),
+        _buildGridTile(7),
+      ],
+    );
+  }
+
+  Widget _buildGridTile(int index) {
+    return FractionallySizedBox(
+      alignment: Alignment.center,
+      widthFactor: 0.6,
+      heightFactor: 0.6,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black),
+          color: Colors.grey,
+        ),
+        child: Center(
+          child: Text(
+            '$index',
+            style: TextStyle(fontSize: 24, color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -294,6 +294,8 @@ _initUseCase() async {
     ..registerLazySingleton<PostMissionClearUseCase>(
       () => PostMissionClearUseCase(
         missionRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MainUseCase>(
@@ -338,6 +340,7 @@ _initBloc() {
     ..registerFactory(
       () => MissionDetailBloc(
         getMissionDetailUseCase: serviceLocator(),
+        postMissionClearUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -5,7 +5,7 @@ abstract class MissionRepository {
   // 미션 목록 불러오기.
   Future<List<MissionEntity>> getAllMissions(bool isGlobal);
 
-  // 미션 상세
+  // 미션 상세 조건.
   Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId);
 
   // 미션 클리어 요청.
@@ -13,4 +13,7 @@ abstract class MissionRepository {
     required int missionId,
     required String email,
   });
+
+  // 미션 불러오기.
+  Future<MissionEntity> getMissionsById(int missionId);
 }

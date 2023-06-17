@@ -45,7 +45,7 @@ class _MissionItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.r),
@@ -62,7 +62,7 @@ class _MissionItem extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        item.mission.title,
+                        item.mission.bigTitle,
                         style: FortuneTextStyle.subTitle3SemiBold(),
                       ),
                     ),
@@ -70,7 +70,7 @@ class _MissionItem extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        item.mission.subtitle,
+                        item.mission.bigSubtitle,
                         style: FortuneTextStyle.body2Regular(
                           fontColor: ColorName.activeDark,
                         ),
@@ -86,7 +86,7 @@ class _MissionItem extends StatelessWidget {
                             color: ColorName.deActiveDark,
                           ),
                           child: Text(
-                            "잔여 수량",
+                            "남은 리워드",
                             style: FortuneTextStyle.caption1SemiBold(
                               fontColor: Colors.white,
                             ),
@@ -135,7 +135,7 @@ class _MissionItem extends StatelessWidget {
             ),
           ),
           child: Container(
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(24.r),
@@ -167,7 +167,7 @@ class _MissionItem extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.userHaveCount}",
-                        style: FortuneTextStyle.body3Regular(fontColor: ColorName.primary),
+                        style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.requiredTotalCount}",

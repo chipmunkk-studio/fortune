@@ -6,17 +6,11 @@ class MissionClearConditionEntity {
   final MissionEntity mission;
   final IngredientEntity ingredient;
   final int count;
-  final String title;
-  final String subtitle;
-  final String content;
 
   MissionClearConditionEntity({
     required this.id,
     required this.mission,
     required this.count,
-    required this.title,
-    required this.subtitle,
-    required this.content,
     required this.ingredient,
   });
 }

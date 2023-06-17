@@ -29,4 +29,9 @@ abstract class ObtainHistoryRepository {
   Future<List<ObtainHistoryEntity>> getHistoriesByUser({
     required int userId,
   });
+
+  // 히스토리 삭제.
+  Future<void> delete({
+    required List<ObtainHistoryEntity> histories,
+  });
 }

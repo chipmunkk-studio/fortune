@@ -102,7 +102,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: 10,
+                refreshTime: 60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ,
                 refreshCount: state.refreshCount + 1,
                 histories: entity.histories,
                 isLoading: false,

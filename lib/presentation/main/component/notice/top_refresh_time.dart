@@ -77,7 +77,7 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
                         animation: controller,
                         builder: (BuildContext context, Widget? child) {
                           return CircularProgressIndicator(
-                            value: controller.value, // 진행률을 결정합니다.
+                            value: controller.value,
                             backgroundColor: ColorName.deActiveDark,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               controller.value == 0.0

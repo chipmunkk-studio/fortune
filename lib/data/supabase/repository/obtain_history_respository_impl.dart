@@ -87,4 +87,17 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<void> delete({
+    required List<ObtainHistoryEntity> histories,
+  }) async {
+    try {
+      final result = await _obtainHistoryService.delete(histories.map((e) => e.id).toList());
+      return result;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
+      rethrow;
+    }
+  }
 }

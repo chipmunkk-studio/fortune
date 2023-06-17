@@ -28,14 +28,14 @@ class MissionService {
   }
 
   // 아이디로 미션을 조회.
-  Future<MissionEntity?> findMissionById(int missionId) async {
+  Future<MissionEntity> findMissionById(int missionId) async {
     try {
       final response = await _client.from(_missionsTableName).select("*").eq('id', missionId).toSelect();
       if (response.isEmpty) {
-        return null;
+        throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
       } else {
         final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
-        return missions.singleOrNull;
+        return missions.single;
       }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
@@ -48,21 +48,17 @@ class MissionService {
     int? remainCount,
   }) async {
     try {
-      MissionEntity? mission = await findMissionById(id);
-      if (mission != null) {
-        final updateMission = await _client
-            .from(_missionsTableName)
-            .update(
-              RequestMissionUpdate(
-                remainCount: remainCount ?? mission.remainCount,
-              ).toJson(),
-            )
-            .eq('id', id)
-            .select();
-        return updateMission.map((e) => MissionResponse.fromJson(e)).toList().single;
-      } else {
-        throw const PostgrestException(message: '미션이 존재하지 않습니다');
-      }
+      MissionEntity mission = await findMissionById(id);
+      final updateMission = await _client
+          .from(_missionsTableName)
+          .update(
+            RequestMissionUpdate(
+              remainCount: remainCount ?? mission.remainCount,
+            ).toJson(),
+          )
+          .eq('id', id)
+          .select();
+      return updateMission.map((e) => MissionResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
