@@ -7,6 +7,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/notification/one_signal_notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
@@ -19,6 +20,7 @@ import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_ti
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -38,7 +40,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit(landingPage: landingRoute)),
+      create: (_) => serviceLocator<MainBloc>()..add(MainInit()),
       child: const _MainPage(),
     );
   }
@@ -67,6 +69,19 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     bloc = BlocProvider.of<MainBloc>(context);
+    // 푸시 알람으로 랜딩 할 경우.
+    OneSignal.shared.setNotificationOpenedHandler(
+      (event) {
+        final notificationData = OneSignalNotificationResponse(
+          title: event.notification.title,
+          alert: event.notification.body,
+          custom: OneSignalNotificationCustom(
+            entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
+          ),
+        );
+        bloc.add(MainLandingPage(notificationData.custom?.entity?.landing));
+      },
+    );
   }
 
   @override

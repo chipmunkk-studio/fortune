@@ -6,7 +6,6 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/response/agree_terms_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/notification_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -97,7 +96,7 @@ class AuthService {
   }
 
   // 세션 복구
-  Future<String> recoverSession(Map<String, dynamic>? data) async {
+  Future<String> recoverSession() async {
     final isAnyPermissionDenied = await FortunePermissionUtil.checkPermissionsStatus(
       Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
     );
@@ -105,7 +104,7 @@ class AuthService {
     if (isAnyPermissionDenied && isJoinMember) {
       return handlePermissionDeniedState();
     } else if (isJoinMember) {
-      return handleJoinMemberState(data);
+      return handleJoinMemberState();
     } else {
       return handleNoLoginState();
     }
@@ -116,20 +115,14 @@ class AuthService {
     return Future.value(Routes.requestPermissionRoute);
   }
 
-  Future<String> handleJoinMemberState(Map<String, dynamic>? data) async {
+  Future<String> handleJoinMemberState() async {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음.');
     // 세션이 만료된 경우.
     final currentLoginUserState = await refreshSession();
     if (currentLoginUserState == LoginUserState.needToLogin || currentLoginUserState == LoginUserState.sessionExpired) {
       return "${Routes.loginRoute}/${currentLoginUserState.name}";
     }
-    if (data != null) {
-      FortuneLogger.info('RecoverSession:: 푸시 알림으로 진입');
-      final entity = NotificationEntity.fromJson(data);
-      return "${Routes.mainRoute}/${entity.landingRoute}";
-    } else {
-      return Routes.mainRoute;
-    }
+    return Routes.mainRoute;
   }
 
   Future<String> handleNoLoginState() {

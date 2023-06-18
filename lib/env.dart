@@ -22,6 +22,7 @@ enum EnvKey {
   mapStyleId,
   mapUrlTemplate,
   appMetrica,
+  oneSignalApiKey,
 }
 
 class FortuneRemoteConfig {
@@ -31,6 +32,7 @@ class FortuneRemoteConfig {
   final String mapStyleId;
   final String mapUrlTemplate;
   final String appMetricaKey;
+  final String oneSignalApiKey;
 
   FortuneRemoteConfig({
     required this.baseUrl,
@@ -39,6 +41,7 @@ class FortuneRemoteConfig {
     required this.mapUrlTemplate,
     required this.appMetricaKey,
     required this.anonKey,
+    required this.oneSignalApiKey,
   });
 
   @override
@@ -48,6 +51,7 @@ class FortuneRemoteConfig {
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
         "appMetricaKey: $appMetricaKey\n"
+        "oneSignalApiKey: $oneSignalApiKey\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
@@ -126,6 +130,7 @@ getRemoteConfigArgs() async {
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
     final anonKey = remoteConfig.getString(describeEnum(EnvKey.anonKey));
+    final oneSignalApiKey = remoteConfig.getString(describeEnum(EnvKey.oneSignalApiKey));
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
@@ -143,6 +148,7 @@ getRemoteConfigArgs() async {
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,
       anonKey: anonKey,
+      oneSignalApiKey: oneSignalApiKey,
     );
   } catch (e) {
     FortuneLogger.error("RemoteConfig Error:: $e");

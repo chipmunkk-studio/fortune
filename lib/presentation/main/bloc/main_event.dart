@@ -8,12 +8,10 @@ import '../component/map/main_location_data.dart';
 abstract class MainEvent extends Equatable {}
 
 class MainInit extends MainEvent {
-  final String? landingPage;
-
-  MainInit({this.landingPage});
+  MainInit();
 
   @override
-  List<Object?> get props => [landingPage];
+  List<Object?> get props => [];
 }
 
 class Main extends MainEvent {
@@ -49,6 +47,15 @@ class MainMarkerClick extends MainEvent {
 
 class MainTimeOver extends MainEvent {
   MainTimeOver();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainLandingPage extends MainEvent {
+  final String? landingPage;
+
+  MainLandingPage(this.landingPage);
 
   @override
   List<Object?> get props => [];

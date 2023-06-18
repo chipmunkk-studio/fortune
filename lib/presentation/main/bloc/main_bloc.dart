@@ -31,18 +31,23 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.insertObtainHistoryUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
+    on<MainLandingPage>(landingPage);
     on<Main>(main);
     on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
     on<MainTimeOver>(timerOver);
   }
 
+  FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) {
+    final landingPage = event.landingPage;
+    if (landingPage != null) {
+      produceSideEffect(MainSchemeLandingPage(landingPage));
+    }
+  }
+
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
     // generateRandomMarkers();
     bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
-
-    // 알람으로 랜딩할 경우 페이지.
-    final landingPage = event.landingPage;
 
     // 위치 권한이 없을 경우.
     if (!hasPermission) {
@@ -51,11 +56,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     }
     // 마커 목록들을 받아옴.
     add(Main());
-
-    // 랜딩페이지가 있을 경우.
-    if (landingPage != null) {
-      produceSideEffect(MainSchemeLandingPage(landingPage));
-    }
   }
 
   // 위치 정보 초기화.
@@ -102,7 +102,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: 60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ,
+                refreshTime: 60,
                 refreshCount: state.refreshCount + 1,
                 histories: entity.histories,
                 isLoading: false,
