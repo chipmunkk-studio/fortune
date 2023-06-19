@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -50,9 +52,9 @@ class MainMap extends StatelessWidget {
                   zoom: _bloc.state.zoomThreshold,
                   interactiveFlags: InteractiveFlag.pinchZoom,
                   onPositionChanged: (mapPosition, boolHasGesture) {
-                    // if (boolHasGesture) {
-                    //   onZoomChanged();
-                    // }
+                    if (boolHasGesture) {
+                      onZoomChanged();
+                    }
                   },
                   onTap: (tapPosition, point) {
                     FortuneLogger.debug(

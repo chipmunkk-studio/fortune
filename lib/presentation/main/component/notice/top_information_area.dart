@@ -52,10 +52,10 @@ class TopInformationArea extends StatelessWidget {
         const SizedBox(width: 10),
         // 마커 획득갯수.
         BlocBuilder<MainBloc, MainState>(
-          buildWhen: (previous, current) => previous.user?.markerObtainCount != current.user?.markerObtainCount,
+          buildWhen: (previous, current) => previous.haveCount != current.haveCount,
           builder: (context, state) {
             final user = state.user;
-            return user != null ? _ObtainMarkerCount(_cartKey, user.markerObtainCount) : const SizedBox.shrink();
+            return user != null ? _ObtainMarkerCount(_cartKey, state.haveCount) : const SizedBox.shrink();
           },
         ),
       ],

@@ -12,6 +12,15 @@ import 'dart:math' as math;
 import 'component/map/main_location_data.dart';
 import 'component/map/main_marker_view.dart';
 
+class MainLandingArgs {
+  // 히스토리 검색.
+  final String text;
+
+  MainLandingArgs({
+    this.text = '',
+  });
+}
+
 double isMarkerInsideCircle(
   LatLng currentPosition,
   LatLng targetPosition,

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -33,8 +34,13 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
 
       // 마커 목록 뽑음.
       List<MissionDetailViewItemEntity> markers = clearConditions.map((condition) {
-        int haveCount =
-            filteredUserHistories.where((history) => history.ingredient.id == condition.ingredient.id).length;
+        int haveCount = () {
+          if (condition.ingredient.type == IngredientType.trash) {
+            return user.trashObtainCount;
+          } else {
+            return filteredUserHistories.where((history) => history.ingredient.id == condition.ingredient.id).length;
+          }
+        }();
         return MissionDetailViewItemEntity(
           ingredient: condition.ingredient,
           haveCount: haveCount,

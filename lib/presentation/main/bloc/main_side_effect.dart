@@ -32,11 +32,11 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
 
 class MainMarkerClickSideEffect extends MainSideEffect {
   final GlobalKey key;
-  final List<MainLocationData> newList;
+  final MainLocationData data;
 
   MainMarkerClickSideEffect({
     required this.key,
-    required this.newList,
+    required this.data,
   });
 
   @override
@@ -61,8 +61,12 @@ class MainRequireInCircleMeters extends MainSideEffect {
 
 class MainSchemeLandingPage extends MainSideEffect {
   final String landingRoute;
+  final String searchText;
 
-  MainSchemeLandingPage(this.landingRoute);
+  MainSchemeLandingPage(
+    this.landingRoute, {
+    this.searchText = '',
+  });
 
   @override
   List<Object?> get props => [landingRoute];

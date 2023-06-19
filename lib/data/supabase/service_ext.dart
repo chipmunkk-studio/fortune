@@ -6,7 +6,13 @@ import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 
-enum IngredientType { normal, ticket, adVideo, adBanner }
+enum IngredientType {
+  normal,
+  ticket,
+  adVideo,
+  adBanner,
+  trash,
+}
 
 extension SupabaseExt on Future<dynamic> {
   Future<List<dynamic>> toSelect() async {
@@ -24,6 +30,8 @@ getIngredientType(String type) {
     return IngredientType.adVideo;
   } else if (IngredientType.adBanner.name == type) {
     return IngredientType.adBanner;
+  } else if (IngredientType.trash.name == type) {
+    return IngredientType.trash;
   } else {
     return IngredientType.normal;
   }
@@ -51,12 +59,18 @@ getLocationName(
   double latitude,
   double longitude, {
   String? localeIdentifier,
+  bool isDetailStreet = true,
 }) async {
   // 영어
   List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude, localeIdentifier: localeIdentifier);
   if (placemarks.isNotEmpty) {
-    final Placemark pos = placemarks[0];
-    return pos.street;
+    final Placemark pos1 = placemarks[0];
+    final Placemark pos2 = placemarks[3];
+    if (isDetailStreet) {
+      return pos1.street;
+    } else {
+      return pos2.street;
+    }
   } else {
     return "알 수 없는 위치";
   }

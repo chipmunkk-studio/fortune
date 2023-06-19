@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/notification/one_signal_notification_response.dart';
 import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
@@ -53,9 +54,9 @@ class MainTimeOver extends MainEvent {
 }
 
 class MainLandingPage extends MainEvent {
-  final String? landingPage;
+  final OneSignalNotificationCustom entity;
 
-  MainLandingPage(this.landingPage);
+  MainLandingPage(this.entity);
 
   @override
   List<Object?> get props => [];

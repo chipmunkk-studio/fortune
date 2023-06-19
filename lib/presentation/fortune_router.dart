@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'login/login_page.dart';
+import 'main/main_ext.dart';
 import 'main/main_page.dart';
 import 'missiondetail/mission_detail_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
@@ -12,13 +13,11 @@ import 'permission/require_permission_page.dart';
 class FortuneRouter {
   late final FluroRouter router;
 
-  static const String paramLandingPage = "paramLandingPage";
-  static const String paramSessionState = "paramSessionState";
+  static const String param = "landingParam";
 
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      String? landingRoute = params[paramLandingPage]?.first;
-      return MainPage(landingRoute);
+      return const MainPage();
     },
   );
 
@@ -43,7 +42,7 @@ class FortuneRouter {
 
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      String sessionsState = params[paramSessionState]?.first ?? LoginUserState.none.name;
+      String sessionsState = params[param]?.first ?? LoginUserState.none.name;
       final loginParam = () {
         if (sessionsState.contains("needToLogin")) {
           return LoginUserState.needToLogin;
@@ -59,7 +58,8 @@ class FortuneRouter {
 
   static var obtainHistoryHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const ObtainHistoryPage();
+      final args = context?.settings?.arguments as MainLandingArgs?;
+      return ObtainHistoryPage(searchText: args != null ? args.text : '');
     },
   );
 
@@ -75,15 +75,8 @@ class FortuneRouter {
 
       /// 로그인 > 세션 만료 인 경우
       ..define(
-        "${Routes.loginRoute}/:$paramSessionState",
+        "${Routes.loginRoute}/:$param",
         handler: loginHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 메인 > 랜딩 페이지가 있는 경우.
-      ..define(
-        "${Routes.mainRoute}/:$paramLandingPage",
-        handler: mainHandler,
         transitionType: TransitionType.cupertino,
       )
 

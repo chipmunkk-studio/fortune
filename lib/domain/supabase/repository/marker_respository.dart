@@ -24,4 +24,6 @@ abstract class MarkerRepository {
 
   // 마커 기록
   Future<void> hitMarker(int id);
+
+  Future<void> findMarkerById(int markerId);
 }

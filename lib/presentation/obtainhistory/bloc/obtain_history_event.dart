@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 abstract class ObtainHistoryEvent extends Equatable {}
 
 class ObtainHistoryInit extends ObtainHistoryEvent {
-  ObtainHistoryInit();
+  final String searchText;
+
+  ObtainHistoryInit(this.searchText);
 
   @override
   List<Object?> get props => [];

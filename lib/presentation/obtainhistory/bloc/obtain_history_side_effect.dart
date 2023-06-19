@@ -14,3 +14,12 @@ class ObtainHistoryError extends ObtainHistorySideEffect {
   @override
   List<Object?> get props => [];
 }
+
+class ObtainHistoryInitSearchText extends ObtainHistorySideEffect {
+  final String text;
+
+  ObtainHistoryInitSearchText(this.text);
+
+  @override
+  List<Object?> get props => [];
+}

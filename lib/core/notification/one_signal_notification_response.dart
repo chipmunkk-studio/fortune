@@ -37,14 +37,14 @@ class OneSignalNotificationCustom {
 
 @JsonSerializable(ignoreUnannotated: false)
 class OneSignalNotificationCustomEntity {
-  @JsonKey(name: 'landing')
-  final String? landing;
-  @JsonKey(name: 'ticket')
-  final int? ticket;
+  @JsonKey(name: 'landingRoute')
+  final String? landingRoute;
+  @JsonKey(name: 'searchText')
+  final String? searchText;
 
   OneSignalNotificationCustomEntity({
-    this.landing,
-    this.ticket,
+    this.landingRoute,
+    this.searchText,
   });
 
   factory OneSignalNotificationCustomEntity.fromJson(Map<String, dynamic> json) => _$OneSignalNotificationCustomEntityFromJson(json);

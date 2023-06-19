@@ -45,7 +45,7 @@ class _MissionItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 24),
+          padding: const EdgeInsets.only(left: 20, right: 12, top: 24,bottom: 24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.r),
@@ -59,12 +59,10 @@ class _MissionItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        item.mission.bigTitle,
-                        style: FortuneTextStyle.subTitle3SemiBold(),
-                      ),
+                    Text(
+                      item.mission.bigTitle,
+                      style: FortuneTextStyle.subTitle3SemiBold(),
+                      maxLines: 2,
                     ),
                     const SizedBox(height: 4),
                     FittedBox(
@@ -74,6 +72,7 @@ class _MissionItem extends StatelessWidget {
                         style: FortuneTextStyle.body2Regular(
                           fontColor: ColorName.activeDark,
                         ),
+                        maxLines: 2,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -112,7 +111,7 @@ class _MissionItem extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 8),
               SizedBox.square(
                 dimension: 84,
                 child: ClipOval(

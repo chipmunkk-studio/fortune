@@ -40,6 +40,9 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
           )
           .toList();
 
+      // 내가 보유한 마커 수.
+      final haveCounts = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+
       // 마커 리스트.
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
@@ -67,7 +70,7 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
       final ingredients = await ingredientRepository.getIngredients(user.isGlobal);
 
       // 주변에 마커가 없으면 1개 있으면 0개.
-      final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 1 : 0;
+      final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 10 : 0;
       final isTicketEmpty =
           markersNearByMe.where((element) => element.ingredient.type == IngredientType.ticket).toList();
 
@@ -102,6 +105,7 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
           user: user,
           markers: markersNearByMe,
           histories: histories,
+          haveCount: haveCounts.length,
         ),
       );
     } on FortuneFailure catch (e) {
@@ -114,10 +118,12 @@ class MainViewItem {
   final FortuneUserEntity user;
   final List<MarkerEntity> markers;
   final List<ObtainHistoryContentViewItem> histories;
+  final int haveCount;
 
   MainViewItem({
     required this.user,
     required this.markers,
     required this.histories,
+    required this.haveCount,
   });
 }

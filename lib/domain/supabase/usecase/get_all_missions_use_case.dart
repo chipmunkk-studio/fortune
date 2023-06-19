@@ -31,7 +31,7 @@ class GetAllMissionsUseCase implements UseCase0<List<MissionsViewItem>> {
 
         // 쓰레기 수건 미션 여부. (아이템중에 티켓이 있는 경우)
         final isEmptyTicketMission =
-            clearConditions.where((element) => element.ingredient.type == IngredientType.ticket).toList().isNotEmpty;
+            clearConditions.where((element) => element.ingredient.type == IngredientType.trash).toList().isNotEmpty;
 
         // 미션에 필요한 사용자 티켓 갯수.
         final userHaveCountFutures = clearConditions.map((e) async {

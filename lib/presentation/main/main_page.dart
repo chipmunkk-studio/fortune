@@ -13,9 +13,11 @@ import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -28,14 +30,12 @@ import 'bloc/main.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_notice.dart';
+import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage(
-    this.landingRoute, {
+  const MainPage({
     Key? key,
   }) : super(key: key);
-
-  final String? landingRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +78,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           custom: OneSignalNotificationCustom(
             entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
           ),
-        );
-        bloc.add(MainLandingPage(notificationData.custom?.entity?.landing));
+        ).custom;
+        if (notificationData != null) {
+          bloc.add(MainLandingPage(notificationData));
+        }
       },
     );
   }
@@ -132,7 +134,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainMarkerClickSideEffect) {
           () async {
-            await startAnimation(sideEffect.key);
+            await startAnimation(
+              sideEffect.key,
+            );
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
           FortuneLogger.debug("Permission Denied :$sideEffect");
@@ -149,7 +153,15 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
         } else if (sideEffect is MainSchemeLandingPage) {
-          router.navigateTo(context, sideEffect.landingRoute);
+          router.navigateTo(
+            context,
+            sideEffect.landingRoute,
+            routeSettings: RouteSettings(
+              arguments: MainLandingArgs(
+                text: sideEffect.searchText,
+              ),
+            ),
+          );
         }
       },
       child: FortuneScaffold(
@@ -191,34 +203,30 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ),
               ),
             ),
-            Positioned.fill(
-              child: AddToCartAnimation(
-                cartKey: cartKey,
-                height: 50,
-                width: 50,
-                opacity: 0.85,
-                dragAnimation: const DragToCartAnimationOptions(
-                  rotation: true,
-                ),
-                jumpAnimation: const JumpAnimationOptions(),
-                createAddToCartAnimation: (runAddToCartAnimation) {
-                  this.runAddToCartAnimation = runAddToCartAnimation;
-                },
-                child: Positioned(
-                  top: 13,
-                  right: 20,
-                  left: 20,
-                  child: Column(
-                    children: [
-                      TopNotice(bloc),
-                      const SizedBox(height: 10),
-                      TopInformationArea(
-                        bloc,
-                        cartKey,
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
+            AddToCartAnimation(
+              cartKey: cartKey,
+              opacity: 0.85,
+              dragAnimation: const DragToCartAnimationOptions(
+                rotation: true,
+              ),
+              jumpAnimation: const JumpAnimationOptions(),
+              createAddToCartAnimation: (runAddToCartAnimation) {
+                this.runAddToCartAnimation = runAddToCartAnimation;
+              },
+              child: Positioned(
+                top: 13,
+                right: 20,
+                left: 20,
+                child: Column(
+                  children: [
+                    TopNotice(bloc),
+                    const SizedBox(height: 10),
+                    TopInformationArea(
+                      bloc,
+                      cartKey,
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                 ),
               ),
             ),
@@ -309,7 +317,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   _onMyBagClick() {
     context.showFortuneBottomSheet(
-      content: (context) => const MissionsBottomPage(),
+      content: (context) => MissionsBottomPage(bloc),
     );
   }
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_obtain_histories_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
@@ -36,12 +35,15 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
   }
 
   FutureOr<void> init(ObtainHistoryInit event, Emitter<ObtainHistoryState> emit) async {
-    await _getHistories(emit, query: state.query);
+    await _getHistories(
+      emit,
+      query: event.searchText,
+    );
+    produceSideEffect(ObtainHistoryInitSearchText(event.searchText));
   }
 
   FutureOr<void> nextPage(ObtainHistoryNextPage event, Emitter<ObtainHistoryState> emit) async {
     if (!state.isNextPageLoading) {
-      FortuneLogger.info("isNextPageLoading");
       emit(
         state.copyWith(
           histories: [...state.histories, ObtainHistoryLoadingViewItem()],
@@ -74,7 +76,6 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
             // 뷰스테이트가 로딩 상태로 바뀌기 전까지 1초정도 딜레이를 줌.
             final filteredItems = state.histories.whereNot((item) => item is ObtainHistoryLoadingViewItem).toList();
             await Future.delayed(const Duration(milliseconds: 200));
-            FortuneLogger.info("load");
             emit(
               state.copyWith(
                 histories: List.of(filteredItems)..addAll(r),

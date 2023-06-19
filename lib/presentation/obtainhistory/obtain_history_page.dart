@@ -14,12 +14,17 @@ import 'component/item_obtain_history.dart';
 import 'component/obtain_history_skeleton.dart';
 
 class ObtainHistoryPage extends StatelessWidget {
-  const ObtainHistoryPage({Key? key}) : super(key: key);
+  final String searchText;
+
+  const ObtainHistoryPage({
+    Key? key,
+    required this.searchText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<ObtainHistoryBloc>()..add(ObtainHistoryInit()),
+      create: (_) => serviceLocator<ObtainHistoryBloc>()..add(ObtainHistoryInit(searchText)),
       child: const _ObtainHistoryPage(),
     );
   }
@@ -34,7 +39,7 @@ class _ObtainHistoryPage extends StatefulWidget {
 
 class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
   static const offsetVisibleThreshold = 50.0;
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   late ObtainHistoryBloc _bloc;
   late ScrollController _scrollController;
 
@@ -57,7 +62,10 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
   Widget build(BuildContext context) {
     return BlocSideEffectListener<ObtainHistoryBloc, ObtainHistorySideEffect>(
       listener: (context, sideEffect) {
-        if (sideEffect is ObtainHistoryNextPage) {}
+        if (sideEffect is ObtainHistoryNextPage) {
+        } else if (sideEffect is ObtainHistoryInitSearchText) {
+          _controller.text = sideEffect.text;
+        }
       },
       child: FortuneScaffold(
         appBar: PreferredSize(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/component/mission_card_list.dart';
 import 'package:foresh_flutter/presentation/missions/component/missions_skeleton.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -10,19 +11,23 @@ import 'package:skeletons/skeletons.dart';
 import 'bloc/missions.dart';
 
 class MissionsBottomPage extends StatelessWidget {
-  const MissionsBottomPage({Key? key}) : super(key: key);
+  final MainBloc mainBloc;
+
+  const MissionsBottomPage(this.mainBloc, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<MissionsBloc>()..add(MissionsInit()),
-      child: const _MissionsBottomPage(),
+      child: _MissionsBottomPage(mainBloc),
     );
   }
 }
 
 class _MissionsBottomPage extends StatefulWidget {
-  const _MissionsBottomPage();
+  final MainBloc mainBloc;
+
+  const _MissionsBottomPage(this.mainBloc);
 
   @override
   State<_MissionsBottomPage> createState() => _MissionsBottomPageState();
@@ -73,6 +78,8 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                                 arguments: missionId,
                               ),
                             );
+                            serviceLocator<MainBloc>().add(Main());
+                            widget.mainBloc.add(Main());
                             _bloc.add(MissionsInit());
                           },
                         );

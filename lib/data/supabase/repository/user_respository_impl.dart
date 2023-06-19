@@ -38,4 +38,21 @@ class UserRepositoryImpl extends UserRepository {
       return Left(e);
     }
   }
+
+  @override
+  Future<FortuneUserEntity> reduceTrash({
+    required String phoneNumber,
+    required int trashCount,
+  }) async {
+    try {
+      final FortuneUserEntity user = await _userService.update(
+        phoneNumber,
+        trashObtainCount: trashCount,
+      );
+      return user;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      rethrow;
+    }
+  }
 }

@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/request/request_hit_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/hit_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
@@ -24,24 +27,50 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
+  final HitMarkerUseCase hitMarkerUseCase;
 
   MainBloc({
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
+    required this.hitMarkerUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
     on<Main>(main);
-    on<MainMarkerClick>(onMarkerClicked);
+    on<MainMarkerClick>(
+      onMarkerClicked,
+      transformer: sequential(),
+    );
     on<MainMyLocationChange>(locationChange);
     on<MainTimeOver>(timerOver);
   }
 
-  FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) {
-    final landingPage = event.landingPage;
+  FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) async {
+    final landingPage = event.entity.entity?.landingRoute;
     if (landingPage != null) {
-      produceSideEffect(MainSchemeLandingPage(landingPage));
+      switch (landingPage) {
+        case Routes.obtainHistoryRoute:
+          final searchText = event.entity.entity?.searchText;
+          if (searchText != null) {
+            return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
+          }
+
+          Location location = Location();
+          LocationData locationData = await location.getLocation();
+
+          final latitude = locationData.latitude;
+          final longitude = locationData.longitude;
+
+          if (latitude != null && longitude != null) {
+            final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
+            return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: locationName));
+          }
+
+          return produceSideEffect(MainSchemeLandingPage(landingPage));
+        default:
+          produceSideEffect(MainSchemeLandingPage(landingPage));
+      }
     }
   }
 
@@ -102,8 +131,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: 60,
+                refreshTime: 30,
                 refreshCount: state.refreshCount + 1,
+                haveCount: entity.haveCount,
                 histories: entity.histories,
                 isLoading: false,
               ),
@@ -126,32 +156,26 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final latitude = data.location.latitude;
     final longitude = data.location.longitude;
 
-    // 티켓이 있을 경우만.
-    // 먼저 처리 하고 api를 나중에 쏨. 아니면 느림.
-    if (state.user?.ticket != 0 || (data.ingredient.isExtinct && data.isObtainedUser)) {
-      List<MainLocationData> newList = List.from(state.markers);
-      var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
-      if (loc != null) {
-        newList.remove(loc);
-        emit(state.copyWith(markers: newList));
-      }
-      produceSideEffect(
-        MainMarkerClickSideEffect(
-          key: event.globalKey,
-          newList: newList,
-        ),
-      );
+    List<MainLocationData> newList = List.from(state.markers);
+    var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
+    if (loc != null) {
+      newList.remove(loc);
+      emit(state.copyWith(markers: newList));
     }
+    produceSideEffect(
+      MainMarkerClickSideEffect(
+        key: event.globalKey,
+        data: data,
+      ),
+    );
 
-    // if (distance < 0) {
     await obtainMarkerUseCase(data.id).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
-          FortuneLogger.info("레벨: ${r.level}, 다음 레벨 까지: ${r.percentageNextLevel},등급: ${r.grade.name}");
           // 획득 응답 속도 때문에 usecase로 따로 실행하고 에러는 무시.
-          if (data.ingredient.type != IngredientType.ticket) {
+          if (data.ingredient.type != IngredientType.ticket && !data.isObtainedUser) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
                 userId: r.id,
@@ -162,14 +186,50 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 krLocationName: await getLocationName(latitude, longitude),
                 enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
               ),
-            ).then((value) => value.getOrElse(() {
-                  // 에러 무시
-                }));
+            ).then(
+              (value) => value.fold(
+                (l) => produceSideEffect(MainError(l)),
+                (r) async {
+                  emit(state.copyWith(haveCount: r));
+                  await hitMarkerUseCase(
+                    RequestHitParam(
+                      markerId: data.id,
+                    ),
+                  ).then(
+                    (value) => value.getOrElse(
+                      () {
+                        // 에러무시.
+                      },
+                    ),
+                  );
+                },
+              ),
+            );
           }
         },
       ),
     );
-    // );
+
+    //
+    //
+    // if (distance < 0) {
+    //   // 티켓이 있을 경우만.
+    //   // 먼저 처리 하고 api를 나중에 쏨. 아니면 느림.
+    //   if (state.user?.ticket != 0 || (data.ingredient.isExtinct && data.isObtainedUser)) {
+    //     List<MainLocationData> newList = List.from(state.markers);
+    //     var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
+    //     if (loc != null) {
+    //       newList.remove(loc);
+    //       emit(state.copyWith(markers: newList));
+    //     }
+    //     produceSideEffect(
+    //       MainMarkerClickSideEffect(
+    //         key: event.globalKey,
+    //         data: data,
+    //       ),
+    //     );
+    //   }
+    //   // 여기에 넣으면됨.
     // } else {
     //   produceSideEffect(MainRequireInCircleMeters(distance));
     // }

@@ -3,21 +3,24 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class InsertObtainHistoryUseCase implements UseCase1<void, RequestInsertHistoryParam> {
+class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryParam> {
+  final UserRepository userRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
-  final MarkerRepository markerRepository;
 
   InsertObtainHistoryUseCase({
     required this.obtainHistoryRepository,
-    required this.markerRepository,
+    required this.userRepository,
   });
 
   @override
-  Future<FortuneResult<void>> call(RequestInsertHistoryParam param) async {
+  Future<FortuneResult<int>> call(RequestInsertHistoryParam param) async {
     try {
-      await markerRepository.hitMarker(int.parse(param.markerId));
+      // 유저 정보 가져오기.
+      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
       final response = await obtainHistoryRepository.insertObtainHistory(
         userId: param.userId,
         markerId: param.markerId,
@@ -27,7 +30,8 @@ class InsertObtainHistoryUseCase implements UseCase1<void, RequestInsertHistoryP
         enLocationName: param.enLocationName,
         ingredientName: param.ingredientName,
       );
-      return Right(response);
+      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+      return Right(histories.length);
     } on FortuneFailure catch (e) {
       return Left(e);
     }
