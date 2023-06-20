@@ -31,7 +31,7 @@ class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryPa
         ingredientName: param.ingredientName,
       );
       final histories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
-      return Right(histories.length);
+      return Right(histories.length + user.trashObtainCount);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

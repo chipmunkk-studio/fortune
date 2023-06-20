@@ -105,7 +105,7 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
           user: user,
           markers: markersNearByMe,
           histories: histories,
-          haveCount: haveCounts.length,
+          haveCount: haveCounts.length + user.trashObtainCount,
         ),
       );
     } on FortuneFailure catch (e) {

@@ -63,13 +63,19 @@ getLocationName(
 }) async {
   // 영어
   List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude, localeIdentifier: localeIdentifier);
+
   if (placemarks.isNotEmpty) {
     final Placemark pos1 = placemarks[0];
-    final Placemark pos2 = placemarks[3];
+    String? name = pos1.name;
+    String? subLocality = pos1.subLocality;
+    String? locality = pos1.locality;
+    String? administrativeArea = pos1.administrativeArea;
+    String? postalCode = pos1.postalCode;
+    String? country = pos1.country;
     if (isDetailStreet) {
-      return pos1.street;
+      return pos1.street; // 서울특별시 성동구
     } else {
-      return pos2.street;
+      return "$administrativeArea $subLocality";
     }
   } else {
     return "알 수 없는 위치";

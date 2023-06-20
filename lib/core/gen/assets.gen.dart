@@ -197,6 +197,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_timer.svg
   SvgGenImage get icTimer => const SvgGenImage('assets/icons/ic_timer.svg');
 
+  /// File path: assets/icons/ic_user.svg
+  SvgGenImage get icUser => const SvgGenImage('assets/icons/ic_user.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         icArrowDown,
@@ -236,7 +239,8 @@ class $AssetsIconsGen {
         icPushAlarm,
         icQuestion,
         icRecycle,
-        icTimer
+        icTimer,
+        icUser
       ];
 }
 

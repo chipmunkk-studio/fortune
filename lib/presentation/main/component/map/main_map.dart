@@ -141,7 +141,7 @@ class MainMap extends StatelessWidget {
   _onMarkerClick(
     MainLocationData data,
     GlobalKey globalKey,
-  ) async {
+  ) {
     LatLng markerPosition = LatLng(
       data.location.latitude,
       data.location.longitude,

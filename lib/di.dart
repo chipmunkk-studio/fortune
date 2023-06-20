@@ -3,7 +3,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
-import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/notification/one_signal_manager.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
@@ -27,7 +26,6 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_all_missions_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_mission_clear_conditions.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/hit_marker_use_case.dart';
@@ -48,10 +46,11 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/notification/notification_manager.dart';
 import 'data/supabase/repository/mission_respository_impl.dart';
 import 'data/supabase/service/mission_clear_history_service.dart';
 import 'domain/supabase/repository/mission_respository.dart';
+import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
+import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'env.dart';
 
@@ -272,6 +271,12 @@ _initUseCase() async {
         markerRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetObtainCountUseCase>(
+      () => GetObtainCountUseCase(
+        obtainHistoryRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetAllMissionsUseCase>(
       () => GetAllMissionsUseCase(
         missionRepository: serviceLocator(),
@@ -279,8 +284,8 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionClearConditions>(
-      () => GetMissionClearConditions(
+    ..registerLazySingleton<GetMissionClearConditionsUseCase>(
+      () => GetMissionClearConditionsUseCase(
         missionRepository: serviceLocator(),
       ),
     )
@@ -331,6 +336,7 @@ _initBloc() {
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
         hitMarkerUseCase: serviceLocator(),
+        getObtainCountUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

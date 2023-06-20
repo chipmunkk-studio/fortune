@@ -50,6 +50,7 @@ class Assets {
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';
   static const String iconsIcRecycle = 'assets/icons/ic_recycle.svg';
   static const String iconsIcTimer = 'assets/icons/ic_timer.svg';
+  static const String iconsIcUser = 'assets/icons/ic_user.svg';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
   static const String splashAndroid12splash = 'assets/images/splash/android12splash.png';
   static const String splashSplashDefault = 'assets/images/splash/splash_default.png';

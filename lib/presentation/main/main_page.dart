@@ -30,6 +30,7 @@ import 'bloc/main.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_notice.dart';
+import 'component/top_location_area.dart';
 import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
@@ -150,6 +151,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           );
         } else if (sideEffect is MainError) {
           dialogService.showErrorDialog(context, sideEffect.error);
+          bloc.add(Main());
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
         } else if (sideEffect is MainSchemeLandingPage) {
@@ -218,7 +220,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 right: 20,
                 left: 20,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(height: 10),
+                    TopLocationArea(bloc),
+                    const SizedBox(height: 16),
                     TopNotice(bloc),
                     const SizedBox(height: 10),
                     TopInformationArea(

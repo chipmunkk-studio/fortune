@@ -17,6 +17,7 @@ class MainState with _$MainState {
     required int haveCount,
     required int refreshTime,
     required int refreshCount,
+    required String locationName,
     required bool isLoading,
     required double clickableRadiusLength,
     required double zoomThreshold,
@@ -26,6 +27,7 @@ class MainState with _$MainState {
   factory MainState.initial() => MainState(
         markers: List.empty(),
         histories: List.empty(),
+        locationName: '',
         user: null,
         myLocation: null,
         haveCount: 0,

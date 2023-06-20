@@ -4,10 +4,10 @@ import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission_clear_condition_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 
-class GetMissionClearConditions implements UseCase1<List<MissionClearConditionEntity>, int> {
+class GetMissionClearConditionsUseCase implements UseCase1<List<MissionClearConditionEntity>, int> {
   final MissionRepository missionRepository;
 
-  GetMissionClearConditions({
+  GetMissionClearConditionsUseCase({
     required this.missionRepository,
   });
 

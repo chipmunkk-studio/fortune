@@ -8,6 +8,7 @@ import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_hit_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/hit_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
@@ -27,6 +28,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
+  final GetObtainCountUseCase getObtainCountUseCase;
   final HitMarkerUseCase hitMarkerUseCase;
 
   MainBloc({
@@ -34,6 +36,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
     required this.hitMarkerUseCase,
+    required this.getObtainCountUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -131,7 +134,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: 30,
+                refreshTime: 10,
                 refreshCount: state.refreshCount + 1,
                 haveCount: entity.haveCount,
                 histories: entity.histories,
@@ -146,7 +149,22 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   // 위치 변경 시.
   FutureOr<void> locationChange(MainMyLocationChange event, Emitter<MainState> emit) async {
-    emit(state.copyWith(myLocation: event.newLoc));
+    final latitude = event.newLoc.latitude;
+    final longitude = event.newLoc.longitude;
+
+    if (latitude != null && longitude != null) {
+      final locationName = await getLocationName(
+        latitude,
+        longitude,
+        isDetailStreet: false,
+      );
+      emit(
+        state.copyWith(
+          myLocation: event.newLoc,
+          locationName: locationName,
+        ),
+      );
+    }
   }
 
   // 마커 클릭 시.
@@ -162,19 +180,26 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       newList.remove(loc);
       emit(state.copyWith(markers: newList));
     }
-    produceSideEffect(
-      MainMarkerClickSideEffect(
-        key: event.globalKey,
-        data: data,
-      ),
-    );
+
+    // 티켓인 경우 다이얼로그로 노출.
+    if (data.ingredient.type == IngredientType.ticket && !data.isObtainedUser) {
+      produceSideEffect(MainShowDialog());
+    } else {
+      // 티켓이 아닌 경우 획득 애니메이션.
+      produceSideEffect(
+        MainMarkerClickSideEffect(
+          key: event.globalKey,
+          data: data,
+        ),
+      );
+    }
 
     await obtainMarkerUseCase(data.id).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
-          // 획득 응답 속도 때문에 usecase로 따로 실행하고 에러는 무시.
+          // 티켓이 아닌 경우에만 히스토리에 삽입.
           if (data.ingredient.type != IngredientType.ticket && !data.isObtainedUser) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
@@ -203,6 +228,15 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                     ),
                   );
                 },
+              ),
+            );
+          } else {
+            await getObtainCountUseCase(r.id).then(
+              (value) => value.fold(
+                (l) => produceSideEffect(MainError(l)),
+                (r) => emit(
+                  state.copyWith(haveCount: r),
+                ),
               ),
             );
           }

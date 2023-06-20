@@ -10,7 +10,7 @@ class MainMarkerView extends StatefulWidget {
   final MainLocationData marker;
   final dartz.Function2<MainLocationData, GlobalKey, void> onMarkerClick;
 
-  MainMarkerView({
+  const MainMarkerView({
     super.key,
     required this.marker,
     required this.onMarkerClick,

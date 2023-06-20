@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -56,6 +57,23 @@ class CommonFailure extends FortuneFailure {
 }
 
 /// 알 수 없는 에러.
+class NetworkFailure extends FortuneFailure {
+  final String? errorCode;
+  final String? errorMessage;
+
+  const NetworkFailure({
+    this.errorCode = '400',
+    this.errorMessage,
+  }) : super(
+          code: errorCode,
+          message: errorMessage,
+        );
+
+  @override
+  List<Object?> get props => [message, errorCode];
+}
+
+/// 알 수 없는 에러.
 class UnknownFailure extends FortuneFailure {
   final String? errorCode;
   final String? errorMessage;
@@ -92,6 +110,8 @@ extension FortuneExceptionX on Exception {
         errorCode: authException.statusCode,
         errorMessage: "인증 정보를 갱신합니다.",
       );
+    } else if (this is HttpException || this is SocketException || this is TimeoutException) {
+      return const NetworkFailure(errorMessage: '네트워크 연결 상태를 확인해주세요'); // your own exception for handling network errors
     } else {
       return const UnknownFailure();
     }
