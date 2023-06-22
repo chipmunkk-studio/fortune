@@ -1,4 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_user_update.dart';
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
@@ -66,6 +67,7 @@ class UserService {
         throw const PostgrestException(message: '사용자가 존재하지 않습니다');
       }
     } on Exception catch (e) {
+      FortuneLogger.error(e.toString());
       throw (e.handleException()); // using extension method here
     }
   }
@@ -106,6 +108,7 @@ class UserService {
         return user.single;
       }
     } on Exception catch (e) {
+      FortuneLogger.error(e.toString());
       throw (e.handleException()); // using extension method here
     }
   }

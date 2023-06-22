@@ -1,12 +1,14 @@
 import 'dart:math';
 
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_update.dart';
 import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:foresh_flutter/env.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,8 +16,12 @@ class MarkerService {
   static const _markerTableName = "markers";
 
   final SupabaseClient _client;
+  final Environment env;
 
-  MarkerService(this._client);
+  MarkerService(
+    this._client, {
+    required this.env,
+  });
 
   // 내 근처에 있는 마커들 모두 가져오기.
   Future<List<MarkerEntity>> findAllMarkersNearByMyLocation(
@@ -27,7 +33,7 @@ class MarkerService {
       const double oneDegOfLatInKm = 111.0;
       const double oneDegOfLngInKm = 111.0; // 적도에서의 값으로, 실제로는 위도에 따라 다름.
       // 정사각형의 한 변의 길이 (m -> km)
-      double rectangleSideLengthInKm = sqrt(2) * 0.5; // 707m
+      double rectangleSideLengthInKm = sqrt(2) * env.remoteConfig.randomDistance; // 707m
       // 정사각형 영역의 위아래 좌우 경계값 계산
       double latDiff = rectangleSideLengthInKm / oneDegOfLatInKm;
       double lngDiff = rectangleSideLengthInKm / oneDegOfLngInKm;
@@ -63,24 +69,33 @@ class MarkerService {
   ) async {
     try {
       final ingredient = marker.ingredient;
-      // 소멸성이고, 이미 획득한 사람이 있다면,
-      if (marker.lastObtainUser != null && ingredient.isExtinct) {
-        await delete(marker.id);
-      }
+      // 소멸성이고, 이미 획득한 사람이 있다면 > 쓰레기 마커로 취급.
+      final isTrashMarker = marker.lastObtainUser != null && ingredient.isExtinct;
       // 소멸성 마커이고, 획득한 사람이 없을떄.
-      else if (ingredient.isExtinct) {
+      final isObtainableMarker = marker.lastObtainUser == null && ingredient.isExtinct;
+      if (isTrashMarker) {
+        await delete(marker.id);
+      } else if (isObtainableMarker) {
         await update(marker.id, lastObtainUser: user.id);
       }
       // 랜덤으로 위치 하는 마커 일 경우.
+      // hit_count를 1씩 올림.
       else {
+        FortuneLogger.debug("랜덤으로 위치하는 마커 ");
         final randomLocation = getRandomLocation(
           marker.latitude,
           marker.longitude,
           ingredient.distance,
         );
-        await update(marker.id, location: randomLocation, lastObtainUser: user.id);
+        await update(
+          marker.id,
+          location: randomLocation,
+          lastObtainUser: user.id,
+          hitCount: marker.hitCount + 1,
+        );
       }
     } on Exception catch (e) {
+      FortuneLogger.error(e.toString());
       throw (e.handleException()); // using extension method here
     }
   }
@@ -104,6 +119,7 @@ class MarkerService {
         return marker.single;
       }
     } on Exception catch (e) {
+      FortuneLogger.error(e.toString());
       throw (e.handleException()); // using extension method here
     }
   }

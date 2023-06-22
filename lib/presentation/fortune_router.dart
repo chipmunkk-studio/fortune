@@ -1,11 +1,13 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'login/login_page.dart';
 import 'main/main_ext.dart';
 import 'main/main_page.dart';
-import 'missiondetail/mission_detail_page.dart';
+import 'missiondetail/normal/mission_detail_normal_page.dart';
+import 'missiondetail/relay/mission_detail_relay_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
@@ -27,10 +29,17 @@ class FortuneRouter {
     },
   );
 
-  static var missionDetailHandler = Handler(
+  static var missionDetailNormalHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as int?;
-      return args != null ? MissionDetailPage(args) : null;
+      final args = context?.settings?.arguments as MissionEntity?;
+      return args != null ? MissionDetailNormalPage(args) : null;
+    },
+  );
+
+  static var missionDetailRelayHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as MissionEntity?;
+      return args != null ? MissionDetailRelayPage(args) : null;
     },
   );
 
@@ -101,10 +110,17 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 미션 상세..
+      /// 노말 미션 상세..
       ..define(
-        Routes.missionDetailRoute,
-        handler: missionDetailHandler,
+        Routes.missionDetailNormalRoute,
+        handler: missionDetailNormalHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+     /// 릴레이 미션 상세.
+      ..define(
+        Routes.missionDetailRelayRoute,
+        handler: missionDetailRelayHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -123,5 +139,6 @@ class Routes {
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
-  static const String missionDetailRoute = 'missionDetail';
+  static const String missionDetailNormalRoute = 'missionDetailNormal';
+  static const String missionDetailRelayRoute = 'missionDetailRelay';
 }

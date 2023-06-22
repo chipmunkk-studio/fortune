@@ -5,14 +5,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_hit_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/hit_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:latlong2/latlong.dart';
@@ -29,13 +28,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
-  final HitMarkerUseCase hitMarkerUseCase;
+  final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
+    required this.remoteConfig,
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
-    required this.hitMarkerUseCase,
     required this.getObtainCountUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
@@ -47,6 +46,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     );
     on<MainMyLocationChange>(locationChange);
     on<MainTimeOver>(timerOver);
+    on<MainMarkerObtain>(
+      _markerObtain,
+      transformer: sequential(),
+    );
   }
 
   FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) async {
@@ -134,7 +137,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: 10,
+                refreshTime: remoteConfig.refreshTime,
                 refreshCount: state.refreshCount + 1,
                 haveCount: entity.haveCount,
                 histories: entity.histories,
@@ -171,9 +174,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
     final distance = event.distance;
-    final latitude = data.location.latitude;
-    final longitude = data.location.longitude;
-
     List<MainLocationData> newList = List.from(state.markers);
     var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
     if (loc != null) {
@@ -193,57 +193,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         ),
       );
     }
-
-    await obtainMarkerUseCase(data.id).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(MainError(l)),
-        (r) async {
-          emit(state.copyWith(user: r));
-          // 티켓이 아닌 경우에만 히스토리에 삽입.
-          if (data.ingredient.type != IngredientType.ticket && !data.isObtainedUser) {
-            await insertObtainHistoryUseCase(
-              RequestInsertHistoryParam(
-                userId: r.id,
-                markerId: data.id.toString(),
-                ingredientId: data.ingredient.id,
-                ingredientName: data.ingredient.name,
-                nickname: r.nickname,
-                krLocationName: await getLocationName(latitude, longitude),
-                enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
-              ),
-            ).then(
-              (value) => value.fold(
-                (l) => produceSideEffect(MainError(l)),
-                (r) async {
-                  emit(state.copyWith(haveCount: r));
-                  await hitMarkerUseCase(
-                    RequestHitParam(
-                      markerId: data.id,
-                    ),
-                  ).then(
-                    (value) => value.getOrElse(
-                      () {
-                        // 에러무시.
-                      },
-                    ),
-                  );
-                },
-              ),
-            );
-          } else {
-            await getObtainCountUseCase(r.id).then(
-              (value) => value.fold(
-                (l) => produceSideEffect(MainError(l)),
-                (r) => emit(
-                  state.copyWith(haveCount: r),
-                ),
-              ),
-            );
-          }
-        },
-      ),
-    );
-
+    add(MainMarkerObtain(data));
     //
     //
     // if (distance < 0) {
@@ -271,5 +221,48 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
     await getMain(emit);
+  }
+
+  FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {
+    final data = event.data;
+
+    final latitude = data.location.latitude;
+    final longitude = data.location.longitude;
+
+    await obtainMarkerUseCase(data.id).then(
+      (value) => value.fold(
+        (l) => produceSideEffect(MainError(l)),
+        (r) async {
+          emit(state.copyWith(user: r));
+          // 티켓이 아니고, 소멸성이 아닌 경우에만 올림.
+          if (data.ingredient.type != IngredientType.ticket && !data.ingredient.isExtinct) {
+            await insertObtainHistoryUseCase(
+              RequestInsertHistoryParam(
+                userId: r.id,
+                markerId: data.id.toString(),
+                ingredientId: data.ingredient.id,
+                ingredientName: data.ingredient.name,
+                nickname: r.nickname,
+                krLocationName: await getLocationName(latitude, longitude),
+                enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
+              ),
+            ).then(
+              (value) => value.fold((l) => produceSideEffect(MainError(l)), (r) async {
+                emit(state.copyWith(haveCount: r));
+              }),
+            );
+          } else {
+            await getObtainCountUseCase(r.id).then(
+              (value) => value.fold(
+                (l) => produceSideEffect(MainError(l)),
+                (r) => emit(
+                  state.copyWith(haveCount: r),
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }

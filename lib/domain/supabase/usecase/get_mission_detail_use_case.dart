@@ -35,7 +35,8 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
       // 마커 목록 뽑음.
       List<MissionDetailViewItemEntity> markers = clearConditions.map((condition) {
         int haveCount = () {
-          if (condition.ingredient.type == IngredientType.trash) {
+          // 재료가 티켓일 경우 사용자 획득 카운트로 계산.
+          if (condition.ingredient.type == IngredientType.ticket) {
             return user.trashObtainCount;
           } else {
             return filteredUserHistories.where((history) => history.ingredient.id == condition.ingredient.id).length;

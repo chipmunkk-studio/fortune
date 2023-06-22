@@ -1,17 +1,17 @@
 import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'mission_detail_state.freezed.dart';
+part 'mission_detail_normal_state.freezed.dart';
 
 @freezed
-class MissionDetailState with _$MissionDetailState {
-  factory MissionDetailState({
+class MissionDetailNormalState with _$MissionDetailNormalState {
+  factory MissionDetailNormalState({
     required MissionDetailEntity entity,
     required bool isLoading,
     required bool isEnableButton,
-  }) = _MissionDetailState;
+  }) = _MissionDetailNormalState ;
 
-  factory MissionDetailState.initial() => MissionDetailState(
+  factory MissionDetailNormalState.initial() => MissionDetailNormalState(
         entity: MissionDetailEntity.initial(),
         isEnableButton: false,
         isLoading: true,

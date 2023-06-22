@@ -9,9 +9,13 @@ import 'package:latlong2/latlong.dart';
 enum IngredientType {
   normal,
   ticket,
-  adVideo,
-  adBanner,
+  unique,
+}
+
+enum MissionType {
+  normal,
   trash,
+  relay,
 }
 
 extension SupabaseExt on Future<dynamic> {
@@ -26,14 +30,22 @@ getIngredientType(String type) {
     return IngredientType.ticket;
   } else if (IngredientType.normal.name == type) {
     return IngredientType.normal;
-  } else if (IngredientType.adVideo.name == type) {
-    return IngredientType.adVideo;
-  } else if (IngredientType.adBanner.name == type) {
-    return IngredientType.adBanner;
-  } else if (IngredientType.trash.name == type) {
-    return IngredientType.trash;
+  } else if (IngredientType.unique.name == type) {
+    return IngredientType.unique;
   } else {
     return IngredientType.normal;
+  }
+}
+
+getMissionType(String type) {
+  if (MissionType.relay.name == type) {
+    return MissionType.relay;
+  } else if (MissionType.normal.name == type) {
+    return MissionType.normal;
+  } else if (MissionType.trash.name == type) {
+    return MissionType.trash;
+  } else {
+    return MissionType.normal;
   }
 }
 

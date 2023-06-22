@@ -23,6 +23,10 @@ enum EnvKey {
   mapUrlTemplate,
   appMetrica,
   oneSignalApiKey,
+  randomDistance,
+  refreshTime,
+  ticketCount,
+  markerCount,
 }
 
 class FortuneRemoteConfig {
@@ -33,6 +37,10 @@ class FortuneRemoteConfig {
   final String mapUrlTemplate;
   final String appMetricaKey;
   final String oneSignalApiKey;
+  final double randomDistance;
+  final int refreshTime;
+  final int markerCount;
+  final int ticketCount;
 
   FortuneRemoteConfig({
     required this.baseUrl,
@@ -42,6 +50,10 @@ class FortuneRemoteConfig {
     required this.appMetricaKey,
     required this.anonKey,
     required this.oneSignalApiKey,
+    required this.randomDistance,
+    required this.markerCount,
+    required this.ticketCount,
+    required this.refreshTime,
   });
 
   @override
@@ -52,6 +64,10 @@ class FortuneRemoteConfig {
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
         "appMetricaKey: $appMetricaKey\n"
         "oneSignalApiKey: $oneSignalApiKey\n"
+        "refreshTime: $oneSignalApiKey\n"
+        "ticketCount: $ticketCount\n"
+        "markerCount: $markerCount\n"
+        "randomDistance: $oneSignalApiKey\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
@@ -131,6 +147,10 @@ getRemoteConfigArgs() async {
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
     final anonKey = remoteConfig.getString(describeEnum(EnvKey.anonKey));
     final oneSignalApiKey = remoteConfig.getString(describeEnum(EnvKey.oneSignalApiKey));
+    final randomDistance = remoteConfig.getDouble(describeEnum(EnvKey.randomDistance));
+    final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
+    final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
+    final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
@@ -149,6 +169,10 @@ getRemoteConfigArgs() async {
       mapUrlTemplate: mapUrlTemplate,
       anonKey: anonKey,
       oneSignalApiKey: oneSignalApiKey,
+      randomDistance: randomDistance,
+      refreshTime: refreshTime,
+      markerCount: markerCount,
+      ticketCount: ticketCount,
     );
   } catch (e) {
     FortuneLogger.error("RemoteConfig Error:: $e");

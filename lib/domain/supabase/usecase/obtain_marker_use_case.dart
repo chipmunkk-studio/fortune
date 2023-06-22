@@ -3,9 +3,6 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ObtainMarkerUseCase implements UseCase1<FortuneUserEntity, int> {
   final MarkerRepository markerRepository;

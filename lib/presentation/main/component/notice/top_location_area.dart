@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 
-import '../bloc/main.dart';
+import '../../bloc/main.dart';
 
 class TopLocationArea extends StatelessWidget {
   final MainBloc _bloc;
@@ -13,21 +13,19 @@ class TopLocationArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(
+      buildWhen: (previous, current) => previous.locationName != current.locationName,
       builder: (context, state) {
         return Row(
           children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  state.locationName,
-                  style: FortuneTextStyle.body2SemiBold(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+            Expanded(
+              child: Text(
+                state.locationName,
+                style: FortuneTextStyle.body2SemiBold(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: 24),
             Assets.icons.icUser.svg(),
           ],
         );

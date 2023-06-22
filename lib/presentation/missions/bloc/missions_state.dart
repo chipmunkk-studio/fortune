@@ -20,11 +20,6 @@ class MissionsState with _$MissionsState {
       );
 }
 
-enum TabMission {
-  ordinary,
-  round,
-}
-
 class MissionsViewItem {
   final MissionEntity mission;
   final int userHaveCount;

@@ -15,7 +15,14 @@ class MissionService {
   // 모든 미션을 조회.
   Future<List<MissionEntity>> findAllMissions(bool isGlobal) async {
     try {
-      final response = await _client.from(_missionsTableName).select("*").eq('is_global', isGlobal).toSelect();
+      final response = await _client
+          .from(_missionsTableName)
+          .select('*,marker(*,ingredient(*))')
+          .eq(
+            'is_global',
+            isGlobal,
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -30,7 +37,7 @@ class MissionService {
   // 아이디로 미션을 조회.
   Future<MissionEntity> findMissionById(int missionId) async {
     try {
-      final response = await _client.from(_missionsTableName).select("*").eq('id', missionId).toSelect();
+      final response = await _client.from(_missionsTableName).select("*,marker(*,ingredient(*))").eq('id', missionId).toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
       } else {
@@ -57,7 +64,7 @@ class MissionService {
             ).toJson(),
           )
           .eq('id', id)
-          .select();
+          .select('*,marker(*,ingredient(*))');
       return updateMission.map((e) => MissionResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

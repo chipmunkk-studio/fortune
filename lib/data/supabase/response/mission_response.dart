@@ -1,3 +1,5 @@
+import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -25,6 +27,10 @@ class MissionResponse extends MissionEntity {
   final String rewardImage_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
+  @JsonKey(name: 'marker')
+  final MarkerResponse? marker_;
+  @JsonKey(name: 'type')
+  final String type_;
 
   MissionResponse({
     required this.id_,
@@ -36,7 +42,9 @@ class MissionResponse extends MissionEntity {
     required this.detailTitle_,
     required this.detailSubtitle_,
     required this.detailContent_,
+    required this.marker_,
     required this.isGlobal_,
+    required this.type_,
   }) : super(
           id: id_.toInt(),
           bigTitle: bigTitle_,
@@ -46,7 +54,9 @@ class MissionResponse extends MissionEntity {
           detailContent: detailContent_,
           remainCount: remainCount_.toInt(),
           rewardCount: rewardCount_.toInt(),
+          marker: marker_,
           rewardImage: rewardImage_,
+          type: getMissionType(type_),
           isGlobal: isGlobal_,
         );
 

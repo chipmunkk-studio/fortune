@@ -91,7 +91,7 @@ class _TopNoticeState extends State<TopNotice> {
                                               children: [
                                                 Flexible(
                                                   child: Text(
-                                                    e.ingredientName,
+                                                    e.ingredient.name,
                                                     style: FortuneTextStyle.body3Regular(),
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,

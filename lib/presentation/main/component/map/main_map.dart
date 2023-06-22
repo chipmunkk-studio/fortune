@@ -46,8 +46,6 @@ class MainMap extends StatelessWidget {
                   center: LatLng(
                     _myLocation!.latitude!,
                     _myLocation!.longitude!,
-                    // 37.559357,
-                    // 126.971477,
                   ),
                   zoom: _bloc.state.zoomThreshold,
                   interactiveFlags: InteractiveFlag.pinchZoom,

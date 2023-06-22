@@ -27,7 +27,7 @@ class MainState with _$MainState {
   factory MainState.initial() => MainState(
         markers: List.empty(),
         histories: List.empty(),
-        locationName: '',
+        locationName: '내 위치 정보를 불러오는 중..',
         user: null,
         myLocation: null,
         haveCount: 0,

@@ -61,7 +61,8 @@ class MarkerRepositoryImpl extends MarkerRepository {
       int updatedTicket = user.ticket;
       int updatedTrashObtainCount = user.trashObtainCount;
       int markerObtainCount = user.markerObtainCount;
-      bool isTrashMarker = marker.lastObtainUser != null;
+      // 소멸성 이고, 획득 유저가 있을 경우 쓰레기 마커로 판단.
+      bool isTrashMarker = marker.lastObtainUser != null && marker.ingredient.isExtinct;
 
       // 쓰레기 마커가 아닐 경우.
       if (!isTrashMarker) {
@@ -95,10 +96,10 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required int markerCount,
   }) async {
     try {
-      // 티켓/쓰레기 가 아닌 리스트들만 뽑음.
+      // 티켓/유니크 가 아닌 리스트 들만 뽑음.
       final nonTicketAndTrashIngredients = ingredients
           .where(
-            (ingredient) => ingredient.type != IngredientType.ticket && ingredient.type != IngredientType.trash,
+            (ingredient) => ingredient.type != IngredientType.ticket && ingredient.type != IngredientType.unique,
           )
           .toList();
 

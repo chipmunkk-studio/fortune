@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/notification/one_signal_notification_response.dart';
@@ -13,11 +14,9 @@ import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
@@ -29,8 +28,8 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
+import 'component/notice/top_location_area.dart';
 import 'component/notice/top_notice.dart';
-import 'component/top_location_area.dart';
 import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
@@ -151,7 +150,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           );
         } else if (sideEffect is MainError) {
           dialogService.showErrorDialog(context, sideEffect.error);
-          bloc.add(Main());
+          if (sideEffect.error is NetworkFailure) {
+            bloc.add(Main());
+          }
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
         } else if (sideEffect is MainSchemeLandingPage) {
@@ -177,13 +178,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               _mapController,
               myLocation,
               onZoomChanged: () {
-                _animatedMapMove(
-                  LatLng(
-                    bloc.state.myLocation!.latitude!,
-                    bloc.state.myLocation!.longitude!,
-                  ),
-                  bloc.state.zoomThreshold,
-                );
+                // _animatedMapMove(
+                //   LatLng(
+                //     bloc.state.myLocation!.latitude!,
+                //     bloc.state.myLocation!.longitude!,
+                //   ),
+                //   bloc.state.zoomThreshold,
+                // );
               },
             ),
             // 카트.
@@ -270,14 +271,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
     return myLocation.onLocationChanged.listen(
       (newLoc) {
-        _animatedMapMove(
-          LatLng(
-            newLoc.latitude!,
-            newLoc.longitude!,
-          ),
-          bloc.state.zoomThreshold,
-        );
-        bloc.add(MainMyLocationChange(newLoc));
+        // _animatedMapMove(
+        //   LatLng(
+        //     newLoc.latitude!,
+        //     newLoc.longitude!,
+        //   ),
+        //   bloc.state.zoomThreshold,
+        // );
+        // bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }

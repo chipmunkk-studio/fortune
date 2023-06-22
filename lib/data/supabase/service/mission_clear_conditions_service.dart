@@ -16,7 +16,7 @@ class MissionClearConditionsService {
     try {
       final response = await _client
           .from(_missionClearConditionTableName)
-          .select("*,ingredient(*),mission(*)")
+          .select("*,ingredient(*),mission(*,marker(*,ingredient(*)))")
           .eq('mission', id)
           .toSelect();
       if (response.isEmpty) {

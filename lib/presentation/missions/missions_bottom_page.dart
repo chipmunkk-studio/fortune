@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
@@ -59,7 +62,20 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
             isLoading: state.isLoading,
             skeleton: const MissionsSkeleton(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text('수행 가능한 미션', style: FortuneTextStyle.subTitle1SemiBold()),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    '미션을 완료하시면 리워드를 드려요!',
+                    style: FortuneTextStyle.body2Regular(fontColor: ColorName.deActiveDark),
+                  ),
+                ),
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -70,17 +86,21 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                       builder: (context, state) {
                         return MissionCardList(
                           missions: state.missions,
-                          onItemClick: (missionId) async {
-                            final exchangeStatus = await router.navigateTo(
+                          onItemClick: (entity) async {
+                            final type = entity.type;
+                            await router.navigateTo(
                               context,
-                              Routes.missionDetailRoute,
+                              type == MissionType.relay
+                                  ? Routes.missionDetailRelayRoute
+                                  : Routes.missionDetailNormalRoute,
                               routeSettings: RouteSettings(
-                                arguments: missionId,
+                                arguments: entity,
                               ),
                             );
-                            serviceLocator<MainBloc>().add(Main());
-                            widget.mainBloc.add(Main());
-                            _bloc.add(MissionsInit());
+                            if (type != MissionType.relay) {
+                              widget.mainBloc.add(Main());
+                              _bloc.add(MissionsInit());
+                            }
                           },
                         );
                       },

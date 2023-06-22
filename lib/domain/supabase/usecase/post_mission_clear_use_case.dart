@@ -37,7 +37,8 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostMissionClear>
       // 삭제 대상인 것들만 다넣음.
       List<ObtainHistoryEntity> filteredUserHistories = [];
       for (var condition in clearConditions) {
-        if (condition.ingredient.type == IngredientType.trash) {
+        // 티켓일 경우 쓰레기 미션으로 간주.
+        if (condition.ingredient.type == IngredientType.ticket) {
           isTrashMission = true;
         }
         var matchedHistories = userHistories.where((history) => history.ingredient.id == condition.ingredient.id);

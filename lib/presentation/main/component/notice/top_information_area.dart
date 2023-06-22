@@ -63,81 +63,6 @@ class TopInformationArea extends StatelessWidget {
   }
 }
 
-class _ObtainMarkerCount extends StatelessWidget {
-  final GlobalKey<CartIconKey> _cartKey;
-  final int? _markerObtainCount;
-
-  const _ObtainMarkerCount(
-    this._cartKey,
-    this._markerObtainCount, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 12, top: 8, bottom: 8),
-      decoration: BoxDecoration(
-        color: ColorName.backgroundLight,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          Assets.icons.icIngredientBag.svg(width: 20, height: 20),
-          AddToCartIcon(
-            key: _cartKey,
-            badgeOptions: const BadgeOptions(active: false),
-            icon: Text(
-              "$_markerObtainCount",
-              style: FortuneTextStyle.body3Bold(),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: ColorName.deActive,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Assets.icons.icPlus.svg(width: 8, height: 8),
-          )
-        ],
-      ),
-    );
-    // return AddToCartIcon(
-    //   key: _cartKey,
-    //   badgeOptions: const BadgeOptions(active: false),
-    //   icon:
-    // );
-  }
-}
-
-class _TicketCount extends StatelessWidget {
-  final int? _ticket;
-
-  const _TicketCount(
-    this._ticket, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 12, top: 8, bottom: 8),
-      decoration: BoxDecoration(
-        color: ColorName.backgroundLight,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          Assets.icons.icFortuneMoney.svg(width: 20, height: 20),
-          const SizedBox(width: 8),
-          Text("$_ticket", style: FortuneTextStyle.body3Bold())
-        ],
-      ),
-    );
-  }
-}
-
 class _UserLevel extends StatelessWidget {
   final double? _percentageNextLevel;
   final int? _level;
@@ -153,45 +78,125 @@ class _UserLevel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 8, top: 8, bottom: 8),
       decoration: BoxDecoration(
         color: ColorName.backgroundLight,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
-          _grade.icon.svg(width: 20, height: 20),
-          const SizedBox(width: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
+            child: _grade.icon.svg(width: 20, height: 20),
+          ),
+          const SizedBox(width: 8),
           Flexible(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Stack(
-                children: [
-                  LinearPercentIndicator(
-                    width: 87,
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: LinearPercentIndicator(
+                    width: constraints.maxWidth,
                     animation: false,
-                    lineHeight: 20,
+                    lineHeight: 16,
                     animationDuration: 2000,
+                    center: Text(
+                      "Lv. $_level",
+                      style: FortuneTextStyle.caption1SemiBold(),
+                    ),
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(100.r),
                     backgroundColor: ColorName.deActive.withOpacity(0.3),
                     progressColor: ColorName.secondary,
                   ),
-                  Positioned.fill(
-                    child: Center(
-                      child: Text(
-                        "Lv. $_level",
-                        style: FortuneTextStyle.caption1SemiBold(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ),
+          const SizedBox(width: 8),
         ],
       ),
     );
+  }
+}
+
+class _TicketCount extends StatelessWidget {
+  final int? _ticket;
+
+  const _TicketCount(
+    this._ticket, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorName.backgroundLight,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
+            child: Assets.icons.icFortuneMoney.svg(width: 20, height: 20),
+          ),
+          const SizedBox(width: 8),
+          Text("$_ticket", style: FortuneTextStyle.body3Bold()),
+          const SizedBox(width: 12),
+        ],
+      ),
+    );
+  }
+}
+
+class _ObtainMarkerCount extends StatelessWidget {
+  final GlobalKey<CartIconKey> _cartKey;
+  final int? _markerObtainCount;
+
+  const _ObtainMarkerCount(
+    this._cartKey,
+    this._markerObtainCount, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorName.backgroundLight,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
+            child: Assets.icons.icIngredientBag.svg(width: 20, height: 20),
+          ),
+          AddToCartIcon(
+            key: _cartKey,
+            badgeOptions: const BadgeOptions(active: false),
+            icon: Text(
+              "$_markerObtainCount",
+              style: FortuneTextStyle.body3Bold(),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: ColorName.deActive,
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Assets.icons.icPlus.svg(width: 8, height: 8),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
+    );
+    // return AddToCartIcon(
+    //   key: _cartKey,
+    //   badgeOptions: const BadgeOptions(active: false),
+    //   icon:
+    // );
   }
 }

@@ -6,30 +6,30 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_ca
 import 'package:foresh_flutter/domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-import 'mission_detail.dart';
+import 'mission_detail_relay.dart';
 
-class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
-    with SideEffectBlocMixin<MissionDetailEvent, MissionDetailState, MissionDetailSideEffect> {
+class MissionDetailRelayBloc extends Bloc<MissionDetailRelayEvent, MissionDetailRelayState>
+    with SideEffectBlocMixin<MissionDetailRelayEvent, MissionDetailRelayState, MissionDetailRelaySideEffect> {
   static const tag = "[CountryCodeBloc]";
 
   final GetMissionDetailUseCase getMissionDetailUseCase;
   final PostMissionClearUseCase postMissionClearUseCase;
 
-  MissionDetailBloc({
+  MissionDetailRelayBloc({
     required this.getMissionDetailUseCase,
     required this.postMissionClearUseCase,
-  }) : super(MissionDetailState.initial()) {
-    on<MissionDetailInit>(init);
-    on<MissionDetailExchange>(requestExchange);
+  }) : super(MissionDetailRelayState.initial()) {
+    on<MissionDetailRelayInit>(init);
+    on<MissionDetailRelayExchange>(requestExchange);
   }
 
   FutureOr<void> init(
-    MissionDetailInit event,
-    Emitter<MissionDetailState> emit,
+    MissionDetailRelayInit event,
+    Emitter<MissionDetailRelayState> emit,
   ) async {
-    await getMissionDetailUseCase(event.id).then(
+    await getMissionDetailUseCase(event.mission.id).then(
       (value) => value.fold(
-        (l) => produceSideEffect(MissionDetailError(l)),
+        (l) => produceSideEffect(MissionDetailRelayError(l)),
         (r) {
           emit(
             state.copyWith(
@@ -44,8 +44,8 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
   }
 
   FutureOr<void> requestExchange(
-    MissionDetailExchange event,
-    Emitter<MissionDetailState> emit,
+    MissionDetailRelayExchange event,
+    Emitter<MissionDetailRelayState> emit,
   ) async {
     await postMissionClearUseCase(
       RequestPostMissionClear(
@@ -54,7 +54,7 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
       ),
     ).then(
       (value) => value.fold(
-        (l) => produceSideEffect(MissionDetailError(l)),
+        (l) => produceSideEffect(MissionDetailRelayError(l)),
         (r) {
           produceSideEffect(MissionClearSuccess());
         },

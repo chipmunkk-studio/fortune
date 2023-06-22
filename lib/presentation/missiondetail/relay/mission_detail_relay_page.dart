@@ -1,62 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-import 'bloc/mission_detail.dart';
+import 'bloc/mission_detail_relay.dart';
 import 'component/ingredient_layout.dart';
 
-class MissionDetailPage extends StatelessWidget {
-  const MissionDetailPage(
-    this.missionId, {
+
+class MissionDetailRelayPage extends StatelessWidget {
+  const MissionDetailRelayPage(
+    this.mission, {
     Key? key,
   }) : super(key: key);
 
-  final int missionId;
+  final MissionEntity mission;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<MissionDetailBloc>()..add(MissionDetailInit(missionId)),
+      create: (context) => serviceLocator<MissionDetailRelayBloc>()..add(MissionDetailRelayInit(mission)),
       child: FortuneScaffold(
         padding: const EdgeInsets.all(0),
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-        child: const _MissionDetailPage(),
+        child: const _MissionDetailRelayPage(),
       ),
     );
   }
 }
 
-class _MissionDetailPage extends StatefulWidget {
-  const _MissionDetailPage({Key? key}) : super(key: key);
+class _MissionDetailRelayPage extends StatefulWidget {
+  const _MissionDetailRelayPage({Key? key}) : super(key: key);
 
   @override
-  State<_MissionDetailPage> createState() => _MissionDetailPageState();
+  State<_MissionDetailRelayPage> createState() => _MissionDetailRelayPageState();
 }
 
-class _MissionDetailPageState extends State<_MissionDetailPage> {
-  late final MissionDetailBloc _bloc;
+class _MissionDetailRelayPageState extends State<_MissionDetailRelayPage> {
+  late final MissionDetailRelayBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<MissionDetailBloc>(context);
+    _bloc = BlocProvider.of<MissionDetailRelayBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<MissionDetailBloc, MissionDetailSideEffect>(
+    return BlocSideEffectListener<MissionDetailRelayBloc, MissionDetailRelaySideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MissionClearSuccess) {
           context.showFortuneDialog(
@@ -67,11 +66,11 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
               router.pop(context, true);
             },
           );
-        } else if (sideEffect is MissionDetailError) {
+        } else if (sideEffect is MissionDetailRelayError) {
           dialogService.showErrorDialog(context, sideEffect.error);
         }
       },
-      child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+      child: BlocBuilder<MissionDetailRelayBloc, MissionDetailRelayState>(
         builder: (context, state) {
           return Column(
             children: [
@@ -97,7 +96,6 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                           ),
                         ),
                         const SizedBox(height: 40),
-                        IngredientLayout(state.entity.markers),
                         const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -127,15 +125,6 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                       ),
                     ),
                   ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16,left: 20,right: 20),
-                child: FortuneBottomButton(
-                  isEnabled: state.isEnableButton,
-                  buttonText: "교환하기",
-                  onPress: () => _showExchangeBottomSheet(),
-                  isKeyboardVisible: false,
                 ),
               ),
             ],
@@ -170,7 +159,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                 isEnabled: true,
                 onPress: () {
                   router.pop(context);
-                  _bloc.add(MissionDetailExchange());
+                  _bloc.add(MissionDetailRelayExchange());
                 },
                 buttonText: "교환",
                 isKeyboardVisible: false,

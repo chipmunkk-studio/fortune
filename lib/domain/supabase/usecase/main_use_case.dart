@@ -11,6 +11,7 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/env.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
@@ -18,8 +19,10 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
   final ObtainHistoryRepository obtainHistoryRepository;
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
+  final FortuneRemoteConfig remoteConfig;
 
   MainUseCase({
+    required this.remoteConfig,
     required this.ingredientRepository,
     required this.markerRepository,
     required this.userRepository,
@@ -68,14 +71,21 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
 
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.getIngredients(user.isGlobal);
+      final keepMarkerCount = remoteConfig.markerCount;
+      final keepTicketCount = remoteConfig.ticketCount;
 
       // 주변에 마커가 없으면 1개 있으면 0개.
-      final markerCount = markersNearsByMeWithNotTicket.isEmpty || markersNearsByMeWithNotTicket.length < 2 ? 10 : 0;
-      final isTicketEmpty =
-          markersNearByMe.where((element) => element.ingredient.type == IngredientType.ticket).toList();
+      final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
+          ? keepMarkerCount - markersNearsByMeWithNotTicket.length
+          : 0;
+      final isTicketEmpty = markersNearByMe
+          .where(
+            (element) => element.ingredient.type == IngredientType.ticket,
+          )
+          .toList();
 
       // 티켓이 없으면 3개 뿌려주고 아니면 3-N개 뿌려줌.
-      final ticketCount = isTicketEmpty.length < 3 ? 3 - isTicketEmpty.length : 0;
+      final ticketCount = isTicketEmpty.length < keepTicketCount ? keepTicketCount - isTicketEmpty.length : 0;
 
       FortuneLogger.info(
           "markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");

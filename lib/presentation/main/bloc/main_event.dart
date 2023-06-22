@@ -53,6 +53,15 @@ class MainTimeOver extends MainEvent {
   List<Object?> get props => [];
 }
 
+class MainMarkerObtain extends MainEvent {
+  final MainLocationData data;
+
+  MainMarkerObtain(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}
+
 class MainLandingPage extends MainEvent {
   final OneSignalNotificationCustom entity;
 

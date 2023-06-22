@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 
 @immutable
-abstract class MissionDetailSideEffect extends Equatable {}
+abstract class MissionDetailNormalSideEffect extends Equatable {}
 
-class MissionDetailError extends MissionDetailSideEffect {
+class MissionDetailNormalError extends MissionDetailNormalSideEffect {
   final FortuneFailure error;
 
-  MissionDetailError(this.error);
+  MissionDetailNormalError(this.error);
 
   @override
   List<Object?> get props => [];
 }
 
-class MissionClearSuccess extends MissionDetailSideEffect {
-  MissionClearSuccess();
+class MissionDetailNormalClearSuccess extends MissionDetailNormalSideEffect {
+  MissionDetailNormalClearSuccess();
 
   @override
   List<Object?> get props => [];
