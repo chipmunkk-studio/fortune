@@ -9,12 +9,12 @@ import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class PostMissionClearUseCase implements UseCase1<void, RequestPostMissionClear> {
+class PostMissionNormalClearUseCase implements UseCase1<void, RequestPostMissionClear> {
   final MissionRepository missionRepository;
   final UserRepository userRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
 
-  PostMissionClearUseCase({
+  PostMissionNormalClearUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,

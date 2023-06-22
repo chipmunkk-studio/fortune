@@ -12,12 +12,10 @@ import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:synchronized/synchronized.dart';
 
 class MarkerRepositoryImpl extends MarkerRepository {
   final MarkerService _markerService;
   final UserService _userService;
-  final Lock _lock = Lock();
 
   MarkerRepositoryImpl(
     this._markerService,

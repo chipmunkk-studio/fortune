@@ -93,9 +93,20 @@ class MissionRepositoryImpl extends MissionRepository {
   }
 
   @override
-  Future<MissionEntity> getMissionsById(int missionId) async {
+  Future<MissionEntity> getMissionById(int missionId) async {
     try {
       final result = await missionService.findMissionById(missionId);
+      return result;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MissionEntity> getMissionByMarkerId(int markerId) async {
+    try {
+      final result = await missionService.findMissionByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

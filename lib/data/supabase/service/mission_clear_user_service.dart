@@ -9,13 +9,14 @@ class MissionClearUserService {
   static const _missionClearUserTableName = "mission_clear_user";
 
   final SupabaseClient _client;
+  static const  _fullSelectQuery = '*,user(*),mission(*,marker(*,ingredient(*)))';
 
   MissionClearUserService(this._client);
 
   // 미션을 클리어한 유저들 모두 조회.
   Future<List<MissionClearUserEntity>> findAllMissionClearUsers() async {
     try {
-      final response = await _client.from(_missionClearUserTableName).select("*,mission(*),user(*)").toSelect();
+      final response = await _client.from(_missionClearUserTableName).select(_fullSelectQuery).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -30,8 +31,7 @@ class MissionClearUserService {
   // 아이디로 미션 클리어한 유저 조회.
   Future<MissionClearUserEntity?> findAllMissionClearUserById(int id) async {
     try {
-      final response =
-          await _client.from(_missionClearUserTableName).select("*,mission(*),user(*)").eq('id', id).toSelect();
+      final response = await _client.from(_missionClearUserTableName).select(_fullSelectQuery).eq('id', id).toSelect();
       if (response.isEmpty) {
         return null;
       } else {
@@ -63,7 +63,7 @@ class MissionClearUserService {
               ).toJson(),
             )
             .eq('id', id)
-            .select('*,user(*),mission(*)');
+            .select(_fullSelectQuery);
         return updateUser.map((e) => MissionClearUserResponse.fromJson(e)).toList().single;
       } else {
         throw const PostgrestException(message: '사용자가 존재하지 않습니다');
@@ -90,7 +90,7 @@ class MissionClearUserService {
               email: email,
             ).toJson(),
           )
-          .select('*,user(*),mission(*)');
+          .select(_fullSelectQuery);
       return insertUser.map((e) => MissionClearUserResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

@@ -79,4 +79,3 @@ class MainShowDialog extends MainSideEffect {
   @override
   List<Object?> get props => [];
 }
-

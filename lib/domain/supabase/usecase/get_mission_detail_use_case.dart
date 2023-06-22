@@ -23,7 +23,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
   Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
     try {
       final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
-      final mission = await missionRepository.getMissionsById(missionId);
+      final mission = await missionRepository.getMissionById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditions(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 

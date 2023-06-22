@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ObtainHistoryService {
   static const _obtainHistoryTableName = "obtain_histories";
+  static const _fullSelectQuery = '*,ingredient(*),user(*)';
 
   final SupabaseClient _client;
 
@@ -22,7 +23,7 @@ class ObtainHistoryService {
       final convertedQuery = '%$query%';
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select("*,ingredient(*),user(*)")
+          .select(_fullSelectQuery)
           .or(
             'kr_location_name.ilike.$convertedQuery, '
             'en_location_name.ilike.$convertedQuery, '
@@ -51,7 +52,7 @@ class ObtainHistoryService {
     try {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select("*,ingredient(*),user(*)")
+          .select(_fullSelectQuery)
           .eq('user', userId)
           .eq('ingredient', ingredientId)
           .toSelect();
@@ -72,7 +73,7 @@ class ObtainHistoryService {
     try {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select("*,ingredient(*),user(*)")
+          .select(_fullSelectQuery)
           .eq(
             'user',
             userId,

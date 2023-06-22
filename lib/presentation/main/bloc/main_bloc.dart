@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
@@ -11,6 +12,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
@@ -28,6 +30,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
+  final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
@@ -35,6 +38,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
+    required this.postMissionRelayClearUseCase,
     required this.getObtainCountUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
@@ -224,40 +228,51 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {
-    final data = event.data;
+    final marker = event.data;
 
-    final latitude = data.location.latitude;
-    final longitude = data.location.longitude;
+    final latitude = marker.location.latitude;
+    final longitude = marker.location.longitude;
 
-    await obtainMarkerUseCase(data.id).then(
+    await obtainMarkerUseCase(marker.id).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
           // 티켓이 아니고, 소멸성이 아닌 경우에만 올림.
-          if (data.ingredient.type != IngredientType.ticket && !data.ingredient.isExtinct) {
+          if (marker.ingredient.type != IngredientType.ticket && !marker.ingredient.isExtinct) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
                 userId: r.id,
-                markerId: data.id.toString(),
-                ingredientId: data.ingredient.id,
-                ingredientName: data.ingredient.name,
+                markerId: marker.id.toString(),
+                ingredientId: marker.ingredient.id,
+                ingredientName: marker.ingredient.name,
                 nickname: r.nickname,
                 krLocationName: await getLocationName(latitude, longitude),
                 enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
               ),
             ).then(
-              (value) => value.fold((l) => produceSideEffect(MainError(l)), (r) async {
-                emit(state.copyWith(haveCount: r));
-              }),
+              (value) => value.fold(
+                (l) => produceSideEffect(MainError(l)),
+                (r) async {
+                  emit(state.copyWith(haveCount: r));
+                  await postMissionRelayClearUseCase(marker.id).then(
+                    (value) => value.fold(
+                      (l) => null,
+                      (r) {
+                        if (r) {
+                          FortuneLogger.info("릴레이 미션 당첨!");
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
             );
           } else {
             await getObtainCountUseCase(r.id).then(
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
-                (r) => emit(
-                  state.copyWith(haveCount: r),
-                ),
+                (r) => emit(state.copyWith(haveCount: r)),
               ),
             );
           }

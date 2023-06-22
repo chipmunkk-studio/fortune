@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_mission_clear_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/post_mission_normal_clear_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'mission_detail_relay.dart';
@@ -13,7 +13,7 @@ class MissionDetailRelayBloc extends Bloc<MissionDetailRelayEvent, MissionDetail
   static const tag = "[CountryCodeBloc]";
 
   final GetMissionDetailUseCase getMissionDetailUseCase;
-  final PostMissionClearUseCase postMissionClearUseCase;
+  final PostMissionNormalClearUseCase postMissionClearUseCase;
 
   MissionDetailRelayBloc({
     required this.getMissionDetailUseCase,

@@ -14,7 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MarkerService {
   static const _markerTableName = "markers";
-
+  static const _fullSelectQuery = '*,ingredient(*)';
   final SupabaseClient _client;
   final Environment env;
 
@@ -45,7 +45,7 @@ class MarkerService {
 
       final response = await _client
           .from(_markerTableName)
-          .select("*,ingredient(*)")
+          .select(_fullSelectQuery)
           .gte('latitude', minLat)
           .lte('latitude', maxLat)
           .gte('longitude', minLng)
@@ -106,7 +106,7 @@ class MarkerService {
       final List<dynamic> response = await _client
           .from(_markerTableName)
           .select(
-            "*, ingredient(*)",
+            _fullSelectQuery,
           )
           .eq("id", id)
           .toSelect();
@@ -144,7 +144,7 @@ class MarkerService {
             ).toJson(),
           )
           .eq("id", id)
-          .select("*,ingredient(*)");
+          .select(_fullSelectQuery);
       return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

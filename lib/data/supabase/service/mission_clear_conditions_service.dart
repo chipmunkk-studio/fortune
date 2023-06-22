@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionClearConditionsService {
   static const _missionClearConditionTableName = "mission_clear_conditions";
+  static const _fullSelectQuery = '*,ingredient(*),mission(*,marker(*,ingredient(*)))';
 
   final SupabaseClient _client;
 
@@ -16,7 +17,9 @@ class MissionClearConditionsService {
     try {
       final response = await _client
           .from(_missionClearConditionTableName)
-          .select("*,ingredient(*),mission(*,marker(*,ingredient(*)))")
+          .select(
+            _fullSelectQuery,
+          )
           .eq('mission', id)
           .toSelect();
       if (response.isEmpty) {

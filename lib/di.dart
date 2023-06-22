@@ -30,7 +30,6 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_ca
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -50,6 +49,8 @@ import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
+import 'domain/supabase/usecase/post_mission_normal_clear_use_case.dart';
+import 'domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/normal/bloc/mission_detail_normal_bloc.dart';
 import 'presentation/missiondetail/relay/bloc/mission_detail_relay.dart';
@@ -292,11 +293,18 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<PostMissionClearUseCase>(
-      () => PostMissionClearUseCase(
+    ..registerLazySingleton<PostMissionNormalClearUseCase>(
+      () => PostMissionNormalClearUseCase(
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<PostMissionRelayClearUseCase>(
+      () => PostMissionRelayClearUseCase(
+        missionRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+        markerRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MainUseCase>(
@@ -334,6 +342,7 @@ _initBloc() {
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
         getObtainCountUseCase: serviceLocator(),
+        postMissionRelayClearUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

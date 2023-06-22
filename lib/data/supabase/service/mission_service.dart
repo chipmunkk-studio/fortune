@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionService {
   static const _missionsTableName = "missions";
+  static const _fullSelectQuery = '*,marker(*,ingredient(*))';
 
   final SupabaseClient _client;
 
@@ -17,7 +18,7 @@ class MissionService {
     try {
       final response = await _client
           .from(_missionsTableName)
-          .select('*,marker(*,ingredient(*))')
+          .select(_fullSelectQuery)
           .eq(
             'is_global',
             isGlobal,
@@ -37,9 +38,36 @@ class MissionService {
   // 아이디로 미션을 조회.
   Future<MissionEntity> findMissionById(int missionId) async {
     try {
-      final response = await _client.from(_missionsTableName).select("*,marker(*,ingredient(*))").eq('id', missionId).toSelect();
+      final response = await _client
+          .from(_missionsTableName)
+          .select(
+            _fullSelectQuery,
+          )
+          .eq('id', missionId)
+          .toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
+      } else {
+        final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
+        return missions.single;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  // 아이디로 미션을 조회.
+  Future<MissionEntity> findMissionByMarkerId(int markerId) async {
+    try {
+      final response = await _client
+          .from(_missionsTableName)
+          .select(
+            _fullSelectQuery,
+          )
+          .eq('marker', markerId)
+          .toSelect();
+      if (response.isEmpty) {
+        throw CommonFailure(errorMessage: '미션이 존재 하지 않습니다');
       } else {
         final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
         return missions.single;
@@ -64,7 +92,7 @@ class MissionService {
             ).toJson(),
           )
           .eq('id', id)
-          .select('*,marker(*,ingredient(*))');
+          .select(_fullSelectQuery);
       return updateMission.map((e) => MissionResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

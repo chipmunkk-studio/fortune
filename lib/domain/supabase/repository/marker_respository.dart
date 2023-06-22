@@ -26,5 +26,5 @@ abstract class MarkerRepository {
   Future<void> hitMarker(int id);
 
   // 아이디로 찾기.
-  Future<void> findMarkerById(int markerId);
+  Future<MarkerEntity> findMarkerById(int markerId);
 }

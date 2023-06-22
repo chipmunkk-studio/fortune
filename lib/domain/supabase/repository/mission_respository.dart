@@ -14,6 +14,10 @@ abstract class MissionRepository {
     required String email,
   });
 
-  // 미션 불러오기.
-  Future<MissionEntity> getMissionsById(int missionId);
+  // 미션 아이디로 조회.
+  Future<MissionEntity> getMissionById(int missionId);
+
+
+  // 마커 아이디로 조회.
+  Future<MissionEntity> getMissionByMarkerId(int markerId);
 }
