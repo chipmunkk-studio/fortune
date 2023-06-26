@@ -9,19 +9,19 @@ import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class PostNormalMissionClearUseCase implements UseCase1<void, RequestPostMissionClear> {
-  final NormalMissionRepository missionRepository;
+class PostMissionNormalClearUseCase implements UseCase1<void, RequestPostNormalMissionClear> {
+  final MissionNormalRepository missionRepository;
   final UserRepository userRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
 
-  PostNormalMissionClearUseCase({
+  PostMissionNormalClearUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,
   });
 
   @override
-  Future<FortuneResult<void>> call(RequestPostMissionClear request) async {
+  Future<FortuneResult<void>> call(RequestPostNormalMissionClear request) async {
     try {
       final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
       final clearConditions = await missionRepository.getMissionClearConditions(request.missionId);

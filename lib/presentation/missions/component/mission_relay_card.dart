@@ -9,7 +9,7 @@ import 'package:transparent_image/transparent_image.dart';
 class MissionRelayCard extends StatelessWidget {
   const MissionRelayCard(this.item, {super.key});
 
-  final MissionsViewItem item;
+  final MissionNormalViewItem item;
 
   @override
   Widget build(BuildContext context) {

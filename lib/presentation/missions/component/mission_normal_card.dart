@@ -9,7 +9,7 @@ import 'package:transparent_image/transparent_image.dart';
 class MissionNormalCard extends StatelessWidget {
   const MissionNormalCard(this.item, {super.key});
 
-  final MissionsViewItem item;
+  final MissionNormalViewItem item;
 
   @override
   Widget build(BuildContext context) {

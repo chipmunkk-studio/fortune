@@ -7,19 +7,19 @@ import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class GetNormalMissionsUseCase implements UseCase0<List<MissionsViewItem>> {
-  final NormalMissionRepository missionRepository;
+class GetMissionNormalUseCase implements UseCase0<List<MissionNormalViewItem>> {
+  final MissionNormalRepository missionRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final UserRepository userRepository;
 
-  GetNormalMissionsUseCase({
+  GetMissionNormalUseCase({
     required this.missionRepository,
     required this.obtainHistoryRepository,
     required this.userRepository,
   });
 
   @override
-  Future<FortuneResult<List<MissionsViewItem>>> call() async {
+  Future<FortuneResult<List<MissionNormalViewItem>>> call() async {
     try {
       final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
       final missions = await missionRepository.getAllMissions(user.isGlobal);
@@ -42,14 +42,15 @@ class GetNormalMissionsUseCase implements UseCase0<List<MissionsViewItem>> {
 
           // 클리어에 필요한 총 획득량.
           final totalCount = clearConditions.map((e) => e.count).reduce((a, b) => a + b).toInt();
-          return MissionsViewItem(
+          return MissionNormalViewItem(
             mission: e,
             userHaveCount: userHaveCount,
             requiredTotalCount: totalCount,
           );
         },
       );
-      final List<MissionsViewItem> missionViewItems = await Future.wait(missionViewItemsFutures);
+      final List<MissionNormalViewItem> missionViewItems = await Future.wait(missionViewItemsFutures);
+      // 아이템 정렬.
       missionViewItems.sort((a, b) {
         if (a.userHaveCount >= a.requiredTotalCount && b.userHaveCount < b.requiredTotalCount) {
           return -1;

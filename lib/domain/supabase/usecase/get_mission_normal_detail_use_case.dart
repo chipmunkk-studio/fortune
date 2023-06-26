@@ -8,19 +8,19 @@ import 'package:foresh_flutter/domain/supabase/repository/obtain_history_reposit
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class GetNormalMissionDetailUseCase implements UseCase1<NormalMissionDetailEntity, int> {
-  final NormalMissionRepository missionRepository;
+class GetMissionNormalDetailUseCase implements UseCase1<MissionNormalDetailEntity, int> {
+  final MissionNormalRepository missionRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final UserRepository userRepository;
 
-  GetNormalMissionDetailUseCase({
+  GetMissionNormalDetailUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,
   });
 
   @override
-  Future<FortuneResult<NormalMissionDetailEntity>> call(int missionId) async {
+  Future<FortuneResult<MissionNormalDetailEntity>> call(int missionId) async {
     try {
       final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
       final mission = await missionRepository.getMissionById(missionId);
@@ -55,7 +55,7 @@ class GetNormalMissionDetailUseCase implements UseCase1<NormalMissionDetailEntit
       }
 
       return Right(
-        NormalMissionDetailEntity(
+        MissionNormalDetailEntity(
           markers: markers,
           mission: mission,
         ),

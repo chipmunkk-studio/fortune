@@ -20,7 +20,7 @@ class MissionDetailNormalPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final NormalMissionEntity mission;
+  final MissionNormalEntity mission;
 
   @override
   Widget build(BuildContext context) {

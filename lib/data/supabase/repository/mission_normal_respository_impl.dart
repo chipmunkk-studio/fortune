@@ -1,23 +1,23 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_clear_history_service.dart';
-import 'package:foresh_flutter/data/supabase/service/normal_mission_clear_conditions_service.dart';
-import 'package:foresh_flutter/data/supabase/service/normal_mission_clear_user_service.dart';
-import 'package:foresh_flutter/data/supabase/service/normal_mission_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_normal_clear_conditions_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_normal_clear_user_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission_normal_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_clear_condition_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/normal_mission_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class NormalMissionRepositoryImpl extends NormalMissionRepository {
-  final NormalMissionService missionNormalService;
+class MissionNormalRepositoryImpl extends MissionNormalRepository {
+  final MissionNormalService missionNormalService;
   final UserService userService;
-  final NormalMissionClearUserService missionClearUserService;
+  final MissionNormalClearUserService missionClearUserService;
   final MissionClearHistoryService missionClearHistoryService;
-  final NormalMissionClearConditionsService missionClearConditionsService;
+  final MissionNormalClearConditionsService missionClearConditionsService;
 
-  NormalMissionRepositoryImpl({
+  MissionNormalRepositoryImpl({
     required this.missionNormalService,
     required this.missionClearConditionsService,
     required this.missionClearHistoryService,
@@ -26,7 +26,7 @@ class NormalMissionRepositoryImpl extends NormalMissionRepository {
   });
 
   @override
-  Future<List<NormalMissionEntity>> getAllMissions(bool isGlobal) async {
+  Future<List<MissionNormalEntity>> getAllMissions(bool isGlobal) async {
     try {
       final result = await missionNormalService.findAllMissions(isGlobal);
       return result;
@@ -37,7 +37,7 @@ class NormalMissionRepositoryImpl extends NormalMissionRepository {
   }
 
   @override
-  Future<List<NormalMissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
+  Future<List<MissionNormalClearConditionEntity>> getMissionClearConditions(int missionId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
@@ -93,7 +93,7 @@ class NormalMissionRepositoryImpl extends NormalMissionRepository {
   }
 
   @override
-  Future<NormalMissionEntity> getMissionById(int missionId) async {
+  Future<MissionNormalEntity> getMissionById(int missionId) async {
     try {
       final result = await missionNormalService.findMissionById(missionId);
       return result;
@@ -104,7 +104,7 @@ class NormalMissionRepositoryImpl extends NormalMissionRepository {
   }
 
   @override
-  Future<NormalMissionEntity> getMissionByMarkerId(int markerId) async {
+  Future<MissionNormalEntity> getMissionByMarkerId(int markerId) async {
     try {
       final result = await missionNormalService.findMissionByMarkerId(markerId);
       return result;

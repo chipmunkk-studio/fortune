@@ -2,22 +2,22 @@ import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_clear_condition_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'normal_mission_response.dart';
+import 'mission_normal_response.dart';
 
-part 'normal_mission_clear_conditions_response.g.dart';
+part 'mission_normal_clear_conditions_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class NormalMissionClearConditionResponse extends NormalMissionClearConditionEntity {
+class MissionNormalClearConditionResponse extends MissionNormalClearConditionEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'mission')
-  final NormalMissionResponse mission_;
+  final MissionNormalResponse mission_;
   @JsonKey(name: 'ingredient')
   final IngredientResponse ingredient_;
   @JsonKey(name: 'count')
   final double count_;
 
-  NormalMissionClearConditionResponse({
+  MissionNormalClearConditionResponse({
     required this.id_,
     required this.mission_,
     required this.count_,
@@ -29,8 +29,8 @@ class NormalMissionClearConditionResponse extends NormalMissionClearConditionEnt
           count: count_.toInt(),
         );
 
-  factory NormalMissionClearConditionResponse.fromJson(Map<String, dynamic> json) =>
-      _$NormalMissionClearConditionResponseFromJson(json);
+  factory MissionNormalClearConditionResponse.fromJson(Map<String, dynamic> json) =>
+      _$MissionNormalClearConditionResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NormalMissionClearConditionResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MissionNormalClearConditionResponseToJson(this);
 }

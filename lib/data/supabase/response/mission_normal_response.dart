@@ -1,10 +1,10 @@
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'normal_mission_response.g.dart';
+part 'mission_normal_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class NormalMissionResponse extends NormalMissionEntity {
+class MissionNormalResponse extends MissionNormalEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'big_title')
@@ -26,7 +26,7 @@ class NormalMissionResponse extends NormalMissionEntity {
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
 
-  NormalMissionResponse({
+  MissionNormalResponse({
     required this.id_,
     required this.bigTitle_,
     required this.bigSubtitle_,
@@ -50,7 +50,7 @@ class NormalMissionResponse extends NormalMissionEntity {
           isGlobal: isGlobal_,
         );
 
-  factory NormalMissionResponse.fromJson(Map<String, dynamic> json) => _$NormalMissionResponseFromJson(json);
+  factory MissionNormalResponse.fromJson(Map<String, dynamic> json) => _$MissionNormalResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NormalMissionResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MissionNormalResponseToJson(this);
 }

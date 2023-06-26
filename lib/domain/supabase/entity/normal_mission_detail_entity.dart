@@ -1,19 +1,19 @@
 import 'ingredient_entity.dart';
 import 'normal_mission_entity.dart';
 
-class NormalMissionDetailEntity {
+class MissionNormalDetailEntity {
   final List<NormalMissionDetailViewItemEntity> markers;
-  final NormalMissionEntity mission;
+  final MissionNormalEntity mission;
   final bool isEnableMissionClear;
 
-  NormalMissionDetailEntity({
+  MissionNormalDetailEntity({
     required this.markers,
     required this.mission,
   }) : isEnableMissionClear = markers.where((element) => !element.isConditionSatisfied).isEmpty;
 
-  factory NormalMissionDetailEntity.initial() => NormalMissionDetailEntity(
+  factory MissionNormalDetailEntity.initial() => MissionNormalDetailEntity(
         markers: [],
-        mission: NormalMissionEntity.empty(),
+        mission: MissionNormalEntity.empty(),
       );
 }
 

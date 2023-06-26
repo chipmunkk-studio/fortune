@@ -20,12 +20,14 @@ class MissionsState with _$MissionsState {
       );
 }
 
-class MissionsViewItem {
-  final NormalMissionEntity mission;
+abstract class MissionsViewItem {}
+
+class MissionNormalViewItem extends MissionsViewItem {
+  final MissionNormalEntity mission;
   final int userHaveCount;
   final int requiredTotalCount;
 
-  MissionsViewItem({
+  MissionNormalViewItem({
     required this.mission,
     required this.userHaveCount,
     required this.requiredTotalCount,

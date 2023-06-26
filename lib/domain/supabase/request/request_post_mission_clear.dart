@@ -1,8 +1,8 @@
-class RequestPostMissionClear {
+class RequestPostNormalMissionClear {
   final int missionId;
   final String email;
 
-  RequestPostMissionClear({
+  RequestPostNormalMissionClear({
     required this.missionId,
     required this.email,
   });

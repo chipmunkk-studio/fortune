@@ -30,7 +30,7 @@ class FortuneRouter {
 
   static var missionDetailNormalHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as NormalMissionEntity?;
+      final args = context?.settings?.arguments as MissionNormalEntity?;
       return args != null ? MissionDetailNormalPage(args) : null;
     },
   );

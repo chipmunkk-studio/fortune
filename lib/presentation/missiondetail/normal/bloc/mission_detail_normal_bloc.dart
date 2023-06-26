@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_normal_mission_detail_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_normal_mission_clear_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_mission_normal_detail_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/post_mission_normal_clear_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'mission_detail_normal.dart';
@@ -12,8 +12,8 @@ class MissionDetailNormalBloc extends Bloc<MissionDetailNormalEvent, MissionDeta
     with SideEffectBlocMixin<MissionDetailNormalEvent, MissionDetailNormalState, MissionDetailNormalSideEffect> {
   static const tag = "[CountryCodeBloc]";
 
-  final GetNormalMissionDetailUseCase getMissionDetailUseCase;
-  final PostNormalMissionClearUseCase postMissionClearUseCase;
+  final GetMissionNormalDetailUseCase getMissionDetailUseCase;
+  final PostMissionNormalClearUseCase postMissionClearUseCase;
 
   MissionDetailNormalBloc({
     required this.getMissionDetailUseCase,
@@ -48,7 +48,7 @@ class MissionDetailNormalBloc extends Bloc<MissionDetailNormalEvent, MissionDeta
     Emitter<MissionDetailNormalState> emit,
   ) async {
     await postMissionClearUseCase(
-      RequestPostMissionClear(
+      RequestPostNormalMissionClear(
         missionId: state.entity.mission.id,
         email: "melow2@naver.com",
       ),

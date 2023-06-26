@@ -6,13 +6,13 @@ part 'mission_detail_normal_state.freezed.dart';
 @freezed
 class MissionDetailNormalState with _$MissionDetailNormalState {
   factory MissionDetailNormalState({
-    required NormalMissionDetailEntity entity,
+    required MissionNormalDetailEntity entity,
     required bool isLoading,
     required bool isEnableButton,
   }) = _MissionDetailNormalState ;
 
   factory MissionDetailNormalState.initial() => MissionDetailNormalState(
-        entity: NormalMissionDetailEntity.initial(),
+        entity: MissionNormalDetailEntity.initial(),
         isEnableButton: false,
         isLoading: true,
       );

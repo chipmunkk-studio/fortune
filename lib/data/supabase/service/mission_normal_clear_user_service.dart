@@ -1,26 +1,26 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user_update.dart';
-import 'package:foresh_flutter/data/supabase/response/normal_mission_clear_user_response.dart';
+import 'package:foresh_flutter/data/supabase/response/mission_normal_clear_user_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_clear_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class NormalMissionClearUserService {
-  static const _normalMissionClearUserTableName = "normal_mission_clear_user";
+class MissionNormalClearUserService {
+  static const _normalMissionClearUserTableName = "mission_normal_clear_user";
 
   final SupabaseClient _client;
   static const _fullSelectQuery = '*,user(*),mission(*)';
 
-  NormalMissionClearUserService(this._client);
+  MissionNormalClearUserService(this._client);
 
   // 미션을 클리어한 유저들 모두 조회.
-  Future<List<NormalMissionClearUserEntity>> findAllMissionClearUsers() async {
+  Future<List<MissionNormalClearUserEntity>> findAllMissionClearUsers() async {
     try {
       final response = await _client.from(_normalMissionClearUserTableName).select(_fullSelectQuery).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
-        final users = response.map((e) => NormalMissionClearUserResponse.fromJson(e)).toList();
+        final users = response.map((e) => MissionNormalClearUserResponse.fromJson(e)).toList();
         return users;
       }
     } on Exception catch (e) {
@@ -29,14 +29,14 @@ class NormalMissionClearUserService {
   }
 
   // 아이디로 미션 클리어한 유저 조회.
-  Future<NormalMissionClearUserEntity?> findAllMissionClearUserById(int id) async {
+  Future<MissionNormalClearUserEntity?> findAllMissionClearUserById(int id) async {
     try {
       final response =
           await _client.from(_normalMissionClearUserTableName).select(_fullSelectQuery).eq('id', id).toSelect();
       if (response.isEmpty) {
         return null;
       } else {
-        final users = response.map((e) => NormalMissionClearUserResponse.fromJson(e)).toList();
+        final users = response.map((e) => MissionNormalClearUserResponse.fromJson(e)).toList();
         return users.singleOrNull;
       }
     } on Exception catch (e) {
@@ -45,13 +45,13 @@ class NormalMissionClearUserService {
   }
 
   // 미션 클리어 사용자 업데이트.
-  Future<NormalMissionClearUserEntity> update(
+  Future<MissionNormalClearUserEntity> update(
     int id, {
     String? email,
     bool? isReceived,
   }) async {
     try {
-      NormalMissionClearUserEntity? clearUser = await findAllMissionClearUserById(id);
+      MissionNormalClearUserEntity? clearUser = await findAllMissionClearUserById(id);
       if (clearUser != null) {
         final updateUser = await _client
             .from(_normalMissionClearUserTableName)
@@ -65,7 +65,7 @@ class NormalMissionClearUserService {
             )
             .eq('id', id)
             .select(_fullSelectQuery);
-        return updateUser.map((e) => NormalMissionClearUserResponse.fromJson(e)).toList().single;
+        return updateUser.map((e) => MissionNormalClearUserResponse.fromJson(e)).toList().single;
       } else {
         throw const PostgrestException(message: '사용자가 존재하지 않습니다');
       }
@@ -92,7 +92,7 @@ class NormalMissionClearUserService {
             ).toJson(),
           )
           .select(_fullSelectQuery);
-      return insertUser.map((e) => NormalMissionClearUserResponse.fromJson(e)).toList().single;
+      return insertUser.map((e) => MissionNormalClearUserResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

@@ -1,20 +1,20 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_update.dart';
-import 'package:foresh_flutter/data/supabase/response/normal_mission_response.dart';
+import 'package:foresh_flutter/data/supabase/response/mission_normal_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class NormalMissionService {
-  static const _normalMissionsTableName = "normal_missions";
+class MissionNormalService {
+  static const _normalMissionsTableName = "mission_normal";
   static const _fullSelectQuery = '*';
 
   final SupabaseClient _client;
 
-  NormalMissionService(this._client);
+  MissionNormalService(this._client);
 
   // 모든 노멀 미션을 조회.
-  Future<List<NormalMissionEntity>> findAllMissions(bool isGlobal) async {
+  Future<List<MissionNormalEntity>> findAllMissions(bool isGlobal) async {
     try {
       final response = await _client
           .from(_normalMissionsTableName)
@@ -27,7 +27,7 @@ class NormalMissionService {
       if (response.isEmpty) {
         return List.empty();
       } else {
-        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => MissionNormalResponse.fromJson(e)).toList();
         return missions;
       }
     } on Exception catch (e) {
@@ -36,7 +36,7 @@ class NormalMissionService {
   }
 
   // 아이디로 미션을 조회.
-  Future<NormalMissionEntity> findMissionById(int missionId) async {
+  Future<MissionNormalEntity> findMissionById(int missionId) async {
     try {
       final response = await _client
           .from(_normalMissionsTableName)
@@ -48,7 +48,7 @@ class NormalMissionService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
       } else {
-        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => MissionNormalResponse.fromJson(e)).toList();
         return missions.single;
       }
     } on Exception catch (e) {
@@ -57,7 +57,7 @@ class NormalMissionService {
   }
 
   // 아이디로 미션을 조회.
-  Future<NormalMissionEntity> findMissionByMarkerId(int markerId) async {
+  Future<MissionNormalEntity> findMissionByMarkerId(int markerId) async {
     try {
       final response = await _client
           .from(_normalMissionsTableName)
@@ -69,7 +69,7 @@ class NormalMissionService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재 하지 않습니다');
       } else {
-        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => MissionNormalResponse.fromJson(e)).toList();
         return missions.single;
       }
     } on Exception catch (e) {
@@ -78,12 +78,12 @@ class NormalMissionService {
   }
 
   // 미션 상태 업데이트.
-  Future<NormalMissionEntity> update(
+  Future<MissionNormalEntity> update(
     int id, {
     int? remainCount,
   }) async {
     try {
-      NormalMissionEntity mission = await findMissionById(id);
+      MissionNormalEntity mission = await findMissionById(id);
       final updateMission = await _client
           .from(_normalMissionsTableName)
           .update(
@@ -93,7 +93,7 @@ class NormalMissionService {
           )
           .eq('id', id)
           .select(_fullSelectQuery);
-      return updateMission.map((e) => NormalMissionResponse.fromJson(e)).toList().single;
+      return updateMission.map((e) => MissionNormalResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

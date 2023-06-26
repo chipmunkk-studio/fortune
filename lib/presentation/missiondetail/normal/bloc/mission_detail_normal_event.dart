@@ -8,7 +8,7 @@ abstract class MissionDetailNormalEvent extends Equatable {}
 class MissionDetailNormalInit extends MissionDetailNormalEvent {
   MissionDetailNormalInit(this.mission);
 
-  final NormalMissionEntity mission;
+  final MissionNormalEntity mission;
 
   @override
   List<Object?> get props => [];

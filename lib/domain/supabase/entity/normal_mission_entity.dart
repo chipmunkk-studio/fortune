@@ -1,7 +1,7 @@
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 
-class NormalMissionEntity {
+class MissionNormalEntity {
   final int id;
   final String bigTitle;
   final String bigSubtitle;
@@ -13,7 +13,7 @@ class NormalMissionEntity {
   final String rewardImage;
   final bool isGlobal;
 
-  NormalMissionEntity({
+  MissionNormalEntity({
     required this.id,
     required this.bigTitle,
     required this.bigSubtitle,
@@ -26,8 +26,8 @@ class NormalMissionEntity {
     required this.isGlobal,
   });
 
-  factory NormalMissionEntity.empty() {
-    return NormalMissionEntity(
+  factory MissionNormalEntity.empty() {
+    return MissionNormalEntity(
       id: 0,
       bigTitle: '',
       bigSubtitle: '',
