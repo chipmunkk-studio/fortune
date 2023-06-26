@@ -2,14 +2,14 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 
 import 'mission_normal_card.dart';
 import 'mission_relay_card.dart';
 
 class MissionCardList extends StatelessWidget {
-  final dartz.Function1<MissionEntity, void> onItemClick;
+  final dartz.Function1<NormalMissionEntity, void> onItemClick;
   final List<MissionsViewItem> missions;
 
   const MissionCardList({
@@ -29,11 +29,7 @@ class MissionCardList extends StatelessWidget {
         return Bounceable(
           onTap: () => onItemClick(item.mission),
           child: () {
-            if (item.mission.type == MissionType.normal || item.mission.type == MissionType.trash) {
-              return MissionNormalCard(item);
-            } else {
-              return MissionRelayCard(item);
-            }
+            return MissionNormalCard(item);
           }(),
         );
       },

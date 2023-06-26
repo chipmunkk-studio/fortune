@@ -7,7 +7,7 @@ import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -20,7 +20,7 @@ class MissionDetailNormalPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final MissionEntity mission;
+  final NormalMissionEntity mission;
 
   @override
   Widget build(BuildContext context) {

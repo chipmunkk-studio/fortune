@@ -5,11 +5,11 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_detail_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class IngredientLayout extends StatelessWidget {
-  final List<MissionDetailViewItemEntity> _viewItems;
+  final List<NormalMissionDetailViewItemEntity> _viewItems;
 
   const IngredientLayout(
     this._viewItems, {
@@ -56,7 +56,7 @@ class IngredientLayout extends StatelessWidget {
         : const SizedBox.shrink();
   }
 
-  Widget _buildIngredient(MissionDetailViewItemEntity item) {
+  Widget _buildIngredient(NormalMissionDetailViewItemEntity item) {
     return Stack(
       children: [
         ConstrainedBox(

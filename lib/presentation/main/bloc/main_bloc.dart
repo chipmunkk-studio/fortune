@@ -30,7 +30,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
-  final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
+  // final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
@@ -38,7 +38,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
-    required this.postMissionRelayClearUseCase,
+    // required this.postMissionRelayClearUseCase,
     required this.getObtainCountUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
@@ -255,16 +255,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 (l) => produceSideEffect(MainError(l)),
                 (r) async {
                   emit(state.copyWith(haveCount: r));
-                  await postMissionRelayClearUseCase(marker.id).then(
-                    (value) => value.fold(
-                      (l) => null,
-                      (r) {
-                        if (r) {
-                          FortuneLogger.info("릴레이 미션 당첨!");
-                        }
-                      },
-                    ),
-                  );
+                  // await postMissionRelayClearUseCase(marker.id).then(
+                  //   (value) => value.fold(
+                  //     (l) => null,
+                  //     (r) {
+                  //       if (r) {
+                  //         FortuneLogger.info("릴레이 미션 당첨!");
+                  //       }
+                  //     },
+                  //   ),
+                  // );
                 },
               ),
             );

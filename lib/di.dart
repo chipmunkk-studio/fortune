@@ -15,9 +15,6 @@ import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_clear_conditions_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_clear_user_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
@@ -25,8 +22,6 @@ import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_all_missions_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -43,17 +38,20 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'data/supabase/repository/mission_respository_impl.dart';
+import 'data/supabase/repository/normal_mission_respository_impl.dart';
 import 'data/supabase/service/mission_clear_history_service.dart';
-import 'domain/supabase/repository/mission_respository.dart';
-import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
+import 'data/supabase/service/normal_mission_clear_conditions_service.dart';
+import 'data/supabase/service/normal_mission_clear_user_service.dart';
+import 'data/supabase/service/normal_mission_service.dart';
+import 'domain/supabase/repository/normal_mission_respository.dart';
+import 'domain/supabase/usecase/get_normal_mission_clear_conditions_use_case.dart';
+import 'domain/supabase/usecase/get_normal_mission_detail_use_case.dart';
+import 'domain/supabase/usecase/get_normal_missions_use_case.dart';
 import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
-import 'domain/supabase/usecase/post_mission_normal_clear_use_case.dart';
-import 'domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
+import 'domain/supabase/usecase/post_normal_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/normal/bloc/mission_detail_normal_bloc.dart';
-import 'presentation/missiondetail/relay/bloc/mission_detail_relay.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
@@ -180,18 +178,18 @@ _initService() {
         env: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<MissionService>(
-      () => MissionService(
+    ..registerLazySingleton<NormalMissionService>(
+      () => NormalMissionService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<MissionClearUserService>(
-      () => MissionClearUserService(
+    ..registerLazySingleton<NormalMissionClearUserService>(
+      () => NormalMissionClearUserService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<MissionClearConditionsService>(
-      () => MissionClearConditionsService(
+    ..registerLazySingleton<NormalMissionClearConditionsService>(
+      () => NormalMissionClearConditionsService(
         Supabase.instance.client,
       ),
     )
@@ -233,12 +231,12 @@ _initRepository() {
         serviceLocator<ObtainHistoryService>(),
       ),
     )
-    ..registerLazySingleton<MissionRepository>(
-      () => MissionRepositoryImpl(
-        missionService: serviceLocator<MissionService>(),
-        missionClearConditionsService: serviceLocator<MissionClearConditionsService>(),
+    ..registerLazySingleton<NormalMissionRepository>(
+      () => NormalMissionRepositoryImpl(
+        missionNormalService: serviceLocator<NormalMissionService>(),
+        missionClearConditionsService: serviceLocator<NormalMissionClearConditionsService>(),
         missionClearHistoryService: serviceLocator<MissionClearHistoryService>(),
-        missionClearUserService: serviceLocator<MissionClearUserService>(),
+        missionClearUserService: serviceLocator<NormalMissionClearUserService>(),
         userService: serviceLocator<UserService>(),
       ),
     )
@@ -274,39 +272,39 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetAllMissionsUseCase>(
-      () => GetAllMissionsUseCase(
+    ..registerLazySingleton<GetNormalMissionsUseCase>(
+      () => GetNormalMissionsUseCase(
         missionRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionClearConditionsUseCase>(
-      () => GetMissionClearConditionsUseCase(
+    ..registerLazySingleton<GetNormalMissionClearConditionsUseCase>(
+      () => GetNormalMissionClearConditionsUseCase(
         missionRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionDetailUseCase>(
-      () => GetMissionDetailUseCase(
-        missionRepository: serviceLocator(),
-        userRepository: serviceLocator(),
-        obtainHistoryRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<PostMissionNormalClearUseCase>(
-      () => PostMissionNormalClearUseCase(
+    ..registerLazySingleton<GetNormalMissionDetailUseCase>(
+      () => GetNormalMissionDetailUseCase(
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<PostMissionRelayClearUseCase>(
-      () => PostMissionRelayClearUseCase(
+    ..registerLazySingleton<PostNormalMissionClearUseCase>(
+      () => PostNormalMissionClearUseCase(
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
-        markerRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
       ),
     )
+    // ..registerLazySingleton<PostMissionRelayClearUseCase>(
+    //   () => PostMissionRelayClearUseCase(
+    //     missionRepository: serviceLocator(),
+    //     userRepository: serviceLocator(),
+    //     markerRepository: serviceLocator(),
+    //   ),
+    // )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -342,7 +340,7 @@ _initBloc() {
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
         getObtainCountUseCase: serviceLocator(),
-        postMissionRelayClearUseCase: serviceLocator(),
+        // postMissionRelayClearUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -356,12 +354,12 @@ _initBloc() {
         postMissionClearUseCase: serviceLocator(),
       ),
     )
-    ..registerFactory(
-      () => MissionDetailRelayBloc(
-        getMissionDetailUseCase: serviceLocator(),
-        postMissionClearUseCase: serviceLocator(),
-      ),
-    )
+    // ..registerFactory(
+    //   () => MissionDetailRelayBloc(
+    //     getMissionDetailUseCase: serviceLocator(),
+    //     postMissionClearUseCase: serviceLocator(),
+    //   ),
+    // )
     ..registerFactory(
       () => AgreeTermsBloc(
         authRepository: serviceLocator<AuthRepository>(),

@@ -87,20 +87,15 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                         return MissionCardList(
                           missions: state.missions,
                           onItemClick: (entity) async {
-                            final type = entity.type;
                             await router.navigateTo(
                               context,
-                              type == MissionType.relay
-                                  ? Routes.missionDetailRelayRoute
-                                  : Routes.missionDetailNormalRoute,
+                              Routes.missionDetailNormalRoute,
                               routeSettings: RouteSettings(
                                 arguments: entity,
                               ),
                             );
-                            if (type != MissionType.relay) {
-                              widget.mainBloc.add(Main());
-                              _bloc.add(MissionsInit());
-                            }
+                            widget.mainBloc.add(Main());
+                            _bloc.add(MissionsInit());
                           },
                         );
                       },

@@ -178,13 +178,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               _mapController,
               myLocation,
               onZoomChanged: () {
-                // _animatedMapMove(
-                //   LatLng(
-                //     bloc.state.myLocation!.latitude!,
-                //     bloc.state.myLocation!.longitude!,
-                //   ),
-                //   bloc.state.zoomThreshold,
-                // );
+                _animatedMapMove(
+                  LatLng(
+                    bloc.state.myLocation!.latitude!,
+                    bloc.state.myLocation!.longitude!,
+                  ),
+                  bloc.state.zoomThreshold,
+                );
               },
             ),
             // 카트.
@@ -271,14 +271,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
     return myLocation.onLocationChanged.listen(
       (newLoc) {
-        // _animatedMapMove(
-        //   LatLng(
-        //     newLoc.latitude!,
-        //     newLoc.longitude!,
-        //   ),
-        //   bloc.state.zoomThreshold,
-        // );
-        // bloc.add(MainMyLocationChange(newLoc));
+        _animatedMapMove(
+          LatLng(
+            newLoc.latitude!,
+            newLoc.longitude!,
+          ),
+          bloc.state.zoomThreshold,
+        );
+        bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }

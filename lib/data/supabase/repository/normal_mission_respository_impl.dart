@@ -1,24 +1,24 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_clear_conditions_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission_clear_history_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_clear_user_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission_service.dart';
+import 'package:foresh_flutter/data/supabase/service/normal_mission_clear_conditions_service.dart';
+import 'package:foresh_flutter/data/supabase/service/normal_mission_clear_user_service.dart';
+import 'package:foresh_flutter/data/supabase/service/normal_mission_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_clear_condition_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_clear_condition_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/repository/normal_mission_respository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class MissionRepositoryImpl extends MissionRepository {
-  final MissionService missionService;
+class NormalMissionRepositoryImpl extends NormalMissionRepository {
+  final NormalMissionService missionNormalService;
   final UserService userService;
-  final MissionClearUserService missionClearUserService;
+  final NormalMissionClearUserService missionClearUserService;
   final MissionClearHistoryService missionClearHistoryService;
-  final MissionClearConditionsService missionClearConditionsService;
+  final NormalMissionClearConditionsService missionClearConditionsService;
 
-  MissionRepositoryImpl({
-    required this.missionService,
+  NormalMissionRepositoryImpl({
+    required this.missionNormalService,
     required this.missionClearConditionsService,
     required this.missionClearHistoryService,
     required this.missionClearUserService,
@@ -26,9 +26,9 @@ class MissionRepositoryImpl extends MissionRepository {
   });
 
   @override
-  Future<List<MissionEntity>> getAllMissions(bool isGlobal) async {
+  Future<List<NormalMissionEntity>> getAllMissions(bool isGlobal) async {
     try {
-      final result = await missionService.findAllMissions(isGlobal);
+      final result = await missionNormalService.findAllMissions(isGlobal);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -37,7 +37,7 @@ class MissionRepositoryImpl extends MissionRepository {
   }
 
   @override
-  Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
+  Future<List<NormalMissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
@@ -56,7 +56,7 @@ class MissionRepositoryImpl extends MissionRepository {
     required String email,
   }) async {
     try {
-      final mission = await missionService.findMissionById(missionId);
+      final mission = await missionNormalService.findMissionById(missionId);
       final user = await userService.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
 
       if (user == null) {
@@ -67,7 +67,7 @@ class MissionRepositoryImpl extends MissionRepository {
       }
 
       // 미션 상태 업데이트.
-      final missionUpdate = await missionService.update(
+      final missionUpdate = await missionNormalService.update(
         missionId,
         remainCount: mission.remainCount - 1,
       );
@@ -93,9 +93,9 @@ class MissionRepositoryImpl extends MissionRepository {
   }
 
   @override
-  Future<MissionEntity> getMissionById(int missionId) async {
+  Future<NormalMissionEntity> getMissionById(int missionId) async {
     try {
-      final result = await missionService.findMissionById(missionId);
+      final result = await missionNormalService.findMissionById(missionId);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -104,9 +104,9 @@ class MissionRepositoryImpl extends MissionRepository {
   }
 
   @override
-  Future<MissionEntity> getMissionByMarkerId(int markerId) async {
+  Future<NormalMissionEntity> getMissionByMarkerId(int markerId) async {
     try {
-      final result = await missionService.findMissionByMarkerId(markerId);
+      final result = await missionNormalService.findMissionByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

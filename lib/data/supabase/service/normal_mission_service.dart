@@ -1,23 +1,23 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_update.dart';
-import 'package:foresh_flutter/data/supabase/response/mission_response.dart';
+import 'package:foresh_flutter/data/supabase/response/normal_mission_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class MissionService {
-  static const _missionsTableName = "missions";
-  static const _fullSelectQuery = '*,marker(*,ingredient(*))';
+class NormalMissionService {
+  static const _normalMissionsTableName = "normal_missions";
+  static const _fullSelectQuery = '*';
 
   final SupabaseClient _client;
 
-  MissionService(this._client);
+  NormalMissionService(this._client);
 
-  // 모든 미션을 조회.
-  Future<List<MissionEntity>> findAllMissions(bool isGlobal) async {
+  // 모든 노멀 미션을 조회.
+  Future<List<NormalMissionEntity>> findAllMissions(bool isGlobal) async {
     try {
       final response = await _client
-          .from(_missionsTableName)
+          .from(_normalMissionsTableName)
           .select(_fullSelectQuery)
           .eq(
             'is_global',
@@ -27,7 +27,7 @@ class MissionService {
       if (response.isEmpty) {
         return List.empty();
       } else {
-        final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
         return missions;
       }
     } on Exception catch (e) {
@@ -36,10 +36,10 @@ class MissionService {
   }
 
   // 아이디로 미션을 조회.
-  Future<MissionEntity> findMissionById(int missionId) async {
+  Future<NormalMissionEntity> findMissionById(int missionId) async {
     try {
       final response = await _client
-          .from(_missionsTableName)
+          .from(_normalMissionsTableName)
           .select(
             _fullSelectQuery,
           )
@@ -48,7 +48,7 @@ class MissionService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
       } else {
-        final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
         return missions.single;
       }
     } on Exception catch (e) {
@@ -57,10 +57,10 @@ class MissionService {
   }
 
   // 아이디로 미션을 조회.
-  Future<MissionEntity> findMissionByMarkerId(int markerId) async {
+  Future<NormalMissionEntity> findMissionByMarkerId(int markerId) async {
     try {
       final response = await _client
-          .from(_missionsTableName)
+          .from(_normalMissionsTableName)
           .select(
             _fullSelectQuery,
           )
@@ -69,7 +69,7 @@ class MissionService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션이 존재 하지 않습니다');
       } else {
-        final missions = response.map((e) => MissionResponse.fromJson(e)).toList();
+        final missions = response.map((e) => NormalMissionResponse.fromJson(e)).toList();
         return missions.single;
       }
     } on Exception catch (e) {
@@ -78,14 +78,14 @@ class MissionService {
   }
 
   // 미션 상태 업데이트.
-  Future<MissionEntity> update(
+  Future<NormalMissionEntity> update(
     int id, {
     int? remainCount,
   }) async {
     try {
-      MissionEntity mission = await findMissionById(id);
+      NormalMissionEntity mission = await findMissionById(id);
       final updateMission = await _client
-          .from(_missionsTableName)
+          .from(_normalMissionsTableName)
           .update(
             RequestMissionUpdate(
               remainCount: remainCount ?? mission.remainCount,
@@ -93,7 +93,7 @@ class MissionService {
           )
           .eq('id', id)
           .select(_fullSelectQuery);
-      return updateMission.map((e) => MissionResponse.fromJson(e)).toList().single;
+      return updateMission.map((e) => NormalMissionResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

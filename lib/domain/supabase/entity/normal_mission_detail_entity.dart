@@ -1,39 +1,38 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
-
 import 'ingredient_entity.dart';
+import 'normal_mission_entity.dart';
 
-class MissionDetailEntity {
-  final List<MissionDetailViewItemEntity> markers;
-  final MissionEntity mission;
+class NormalMissionDetailEntity {
+  final List<NormalMissionDetailViewItemEntity> markers;
+  final NormalMissionEntity mission;
   final bool isEnableMissionClear;
 
-  MissionDetailEntity({
+  NormalMissionDetailEntity({
     required this.markers,
     required this.mission,
   }) : isEnableMissionClear = markers.where((element) => !element.isConditionSatisfied).isEmpty;
 
-  factory MissionDetailEntity.initial() => MissionDetailEntity(
+  factory NormalMissionDetailEntity.initial() => NormalMissionDetailEntity(
         markers: [],
-        mission: MissionEntity.empty(),
+        mission: NormalMissionEntity.empty(),
       );
 }
 
-class MissionDetailViewItemEntity {
+class NormalMissionDetailViewItemEntity {
   final IngredientEntity ingredient;
   final int haveCount;
   final int requireCount;
   final bool isConditionSatisfied;
   final bool isEmpty;
 
-  MissionDetailViewItemEntity({
+  NormalMissionDetailViewItemEntity({
     required this.ingredient,
     required this.haveCount,
     required this.requireCount,
     this.isEmpty = false,
   }) : isConditionSatisfied = haveCount >= requireCount;
 
-  factory MissionDetailViewItemEntity.empty() {
-    return MissionDetailViewItemEntity(
+  factory NormalMissionDetailViewItemEntity.empty() {
+    return NormalMissionDetailViewItemEntity(
       ingredient: IngredientEntity.empty(),
       haveCount: 0,
       requireCount: 0,

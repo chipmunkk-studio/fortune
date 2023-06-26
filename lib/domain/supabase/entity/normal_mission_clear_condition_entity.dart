@@ -1,13 +1,13 @@
 import 'ingredient_entity.dart';
-import 'mission_entity.dart';
+import 'normal_mission_entity.dart';
 
-class MissionClearConditionEntity {
+class NormalMissionClearConditionEntity {
   final int id;
-  final MissionEntity mission;
+  final NormalMissionEntity mission;
   final IngredientEntity ingredient;
   final int count;
 
-  MissionClearConditionEntity({
+  NormalMissionClearConditionEntity({
     required this.id,
     required this.mission,
     required this.count,

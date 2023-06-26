@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'missions_state.freezed.dart';
@@ -21,7 +21,7 @@ class MissionsState with _$MissionsState {
 }
 
 class MissionsViewItem {
-  final MissionEntity mission;
+  final NormalMissionEntity mission;
   final int userHaveCount;
   final int requiredTotalCount;
 

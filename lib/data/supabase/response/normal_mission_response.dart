@@ -1,12 +1,10 @@
-import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'mission_response.g.dart';
+part 'normal_mission_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class MissionResponse extends MissionEntity {
+class NormalMissionResponse extends NormalMissionEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'big_title')
@@ -27,12 +25,8 @@ class MissionResponse extends MissionEntity {
   final String rewardImage_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
-  @JsonKey(name: 'marker')
-  final MarkerResponse? marker_;
-  @JsonKey(name: 'type')
-  final String type_;
 
-  MissionResponse({
+  NormalMissionResponse({
     required this.id_,
     required this.bigTitle_,
     required this.bigSubtitle_,
@@ -42,9 +36,7 @@ class MissionResponse extends MissionEntity {
     required this.detailTitle_,
     required this.detailSubtitle_,
     required this.detailContent_,
-    required this.marker_,
     required this.isGlobal_,
-    required this.type_,
   }) : super(
           id: id_.toInt(),
           bigTitle: bigTitle_,
@@ -54,13 +46,11 @@ class MissionResponse extends MissionEntity {
           detailContent: detailContent_,
           remainCount: remainCount_.toInt(),
           rewardCount: rewardCount_.toInt(),
-          marker: marker_,
           rewardImage: rewardImage_,
-          type: getMissionType(type_),
           isGlobal: isGlobal_,
         );
 
-  factory MissionResponse.fromJson(Map<String, dynamic> json) => _$MissionResponseFromJson(json);
+  factory NormalMissionResponse.fromJson(Map<String, dynamic> json) => _$NormalMissionResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MissionResponseToJson(this);
+  Map<String, dynamic> toJson() => _$NormalMissionResponseToJson(this);
 }

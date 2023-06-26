@@ -3,18 +3,18 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/normal_mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class PostMissionNormalClearUseCase implements UseCase1<void, RequestPostMissionClear> {
-  final MissionRepository missionRepository;
+class PostNormalMissionClearUseCase implements UseCase1<void, RequestPostMissionClear> {
+  final NormalMissionRepository missionRepository;
   final UserRepository userRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
 
-  PostMissionNormalClearUseCase({
+  PostNormalMissionClearUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,

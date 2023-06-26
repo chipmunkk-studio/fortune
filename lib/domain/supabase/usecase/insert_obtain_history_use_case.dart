@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
