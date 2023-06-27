@@ -11,7 +11,10 @@ abstract class MarkerRepository {
   );
 
   // 마커 획득.
-  Future<FortuneUserEntity> obtainMarker(int id);
+  Future<void> obtainMarker({
+    required MarkerEntity marker,
+    required FortuneUserEntity user,
+  });
 
   // 마커 생성.
   Future<bool> getRandomMarkers({

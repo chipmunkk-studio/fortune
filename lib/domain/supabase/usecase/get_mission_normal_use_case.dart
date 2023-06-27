@@ -21,7 +21,7 @@ class GetMissionNormalUseCase implements UseCase0<List<MissionNormalViewItem>> {
   @override
   Future<FortuneResult<List<MissionNormalViewItem>>> call() async {
     try {
-      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userRepository.findUserByPhone();
       final missions = await missionRepository.getAllMissions(user.isGlobal);
 
       final missionViewItemsFutures = missions.map(

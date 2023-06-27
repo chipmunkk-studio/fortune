@@ -69,31 +69,17 @@ class MarkerService {
   ) async {
     try {
       final ingredient = marker.ingredient;
-      // 소멸성이고, 이미 획득한 사람이 있다면 > 쓰레기 마커로 취급.
-      final isTrashMarker = marker.lastObtainUser != null && ingredient.isExtinct;
-      // 소멸성 마커이고, 획득한 사람이 없을떄.
-      final isObtainableMarker = marker.lastObtainUser == null && ingredient.isExtinct;
-      if (isTrashMarker) {
-        await delete(marker.id);
-      } else if (isObtainableMarker) {
-        await update(marker.id, lastObtainUser: user.id);
-      }
-      // 랜덤으로 위치 하는 마커 일 경우.
-      // hit_count를 1씩 올림.
-      else {
-        FortuneLogger.debug("랜덤으로 위치하는 마커 ");
-        final randomLocation = getRandomLocation(
-          marker.latitude,
-          marker.longitude,
-          ingredient.distance,
-        );
-        await update(
-          marker.id,
-          location: randomLocation,
-          lastObtainUser: user.id,
-          hitCount: marker.hitCount + 1,
-        );
-      }
+      final randomLocation = getRandomLocation(
+        marker.latitude,
+        marker.longitude,
+        ingredient.distance,
+      );
+      await update(
+        marker.id,
+        location: randomLocation,
+        lastObtainUser: user.id,
+        hitCount: marker.hitCount + 1,
+      );
     } on Exception catch (e) {
       FortuneLogger.error(e.toString());
       throw (e.handleException()); // using extension method here

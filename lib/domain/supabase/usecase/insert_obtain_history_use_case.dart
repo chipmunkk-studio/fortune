@@ -19,7 +19,7 @@ class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryPa
   Future<FortuneResult<int>> call(RequestInsertHistoryParam param) async {
     try {
       // 유저 정보 가져오기.
-      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userRepository.findUserByPhone();
       final response = await obtainHistoryRepository.insertObtainHistory(
         userId: param.userId,
         markerId: param.markerId,
@@ -30,7 +30,7 @@ class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryPa
         ingredientName: param.ingredientName,
       );
       final histories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
-      return Right(histories.length + user.trashObtainCount);
+      return Right(histories.length);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

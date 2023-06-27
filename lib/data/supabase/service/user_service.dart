@@ -25,7 +25,6 @@ class UserService {
               ticket: 100,
               countryCode: "82",
               markerObtainCount: 0,
-              trashObtainCount: 0,
               level: 1,
             ).toJson(),
           );
@@ -41,7 +40,6 @@ class UserService {
     int? ticket,
     String? countryCode,
     int? markerObtainCount,
-    int? trashObtainCount,
   }) async {
     try {
       FortuneUserEntity? user = await findUserByPhone(phoneNumber);
@@ -56,7 +54,6 @@ class UserService {
                 ticket: ticket ?? user.ticket,
                 countryCode: countryCode ?? user.countryCode,
                 markerObtainCount: markerObtainCount ?? user.markerObtainCount,
-                trashObtainCount: trashObtainCount ?? user.trashObtainCount,
                 level: level,
               ).toJson(),
             )

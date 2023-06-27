@@ -17,9 +17,9 @@ class GetObtainCountUseCase implements UseCase1<int, int> {
   @override
   Future<FortuneResult<int>> call(int userId) async {
     try {
-      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userRepository.findUserByPhone();
       final histories = await obtainHistoryRepository.getHistoriesByUser(userId: userId);
-      return Right(histories.length + user.trashObtainCount);
+      return Right(histories.length);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

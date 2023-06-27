@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
@@ -12,7 +11,6 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
@@ -30,6 +28,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
+
   // final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
 
@@ -142,6 +141,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 markers: markerList,
                 user: entity.user,
                 refreshTime: remoteConfig.refreshTime,
+                // refreshTime: 10,
                 refreshCount: state.refreshCount + 1,
                 haveCount: entity.haveCount,
                 histories: entity.histories,
@@ -179,6 +179,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final data = event.data;
     final distance = event.distance;
     List<MainLocationData> newList = List.from(state.markers);
+
     var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
     if (loc != null) {
       newList.remove(loc);
@@ -186,7 +187,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     }
 
     // 티켓인 경우 다이얼로그로 노출.
-    if (data.ingredient.type == IngredientType.ticket && !data.isObtainedUser) {
+    if (data.ingredient.type == IngredientType.ticket) {
       produceSideEffect(MainShowDialog());
     } else {
       // 티켓이 아닌 경우 획득 애니메이션.
@@ -238,8 +239,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
-          // 티켓이 아니고, 소멸성이 아닌 경우에만 올림.
-          if (marker.ingredient.type != IngredientType.ticket && !marker.ingredient.isExtinct) {
+          // 티켓이 아닌 경우에만.
+          if (marker.ingredient.type != IngredientType.ticket) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
                 userId: r.id,

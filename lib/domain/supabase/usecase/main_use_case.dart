@@ -33,7 +33,7 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
   Future<FortuneResult<MainViewItem>> call(RequestMainParam param) async {
     try {
       // 유저 정보 가져오기.
-      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userRepository.findUserByPhone();
 
       // 내 주변의 마커를 가져옴. (글로벌 여부 확인)
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))
@@ -115,7 +115,7 @@ class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
           user: user,
           markers: markersNearByMe,
           histories: histories,
-          haveCount: haveCounts.length + user.trashObtainCount,
+          haveCount: haveCounts.length,
         ),
       );
     } on FortuneFailure catch (e) {

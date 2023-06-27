@@ -18,10 +18,6 @@ class IngredientResponse extends IngredientEntity {
   final String imageUrl_;
   @JsonKey(name: 'ad_url')
   final String? adUrl_;
-  @JsonKey(name: 'disappear_image_url')
-  final String disappearImageUrl_;
-  @JsonKey(name: 'is_extinct')
-  final bool isExtinct_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
   @JsonKey(name: 'distance')
@@ -32,22 +28,18 @@ class IngredientResponse extends IngredientEntity {
     required this.name_,
     required this.type_,
     required this.imageUrl_,
-    required this.disappearImageUrl_,
     required this.rewardTicket_,
     required this.adUrl_,
     required this.distance_,
-    required this.isExtinct_,
     required this.isGlobal_,
   }) : super(
           id: id_.toInt(),
           name: name_,
           imageUrl: imageUrl_,
-          disappearImage: disappearImageUrl_,
           rewardTicket: rewardTicket_,
           adUrl: adUrl_ ?? "",
           type: getIngredientType(type_),
           distance: distance_,
-          isExtinct: isExtinct_,
           isGlobal: isGlobal_,
         );
 

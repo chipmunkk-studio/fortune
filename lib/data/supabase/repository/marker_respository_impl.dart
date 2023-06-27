@@ -15,11 +15,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MarkerRepositoryImpl extends MarkerRepository {
   final MarkerService _markerService;
-  final UserService _userService;
 
   MarkerRepositoryImpl(
     this._markerService,
-    this._userService,
   );
 
   // 마커 목록 불러오기.
@@ -39,46 +37,12 @@ class MarkerRepositoryImpl extends MarkerRepository {
 
   // 마커 획득 하기.
   @override
-  Future<FortuneUserEntity> obtainMarker(int id) async {
+  Future<void> obtainMarker({
+    required MarkerEntity marker,
+    required FortuneUserEntity user,
+  }) async {
     try {
-      final authClient = Supabase.instance.client.auth;
-      final marker = await _markerService.findMarkerById(id);
-      final ingredient = marker.ingredient;
-      final FortuneUserEntity? user = await _userService.findUserByPhone(authClient.currentUser?.phone);
-
-      if (user!.ticket <= 0 && ingredient.type != IngredientType.ticket) {
-        // 티켓이 없고, 마커가 티켓이 아닐 경우.
-        throw CommonFailure(
-          errorMessage: "보유한 티켓이 없습니다",
-        );
-      }
-
-      // 마커 획득 처리.
       await _markerService.obtainMarker(marker, user);
-
-      int updatedTicket = user.ticket;
-      int updatedTrashObtainCount = user.trashObtainCount;
-      int markerObtainCount = user.markerObtainCount;
-      // 소멸성 이고, 획득 유저가 있을 경우 쓰레기 마커로 판단.
-      bool isTrashMarker = marker.lastObtainUser != null && marker.ingredient.isExtinct;
-
-      // 쓰레기 마커가 아닐 경우.
-      if (!isTrashMarker) {
-        updatedTicket = user.ticket + ingredient.rewardTicket;
-        markerObtainCount = markerObtainCount + 1;
-      } else {
-        updatedTrashObtainCount = user.trashObtainCount + 1;
-      }
-
-      // 사용자 티켓 정보 업데이트.
-      final updateUser = await _userService.update(
-        user.phone,
-        ticket: updatedTicket,
-        trashObtainCount: updatedTrashObtainCount,
-        markerObtainCount: markerObtainCount,
-      );
-
-      return updateUser;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;

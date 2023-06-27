@@ -14,8 +14,6 @@ class RequestFortuneUserUpdate {
   final int ticket;
   @JsonKey(name: 'marker_obtain_count')
   final int markerObtainCount;
-  @JsonKey(name: 'trash_obtain_count')
-  final int trashObtainCount;
   @JsonKey(name: 'level')
   final int level;
 
@@ -25,7 +23,6 @@ class RequestFortuneUserUpdate {
     required this.ticket,
     required this.countryCode,
     required this.markerObtainCount,
-    required this.trashObtainCount,
     required this.level,
   });
 

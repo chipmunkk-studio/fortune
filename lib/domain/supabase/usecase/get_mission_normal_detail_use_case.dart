@@ -22,7 +22,7 @@ class GetMissionNormalDetailUseCase implements UseCase1<MissionNormalDetailEntit
   @override
   Future<FortuneResult<MissionNormalDetailEntity>> call(int missionId) async {
     try {
-      final user = await userRepository.findUserByPhone(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userRepository.findUserByPhone();
       final mission = await missionRepository.getMissionById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditions(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
@@ -34,14 +34,11 @@ class GetMissionNormalDetailUseCase implements UseCase1<MissionNormalDetailEntit
 
       // 마커 목록 뽑음.
       List<NormalMissionDetailViewItemEntity> markers = clearConditions.map((condition) {
-        int haveCount = () {
-          // 재료가 티켓일 경우 사용자 획득 카운트로 계산.
-          if (condition.ingredient.type == IngredientType.ticket) {
-            return user.trashObtainCount;
-          } else {
-            return filteredUserHistories.where((history) => history.ingredient.id == condition.ingredient.id).length;
-          }
-        }();
+        int haveCount = filteredUserHistories
+            .where(
+              (history) => history.ingredient.id == condition.ingredient.id,
+            )
+            .length;
         return NormalMissionDetailViewItemEntity(
           ingredient: condition.ingredient,
           haveCount: haveCount,

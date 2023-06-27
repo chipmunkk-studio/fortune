@@ -5,6 +5,7 @@ import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserService _userService;
@@ -13,11 +14,13 @@ class UserRepositoryImpl extends UserRepository {
     this._userService,
   );
 
-  // 사용자 찾기.
+  // 휴대폰 번호로 현재 사용자 찾기.
   @override
-  Future<FortuneUserEntity> findUserByPhone(phoneNumber) async {
+  Future<FortuneUserEntity> findUserByPhone() async {
     try {
-      final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
+      final FortuneUserEntity? user = await _userService.findUserByPhone(
+        Supabase.instance.client.auth.currentUser?.phone,
+      );
       if (user == null) {
         throw CommonFailure(errorMessage: '사용자가 존재하지 않습니다');
       }
@@ -40,19 +43,13 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<FortuneUserEntity> reduceTrash({
-    required String phoneNumber,
-    required int trashCount,
-  }) async {
-    try {
-      final FortuneUserEntity user = await _userService.update(
-        phoneNumber,
-        trashObtainCount: trashCount,
-      );
-      return user;
-    } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
-    }
+  Future<FortuneUserEntity> updateUser(FortuneUserEntity user) async {
+    return await _userService.update(
+      user.phone,
+      nickName: user.nickname,
+      ticket: user.ticket,
+      countryCode: user.countryCode,
+      markerObtainCount: user.markerObtainCount,
+    );
   }
 }

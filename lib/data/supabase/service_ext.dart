@@ -14,7 +14,6 @@ enum IngredientType {
 
 enum MissionType {
   normal,
-  trash,
   relay,
 }
 
@@ -42,8 +41,6 @@ getMissionType(String type) {
     return MissionType.relay;
   } else if (MissionType.normal.name == type) {
     return MissionType.normal;
-  } else if (MissionType.trash.name == type) {
-    return MissionType.trash;
   } else {
     return MissionType.normal;
   }

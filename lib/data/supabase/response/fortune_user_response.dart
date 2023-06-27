@@ -19,8 +19,6 @@ class FortuneUserResponse extends FortuneUserEntity {
   final int ticket_;
   @JsonKey(name: 'marker_obtain_count')
   final int markerObtainCount_;
-  @JsonKey(name: 'trash_obtain_count')
-  final int trashObtainCount_;
   @JsonKey(name: 'level')
   final int level_;
 
@@ -32,7 +30,6 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.profileImage_,
     required this.ticket_,
     required this.markerObtainCount_,
-    required this.trashObtainCount_,
     required this.level_,
   }) : super(
           id: id_.toInt(),
@@ -42,7 +39,6 @@ class FortuneUserResponse extends FortuneUserEntity {
           ticket: ticket_,
           profileImage: profileImage_ ?? "",
           markerObtainCount: markerObtainCount_,
-          trashObtainCount: trashObtainCount_,
           level: level_,
         );
 

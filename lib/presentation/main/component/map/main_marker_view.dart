@@ -42,15 +42,10 @@ class _MainMarkerViewState extends State<MainMarkerView> {
         child: Container(
           key: widget.marker.globalKey,
           // 획득 유저가 있고, 소멸성 인 경우 >  쓰레기 마커.
-          child: widget.marker.isObtainedUser && widget.marker.ingredient.isExtinct
-              ? FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: widget.marker.ingredient.disappearImage,
-                )
-              : FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: widget.marker.ingredient.imageUrl,
-                ),
+          child: FadeInImage.memoryNetwork(
+            placeholder: kTransparentImage,
+            image: widget.marker.ingredient.imageUrl,
+          ),
         ),
       ),
     );

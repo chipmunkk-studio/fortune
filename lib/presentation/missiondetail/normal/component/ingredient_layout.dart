@@ -83,9 +83,7 @@ class IngredientLayout extends StatelessWidget {
                             width: 68.h,
                             height: 68.h,
                             placeholder: kTransparentImage,
-                            image: item.ingredient.type == IngredientType.ticket
-                                ? item.ingredient.disappearImage
-                                : item.ingredient.imageUrl,
+                            image: item.ingredient.imageUrl,
                           ),
                   ),
                 ),

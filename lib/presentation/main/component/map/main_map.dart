@@ -51,7 +51,7 @@ class MainMap extends StatelessWidget {
                   interactiveFlags: InteractiveFlag.pinchZoom,
                   onPositionChanged: (mapPosition, boolHasGesture) {
                     if (boolHasGesture) {
-                      onZoomChanged();
+                      // onZoomChanged();
                     }
                   },
                   onTap: (tapPosition, point) {

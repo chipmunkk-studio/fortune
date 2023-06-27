@@ -223,7 +223,6 @@ _initRepository() {
     ..registerLazySingleton<MarkerRepository>(
       () => MarkerRepositoryImpl(
         serviceLocator<MarkerService>(),
-        serviceLocator<UserService>(),
       ),
     )
     ..registerLazySingleton<ObtainHistoryRepository>(
@@ -253,6 +252,7 @@ _initUseCase() async {
     ..registerLazySingleton<ObtainMarkerUseCase>(
       () => ObtainMarkerUseCase(
         markerRepository: serviceLocator(),
+        userRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<InsertObtainHistoryUseCase>(
