@@ -22,6 +22,7 @@ import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_fortune_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -298,6 +299,11 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetObtainableMarkerUseCase>(
+      () => GetObtainableMarkerUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
     // ..registerLazySingleton<PostMissionRelayClearUseCase>(
     //   () => PostMissionRelayClearUseCase(
     //     missionRepository: serviceLocator(),
@@ -340,6 +346,7 @@ _initBloc() {
         obtainMarkerUseCase: serviceLocator(),
         insertObtainHistoryUseCase: serviceLocator(),
         getObtainCountUseCase: serviceLocator(),
+        getObtainableMarkerUseCase: serviceLocator(),
         // postMissionRelayClearUseCase: serviceLocator(),
       ),
     )

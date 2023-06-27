@@ -7,6 +7,7 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_fortune_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
@@ -28,6 +29,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
+  final GetObtainableMarkerUseCase getObtainableMarkerUseCase;
 
   // final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
@@ -37,8 +39,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
     required this.insertObtainHistoryUseCase,
-    // required this.postMissionRelayClearUseCase,
     required this.getObtainCountUseCase,
+    required this.getObtainableMarkerUseCase,
+    // required this.postMissionRelayClearUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -180,45 +183,34 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final distance = event.distance;
     List<MainLocationData> newList = List.from(state.markers);
 
-    var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
-    if (loc != null) {
-      newList.remove(loc);
-      emit(state.copyWith(markers: newList));
-    }
-
-    // 티켓인 경우 다이얼로그로 노출.
-    if (data.ingredient.type == IngredientType.ticket) {
-      produceSideEffect(MainShowDialog());
-    } else {
-      // 티켓이 아닌 경우 획득 애니메이션.
-      produceSideEffect(
-        MainMarkerClickSideEffect(
-          key: event.globalKey,
-          data: data,
-        ),
-      );
-    }
-    add(MainMarkerObtain(data));
-    //
-    //
     // if (distance < 0) {
-    //   // 티켓이 있을 경우만.
-    //   // 먼저 처리 하고 api를 나중에 쏨. 아니면 느림.
-    //   if (state.user?.ticket != 0 || (data.ingredient.isExtinct && data.isObtainedUser)) {
-    //     List<MainLocationData> newList = List.from(state.markers);
-    //     var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
-    //     if (loc != null) {
-    //       newList.remove(loc);
-    //       emit(state.copyWith(markers: newList));
-    //     }
-    //     produceSideEffect(
-    //       MainMarkerClickSideEffect(
-    //         key: event.globalKey,
-    //         data: data,
-    //       ),
-    //     );
-    //   }
-    //   // 여기에 넣으면됨.
+    await getObtainableMarkerUseCase(data.ingredient).then(
+      (value) => value.fold(
+        (l) => produceSideEffect(MainError(l)),
+        (r) {
+          var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
+          if (loc != null) {
+            newList.remove(loc);
+            emit(state.copyWith(markers: newList));
+          }
+          // 티켓인 경우 다이얼로그로 노출.
+          switch (data.ingredient.type) {
+            case IngredientType.ticket:
+              // 보상으로 금화 몇개 획득 다이얼로그 띄움.
+              produceSideEffect(MainShowDialog());
+              break;
+            default:
+              produceSideEffect(
+                MainMarkerClickSideEffect(
+                  key: event.globalKey,
+                  data: data,
+                ),
+              );
+          }
+          add(MainMarkerObtain(data));
+        },
+      ),
+    );
     // } else {
     //   produceSideEffect(MainRequireInCircleMeters(distance));
     // }
@@ -234,12 +226,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final latitude = marker.location.latitude;
     final longitude = marker.location.longitude;
 
-    await obtainMarkerUseCase(marker.id).then(
+    await obtainMarkerUseCase(marker).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
-          // 티켓이 아닌 경우에만.
+          // 티켓이 아닌 경우 에만. (획득처리 다음 히스토리 추가)
           if (marker.ingredient.type != IngredientType.ticket) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
@@ -269,7 +261,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 },
               ),
             );
-          } else {
+          }
+          // 티켓인 경우 에는 획득 카운트만 가져옴.
+          else {
             await getObtainCountUseCase(r.id).then(
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
