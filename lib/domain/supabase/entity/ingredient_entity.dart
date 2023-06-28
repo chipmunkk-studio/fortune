@@ -6,7 +6,6 @@ class IngredientEntity {
   final String imageUrl;
   final int rewardTicket;
   final IngredientType type;
-  final String adUrl;
   final int distance;
   final bool isGlobal;
 
@@ -16,7 +15,6 @@ class IngredientEntity {
     required this.imageUrl,
     required this.type,
     required this.rewardTicket,
-    required this.adUrl,
     required this.distance,
     required this.isGlobal,
   });
@@ -29,7 +27,6 @@ class IngredientEntity {
       rewardTicket: 0,
       type: IngredientType.ticket,
       // assuming 'undefined' is a valid enum value for IngredientType
-      adUrl: '',
       distance: 0,
       isGlobal: false,
     );

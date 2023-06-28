@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
@@ -220,6 +221,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
+          FortuneLogger.debug("#1 obtainMarkerUseCase: ${r}");
           emit(state.copyWith(user: r));
           // 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
           if (marker.ingredient.type != IngredientType.ticket) {
@@ -237,6 +239,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
                 (r) async {
+                  FortuneLogger.debug("#2 obtainMarkerUseCase: ${r}");
                   emit(state.copyWith(haveCount: r));
                   // await postMissionRelayClearUseCase(marker.id).then(
                   //   (value) => value.fold(
@@ -257,7 +260,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             await getObtainCountUseCase(r.id).then(
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
-                (r) => emit(state.copyWith(haveCount: r)),
+                (r) {
+                  FortuneLogger.debug("haveCount >>>>>>>>>> ");
+                  emit(state.copyWith(haveCount: r));
+                },
               ),
             );
           }

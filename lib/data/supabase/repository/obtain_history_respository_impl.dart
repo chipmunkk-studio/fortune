@@ -43,7 +43,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
     required String nickname,
   }) async {
     try {
-      final result = await _obtainHistoryService.insert(
+      await _obtainHistoryService.insert(
         userId: userId,
         markerId: markerId,
         ingredientId: ingredientId,

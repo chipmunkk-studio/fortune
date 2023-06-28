@@ -16,8 +16,6 @@ class IngredientResponse extends IngredientEntity {
   final int rewardTicket_;
   @JsonKey(name: 'image_url')
   final String imageUrl_;
-  @JsonKey(name: 'ad_url')
-  final String? adUrl_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
   @JsonKey(name: 'distance')
@@ -29,7 +27,6 @@ class IngredientResponse extends IngredientEntity {
     required this.type_,
     required this.imageUrl_,
     required this.rewardTicket_,
-    required this.adUrl_,
     required this.distance_,
     required this.isGlobal_,
   }) : super(
@@ -37,7 +34,6 @@ class IngredientResponse extends IngredientEntity {
           name: name_,
           imageUrl: imageUrl_,
           rewardTicket: rewardTicket_,
-          adUrl: adUrl_ ?? "",
           type: getIngredientType(type_),
           distance: distance_,
           isGlobal: isGlobal_,

@@ -18,9 +18,7 @@ class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryPa
   @override
   Future<FortuneResult<int>> call(RequestInsertHistoryParam param) async {
     try {
-      // 유저 정보 가져오기.
-      final user = await userRepository.findUserByPhone();
-      final response = await obtainHistoryRepository.insertObtainHistory(
+      await obtainHistoryRepository.insertObtainHistory(
         userId: param.userId,
         markerId: param.markerId,
         ingredientId: param.ingredientId,
@@ -29,7 +27,7 @@ class InsertObtainHistoryUseCase implements UseCase1<int, RequestInsertHistoryPa
         enLocationName: param.enLocationName,
         ingredientName: param.ingredientName,
       );
-      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: param.userId);
       return Right(histories.length);
     } on FortuneFailure catch (e) {
       return Left(e);
