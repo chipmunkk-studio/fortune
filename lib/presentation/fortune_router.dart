@@ -1,8 +1,10 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
+import 'ingredientaction/ingredient_action_page.dart';
 import 'login/login_page.dart';
 import 'main/main_ext.dart';
 import 'main/main_page.dart';
@@ -38,6 +40,13 @@ class FortuneRouter {
   static var onBoardingHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return OnBoardingPage();
+    },
+  );
+
+  static var ingredientActionHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as IngredientEntity?;
+      return args != null ? IngredientActionPage(args) : null;
     },
   );
 
@@ -102,7 +111,15 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 노말 미션 상세..
+      /// 재료 획득 액션.
+      ..define(
+        Routes.ingredientActionRoute,
+        opaque: false,
+        handler: ingredientActionHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
+      /// 노말 미션 상세.
       ..define(
         Routes.missionDetailNormalRoute,
         handler: missionDetailNormalHandler,
@@ -125,4 +142,5 @@ class Routes {
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
+  static const String ingredientActionRoute = 'ingredientAction';
 }

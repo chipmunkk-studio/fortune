@@ -33,17 +33,17 @@ class MainMyLocationChange extends MainEvent {
 
 class MainMarkerClick extends MainEvent {
   final MainLocationData data;
-  final double distance;
+  final bool isAnimation;
   final GlobalKey globalKey;
 
   MainMarkerClick({
     required this.data,
-    required this.distance,
+    required this.isAnimation,
     required this.globalKey,
   });
 
   @override
-  List<Object?> get props => [distance, data];
+  List<Object?> get props => [data];
 }
 
 class MainTimeOver extends MainEvent {

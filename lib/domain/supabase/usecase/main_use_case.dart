@@ -12,7 +12,6 @@ import 'package:foresh_flutter/domain/supabase/repository/obtain_history_reposit
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
 import 'package:foresh_flutter/env.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MainUseCase implements UseCase1<MainViewItem, RequestMainParam> {
   final IngredientRepository ingredientRepository;

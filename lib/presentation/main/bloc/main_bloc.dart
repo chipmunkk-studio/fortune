@@ -180,10 +180,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 클릭 시.
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
-    final distance = event.distance;
     List<MainLocationData> newList = List.from(state.markers);
-
-    // if (distance < 0) {
     await getObtainableMarkerUseCase(data.ingredient).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
@@ -193,27 +190,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             newList.remove(loc);
             emit(state.copyWith(markers: newList));
           }
-          // 티켓인 경우 다이얼로그로 노출.
-          switch (data.ingredient.type) {
-            case IngredientType.ticket:
-              // 보상으로 금화 몇개 획득 다이얼로그 띄움.
-              produceSideEffect(MainShowDialog());
-              break;
-            default:
-              produceSideEffect(
-                MainMarkerClickSideEffect(
-                  key: event.globalKey,
-                  data: data,
-                ),
-              );
+          // 애니메이션 수행 여부 확인.
+          if (event.isAnimation) {
+            produceSideEffect(
+              MainMarkerClickSideEffect(
+                key: event.globalKey,
+                data: data,
+              ),
+            );
           }
+          // 마커 획득 이벤트 수행.
           add(MainMarkerObtain(data));
         },
       ),
     );
-    // } else {
-    //   produceSideEffect(MainRequireInCircleMeters(distance));
-    // }
   }
 
   FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
@@ -231,7 +221,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (l) => produceSideEffect(MainError(l)),
         (r) async {
           emit(state.copyWith(user: r));
-          // 티켓이 아닌 경우 에만. (획득처리 다음 히스토리 추가)
+          // 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
           if (marker.ingredient.type != IngredientType.ticket) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(

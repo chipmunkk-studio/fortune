@@ -1,14 +1,16 @@
-import 'dart:collection';
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_animation.dart';
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/env.dart';
+import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
@@ -18,34 +20,38 @@ import 'package:location/location.dart';
 import 'center_profile.dart';
 
 class MainMap extends StatelessWidget {
+  final BuildContext context;
   final MainBloc _bloc;
-  final MapController _mapController;
-  final FortuneRemoteConfig _remoteConfigArgs;
-  final LocationData? _myLocation;
+  final FluroRouter router;
+  final MapController mapController;
+  final FortuneRemoteConfig remoteConfigArgs;
+  final LocationData? myLocation;
   final Function0 onZoomChanged;
 
   const MainMap(
-    this._bloc,
-    this._remoteConfigArgs,
-    this._mapController,
-    this._myLocation, {
+    this._bloc, {
     Key? key,
+    required this.context,
+    required this.router,
+    required this.remoteConfigArgs,
+    required this.mapController,
+    required this.myLocation,
     required this.onZoomChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _myLocation == null
+    return myLocation == null
         ? const Center(child: CircularProgressIndicator(backgroundColor: ColorName.primary))
         : Stack(
             children: [
               // 메인맵.
               FlutterMap(
-                mapController: _mapController,
+                mapController: mapController,
                 options: MapOptions(
                   center: LatLng(
-                    _myLocation!.latitude!,
-                    _myLocation!.longitude!,
+                    myLocation!.latitude!,
+                    myLocation!.longitude!,
                   ),
                   zoom: _bloc.state.zoomThreshold,
                   interactiveFlags: InteractiveFlag.pinchZoom,
@@ -67,10 +73,10 @@ class MainMap extends StatelessWidget {
                 ),
                 children: [
                   TileLayer(
-                    urlTemplate: _remoteConfigArgs.mapUrlTemplate,
+                    urlTemplate: remoteConfigArgs.mapUrlTemplate,
                     additionalOptions: {
-                      'accessToken': _remoteConfigArgs.mapAccessToken,
-                      'mapStyleId': _remoteConfigArgs.mapStyleId,
+                      'accessToken': remoteConfigArgs.mapAccessToken,
+                      'mapStyleId': remoteConfigArgs.mapStyleId,
                     },
                   ),
                   // 마커 목록.
@@ -78,9 +84,7 @@ class MainMap extends StatelessWidget {
                     buildWhen: (previous, current) => previous.markers != current.markers,
                     builder: (context, state) {
                       return MarkerLayer(
-                        markers: state.markers.toMarkerList(
-                          _onMarkerClick,
-                        ),
+                        markers: state.markers.toMarkerList(_onMarkerClick),
                       );
                     },
                   ),
@@ -136,31 +140,46 @@ class MainMap extends StatelessWidget {
           );
   }
 
+  // 마커를 클릭했을 경우.
   _onMarkerClick(
     MainLocationData data,
     GlobalKey globalKey,
-  ) {
-    LatLng markerPosition = LatLng(
-      data.location.latitude,
-      data.location.longitude,
-    );
+  ) async {
+    // 마커 위치.
+    LatLng markerPosition = LatLng(data.location.latitude, data.location.longitude);
     LocationData myLocation = _bloc.state.myLocation!;
-    LatLng currentPosition = LatLng(
-      myLocation.latitude!,
-      myLocation.longitude!,
-    );
+
+    // 현재 위치.
+    LatLng currentPosition = LatLng(myLocation.latitude!, myLocation.longitude!);
+
+    // 거리.
     final double distance = isMarkerInsideCircle(
       currentPosition,
       markerPosition,
       _bloc.state.clickableRadiusLength,
     );
-    // todo 광고 보여주고 수행함.
-    // await Future.delayed(const Duration(seconds: 200));
-    _bloc.add(
-      MainMarkerClick(
-        data: data,
-        distance: distance,
-        globalKey: globalKey,
+
+    if (distance < 0) {
+      context.showSnackBar('거리가 $distance만큼 모자랍니다.');
+    } else {
+      // 티켓일 경우에는 광고, 그 외 다른 액션.
+      // final isAnimation = await _processMarkerAction(data.ingredient);
+      _bloc.add(
+        MainMarkerClick(
+          data: data,
+          isAnimation: true,
+          globalKey: globalKey,
+        ),
+      );
+    }
+  }
+
+  Future<bool> _processMarkerAction(IngredientEntity ingredient) async {
+    return await router.navigateTo(
+      context,
+      Routes.ingredientActionRoute,
+      routeSettings: RouteSettings(
+        arguments: ingredient,
       ),
     );
   }

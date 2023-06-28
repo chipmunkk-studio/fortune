@@ -174,9 +174,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             // 메인 맵.
             MainMap(
               bloc,
-              environment,
-              _mapController,
-              myLocation,
+              router: router,
+              context: context,
+              remoteConfigArgs: environment,
+              mapController: _mapController,
+              myLocation: myLocation,
               onZoomChanged: () {
                 _animatedMapMove(
                   LatLng(
