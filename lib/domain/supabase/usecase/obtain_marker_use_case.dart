@@ -18,12 +18,8 @@ class ObtainMarkerUseCase implements UseCase1<FortuneUserEntity, MainLocationDat
   @override
   Future<FortuneResult<FortuneUserEntity>> call(MainLocationData param) async {
     try {
-      final marker = await markerRepository.findMarkerById(param.id);
-      final ingredient = marker.ingredient;
+      final ingredient = param.ingredient;
       final user = await userRepository.findUserByPhone();
-
-      // 마커 획득.
-      await markerRepository.obtainMarker(marker: marker, user: user);
 
       int updatedTicket = user.ticket;
       int markerObtainCount = user.markerObtainCount;

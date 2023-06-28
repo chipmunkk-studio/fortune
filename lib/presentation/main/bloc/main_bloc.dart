@@ -8,11 +8,13 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
+import 'package:foresh_flutter/domain/supabase/request/request_re_locate_marker_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_fortune_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/re_locate_marker_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
@@ -31,6 +33,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
   final GetObtainableMarkerUseCase getObtainableMarkerUseCase;
+  final ReLocateMarkerUseCase reLocateMarkerUseCase;
 
   // final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
@@ -42,6 +45,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.insertObtainHistoryUseCase,
     required this.getObtainCountUseCase,
     required this.getObtainableMarkerUseCase,
+    required this.reLocateMarkerUseCase,
     // required this.postMissionRelayClearUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
@@ -216,7 +220,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
     final latitude = marker.location.latitude;
     final longitude = marker.location.longitude;
+    final krLocationName = await getLocationName(latitude, longitude);
+    final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
+    // 마커 랜덤 배치.
+    await reLocateMarkerUseCase(
+      RequestReLocateMarkerParam(
+        markerId: marker.id,
+        user: state.user!,
+      ),
+    );
+
+    // 티켓 감소.
     await obtainMarkerUseCase(marker).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
@@ -232,14 +247,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 ingredientId: marker.ingredient.id,
                 ingredientName: marker.ingredient.name,
                 nickname: r.nickname,
-                krLocationName: await getLocationName(latitude, longitude),
-                enLocationName: await getLocationName(latitude, longitude, localeIdentifier: "en_US"),
+                krLocationName: krLocationName,
+                enLocationName: enLocationName,
               ),
             ).then(
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
                 (r) async {
-                  FortuneLogger.debug("#2 obtainMarkerUseCase: ${r}");
                   emit(state.copyWith(haveCount: r));
                   // await postMissionRelayClearUseCase(marker.id).then(
                   //   (value) => value.fold(

@@ -11,7 +11,7 @@ abstract class MarkerRepository {
   );
 
   // 마커 획득.
-  Future<void> obtainMarker({
+  Future<void> reLocateMarker({
     required MarkerEntity marker,
     required FortuneUserEntity user,
   });

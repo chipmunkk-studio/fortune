@@ -62,8 +62,8 @@ class MarkerService {
     }
   }
 
-  // 마커 획득.
-  Future<void> obtainMarker(
+  // 마커 재배치.
+  Future<void> reLocateMarker(
     MarkerEntity marker,
     FortuneUserEntity user,
   ) async {

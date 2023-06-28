@@ -35,14 +35,14 @@ class MarkerRepositoryImpl extends MarkerRepository {
     }
   }
 
-  // 마커 획득 하기.
+  // 마커 랜덤 배치.
   @override
-  Future<void> obtainMarker({
+  Future<void> reLocateMarker({
     required MarkerEntity marker,
     required FortuneUserEntity user,
   }) async {
     try {
-      await _markerService.obtainMarker(marker, user);
+      await _markerService.reLocateMarker(marker, user);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;
