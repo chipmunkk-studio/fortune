@@ -1,10 +1,13 @@
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
+import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'mission_normal_response.g.dart';
+part 'missions_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class MissionNormalResponse extends MissionNormalEntity {
+class MissionsResponse extends MissionsEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'big_title')
@@ -18,15 +21,21 @@ class MissionNormalResponse extends MissionNormalEntity {
   @JsonKey(name: 'detail_content')
   final String detailContent_;
   @JsonKey(name: 'reward_count')
-  final double rewardCount_;
+  final double? rewardCount_;
   @JsonKey(name: 'remain_count')
-  final double remainCount_;
+  final double? remainCount_;
   @JsonKey(name: 'reward_image')
   final String rewardImage_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
+  @JsonKey(name: 'is_active')
+  final bool isActive_;
+  @JsonKey(name: 'marker')
+  final MarkerResponse? marker_;
+  @JsonKey(name: 'type')
+  final String type_;
 
-  MissionNormalResponse({
+  MissionsResponse({
     required this.id_,
     required this.bigTitle_,
     required this.bigSubtitle_,
@@ -37,6 +46,9 @@ class MissionNormalResponse extends MissionNormalEntity {
     required this.detailSubtitle_,
     required this.detailContent_,
     required this.isGlobal_,
+    required this.isActive_,
+    required this.marker_,
+    required this.type_,
   }) : super(
           id: id_.toInt(),
           bigTitle: bigTitle_,
@@ -44,13 +56,16 @@ class MissionNormalResponse extends MissionNormalEntity {
           detailTitle: detailTitle_,
           detailSubtitle: detailSubtitle_,
           detailContent: detailContent_,
-          remainCount: remainCount_.toInt(),
-          rewardCount: rewardCount_.toInt(),
+          remainCount: remainCount_?.toInt() ?? 0,
+          rewardCount: rewardCount_?.toInt() ?? 0,
           rewardImage: rewardImage_,
           isGlobal: isGlobal_,
+          isActive: isActive_,
+          marker: marker_ ?? MarkerEntity.empty(),
+          type: getMissionType(type_),
         );
 
-  factory MissionNormalResponse.fromJson(Map<String, dynamic> json) => _$MissionNormalResponseFromJson(json);
+  factory MissionsResponse.fromJson(Map<String, dynamic> json) => _$MissionsResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MissionNormalResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MissionsResponseToJson(this);
 }

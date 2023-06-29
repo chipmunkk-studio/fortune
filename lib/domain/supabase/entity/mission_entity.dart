@@ -1,7 +1,8 @@
+import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 
-class MissionNormalEntity {
+class MissionsEntity {
   final int id;
   final String bigTitle;
   final String bigSubtitle;
@@ -11,9 +12,12 @@ class MissionNormalEntity {
   final int rewardCount;
   final int remainCount;
   final String rewardImage;
+  final MissionType type;
   final bool isGlobal;
+  final bool isActive;
+  final MarkerEntity marker;
 
-  MissionNormalEntity({
+  MissionsEntity({
     required this.id,
     required this.bigTitle,
     required this.bigSubtitle,
@@ -24,10 +28,13 @@ class MissionNormalEntity {
     required this.remainCount,
     required this.rewardImage,
     required this.isGlobal,
+    required this.isActive,
+    required this.marker,
+    required this.type,
   });
 
-  factory MissionNormalEntity.empty() {
-    return MissionNormalEntity(
+  factory MissionsEntity.empty() {
+    return MissionsEntity(
       id: 0,
       bigTitle: '',
       bigSubtitle: '',
@@ -36,8 +43,11 @@ class MissionNormalEntity {
       detailSubtitle: '',
       rewardCount: 0,
       remainCount: 0,
+      type: MissionType.normal,
       rewardImage: '',
+      isActive: false,
       isGlobal: false,
+      marker: MarkerEntity.empty(),
     );
   }
 }

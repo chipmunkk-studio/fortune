@@ -7,56 +7,58 @@ import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-import 'bloc/mission_detail_normal.dart';
+import '../missions/bloc/missions.dart';
+import 'bloc/mission_detail.dart';
 import 'component/ingredient_layout.dart';
 
-class MissionDetailNormalPage extends StatelessWidget {
-  const MissionDetailNormalPage(
+
+class MissionDetailPage extends StatelessWidget {
+  const MissionDetailPage(
     this.mission, {
     Key? key,
   }) : super(key: key);
 
-  final MissionNormalEntity mission;
+  final MissionViewEntity mission;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<MissionDetailNormalBloc>()..add(MissionDetailNormalInit(mission)),
+      create: (context) => serviceLocator<MissionDetailBloc>()..add(MissionDetailInit(mission)),
       child: FortuneScaffold(
         padding: const EdgeInsets.all(0),
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-        child: const _MissionDetailNormalPage(),
+        child: const _MissionDetailPage(),
       ),
     );
   }
 }
 
-class _MissionDetailNormalPage extends StatefulWidget {
-  const _MissionDetailNormalPage({Key? key}) : super(key: key);
+class _MissionDetailPage extends StatefulWidget {
+  const _MissionDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<_MissionDetailNormalPage> createState() => _MissionDetailNormalPageState();
+  State<_MissionDetailPage> createState() => _MissionDetailPageState();
 }
 
-class _MissionDetailNormalPageState extends State<_MissionDetailNormalPage> {
-  late final MissionDetailNormalBloc _bloc;
+class _MissionDetailPageState extends State<_MissionDetailPage> {
+  late final MissionDetailBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<MissionDetailNormalBloc>(context);
+    _bloc = BlocProvider.of<MissionDetailBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<MissionDetailNormalBloc, MissionDetailNormalSideEffect>(
+    return BlocSideEffectListener<MissionDetailBloc, MissionDetailSideEffect>(
       listener: (context, sideEffect) {
-        if (sideEffect is MissionDetailNormalClearSuccess) {
+        if (sideEffect is MissionDetailClearSuccess) {
           context.showFortuneDialog(
             title: '교환신청 완료',
             subTitle: '축하해요!',
@@ -65,11 +67,11 @@ class _MissionDetailNormalPageState extends State<_MissionDetailNormalPage> {
               router.pop(context, true);
             },
           );
-        } else if (sideEffect is MissionDetailNormalError) {
+        } else if (sideEffect is MissionDetailError) {
           dialogService.showErrorDialog(context, sideEffect.error);
         }
       },
-      child: BlocBuilder<MissionDetailNormalBloc, MissionDetailNormalState>(
+      child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
         builder: (context, state) {
           return Column(
             children: [
@@ -168,7 +170,7 @@ class _MissionDetailNormalPageState extends State<_MissionDetailNormalPage> {
                 isEnabled: true,
                 onPress: () {
                   router.pop(context);
-                  _bloc.add(MissionDetailNormalExchange());
+                  _bloc.add(MissionDetailExchange());
                 },
                 buttonText: "교환",
                 isKeyboardVisible: false,

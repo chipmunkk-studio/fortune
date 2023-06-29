@@ -1,14 +1,14 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
 import 'login/login_page.dart';
 import 'main/main_ext.dart';
 import 'main/main_page.dart';
-import 'missiondetail/normal/mission_detail_normal_page.dart';
+import 'missiondetail/mission_detail_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
@@ -32,8 +32,8 @@ class FortuneRouter {
 
   static var missionDetailNormalHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as MissionNormalEntity?;
-      return args != null ? MissionDetailNormalPage(args) : null;
+      final args = context?.settings?.arguments as MissionViewEntity?;
+      return args != null ? MissionDetailPage(args) : null;
     },
   );
 

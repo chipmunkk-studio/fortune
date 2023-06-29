@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MissionRelayCard extends StatelessWidget {
   const MissionRelayCard(this.item, {super.key});
 
-  final MissionNormalViewItem item;
+  final MissionViewEntity item;
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +67,11 @@ class MissionRelayCard extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "${item.mission.remainCount}",
+                                text: "${item.mission.marker.hitCount}",
                                 style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
                               ),
                               TextSpan(
-                                text: "/${item.mission.rewardCount}",
+                                text: "/${item.requiredTotalCount}",
                                 style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
                               ),
                             ],
@@ -122,9 +122,9 @@ class MissionRelayCard extends StatelessWidget {
                     animation: true,
                     lineHeight: 12,
                     animationDuration: 2000,
-                    percent: item.userHaveCount / item.requiredTotalCount > 1
+                    percent: item.mission.marker.hitCount / item.requiredTotalCount > 1
                         ? 1
-                        : item.userHaveCount / item.requiredTotalCount,
+                        :  item.mission.marker.hitCount / item.requiredTotalCount,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
                     backgroundColor: ColorName.deActive.withOpacity(0.3),
@@ -136,7 +136,7 @@ class MissionRelayCard extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "${item.userHaveCount}",
+                        text: "${item.mission.marker.hitCount}",
                         style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
                       ),
                       TextSpan(

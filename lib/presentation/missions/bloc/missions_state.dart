@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'missions_state.freezed.dart';
@@ -8,7 +8,7 @@ class MissionsState with _$MissionsState {
   factory MissionsState({
     required String nickname,
     required String profileImage,
-    required List<MissionsViewItem> missions,
+    required List<MissionViewEntity> missions,
     required bool isLoading,
   }) = _MissionsState;
 
@@ -18,18 +18,4 @@ class MissionsState with _$MissionsState {
         missions: List.empty(),
         isLoading: true,
       );
-}
-
-abstract class MissionsViewItem {}
-
-class MissionNormalViewItem extends MissionsViewItem {
-  final MissionNormalEntity mission;
-  final int userHaveCount;
-  final int requiredTotalCount;
-
-  MissionNormalViewItem({
-    required this.mission,
-    required this.userHaveCount,
-    required this.requiredTotalCount,
-  });
 }

@@ -1,26 +1,24 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_detail_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/normal_mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class GetMissionNormalDetailUseCase implements UseCase1<MissionNormalDetailEntity, int> {
-  final MissionNormalRepository missionRepository;
+class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
+  final MissionsRepository missionRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final UserRepository userRepository;
 
-  GetMissionNormalDetailUseCase({
+  GetMissionDetailUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,
   });
 
   @override
-  Future<FortuneResult<MissionNormalDetailEntity>> call(int missionId) async {
+  Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
     try {
       final user = await userRepository.findUserByPhone();
       final mission = await missionRepository.getMissionById(missionId);
@@ -33,26 +31,26 @@ class GetMissionNormalDetailUseCase implements UseCase1<MissionNormalDetailEntit
           .toList();
 
       // 마커 목록 뽑음.
-      List<NormalMissionDetailViewItemEntity> markers = clearConditions.map((condition) {
+      List<MissionDetailViewItemEntity> markers = clearConditions.map((condition) {
         int haveCount = filteredUserHistories
             .where(
               (history) => history.ingredient.id == condition.ingredient.id,
             )
             .length;
-        return NormalMissionDetailViewItemEntity(
+        return MissionDetailViewItemEntity(
           ingredient: condition.ingredient,
           haveCount: haveCount,
-          requireCount: condition.count,
+          requireCount: condition.requireCount,
         );
       }).toList();
 
       // 7개까지 무조건 채움.
       while (markers.length < 7) {
-        markers.add(NormalMissionDetailViewItemEntity.empty());
+        markers.add(MissionDetailViewItemEntity.empty());
       }
 
       return Right(
-        MissionNormalDetailEntity(
+        MissionDetailEntity(
           markers: markers,
           mission: mission,
         ),

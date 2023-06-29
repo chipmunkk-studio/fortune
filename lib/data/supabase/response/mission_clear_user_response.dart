@@ -1,17 +1,17 @@
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/normal_mission_clear_user_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_clear_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'mission_normal_response.dart';
+import 'missions_response.dart';
 
-part 'mission_normal_clear_user_response.g.dart';
+part 'mission_clear_user_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class MissionNormalClearUserResponse extends MissionNormalClearUserEntity {
+class MissionClearUserResponse extends MissionClearUserEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'mission')
-  final MissionNormalResponse mission_;
+  final MissionsResponse mission_;
   @JsonKey(name: 'user')
   final FortuneUserResponse user_;
   @JsonKey(name: 'email')
@@ -21,7 +21,7 @@ class MissionNormalClearUserResponse extends MissionNormalClearUserEntity {
   @JsonKey(name: 'created_at')
   final String createdAt_;
 
-  MissionNormalClearUserResponse({
+  MissionClearUserResponse({
     required this.id_,
     required this.createdAt_,
     required this.isReceive_,
@@ -37,8 +37,8 @@ class MissionNormalClearUserResponse extends MissionNormalClearUserEntity {
           createdAt: createdAt_,
         );
 
-  factory MissionNormalClearUserResponse.fromJson(Map<String, dynamic> json) =>
-      _$MissionNormalClearUserResponseFromJson(json);
+  factory MissionClearUserResponse.fromJson(Map<String, dynamic> json) =>
+      _$MissionClearUserResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MissionNormalClearUserResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MissionClearUserResponseToJson(this);
 }

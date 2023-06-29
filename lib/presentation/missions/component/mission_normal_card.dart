@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MissionNormalCard extends StatelessWidget {
   const MissionNormalCard(this.item, {super.key});
 
-  final MissionNormalViewItem item;
+  final MissionViewEntity item;
 
   @override
   Widget build(BuildContext context) {

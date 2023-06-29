@@ -14,6 +14,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/re_locate_marker_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -35,7 +36,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final GetObtainableMarkerUseCase getObtainableMarkerUseCase;
   final ReLocateMarkerUseCase reLocateMarkerUseCase;
 
-  // final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
+  final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
@@ -46,7 +47,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.getObtainCountUseCase,
     required this.getObtainableMarkerUseCase,
     required this.reLocateMarkerUseCase,
-    // required this.postMissionRelayClearUseCase,
+    required this.postMissionRelayClearUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -204,6 +205,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               ),
             );
           }
+          emit(
+            state.copyWith(
+              processingCount: state.processingCount + 1,
+            ),
+          );
           // 마커 획득 이벤트 수행.
           add(MainMarkerObtain(data));
         },
@@ -223,22 +229,21 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final krLocationName = await getLocationName(latitude, longitude);
     final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
-    // 마커 랜덤 배치.
-    await reLocateMarkerUseCase(
-      RequestReLocateMarkerParam(
-        markerId: marker.id,
-        user: state.user!,
-      ),
-    );
-
-    // 티켓 감소.
+    // #1 티켓 감소.
     await obtainMarkerUseCase(marker).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
-          FortuneLogger.debug("#1 obtainMarkerUseCase: ${r}");
+          FortuneLogger.debug("#1 obtainMarkerUseCase: $r");
           emit(state.copyWith(user: r));
-          // 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
+          // #2 마커 랜덤 배치. (티켓 감소 후 획득 했다고 판단)
+          await reLocateMarkerUseCase(
+            RequestReLocateMarkerParam(
+              markerId: marker.id,
+              user: state.user!,
+            ),
+          );
+          // #3 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
           if (marker.ingredient.type != IngredientType.ticket) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
@@ -254,30 +259,29 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
                 (r) async {
-                  emit(state.copyWith(haveCount: r));
-                  // await postMissionRelayClearUseCase(marker.id).then(
-                  //   (value) => value.fold(
-                  //     (l) => null,
-                  //     (r) {
-                  //       if (r) {
-                  //         FortuneLogger.info("릴레이 미션 당첨!");
-                  //       }
-                  //     },
-                  //   ),
-                  // );
+                  emit(
+                    state.copyWith(
+                      haveCount: r,
+                      processingCount: state.processingCount - 1,
+                    ),
+                  );
+                  await postMissionRelayClearUseCase(marker.id).then(
+                    (value) => value.fold(
+                      (l) => null,
+                      (r) {
+                        if (r) {
+                          FortuneLogger.info("릴레이 미션 당첨!");
+                        }
+                      },
+                    ),
+                  );
                 },
               ),
             );
-          }
-          // 티켓인 경우 에는 획득 카운트만 가져옴.
-          else {
-            await getObtainCountUseCase(r.id).then(
-              (value) => value.fold(
-                (l) => produceSideEffect(MainError(l)),
-                (r) {
-                  FortuneLogger.debug("haveCount >>>>>>>>>> ");
-                  emit(state.copyWith(haveCount: r));
-                },
+          } else {
+            emit(
+              state.copyWith(
+                processingCount: state.processingCount - 1,
               ),
             );
           }

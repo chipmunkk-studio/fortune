@@ -6,14 +6,13 @@ import 'package:foresh_flutter/domain/supabase/repository/normal_mission_resposi
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
-class PostMissionNormalClearUseCase implements UseCase1<void, RequestPostNormalMissionClear> {
-  final MissionNormalRepository missionRepository;
+class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMissionClear> {
+  final MissionsRepository missionRepository;
   final UserRepository userRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
 
-  PostMissionNormalClearUseCase({
+  PostMissionClearUseCase({
     required this.missionRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,
@@ -36,7 +35,7 @@ class PostMissionNormalClearUseCase implements UseCase1<void, RequestPostNormalM
       List<ObtainHistoryEntity> filteredUserHistories = [];
       for (var condition in clearConditions) {
         var matchedHistories = userHistories.where((history) => history.ingredient.id == condition.ingredient.id);
-        filteredUserHistories.addAll(matchedHistories.take(condition.count));
+        filteredUserHistories.addAll(matchedHistories.take(condition.requireCount));
       }
 
       // 히스토리에서 삭제.

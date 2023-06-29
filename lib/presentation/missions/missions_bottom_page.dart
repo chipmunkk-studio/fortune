@@ -80,7 +80,7 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SizedBox(
-                    height: 460,
+                    height: 420,
                     child: BlocBuilder<MissionsBloc, MissionsState>(
                       buildWhen: (previous, current) => previous.missions != current.missions,
                       builder: (context, state) {

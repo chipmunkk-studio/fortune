@@ -11,6 +11,7 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/notification/one_signal_notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
@@ -235,6 +236,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       cartKey,
                     ),
                     const SizedBox(height: 10),
+                    BlocBuilder<MainBloc, MainState>(
+                      buildWhen: (previous, current) => previous.processingCount != current.processingCount,
+                      builder: (context, state) {
+                        return state.processingCount == 0
+                            ? Container()
+                            : Text(
+                          "${state.processingCount}개 마커 획득 처리 중..",
+                          style: FortuneTextStyle.body3Regular(),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

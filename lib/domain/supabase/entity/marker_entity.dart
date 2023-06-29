@@ -16,4 +16,12 @@ class MarkerEntity {
     required this.lastObtainUser,
     required this.hitCount,
   });
+
+  MarkerEntity.empty()
+      : id = 0,
+        ingredient = IngredientEntity.empty(),
+        latitude = 0.0,
+        longitude = 0.0,
+        lastObtainUser = null,
+        hitCount = 0;
 }

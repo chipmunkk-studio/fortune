@@ -1,15 +1,15 @@
 import 'fortune_user_entity.dart';
-import 'normal_mission_entity.dart';
+import 'mission_entity.dart';
 
-class MissionNormalClearUserEntity {
+class MissionClearUserEntity {
   final int id;
-  final MissionNormalEntity mission;
+  final MissionsEntity mission;
   final FortuneUserEntity user;
   final String email;
   final bool isReceive;
   final String createdAt;
 
-  MissionNormalClearUserEntity({
+  MissionClearUserEntity({
     required this.id,
     required this.createdAt,
     required this.isReceive,

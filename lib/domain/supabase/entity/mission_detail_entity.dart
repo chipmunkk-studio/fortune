@@ -1,38 +1,38 @@
 import 'ingredient_entity.dart';
-import 'normal_mission_entity.dart';
+import 'mission_entity.dart';
 
-class MissionNormalDetailEntity {
-  final List<NormalMissionDetailViewItemEntity> markers;
-  final MissionNormalEntity mission;
+class MissionDetailEntity {
+  final List<MissionDetailViewItemEntity> markers;
+  final MissionsEntity mission;
   final bool isEnableMissionClear;
 
-  MissionNormalDetailEntity({
+  MissionDetailEntity({
     required this.markers,
     required this.mission,
   }) : isEnableMissionClear = markers.where((element) => !element.isConditionSatisfied).isEmpty;
 
-  factory MissionNormalDetailEntity.initial() => MissionNormalDetailEntity(
+  factory MissionDetailEntity.initial() => MissionDetailEntity(
         markers: [],
-        mission: MissionNormalEntity.empty(),
+        mission: MissionsEntity.empty(),
       );
 }
 
-class NormalMissionDetailViewItemEntity {
+class MissionDetailViewItemEntity {
   final IngredientEntity ingredient;
   final int haveCount;
   final int requireCount;
   final bool isConditionSatisfied;
   final bool isEmpty;
 
-  NormalMissionDetailViewItemEntity({
+  MissionDetailViewItemEntity({
     required this.ingredient,
     required this.haveCount,
     required this.requireCount,
     this.isEmpty = false,
   }) : isConditionSatisfied = haveCount >= requireCount;
 
-  factory NormalMissionDetailViewItemEntity.empty() {
-    return NormalMissionDetailViewItemEntity(
+  factory MissionDetailViewItemEntity.empty() {
+    return MissionDetailViewItemEntity(
       ingredient: IngredientEntity.empty(),
       haveCount: 0,
       requireCount: 0,

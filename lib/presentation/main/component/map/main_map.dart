@@ -159,19 +159,28 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    if (distance < 0) {
-      context.showSnackBar('거리가 $distance만큼 모자랍니다.');
-    } else {
-      // 티켓일 경우에는 광고, 그 외 다른 액션.
-      // final isAnimation = await _processMarkerAction(data.ingredient);
-      _bloc.add(
-        MainMarkerClick(
-          data: data,
-          isAnimation: true,
-          globalKey: globalKey,
-        ),
-      );
-    }
+    _bloc.add(
+      MainMarkerClick(
+        data: data,
+        isAnimation: true,
+        globalKey: globalKey,
+      ),
+    );
+
+    // todo 여기서 해야 됨.
+    // if (distance < 0) {
+    //   context.showSnackBar('거리가 $distance만큼 모자랍니다.');
+    // } else {
+    //   // 티켓일 경우에는 광고, 그 외 다른 액션.
+    //   // final isAnimation = await _processMarkerAction(data.ingredient);
+    //   _bloc.add(
+    //     MainMarkerClick(
+    //       data: data,
+    //       isAnimation: true,
+    //       globalKey: globalKey,
+    //     ),
+    //   );
+    // }
   }
 
   Future<bool> _processMarkerAction(IngredientEntity ingredient) async {

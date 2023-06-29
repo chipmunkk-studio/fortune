@@ -40,20 +40,20 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'data/supabase/repository/mission_normal_respository_impl.dart';
-import 'data/supabase/service/mission_clear_history_service.dart';
-import 'data/supabase/service/mission_normal_clear_conditions_service.dart';
-import 'data/supabase/service/mission_normal_clear_user_service.dart';
-import 'data/supabase/service/mission_normal_service.dart';
+import 'data/supabase/repository/missions_respository_impl.dart';
+import 'data/supabase/service/mission_clear_conditions_service.dart';
+import 'data/supabase/service/mission_clear_user_service.dart';
+import 'data/supabase/service/missions_service.dart';
 import 'domain/supabase/repository/normal_mission_respository.dart';
-import 'domain/supabase/usecase/get_mission_normal_clear_conditions_use_case.dart';
-import 'domain/supabase/usecase/get_mission_normal_detail_use_case.dart';
-import 'domain/supabase/usecase/get_mission_normal_use_case.dart';
+import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
+import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
+import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
-import 'domain/supabase/usecase/post_mission_normal_clear_use_case.dart';
+import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
+import 'domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'env.dart';
-import 'presentation/missiondetail/normal/bloc/mission_detail_normal_bloc.dart';
+import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
@@ -180,23 +180,18 @@ _initService() {
         env: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<MissionNormalService>(
-      () => MissionNormalService(
+    ..registerLazySingleton<MissionsService>(
+      () => MissionsService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<MissionNormalClearUserService>(
-      () => MissionNormalClearUserService(
+    ..registerLazySingleton<MissionClearUserService>(
+      () => MissionClearUserService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<MissionNormalClearConditionsService>(
-      () => MissionNormalClearConditionsService(
-        Supabase.instance.client,
-      ),
-    )
-    ..registerLazySingleton<MissionClearHistoryService>(
-      () => MissionClearHistoryService(
+    ..registerLazySingleton<MissionsClearConditionsService>(
+      () => MissionsClearConditionsService(
         Supabase.instance.client,
       ),
     )
@@ -232,12 +227,11 @@ _initRepository() {
         serviceLocator<ObtainHistoryService>(),
       ),
     )
-    ..registerLazySingleton<MissionNormalRepository>(
-      () => MissionNormalRepositoryImpl(
-        missionNormalService: serviceLocator<MissionNormalService>(),
-        missionClearConditionsService: serviceLocator<MissionNormalClearConditionsService>(),
-        missionClearHistoryService: serviceLocator<MissionClearHistoryService>(),
-        missionClearUserService: serviceLocator<MissionNormalClearUserService>(),
+    ..registerLazySingleton<MissionsRepository>(
+      () => MissionsRepositoryImpl(
+        missionNormalService: serviceLocator<MissionsService>(),
+        missionClearConditionsService: serviceLocator<MissionsClearConditionsService>(),
+        missionClearUserService: serviceLocator<MissionClearUserService>(),
         userService: serviceLocator<UserService>(),
       ),
     )
@@ -274,20 +268,20 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionNormalUseCase>(
-      () => GetMissionNormalUseCase(
+    ..registerLazySingleton<GetMissionsUseCase>(
+      () => GetMissionsUseCase(
         missionRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionNormalClearConditionsUseCase>(
-      () => GetMissionNormalClearConditionsUseCase(
+    ..registerLazySingleton<GetMissionClearConditionsUseCase>(
+      () => GetMissionClearConditionsUseCase(
         missionRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetMissionNormalDetailUseCase>(
-      () => GetMissionNormalDetailUseCase(
+    ..registerLazySingleton<GetMissionDetailUseCase>(
+      () => GetMissionDetailUseCase(
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
@@ -298,8 +292,8 @@ _initUseCase() async {
         markerRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<PostMissionNormalClearUseCase>(
-      () => PostMissionNormalClearUseCase(
+    ..registerLazySingleton<PostMissionClearUseCase>(
+      () => PostMissionClearUseCase(
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
@@ -310,13 +304,13 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
-    // ..registerLazySingleton<PostMissionRelayClearUseCase>(
-    //   () => PostMissionRelayClearUseCase(
-    //     missionRepository: serviceLocator(),
-    //     userRepository: serviceLocator(),
-    //     markerRepository: serviceLocator(),
-    //   ),
-    // )
+    ..registerLazySingleton<PostMissionRelayClearUseCase>(
+      () => PostMissionRelayClearUseCase(
+        missionRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+        markerRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -354,7 +348,7 @@ _initBloc() {
         getObtainCountUseCase: serviceLocator(),
         getObtainableMarkerUseCase: serviceLocator(),
         reLocateMarkerUseCase: serviceLocator(),
-        // postMissionRelayClearUseCase: serviceLocator(),
+        postMissionRelayClearUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -363,7 +357,7 @@ _initBloc() {
       ),
     )
     ..registerFactory(
-      () => MissionDetailNormalBloc(
+      () => MissionDetailBloc(
         getMissionDetailUseCase: serviceLocator(),
         postMissionClearUseCase: serviceLocator(),
       ),
