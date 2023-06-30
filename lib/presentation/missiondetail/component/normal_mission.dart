@@ -1,17 +1,137 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
+import 'package:foresh_flutter/presentation/missiondetail/bloc/mission_detail_state.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class IngredientLayout extends StatelessWidget {
+import '../../../core/util/textstyle.dart';
+
+class NormalMission extends StatelessWidget {
+  final MissionDetailState state;
+  final Function0 onExchangeClick;
+
+  const NormalMission(
+    this.state, {
+    Key? key,
+    required this.onExchangeClick,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              ListView(
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      state.entity.mission.detailTitle,
+                      style: FortuneTextStyle.subTitle1SemiBold(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      state.entity.mission.detailSubtitle,
+                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  _IngredientLayout(state.entity.markers),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      state.entity.mission.detailContent,
+                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        ColorName.background.withOpacity(1.0),
+                        ColorName.background.withOpacity(0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
+          child: FortuneBottomButton(
+            isEnabled: state.isEnableButton,
+            buttonText: "교환하기",
+            onPress: () => _showExchangeBottomSheet(context),
+            isKeyboardVisible: false,
+          ),
+        ),
+      ],
+    );
+  }
+
+  _showExchangeBottomSheet(BuildContext context) {
+    context.showFortuneBottomSheet(
+      content: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "스타벅스 아이스 카페 아메리카노",
+                style: FortuneTextStyle.headLine1(),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "50개가 차감되며, 회원정보에 등록된 휴대폰 메세지로 모바일 상품권이 발송됩니다. 지금받으시겠습니까?",
+                textAlign: TextAlign.center,
+                style: FortuneTextStyle.body2Regular(),
+              ),
+              const SizedBox(height: 16),
+              FortuneBottomButton(
+                isEnabled: true,
+                onPress: onExchangeClick,
+                buttonText: "교환",
+                isKeyboardVisible: false,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _IngredientLayout extends StatelessWidget {
   final List<MissionDetailViewItemEntity> _viewItems;
 
-  const IngredientLayout(
+  const _IngredientLayout(
     this._viewItems, {
     super.key,
   });

@@ -143,4 +143,5 @@ class Routes {
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
   static const String ingredientActionRoute = 'ingredientAction';
+  static const String userNoticesRoute = 'userNoticesRoute';
 }

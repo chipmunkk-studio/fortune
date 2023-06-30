@@ -6,12 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
+import 'package:foresh_flutter/domain/supabase/request/request_level_or_grade_up_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_re_locate_marker_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_fortune_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/level_or_grade_up_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
@@ -35,8 +38,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final GetObtainCountUseCase getObtainCountUseCase;
   final GetObtainableMarkerUseCase getObtainableMarkerUseCase;
   final ReLocateMarkerUseCase reLocateMarkerUseCase;
-
   final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
+  final LevelOrGradeUpUseCase levelOrGradeUpUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
@@ -48,6 +51,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.getObtainableMarkerUseCase,
     required this.reLocateMarkerUseCase,
     required this.postMissionRelayClearUseCase,
+    required this.levelOrGradeUpUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -151,6 +155,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 user: entity.user,
                 refreshTime: remoteConfig.refreshTime,
                 // refreshTime: 10,
+                notices: entity.notices,
                 refreshCount: state.refreshCount + 1,
                 haveCount: entity.haveCount,
                 histories: entity.histories,
@@ -233,9 +238,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     await obtainMarkerUseCase(marker).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
-        (r) async {
-          FortuneLogger.debug("#1 obtainMarkerUseCase: $r");
-          emit(state.copyWith(user: r));
+        (user) async {
+          // #1-1 레벨 업 인지 확인.
+          await _confirmLevelOrGradeUp(prevUser: state.user!, nextUser: user);
+
+          emit(state.copyWith(user: user));
           // #2 마커 랜덤 배치. (티켓 감소 후 획득 했다고 판단)
           await reLocateMarkerUseCase(
             RequestReLocateMarkerParam(
@@ -247,32 +254,34 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           if (marker.ingredient.type != IngredientType.ticket) {
             await insertObtainHistoryUseCase(
               RequestInsertHistoryParam(
-                userId: r.id,
+                userId: user.id,
                 markerId: marker.id.toString(),
                 ingredientId: marker.ingredient.id,
                 ingredientName: marker.ingredient.name,
-                nickname: r.nickname,
+                nickname: user.nickname,
                 krLocationName: krLocationName,
                 enLocationName: enLocationName,
               ),
             ).then(
               (value) => value.fold(
                 (l) => produceSideEffect(MainError(l)),
-                (r) async {
+                (haveCount) async {
                   emit(
                     state.copyWith(
-                      haveCount: r,
+                      haveCount: haveCount,
                       processingCount: state.processingCount - 1,
                     ),
                   );
                   await postMissionRelayClearUseCase(marker.id).then(
                     (value) => value.fold(
                       (l) => null,
-                      (r) {
-                        if (r) {
-                          FortuneLogger.info("릴레이 미션 당첨!");
-                        }
-                      },
+                      (r) => produceSideEffect(
+                        MainShowDialog(
+                          landingRoute: Routes.userNoticesRoute,
+                          title: '릴레이 미션을 클리어 하셨습니다!!',
+                          subTitle: '축하합니다',
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -284,6 +293,38 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 processingCount: state.processingCount - 1,
               ),
             );
+          }
+        },
+      ),
+    );
+  }
+
+  _confirmLevelOrGradeUp({
+    required FortuneUserEntity prevUser,
+    required FortuneUserEntity nextUser,
+  }) async {
+    await levelOrGradeUpUseCase(
+      RequestLevelOrGradeUpParam(
+        prevUser: prevUser,
+        nextUser: nextUser,
+      ),
+    ).then(
+      (value) => value.fold(
+        (l) => null,
+        (type) {
+          switch (type) {
+            case UserNoticeType.grade_up:
+            case UserNoticeType.level_up:
+              produceSideEffect(
+                MainShowDialog(
+                  title: "레벨 업을 축하합니다!",
+                  landingRoute: Routes.userNoticesRoute,
+                  subTitle: '새로운 알림을 확인해보세요.',
+                ),
+              );
+              break;
+            default:
+              break;
           }
         },
       ),

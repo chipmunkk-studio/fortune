@@ -6,7 +6,7 @@ import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionsService {
-  static const _normalMissionsTableName = "missions";
+  static const _missionsTableName = "missions";
   static const _fullSelectQuery = '*,marker(*,ingredient(*))';
 
   final SupabaseClient _client;
@@ -17,7 +17,7 @@ class MissionsService {
   Future<List<MissionsEntity>> findAllMissions(bool isGlobal) async {
     try {
       final response = await _client
-          .from(_normalMissionsTableName)
+          .from(_missionsTableName)
           .select(_fullSelectQuery)
           .filter('is_active', 'eq', true)
           .filter('is_global', 'eq', isGlobal)
@@ -37,7 +37,7 @@ class MissionsService {
   Future<MissionsEntity> findMissionById(int missionId) async {
     try {
       final response = await _client
-          .from(_normalMissionsTableName)
+          .from(_missionsTableName)
           .select(
             _fullSelectQuery,
           )
@@ -59,7 +59,7 @@ class MissionsService {
   Future<MissionsEntity> findMissionByMarkerId(int markerId) async {
     try {
       final response = await _client
-          .from(_normalMissionsTableName)
+          .from(_missionsTableName)
           .select(
             _fullSelectQuery,
           )
@@ -85,7 +85,7 @@ class MissionsService {
     try {
       MissionsEntity mission = await findMissionById(id);
       final updateMission = await _client
-          .from(_normalMissionsTableName)
+          .from(_missionsTableName)
           .update(
             RequestMissionUpdate(
               remainCount: remainCount ?? mission.remainCount,

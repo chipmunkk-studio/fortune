@@ -43,7 +43,7 @@ class MissionsEntity {
       detailSubtitle: '',
       rewardCount: 0,
       remainCount: 0,
-      type: MissionType.normal,
+      type: MissionType.none,
       rewardImage: '',
       isActive: false,
       isGlobal: false,

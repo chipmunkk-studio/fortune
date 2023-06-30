@@ -17,6 +17,8 @@ extension FortuneDialogEx on BuildContext {
     required Function0 btnOkPressed,
     String? btnCancelText,
     Function0? btnCancelPressed,
+    dismissOnTouchOutside = false,
+    dismissOnBackKeyPress = false,
   }) {
     AwesomeDialog(
       context: this,
@@ -24,8 +26,8 @@ extension FortuneDialogEx on BuildContext {
       dialogType: DialogType.noHeader,
       dialogBackgroundColor: ColorName.backgroundLight,
       buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.backgroundLight),
-      dismissOnTouchOutside: false,
-      dismissOnBackKeyPress: false,
+      dismissOnTouchOutside: dismissOnTouchOutside,
+      dismissOnBackKeyPress: dismissOnBackKeyPress,
       body: Container(
         height: 120.h,
         color: ColorName.backgroundLight,

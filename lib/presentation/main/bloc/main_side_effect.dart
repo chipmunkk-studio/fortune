@@ -73,8 +73,15 @@ class MainSchemeLandingPage extends MainSideEffect {
 }
 
 class MainShowDialog extends MainSideEffect {
+  final String landingRoute;
+  final String title;
+  final String subTitle;
 
-  MainShowDialog();
+  MainShowDialog({
+    required this.landingRoute,
+    required this.title,
+    required this.subTitle,
+  });
 
   @override
   List<Object?> get props => [];

@@ -1,5 +1,6 @@
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/user_notices_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:location/location.dart';
 
@@ -14,6 +15,7 @@ class MainState with _$MainState {
     required List<ObtainHistoryContentViewItem> histories,
     required LocationData? myLocation,
     required FortuneUserEntity? user,
+    required List<UserNoticesEntity> notices,
     required int haveCount,
     required int refreshTime,
     required int refreshCount,
@@ -31,6 +33,7 @@ class MainState with _$MainState {
         locationName: '내 위치 정보를 불러오는 중..',
         user: null,
         myLocation: null,
+        notices: List.empty(),
         haveCount: 0,
         refreshTime: 0,
         refreshCount: 0,

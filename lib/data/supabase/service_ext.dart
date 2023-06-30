@@ -15,6 +15,14 @@ enum IngredientType {
 enum MissionType {
   normal,
   relay,
+  none,
+}
+
+enum UserNoticeType {
+  level_up,
+  grade_up,
+  relay_mission_clear,
+  none,
 }
 
 extension SupabaseExt on Future<dynamic> {
@@ -43,6 +51,14 @@ getMissionType(String type) {
     return MissionType.normal;
   } else {
     return MissionType.normal;
+  }
+}
+
+getUserNoticeType(String type) {
+  if (UserNoticeType.level_up.name == type) {
+    return UserNoticeType.level_up;
+  } else {
+    return UserNoticeType.none;
   }
 }
 

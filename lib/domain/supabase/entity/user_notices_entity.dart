@@ -1,20 +1,21 @@
+import 'package:foresh_flutter/data/supabase/service_ext.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class UserEventNoticesEntity {
+class UserNoticesEntity {
   final int id;
   final String title;
   final String content;
-  final String eventType;
-  final String noticeType;
+  final int rewardTicket;
+  final UserNoticeType type;
   final String createdAt;
 
-  UserEventNoticesEntity({
+  UserNoticesEntity({
     required this.id,
     required this.title,
     required this.content,
-    required this.eventType,
-    required this.noticeType,
+    required this.rewardTicket,
+    required this.type,
     required this.createdAt,
   });
 }

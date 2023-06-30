@@ -13,7 +13,8 @@ class TopLocationArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainBloc, MainState>(
-      buildWhen: (previous, current) => previous.locationName != current.locationName,
+      buildWhen: (previous, current) =>
+          previous.locationName != current.locationName || previous.notices != current.notices,
       builder: (context, state) {
         return Row(
           children: [
@@ -26,6 +27,26 @@ class TopLocationArea extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 24),
+            Stack(
+              children: [
+                Assets.icons.icBell.svg(),
+                // 봐야할 알림이 있으면 나타냄.
+                if (state.notices.isNotEmpty)
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 4,
+                      height: 4,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  )
+              ],
+            ),
+            const SizedBox(width: 20),
             Assets.icons.icUser.svg(),
           ],
         );

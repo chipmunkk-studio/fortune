@@ -156,6 +156,15 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
+        } else if (sideEffect is MainShowDialog) {
+          context.showFortuneDialog(
+            title: sideEffect.title,
+            subTitle: sideEffect.subTitle,
+            btnOkText: '확인',
+            dismissOnBackKeyPress: true,
+            dismissOnTouchOutside: true,
+            btnOkPressed: () {},
+          );
         } else if (sideEffect is MainSchemeLandingPage) {
           router.navigateTo(
             context,
@@ -242,9 +251,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         return state.processingCount == 0
                             ? Container()
                             : Text(
-                          "${state.processingCount}개 마커 획득 처리 중..",
-                          style: FortuneTextStyle.body3Regular(),
-                        );
+                                "${state.processingCount}개 마커 획득 처리 중..",
+                                style: FortuneTextStyle.body3Regular(),
+                              );
                       },
                     ),
                   ],

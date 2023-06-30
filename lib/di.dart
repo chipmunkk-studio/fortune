@@ -10,12 +10,14 @@ import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dar
 import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/obtain_history_respository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/user_notices_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/user_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
+import 'package:foresh_flutter/data/supabase/service/user_notices_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
@@ -45,11 +47,13 @@ import 'data/supabase/service/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission_clear_user_service.dart';
 import 'data/supabase/service/missions_service.dart';
 import 'domain/supabase/repository/normal_mission_respository.dart';
+import 'domain/supabase/repository/user_notices_repository.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/insert_obtain_history_use_case.dart';
+import 'domain/supabase/usecase/level_or_grade_up_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'env.dart';
@@ -190,6 +194,11 @@ _initService() {
         Supabase.instance.client,
       ),
     )
+    ..registerLazySingleton<UserNoticesService>(
+      () => UserNoticesService(
+        Supabase.instance.client,
+      ),
+    )
     ..registerLazySingleton<MissionsClearConditionsService>(
       () => MissionsClearConditionsService(
         Supabase.instance.client,
@@ -225,6 +234,11 @@ _initRepository() {
     ..registerLazySingleton<ObtainHistoryRepository>(
       () => ObtainHistoryRepositoryImpl(
         serviceLocator<ObtainHistoryService>(),
+      ),
+    )
+    ..registerLazySingleton<UserNoticesRepository>(
+      () => UserNoticesRepositoryImpl(
+        userNoticesService: serviceLocator<UserNoticesService>(),
       ),
     )
     ..registerLazySingleton<MissionsRepository>(
@@ -266,6 +280,11 @@ _initUseCase() async {
       () => GetObtainCountUseCase(
         obtainHistoryRepository: serviceLocator(),
         userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<LevelOrGradeUpUseCase>(
+      () => LevelOrGradeUpUseCase(
+        userNoticesRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetMissionsUseCase>(
@@ -318,6 +337,7 @@ _initUseCase() async {
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
+        userNoticesRepository: serviceLocator(),
       ),
     );
 }
@@ -349,6 +369,7 @@ _initBloc() {
         getObtainableMarkerUseCase: serviceLocator(),
         reLocateMarkerUseCase: serviceLocator(),
         postMissionRelayClearUseCase: serviceLocator(),
+        levelOrGradeUpUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
