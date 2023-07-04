@@ -63,7 +63,7 @@ class MainMarkerObtain extends MainEvent {
 }
 
 class MainLandingPage extends MainEvent {
-  final OneSignalNotificationCustom entity;
+  final OneSignalNotificationCustomResponse entity;
 
   MainLandingPage(this.entity);
 
