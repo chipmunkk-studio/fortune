@@ -49,7 +49,7 @@ class PostMissionRelayClearUseCase implements UseCase1<void, int> {
             content: '릴레이 미션 클리어!!',
             type: UserNoticeType.relay_mission_clear.name,
             userId: user.id,
-            rewardTicket: 20,
+            ticket: 20,
           ),
         );
       }

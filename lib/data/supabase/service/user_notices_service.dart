@@ -55,8 +55,9 @@ class UserNoticesService {
     }
   }
 
-  // 마커 삭제.
+  // 알림 삭제.
   Future<void> delete(int noticeId) async {
+    DateTime oneMinuteAgo = DateTime.now().subtract(const Duration(minutes: 1));
     try {
       await _client
           .from(
@@ -64,6 +65,21 @@ class UserNoticesService {
           )
           .delete()
           .eq('id', noticeId);
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  // 30일 전 알림 삭제.
+  Future<void> deleteMonthAgo() async {
+    DateTime oneMonthAgo = DateTime.now().subtract(const Duration(days: 30));
+    try {
+      await _client
+          .from(
+            _userNoticesTableName,
+          )
+          .delete()
+          .lte('created_at', oneMonthAgo.toIso8601String());
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

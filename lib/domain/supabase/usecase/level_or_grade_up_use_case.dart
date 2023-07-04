@@ -29,7 +29,7 @@ class LevelOrGradeUpUseCase implements UseCase1<UserNoticeType, RequestLevelOrGr
             type: UserNoticeType.grade_up,
             title: "등급 업을 축하합니다!!",
             content: "${prev.grade.name}에서 ${next.grade.name}으로!!",
-            rewardTicket: 10,
+            ticket: 10,
           );
         } else {
           return updateUserNotice(
@@ -37,7 +37,7 @@ class LevelOrGradeUpUseCase implements UseCase1<UserNoticeType, RequestLevelOrGr
             type: UserNoticeType.level_up,
             title: "레벨 업을 축하합니다!!",
             content: "${prev.level}에서 ${next.level}으로!!",
-            rewardTicket: 5,
+            ticket: 5,
           );
         }
       }
@@ -51,7 +51,7 @@ class LevelOrGradeUpUseCase implements UseCase1<UserNoticeType, RequestLevelOrGr
     required UserNoticeType type,
     required String title,
     required String content,
-    required int rewardTicket,
+    required int ticket,
   }) async {
     try {
       await userNoticesRepository.insertNotice(
@@ -60,7 +60,7 @@ class LevelOrGradeUpUseCase implements UseCase1<UserNoticeType, RequestLevelOrGr
           content: content,
           type: type.name,
           userId: prev.id,
-          rewardTicket: rewardTicket,
+          ticket: ticket,
         ),
       );
       return Right(type);

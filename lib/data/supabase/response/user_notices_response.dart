@@ -14,8 +14,8 @@ class UserNoticesResponse extends UserNoticesEntity {
   final String content_;
   @JsonKey(name: 'type')
   final String type_;
-  @JsonKey(name: 'reward_ticket')
-  final int rewardTicket_;
+  @JsonKey(name: 'ticket')
+  final int ticket_;
   @JsonKey(name: 'created_at')
   final String createdAt_;
 
@@ -23,14 +23,14 @@ class UserNoticesResponse extends UserNoticesEntity {
     required this.id_,
     required this.title_,
     required this.content_,
-    required this.rewardTicket_,
+    required this.ticket_,
     required this.type_,
     required this.createdAt_,
   }) : super(
           id: id_.toInt(),
           title: title_,
           content: content_,
-          rewardTicket: rewardTicket_,
+          ticket: ticket_,
           type: getUserNoticeType(type_),
           createdAt: createdAt_,
         );

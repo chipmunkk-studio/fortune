@@ -6,7 +6,7 @@ class UserNoticesEntity {
   final int id;
   final String title;
   final String content;
-  final int rewardTicket;
+  final int ticket;
   final UserNoticeType type;
   final String createdAt;
 
@@ -14,7 +14,7 @@ class UserNoticesEntity {
     required this.id,
     required this.title,
     required this.content,
-    required this.rewardTicket,
+    required this.ticket,
     required this.type,
     required this.createdAt,
   });

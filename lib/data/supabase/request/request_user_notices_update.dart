@@ -12,15 +12,15 @@ class RequestUserNoticesUpdate {
   final String type;
   @JsonKey(name: 'user')
   final int userId;
-  @JsonKey(name: 'reward_ticket')
-  final int rewardTicket;
+  @JsonKey(name: 'ticket')
+  final int ticket;
 
   RequestUserNoticesUpdate({
     required this.title,
     required this.content,
     required this.type,
     required this.userId,
-    required this.rewardTicket,
+    required this.ticket,
   });
 
   factory RequestUserNoticesUpdate.fromJson(Map<String, dynamic> json) => _$RequestUserNoticesUpdateFromJson(json);
