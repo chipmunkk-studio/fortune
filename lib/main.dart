@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/data/supabase/request/request_event_notice_read_update.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
+import 'package:foresh_flutter/data/supabase/service/event_notices_service.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';

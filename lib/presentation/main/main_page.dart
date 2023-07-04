@@ -15,6 +15,7 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
+import 'package:foresh_flutter/data/supabase/response/event_notice_response.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -77,7 +78,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           title: event.notification.title,
           content: event.notification.body,
           custom: OneSignalNotificationCustomResponse(
-            entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
+            entity: EventNoticeResponse.fromJson(event.notification.additionalData!),
           ),
         ).custom;
         if (notificationData != null) {
@@ -94,7 +95,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         title: event.notification.title,
         content: event.notification.body,
         custom: OneSignalNotificationCustomResponse(
-          entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
+          entity: EventNoticeResponse.fromJson(event.notification.additionalData!),
         ),
       ).custom;
     });
