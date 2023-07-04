@@ -321,6 +321,7 @@ _initUseCase() async {
     ..registerLazySingleton<GetObtainableMarkerUseCase>(
       () => GetObtainableMarkerUseCase(
         userRepository: serviceLocator(),
+        markerRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<PostMissionRelayClearUseCase>(
@@ -328,6 +329,7 @@ _initUseCase() async {
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         markerRepository: serviceLocator(),
+        userNoticesRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MainUseCase>(

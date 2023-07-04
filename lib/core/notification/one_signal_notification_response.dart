@@ -2,18 +2,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'one_signal_notification_response.g.dart';
 
+// https://supabase.com/docs/guides/integrations/onesignal
 @JsonSerializable(ignoreUnannotated: false)
 class OneSignalNotificationResponse {
   @JsonKey(name: 'custom')
-  final OneSignalNotificationCustom? custom;
+  final OneSignalNotificationCustomResponse? custom;
   @JsonKey(name: 'alert')
-  final String? alert;
+  final String? content;
   @JsonKey(name: 'title')
   final String? title;
 
   OneSignalNotificationResponse({
     this.custom,
-    this.alert,
+    this.content,
     this.title,
   });
 
@@ -24,27 +25,42 @@ class OneSignalNotificationResponse {
 }
 
 @JsonSerializable(ignoreUnannotated: false)
-class OneSignalNotificationCustom {
+class OneSignalNotificationCustomResponse {
   @JsonKey(name: 'a')
   final OneSignalNotificationCustomEntity? entity;
 
-  OneSignalNotificationCustom({this.entity});
+  OneSignalNotificationCustomResponse({this.entity});
 
-  factory OneSignalNotificationCustom.fromJson(Map<String, dynamic> json) => _$OneSignalNotificationCustomFromJson(json);
+  factory OneSignalNotificationCustomResponse.fromJson(Map<String, dynamic> json) => _$OneSignalNotificationCustomResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OneSignalNotificationCustomToJson(this);
+  Map<String, dynamic> toJson() => _$OneSignalNotificationCustomResponseToJson(this);
 }
 
 @JsonSerializable(ignoreUnannotated: false)
 class OneSignalNotificationCustomEntity {
+  @JsonKey(name: 'headings')
+  final String? headings;
+  @JsonKey(name: 'content')
+  final String? content;
+  @JsonKey(name: 'ticket')
+  final int? ticket;
+  @JsonKey(name: 'type')
+  final String? type;
   @JsonKey(name: 'landingRoute')
   final String? landingRoute;
   @JsonKey(name: 'searchText')
   final String? searchText;
+  @JsonKey(name: 'is_notify')
+  final bool? isNotify;
 
   OneSignalNotificationCustomEntity({
     this.landingRoute,
     this.searchText,
+    this.headings,
+    this.content,
+    this.type,
+    this.ticket,
+    this.isNotify,
   });
 
   factory OneSignalNotificationCustomEntity.fromJson(Map<String, dynamic> json) => _$OneSignalNotificationCustomEntityFromJson(json);

@@ -72,19 +72,32 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     bloc = BlocProvider.of<MainBloc>(context);
     // 푸시 알람으로 랜딩 할 경우.
     OneSignal.shared.setNotificationOpenedHandler(
-      (event) {
+      (event) async {
         final notificationData = OneSignalNotificationResponse(
           title: event.notification.title,
-          alert: event.notification.body,
-          custom: OneSignalNotificationCustom(
+          content: event.notification.body,
+          custom: OneSignalNotificationCustomResponse(
             entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
           ),
         ).custom;
         if (notificationData != null) {
+          // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
+          await Future.delayed(const Duration(milliseconds: 1000));
           bloc.add(MainLandingPage(notificationData));
         }
       },
     );
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
+      event.notification.body;
+      final notificationData = OneSignalNotificationResponse(
+        title: event.notification.title,
+        content: event.notification.body,
+        custom: OneSignalNotificationCustomResponse(
+          entity: OneSignalNotificationCustomEntity.fromJson(event.notification.additionalData!),
+        ),
+      ).custom;
+    });
   }
 
   @override

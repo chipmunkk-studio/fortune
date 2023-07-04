@@ -192,7 +192,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
     List<MainLocationData> newList = List.from(state.markers);
-    await getObtainableMarkerUseCase(data.ingredient).then(
+    await getObtainableMarkerUseCase(data).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) {
