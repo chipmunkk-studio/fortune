@@ -55,9 +55,8 @@ class UserNoticesService {
     }
   }
 
-  // 알림 삭제.
+  // 알림 삭제. (오픈 했을 경우)
   Future<void> delete(int noticeId) async {
-    DateTime oneMinuteAgo = DateTime.now().subtract(const Duration(minutes: 1));
     try {
       await _client
           .from(

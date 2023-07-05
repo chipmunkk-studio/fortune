@@ -55,7 +55,7 @@ class EventNoticesService {
   }
 
   // 알림 읽기 처리.
-  Future<void> insertRead(RequestEventNoticeReadUpdate content) async {
+  Future<EventNoticeReadEntity> insertRead(RequestEventNoticeReadUpdate content) async {
     try {
       final insertUser = await _client
           .from(_eventNoticesTableReadName)

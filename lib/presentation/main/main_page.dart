@@ -76,26 +76,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         event;
         try {
           final notificationData = EventNoticeResponse.fromJson(event.notification.additionalData!);
-          if (notificationData != null) {
-            // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
-            await Future.delayed(const Duration(milliseconds: 1000));
-            bloc.add(MainLandingPage(notificationData));
-          }
+          // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
+          await Future.delayed(const Duration(milliseconds: 1000));
+          bloc.add(MainLandingPage(notificationData));
         } catch (e) {
-          FortuneLogger.debug(e.toString());
+          dialogService.showErrorDialog(context, CommonFailure(errorMessage: '알림피드를 확인해주세요'));
         }
       },
     );
-
-    OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
-      try {
-        final notificationData = EventNoticeResponse.fromJson(event.notification.additionalData!);
-        FortuneLogger.debug("message");
-        event;
-      } catch (e) {
-        FortuneLogger.debug(e.toString());
-      }
-    });
   }
 
   @override

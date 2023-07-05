@@ -21,6 +21,7 @@ import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart
 import 'package:foresh_flutter/data/supabase/service/user_notices_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -43,6 +44,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'data/supabase/repository/event_notices_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
 import 'data/supabase/service/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission_clear_user_service.dart';
@@ -245,6 +247,11 @@ _initRepository() {
     ..registerLazySingleton<UserNoticesRepository>(
       () => UserNoticesRepositoryImpl(
         userNoticesService: serviceLocator<UserNoticesService>(),
+      ),
+    )
+    ..registerLazySingleton<EventNoticesRepository>(
+      () => EventNoticesRepositoryImpl(
+        eventNoticesService: serviceLocator<EventNoticesService>(),
       ),
     )
     ..registerLazySingleton<MissionsRepository>(
