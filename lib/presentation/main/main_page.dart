@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/notification/one_signal_notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
@@ -74,30 +73,28 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     // 푸시 알람으로 랜딩 할 경우.
     OneSignal.shared.setNotificationOpenedHandler(
       (event) async {
-        final notificationData = OneSignalNotificationResponse(
-          title: event.notification.title,
-          content: event.notification.body,
-          custom: OneSignalNotificationCustomResponse(
-            entity: EventNoticeResponse.fromJson(event.notification.additionalData!),
-          ),
-        ).custom;
-        if (notificationData != null) {
-          // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
-          await Future.delayed(const Duration(milliseconds: 1000));
-          bloc.add(MainLandingPage(notificationData));
+        event;
+        try {
+          final notificationData = EventNoticeResponse.fromJson(event.notification.additionalData!);
+          if (notificationData != null) {
+            // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
+            await Future.delayed(const Duration(milliseconds: 1000));
+            bloc.add(MainLandingPage(notificationData));
+          }
+        } catch (e) {
+          FortuneLogger.debug(e.toString());
         }
       },
     );
 
     OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
-      event.notification.body;
-      final notificationData = OneSignalNotificationResponse(
-        title: event.notification.title,
-        content: event.notification.body,
-        custom: OneSignalNotificationCustomResponse(
-          entity: EventNoticeResponse.fromJson(event.notification.additionalData!),
-        ),
-      ).custom;
+      try {
+        final notificationData = EventNoticeResponse.fromJson(event.notification.additionalData!);
+        FortuneLogger.debug("message");
+        event;
+      } catch (e) {
+        FortuneLogger.debug(e.toString());
+      }
     });
   }
 

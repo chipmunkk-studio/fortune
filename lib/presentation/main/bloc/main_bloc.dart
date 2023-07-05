@@ -69,12 +69,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) async {
-    final landingPage = event.entity.entity?.landingRoute;
-    if (landingPage != null) {
+    final landingPage = event.entity.landingRoute;
+    if (landingPage.isNotEmpty) {
       switch (landingPage) {
         case Routes.obtainHistoryRoute:
-          final searchText = event.entity.entity?.searchText;
-          if (searchText != null) {
+          final searchText = event.entity.searchText;
+          if (searchText.isNotEmpty) {
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
           }
 
