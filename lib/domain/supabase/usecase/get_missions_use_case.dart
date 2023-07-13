@@ -1,14 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/normal_mission_respository.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 
-import '../entity/mission_entity.dart';
 
 class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   final MissionsRepository missionRepository;
@@ -25,7 +22,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   Future<FortuneResult<List<MissionViewEntity>>> call() async {
     try {
       final user = await userRepository.findUserByPhone();
-      final missions = await missionRepository.getAllMissions(user.isGlobal);
+      final missions = await missionRepository.getAllMissions();
 
       final missionViewItemsFutures = missions.map(
         (e) async {

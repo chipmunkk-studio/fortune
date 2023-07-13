@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -31,7 +31,7 @@ class MissionNormalCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.mission.bigTitle,
+                      item.mission.title,
                       style: FortuneTextStyle.subTitle3SemiBold(),
                       maxLines: 2,
                     ),
@@ -39,7 +39,7 @@ class MissionNormalCard extends StatelessWidget {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        item.mission.bigSubtitle,
+                        item.mission.content,
                         style: FortuneTextStyle.body2Regular(
                           fontColor: ColorName.activeDark,
                         ),
@@ -67,11 +67,11 @@ class MissionNormalCard extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "${item.mission.remainCount}",
+                                text: "${item.mission.missionReward.remainCount}",
                                 style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
                               ),
                               TextSpan(
-                                text: "/${item.mission.rewardCount}",
+                                text: "/${item.mission.missionReward.totalCount}",
                                 style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
                               ),
                             ],
@@ -88,7 +88,7 @@ class MissionNormalCard extends StatelessWidget {
                 child: ClipOval(
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
-                    image: item.mission.rewardImage,
+                    image: item.mission.missionReward.rewardImage,
                   ),
                 ),
               ),

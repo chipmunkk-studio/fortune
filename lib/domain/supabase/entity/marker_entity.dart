@@ -18,7 +18,7 @@ class MarkerEntity {
   });
 
   MarkerEntity.empty()
-      : id = 0,
+      : id = -1,
         ingredient = IngredientEntity.empty(),
         latitude = 0.0,
         longitude = 0.0,

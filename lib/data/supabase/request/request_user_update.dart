@@ -5,25 +5,35 @@ part 'request_user_update.g.dart';
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class RequestFortuneUserUpdate {
   @JsonKey(name: 'phone')
-  final String phone;
+  final String? phone;
   @JsonKey(name: 'nickname')
-  final String nickname;
+  final String? nickname;
   @JsonKey(name: 'country_code')
-  final String countryCode;
+  final String? countryCode;
   @JsonKey(name: 'ticket')
-  final int ticket;
+  final int? ticket;
   @JsonKey(name: 'marker_obtain_count')
-  final int markerObtainCount;
+  final int? markerObtainCount;
   @JsonKey(name: 'level')
-  final int level;
+  final int? level;
 
   RequestFortuneUserUpdate({
+    this.phone,
+    this.nickname,
+    this.ticket,
+    this.countryCode,
+    this.markerObtainCount,
+    this.level,
+  });
+
+
+  RequestFortuneUserUpdate.insert({
     required this.phone,
-    required this.nickname,
-    required this.ticket,
+    this.nickname,
+    this.ticket,
     required this.countryCode,
-    required this.markerObtainCount,
-    required this.level,
+    this.markerObtainCount,
+    this.level,
   });
 
   factory RequestFortuneUserUpdate.fromJson(Map<String, dynamic> json) => _$RequestFortuneUserUpdateFromJson(json);

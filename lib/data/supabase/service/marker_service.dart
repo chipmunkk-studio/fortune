@@ -2,10 +2,11 @@ import 'dart:math';
 
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/supabase/ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_update.dart';
 import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:foresh_flutter/env.dart';
@@ -13,8 +14,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MarkerService {
-  static const _markerTableName = "markers";
-  static const _fullSelectQuery = '*,ingredient(*)';
+  static const fullSelectQuery = '*,ingredient(*)';
   final SupabaseClient _client;
   final Environment env;
 
@@ -44,8 +44,8 @@ class MarkerService {
       double maxLng = longitude + (lngDiff / 2);
 
       final response = await _client
-          .from(_markerTableName)
-          .select(_fullSelectQuery)
+          .from(TableName.markers)
+          .select(fullSelectQuery)
           .gte('latitude', minLat)
           .lte('latitude', maxLat)
           .gte('longitude', minLng)
@@ -90,9 +90,9 @@ class MarkerService {
   Future<MarkerEntity> findMarkerById(int id) async {
     try {
       final List<dynamic> response = await _client
-          .from(_markerTableName)
+          .from(TableName.markers)
           .select(
-            _fullSelectQuery,
+            fullSelectQuery,
           )
           .eq("id", id)
           .toSelect();
@@ -120,7 +120,7 @@ class MarkerService {
     try {
       MarkerEntity marker = await findMarkerById(id);
       final updateMarker = await _client
-          .from(_markerTableName)
+          .from(TableName.markers)
           .update(
             RequestMarkerUpdate(
               latitude: location?.latitude ?? marker.latitude,
@@ -130,7 +130,7 @@ class MarkerService {
             ).toJson(),
           )
           .eq("id", id)
-          .select(_fullSelectQuery);
+          .select(fullSelectQuery);
       return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
@@ -141,7 +141,7 @@ class MarkerService {
   Future<void> delete(int id) async {
     try {
       MarkerEntity marker = await findMarkerById(id);
-      await _client.from(_markerTableName).delete().eq("id", marker.id);
+      await _client.from(TableName.markers).delete().eq("id", marker.id);
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
@@ -153,7 +153,7 @@ class MarkerService {
   }) async {
     try {
       for (var element in markers) {
-        await _client.from(_markerTableName).insert(element.toJson());
+        await _client.from(TableName.markers).insert(element.toJson());
       }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_clear_condition_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'missions_response.dart';

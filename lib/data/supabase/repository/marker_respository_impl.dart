@@ -5,13 +5,11 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
-import 'package:foresh_flutter/data/supabase/service/user_service.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MarkerRepositoryImpl extends MarkerRepository {
   final MarkerService _markerService;

@@ -1,3 +1,5 @@
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+
 class RequestInsertHistoryParam {
   final int ingredientId;
   final int userId;
@@ -6,6 +8,7 @@ class RequestInsertHistoryParam {
   final String enLocationName;
   final String ingredientName;
   final String nickname;
+  final IngredientType ingredientType;
 
   RequestInsertHistoryParam({
     required this.ingredientId,
@@ -15,5 +18,6 @@ class RequestInsertHistoryParam {
     required this.enLocationName,
     required this.ingredientName,
     required this.nickname,
+    required this.ingredientType,
   });
 }

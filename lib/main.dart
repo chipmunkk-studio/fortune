@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notice_read_update.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
+import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
-import 'package:foresh_flutter/data/supabase/service/event_notices_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
@@ -23,6 +27,8 @@ main() {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
       String startRoute = await serviceLocator<AuthService>().recoverSession();
+
+      await serviceTest();
 
       runApp(
         EasyLocalization(
@@ -45,4 +51,20 @@ main() {
       fatal: true,
     ),
   );
+}
+
+serviceTest() async {
+  final service = serviceLocator<EventNoticesRepository>();
+  final list = await service.findAllNotices();
+  final temp = await service.insertNotice(
+    RequestEventNotices.insert(
+      type: EventNoticeType.user.name,
+      isRead: false,
+      isReceived: false,
+      headings: '테스트1',
+      content: '테스트2',
+    ),
+  );
+
+  FortuneLogger.info(list.toString());
 }

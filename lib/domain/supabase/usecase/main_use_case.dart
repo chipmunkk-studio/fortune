@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/main_view_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
 import 'package:foresh_flutter/env.dart';
@@ -17,7 +17,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   final IngredientRepository ingredientRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MarkerRepository markerRepository;
-  final UserNoticesRepository userNoticesRepository;
+  final EventNoticesRepository userNoticesRepository;
   final UserRepository userRepository;
   final FortuneRemoteConfig remoteConfig;
 
@@ -37,7 +37,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final user = await userRepository.findUserByPhone();
 
       // 유저 알림 가져오기.
-      final userNotices = await userNoticesRepository.findAllNoticesByUserId(user.id);
+      final userNotices = await userNoticesRepository.findAllNotices();
 
       // 내 주변의 마커를 가져옴. (글로벌 여부 확인)
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))

@@ -12,16 +12,14 @@ enum IngredientType {
   unique,
 }
 
-enum MissionType {
-  normal,
-  relay,
+enum EventNoticeType {
+  user,
+  server,
   none,
 }
 
-enum UserNoticeType {
-  level_up,
-  grade_up,
-  relay_mission_clear,
+enum EventRewardType {
+  ticket,
   none,
 }
 
@@ -44,21 +42,21 @@ getIngredientType(String type) {
   }
 }
 
-getMissionType(String type) {
-  if (MissionType.relay.name == type) {
-    return MissionType.relay;
-  } else if (MissionType.normal.name == type) {
-    return MissionType.normal;
+getEventNoticeType(String type) {
+  if (EventNoticeType.server.name == type) {
+    return EventNoticeType.server;
+  } else if (EventNoticeType.user.name == type) {
+    return EventNoticeType.user;
   } else {
-    return MissionType.normal;
+    return EventNoticeType.none;
   }
 }
 
-getUserNoticeType(String type) {
-  if (UserNoticeType.level_up.name == type) {
-    return UserNoticeType.level_up;
+getEventRewardType(String type) {
+  if (EventRewardType.ticket.name == type) {
+    return EventRewardType.ticket;
   } else {
-    return UserNoticeType.none;
+    return EventRewardType.none;
   }
 }
 

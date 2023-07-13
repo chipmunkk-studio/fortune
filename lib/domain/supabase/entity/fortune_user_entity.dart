@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
 
 class FortuneUserEntity {
@@ -46,6 +46,19 @@ class FortuneUserEntity {
       ticket: ticket ?? this.ticket,
       markerObtainCount: markerObtainCount ?? this.markerObtainCount,
       level: level ?? this.level,
+    );
+  }
+
+  factory FortuneUserEntity.empty() {
+    return FortuneUserEntity(
+      id: -1,
+      phone: '',
+      countryCode: '',
+      nickname: '',
+      profileImage: '',
+      ticket: 0,
+      markerObtainCount: 0,
+      level: 0,
     );
   }
 

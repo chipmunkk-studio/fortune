@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
+import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/missions/component/mission_relay_card.dart';
 
 import 'mission_normal_card.dart';
@@ -28,7 +28,7 @@ class MissionCardList extends StatelessWidget {
         return Bounceable(
           onTap: () => onItemClick(item),
           child: () {
-            switch (item.mission.type) {
+            switch (item.mission.missionType) {
               case MissionType.normal:
                 return MissionNormalCard(item);
               case MissionType.relay:

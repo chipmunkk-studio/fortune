@@ -1,5 +1,4 @@
-import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 
 class MissionsEntity {

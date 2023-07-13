@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 
 import '../../bloc/main.dart';
@@ -28,19 +30,23 @@ class TopLocationArea extends StatelessWidget {
             ),
             const SizedBox(width: 24),
             Stack(
+              clipBehavior: Clip.none,
               children: [
                 Assets.icons.icBell.svg(),
                 // 봐야할 알림이 있으면 나타냄.
                 if (state.notices.isNotEmpty)
                   Positioned(
-                    right: 0,
-                    top: 0,
+                    right: -10,
+                    top: -10,
                     child: Container(
-                      width: 4,
-                      height: 4,
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        shape: BoxShape.circle,
+                      decoration: BoxDecoration(
+                        color: ColorName.negative,
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                      child: Text(
+                        getHistoryCount(state.notices.length),
+                        style: FortuneTextStyle.caption1SemiBold(),
                       ),
                     ),
                   )
@@ -52,5 +58,13 @@ class TopLocationArea extends StatelessWidget {
         );
       },
     );
+  }
+
+  getHistoryCount(int length) {
+    if (length < 9) {
+      return length.toString();
+    } else {
+      return '9+';
+    }
   }
 }

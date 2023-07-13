@@ -14,7 +14,7 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/data/supabase/response/event_notice_response.dart';
+import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -75,7 +75,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       (event) async {
         event;
         try {
-          final notificationData = EventNoticeResponse.fromJson(event.notification.additionalData!);
+          final notificationData = EventNoticesResponse.fromJson(event.notification.additionalData!);
           // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
           await Future.delayed(const Duration(milliseconds: 1000));
           bloc.add(MainLandingPage(notificationData));

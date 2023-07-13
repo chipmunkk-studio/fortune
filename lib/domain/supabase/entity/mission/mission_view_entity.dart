@@ -1,4 +1,5 @@
-import 'mission_entity.dart';
+
+import 'missions_entity.dart';
 
 class MissionViewEntity {
   final MissionsEntity mission;

@@ -1,71 +1,108 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notice_read_update.dart';
-import 'package:foresh_flutter/data/supabase/request/request_user_notices_update.dart';
-import 'package:foresh_flutter/data/supabase/response/event_notice_read_response.dart';
-import 'package:foresh_flutter/data/supabase/response/event_notice_response.dart';
-import 'package:foresh_flutter/data/supabase/response/user_notices_response.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/event_notice_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/event_notice_read_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/user_notices_entity.dart';
+import 'package:foresh_flutter/data/supabase/ext.dart';
+import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
+import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EventNoticesService {
-  static const _eventNoticesTableName = "event_notices";
-  static const _eventNoticesTableReadName = "event_notices_read";
-  static const _fullSelectQuery = '*';
+  static const fullSelectQuery = '*,'
+      '${TableName.users}(*),'
+      '${TableName.eventRewards}(*)';
 
-  final SupabaseClient _client;
+  final _tableName = TableName.eventNotices;
 
-  EventNoticesService(this._client);
+  final SupabaseClient _client = Supabase.instance.client;
 
-  // 내가 읽지 않은 모든 알림을 조회.
-  Future<List<EventNoticeEntity>> findAllNoticesByUserId(int userId) async {
+  EventNoticesService();
+
+  // 모든 알림을 조회.
+  Future<List<EventNoticesEntity>> findAllEventNotices() async {
     try {
-      // 모든 알림을 조회.
-      final List<dynamic> allNotificationsResponse =
-          await _client.from(_eventNoticesTableName).select(_fullSelectQuery).toSelect();
-      final List<EventNoticeEntity> allNotificationsEntity =
-          allNotificationsResponse.map((e) => EventNoticeResponse.fromJson(e)).toList();
-
-      // 알림 리드 테이블 조회.
-      final List<dynamic> readNotificationResponse =
-          await _client.from(_eventNoticesTableReadName).select(_fullSelectQuery).eq('user', userId).toSelect();
-      final List<EventNoticeReadEntity> readNotificationEntity =
-          readNotificationResponse.map((e) => EventNoticeReadResponse.fromJson(e)).toList();
-      final List<int> readNotificationIds = readNotificationEntity.map((e) => e.notice).toList();
-
-      // 읽지 않은 알람 필터.
-      final unreadNotifications = allNotificationsEntity
-          .where(
-            (notification) => !readNotificationIds.contains(
-              notification.id,
-            ),
+      final response = await _client
+          .from(_tableName)
+          .select(
+            fullSelectQuery,
           )
-          .toList();
-
-      if (unreadNotifications.isEmpty) {
+          .toSelect();
+      if (response.isEmpty) {
         return List.empty();
       } else {
-        return unreadNotifications;
+        final notices = response.map((e) => EventNoticesResponse.fromJson(e)).toList();
+        return notices;
       }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
   }
 
-  // 알림 읽기 처리.
-  Future<EventNoticeReadEntity> insertRead(RequestEventNoticeReadUpdate content) async {
+  // 아이디로 알림을 조회
+  Future<EventNoticesEntity> findNoticeById(int noticeId) async {
+    try {
+      final response = await _client
+          .from(_tableName)
+          .select(
+            fullSelectQuery,
+          )
+          .filter('id', 'eq', noticeId)
+          .toSelect();
+      if (response.isEmpty) {
+        throw CommonFailure(errorMessage: '알림이 존재 하지 않습니다');
+      } else {
+        final missions = response.map((e) => EventNoticesResponse.fromJson(e)).toList();
+        return missions.single;
+      }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 알림 업데이트.
+  Future<void> update(
+    int noticeId, {
+    required RequestEventNotices request,
+  }) async {
+    EventNoticesEntity eventNotice = await findNoticeById(noticeId);
+
+    final requestToUpdate = RequestEventNotices(
+      users: request.users ?? eventNotice.user.id,
+      searchText: request.searchText ?? eventNotice.searchText,
+      eventRewards: request.eventRewards ?? eventNotice.eventReward.id,
+      type: request.type ?? eventNotice.type.name,
+      landingRoute: request.landingRoute ?? eventNotice.landingRoute,
+      isRead: request.isRead ?? eventNotice.isRead,
+      isReceived: request.isReceived ?? eventNotice.isReceive,
+      headings: '',
+      content: '',
+    );
+
+    try {
+      final updateResponse = await _client
+          .from(_tableName)
+          .update(
+            requestToUpdate.toJson(),
+          )
+          .eq('id', noticeId)
+          .select(fullSelectQuery);
+      return updateResponse.map((e) => EventNoticesResponse.fromJson(e)).toList().single;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 알림 추가.
+  Future<EventNoticesEntity> insert(RequestEventNotices request) async {
     try {
       final insertUser = await _client
-          .from(_eventNoticesTableReadName)
+          .from(_tableName)
           .insert(
-            content.toJson(),
+            request.toJson(),
           )
-          .select(_fullSelectQuery);
-      return insertUser.map((e) => EventNoticeReadResponse.fromJson(e)).toList().single;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+          .select(fullSelectQuery);
+      return insertUser.map((e) => EventNoticesResponse.fromJson(e)).toList().single;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 }

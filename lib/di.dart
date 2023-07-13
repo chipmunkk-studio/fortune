@@ -7,18 +7,17 @@ import 'package:foresh_flutter/core/notification/one_signal_manager.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/event_notices_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/obtain_history_respository_impl.dart';
-import 'package:foresh_flutter/data/supabase/repository/user_notices_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/user_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/board_service.dart';
-import 'package:foresh_flutter/data/supabase/service/event_notices_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
+import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
-import 'package:foresh_flutter/data/supabase/service/user_notices_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
@@ -44,13 +43,12 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'data/supabase/repository/event_notices_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
-import 'data/supabase/service/mission_clear_conditions_service.dart';
-import 'data/supabase/service/mission_clear_user_service.dart';
-import 'data/supabase/service/missions_service.dart';
-import 'domain/supabase/repository/normal_mission_respository.dart';
-import 'domain/supabase/repository/user_notices_repository.dart';
+import 'data/supabase/service/event_notices_service.dart';
+import 'data/supabase/service/mission/missions_service.dart';
+import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
+import 'data/supabase/service/mission/mission_clear_user_service.dart';
+import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
@@ -161,9 +159,7 @@ initAppLogger() {
 _initService() {
   serviceLocator
     ..registerLazySingleton<UserService>(
-      () => UserService(
-        Supabase.instance.client,
-      ),
+      () => UserService(),
     )
     ..registerLazySingleton<BoardService>(
       () => BoardService(
@@ -188,24 +184,18 @@ _initService() {
       ),
     )
     ..registerLazySingleton<MissionsService>(
-      () => MissionsService(
-        Supabase.instance.client,
-      ),
+      () => MissionsService(),
     )
-    ..registerLazySingleton<EventNoticesService>(
-      () => EventNoticesService(
-        Supabase.instance.client,
-      ),
+    ..registerLazySingleton<MissionRewardService>(
+      () => MissionRewardService(),
     )
     ..registerLazySingleton<MissionClearUserService>(
       () => MissionClearUserService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<UserNoticesService>(
-      () => UserNoticesService(
-        Supabase.instance.client,
-      ),
+    ..registerLazySingleton<EventNoticesService>(
+      () => EventNoticesService(),
     )
     ..registerLazySingleton<MissionsClearConditionsService>(
       () => MissionsClearConditionsService(
@@ -244,11 +234,6 @@ _initRepository() {
         serviceLocator<ObtainHistoryService>(),
       ),
     )
-    ..registerLazySingleton<UserNoticesRepository>(
-      () => UserNoticesRepositoryImpl(
-        userNoticesService: serviceLocator<UserNoticesService>(),
-      ),
-    )
     ..registerLazySingleton<EventNoticesRepository>(
       () => EventNoticesRepositoryImpl(
         eventNoticesService: serviceLocator<EventNoticesService>(),
@@ -259,6 +244,7 @@ _initRepository() {
         missionNormalService: serviceLocator<MissionsService>(),
         missionClearConditionsService: serviceLocator<MissionsClearConditionsService>(),
         missionClearUserService: serviceLocator<MissionClearUserService>(),
+        missionRewardService: serviceLocator<MissionRewardService>(),
         userService: serviceLocator<UserService>(),
       ),
     )

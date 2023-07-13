@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
+import 'package:foresh_flutter/data/supabase/request/request_user_update.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
@@ -46,10 +47,12 @@ class UserRepositoryImpl extends UserRepository {
   Future<FortuneUserEntity> updateUser(FortuneUserEntity user) async {
     return await _userService.update(
       user.phone,
-      nickName: user.nickname,
-      ticket: user.ticket,
-      countryCode: user.countryCode,
-      markerObtainCount: user.markerObtainCount,
+      request: RequestFortuneUserUpdate(
+        nickname: user.nickname,
+        ticket: user.ticket,
+        countryCode: user.countryCode,
+        markerObtainCount: user.markerObtainCount,
+      ),
     );
   }
 }

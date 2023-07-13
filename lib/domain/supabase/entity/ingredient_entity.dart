@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 
 class IngredientEntity {
   final int id;
@@ -21,7 +21,7 @@ class IngredientEntity {
 
   factory IngredientEntity.empty() {
     return IngredientEntity(
-      id: 0,
+      id: -1,
       name: '',
       imageUrl: '',
       rewardTicket: 0,

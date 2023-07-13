@@ -1,8 +1,8 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user_update.dart';
-import 'package:foresh_flutter/data/supabase/response/mission_clear_user_response.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_clear_user_entity.dart';
+import 'package:foresh_flutter/data/supabase/response/mission/mission_clear_user_response.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionClearUserService {

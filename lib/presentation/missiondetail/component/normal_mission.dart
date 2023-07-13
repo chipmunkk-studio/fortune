@@ -6,7 +6,7 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_painter.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_detail_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:foresh_flutter/presentation/missiondetail/bloc/mission_detail_state.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -35,7 +35,7 @@ class NormalMission extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.detailTitle,
+                      state.entity.mission.title,
                       style: FortuneTextStyle.subTitle1SemiBold(),
                     ),
                   ),
@@ -43,7 +43,7 @@ class NormalMission extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.detailSubtitle,
+                      state.entity.mission.content,
                       style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
                     ),
                   ),
@@ -53,7 +53,7 @@ class NormalMission extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.detailContent,
+                      state.entity.mission.content,
                       style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
                     ),
                   ),

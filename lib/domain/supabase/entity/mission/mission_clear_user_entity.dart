@@ -1,5 +1,5 @@
-import 'fortune_user_entity.dart';
-import 'mission_entity.dart';
+import '../fortune_user_entity.dart';
+import 'missions_entity.dart';
 
 class MissionClearUserEntity {
   final int id;

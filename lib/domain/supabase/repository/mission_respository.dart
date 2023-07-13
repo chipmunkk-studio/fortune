@@ -1,10 +1,11 @@
 
-import 'package:foresh_flutter/domain/supabase/entity/mission_clear_condition_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_entity.dart';
+
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
 
 abstract class MissionsRepository {
   // 미션 목록 불러오기.
-  Future<List<MissionsEntity>> getAllMissions(bool isGlobal);
+  Future<List<MissionsEntity>> getAllMissions();
 
   // 미션 상세 조건.
   Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId);

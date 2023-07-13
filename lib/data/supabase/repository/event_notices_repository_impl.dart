@@ -1,9 +1,8 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notice_read_update.dart';
+import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
 import 'package:foresh_flutter/data/supabase/service/event_notices_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/event_notice_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/event_notice_read_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 
 class EventNoticesRepositoryImpl extends EventNoticesRepository {
@@ -14,9 +13,9 @@ class EventNoticesRepositoryImpl extends EventNoticesRepository {
   });
 
   @override
-  Future<List<EventNoticeEntity>> findAllNoticesByUserId(int userId) async {
+  Future<List<EventNoticesEntity>> findAllNotices() async {
     try {
-      final result = await eventNoticesService.findAllNoticesByUserId(userId);
+      final result = await eventNoticesService.findAllEventNotices();
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -25,9 +24,9 @@ class EventNoticesRepositoryImpl extends EventNoticesRepository {
   }
 
   @override
-  Future<EventNoticeReadEntity> insertNotice(RequestEventNoticeReadUpdate content) async {
+  Future<EventNoticesEntity> insertNotice(RequestEventNotices content) async {
     try {
-      final result = await eventNoticesService.insertRead(content);
+      final result = await eventNoticesService.insert(content);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

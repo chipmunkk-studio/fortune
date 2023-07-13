@@ -5,7 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
-import 'package:foresh_flutter/data/supabase/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_level_or_grade_up_param.dart';
@@ -124,10 +124,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     await getMain(emit);
   }
 
+  // 메인 화면을 구성하는데 필요한 모든 정보를 가져옴.
   getMain(Emitter<MainState> emit) async {
-    // 메인 화면을 구성하는데 필요한 모든 정보를 가져옴.
     final myLoc = state.myLocation;
-
     if (myLoc != null) {
       await mainUseCase(
         RequestMainParam(
@@ -197,6 +196,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (l) => produceSideEffect(MainError(l)),
         (r) {
           var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
+          // 획득 후 제거.
           if (loc != null) {
             newList.remove(loc);
             emit(state.copyWith(markers: newList));
@@ -239,61 +239,62 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (user) async {
-          // #1-1 레벨 업 인지 확인.
+          // #2 레벨업 여부 확인
           await _confirmLevelOrGradeUp(prevUser: state.user!, nextUser: user);
 
           emit(state.copyWith(user: user));
-          // #2 마커 랜덤 배치. (티켓 감소 후 획득 했다고 판단)
+
+          // #3 마커 랜덤 배치. (티켓 감소 후 획득 했다고 판단)
           await reLocateMarkerUseCase(
             RequestReLocateMarkerParam(
               markerId: marker.id,
               user: state.user!,
             ),
           );
-          // #3 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
-          if (marker.ingredient.type != IngredientType.ticket) {
-            await insertObtainHistoryUseCase(
-              RequestInsertHistoryParam(
-                userId: user.id,
-                markerId: marker.id.toString(),
-                ingredientId: marker.ingredient.id,
-                ingredientName: marker.ingredient.name,
-                nickname: user.nickname,
-                krLocationName: krLocationName,
-                enLocationName: enLocationName,
-              ),
-            ).then(
-              (value) => value.fold(
-                (l) => produceSideEffect(MainError(l)),
-                (haveCount) async {
-                  emit(
-                    state.copyWith(
-                      haveCount: haveCount,
-                      processingCount: state.processingCount - 1,
-                    ),
-                  );
+
+          // #4 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
+          await insertObtainHistoryUseCase(
+            RequestInsertHistoryParam(
+              userId: user.id,
+              ingredientType: marker.ingredient.type,
+              markerId: marker.id.toString(),
+              ingredientId: marker.ingredient.id,
+              ingredientName: marker.ingredient.name,
+              nickname: user.nickname,
+              krLocationName: krLocationName,
+              enLocationName: enLocationName,
+            ),
+          ).then(
+            (value) => value.fold(
+              (l) => produceSideEffect(MainError(l)),
+              (histories) async {
+                emit(
+                  state.copyWith(
+                    haveCount: histories != null ? histories.length : state.haveCount,
+                    processingCount: state.processingCount - 1,
+                  ),
+                );
+                if (histories != null) {
                   await postMissionRelayClearUseCase(marker.id).then(
                     (value) => value.fold(
                       (l) => null,
-                      (r) => produceSideEffect(
-                        MainShowDialog(
-                          landingRoute: Routes.userNoticesRoute,
-                          title: '릴레이 미션을 클리어 하셨습니다!!',
-                          subTitle: '축하합니다',
-                        ),
-                      ),
+                      (isClear) {
+                        if (isClear) {
+                          produceSideEffect(
+                            MainShowDialog(
+                              landingRoute: Routes.userNoticesRoute,
+                              title: '릴레이 미션을 클리어 하셨습니다!!',
+                              subTitle: '축하합니다',
+                            ),
+                          );
+                        }
+                      },
                     ),
                   );
-                },
-              ),
-            );
-          } else {
-            emit(
-              state.copyWith(
-                processingCount: state.processingCount - 1,
-              ),
-            );
-          }
+                }
+              },
+            ),
+          );
         },
       ),
     );
@@ -311,21 +312,21 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     ).then(
       (value) => value.fold(
         (l) => null,
-        (type) {
-          switch (type) {
-            case UserNoticeType.grade_up:
-            case UserNoticeType.level_up:
-              produceSideEffect(
-                MainShowDialog(
-                  title: "레벨 업을 축하합니다!",
-                  landingRoute: Routes.userNoticesRoute,
-                  subTitle: '새로운 알림을 확인해보세요.',
-                ),
-              );
-              break;
-            default:
-              break;
-          }
+        (entity) {
+          // switch (type) {
+          //   case UserNoticeType.grade_up:
+          //   case UserNoticeType.level_up:
+          //     produceSideEffect(
+          //       MainShowDialog(
+          //         title: "레벨 업을 축하합니다!",
+          //         landingRoute: Routes.userNoticesRoute,
+          //         subTitle: '새로운 알림을 확인해보세요.',
+          //       ),
+          //     );
+          //     break;
+          //   default:
+          //     break;
+          // }
         },
       ),
     );

@@ -1,5 +1,5 @@
-import 'ingredient_entity.dart';
-import 'mission_entity.dart';
+import '../ingredient_entity.dart';
+import 'missions_entity.dart';
 
 class MissionClearConditionEntity {
   final int id;

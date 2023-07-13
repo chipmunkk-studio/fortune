@@ -1,5 +1,5 @@
-import 'ingredient_entity.dart';
-import 'mission_entity.dart';
+import '../ingredient_entity.dart';
+import 'missions_entity.dart';
 
 class MissionDetailEntity {
   final List<MissionDetailViewItemEntity> markers;

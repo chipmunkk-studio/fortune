@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission_clear_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_history_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mission_clear_history_response.g.dart';

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission_view_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 
 import '../../missions/bloc/missions.dart';
 
