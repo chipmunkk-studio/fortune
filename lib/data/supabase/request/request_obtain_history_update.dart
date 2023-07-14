@@ -3,23 +3,23 @@ import 'package:json_annotation/json_annotation.dart';
 part 'request_obtain_history_update.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class RequestObtainHistoryUpdate {
+class RequestObtainHistory {
   @JsonKey(name: 'ingredient')
-  final int ingredientId;
+  final int? ingredientId;
   @JsonKey(name: 'user')
-  final int userId;
+  final int? userId;
   @JsonKey(name: 'marker_id')
-  final String markerId;
+  final String? markerId;
   @JsonKey(name: 'nickname')
-  final String nickName;
+  final String? nickName;
   @JsonKey(name: 'ingredient_name')
-  final String ingredientName;
+  final String? ingredientName;
   @JsonKey(name: 'kr_location_name')
-  final String krLocationName;
+  final String? krLocationName;
   @JsonKey(name: 'en_location_name')
-  final String enLocationName;
+  final String? enLocationName;
 
-  RequestObtainHistoryUpdate({
+  RequestObtainHistory({
     required this.ingredientId,
     required this.userId,
     required this.nickName,
@@ -29,7 +29,7 @@ class RequestObtainHistoryUpdate {
     required this.enLocationName,
   });
 
-  factory RequestObtainHistoryUpdate.fromJson(Map<String, dynamic> json) => _$RequestObtainHistoryUpdateFromJson(json);
+  factory RequestObtainHistory.fromJson(Map<String, dynamic> json) => _$RequestObtainHistoryFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RequestObtainHistoryUpdateToJson(this);
+  Map<String, dynamic> toJson() => _$RequestObtainHistoryToJson(this);
 }

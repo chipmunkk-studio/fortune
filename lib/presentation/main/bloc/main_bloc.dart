@@ -234,13 +234,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final krLocationName = await getLocationName(latitude, longitude);
     final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
+    // 마커 획득.
     // #1 티켓 감소.
     await obtainMarkerUseCase(marker).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (user) async {
           // #2 레벨업 여부 확인
-          await _confirmLevelOrGradeUp(prevUser: state.user!, nextUser: user);
+          _confirmLevelOrGradeUp(prevUser: state.user!, nextUser: user);
 
           emit(state.copyWith(user: user));
 
@@ -304,6 +305,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required FortuneUserEntity prevUser,
     required FortuneUserEntity nextUser,
   }) async {
+    FortuneLogger.info("_confirmLevelOrGradeUp");
     await levelOrGradeUpUseCase(
       RequestLevelOrGradeUpParam(
         prevUser: prevUser,

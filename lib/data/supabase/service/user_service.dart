@@ -1,7 +1,7 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/ext.dart';
-import 'package:foresh_flutter/data/supabase/request/request_user_update.dart';
+import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -19,13 +19,10 @@ class UserService {
   }) async {
     try {
       await _client.from(_tableName).insert(
-            RequestFortuneUserUpdate(
+            RequestFortuneUser.insert(
               phone: phone.replaceFirst('+', ''),
               nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
-              ticket: 100,
               countryCode: "82",
-              markerObtainCount: 0,
-              level: 1,
             ).toJson(),
           );
     } on Exception catch (e) {
@@ -36,12 +33,12 @@ class UserService {
   // 사용자 업데이트.
   Future<FortuneUserEntity> update(
     String phoneNumber, {
-    required RequestFortuneUserUpdate request,
+    required RequestFortuneUser request,
   }) async {
     try {
       FortuneUserEntity? user = await findUserByPhoneNonNull(phoneNumber);
 
-      final requestToUpdate = RequestFortuneUserUpdate(
+      final requestToUpdate = RequestFortuneUser(
         phone: request.phone ?? user.phone,
         nickname: request.nickname ?? user.nickname,
         ticket: request.ticket ?? user.ticket,

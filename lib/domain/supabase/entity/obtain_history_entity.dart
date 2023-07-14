@@ -11,6 +11,7 @@ class ObtainHistoryEntity {
   final String krLocationName;
   final String enLocationName;
   final String createdAt;
+  final bool isReward;
 
   ObtainHistoryEntity({
     required this.id,
@@ -22,6 +23,7 @@ class ObtainHistoryEntity {
     required this.krLocationName,
     required this.enLocationName,
     required this.nickName,
+    required this.isReward,
   });
 }
 

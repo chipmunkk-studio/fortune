@@ -1,5 +1,6 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history_update.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -34,24 +35,10 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
   // 마커 히스토리 삽입.
   @override
   Future<void> insertObtainHistory({
-    required int ingredientId,
-    required int userId,
-    required String markerId,
-    required String krLocationName,
-    required String enLocationName,
-    required String ingredientName,
-    required String nickname,
+    required RequestObtainHistory request,
   }) async {
     try {
-      await _obtainHistoryService.insert(
-        userId: userId,
-        markerId: markerId,
-        ingredientId: ingredientId,
-        nickname: nickname,
-        krLocationName: krLocationName,
-        enLocationName: enLocationName,
-        ingredientName: ingredientName,
-      );
+      await _obtainHistoryService.insert(request: request);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;

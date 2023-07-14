@@ -13,8 +13,3 @@ abstract class UseCase0<Type> {
 abstract class UseCase1<Type, Params> {
   Future<FortuneResult<Type>> call(Params params);
 }
-
-abstract class StreamUseCase1<Param, Type> {
-  Stream<FortuneResult<Type>> call(Param param);
-}
-

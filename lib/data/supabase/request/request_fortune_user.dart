@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'request_user_update.g.dart';
+part 'request_fortune_user.g.dart';
 
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
-class RequestFortuneUserUpdate {
+class RequestFortuneUser {
   @JsonKey(name: 'phone')
   final String? phone;
   @JsonKey(name: 'nickname')
@@ -17,7 +17,7 @@ class RequestFortuneUserUpdate {
   @JsonKey(name: 'level')
   final int? level;
 
-  RequestFortuneUserUpdate({
+  RequestFortuneUser({
     this.phone,
     this.nickname,
     this.ticket,
@@ -27,16 +27,16 @@ class RequestFortuneUserUpdate {
   });
 
 
-  RequestFortuneUserUpdate.insert({
+  RequestFortuneUser.insert({
     required this.phone,
-    this.nickname,
-    this.ticket,
+    required this.nickname,
+    this.ticket = 0,
     required this.countryCode,
-    this.markerObtainCount,
-    this.level,
+    this.markerObtainCount = 0,
+    this.level = 1,
   });
 
-  factory RequestFortuneUserUpdate.fromJson(Map<String, dynamic> json) => _$RequestFortuneUserUpdateFromJson(json);
+  factory RequestFortuneUser.fromJson(Map<String, dynamic> json) => _$RequestFortuneUserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RequestFortuneUserUpdateToJson(this);
+  Map<String, dynamic> toJson() => _$RequestFortuneUserToJson(this);
 }

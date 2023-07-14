@@ -91,27 +91,9 @@ class ObtainHistoryService {
   }
 
   // 마커 히스토리 삽입.
-  Future<void> insert({
-    required int userId,
-    required String markerId,
-    required int ingredientId,
-    required String krLocationName,
-    required String enLocationName,
-    required String ingredientName,
-    required String nickname,
-  }) async {
+  Future<void> insert({required RequestObtainHistory request}) async {
     try {
-      await _client.from(_obtainHistoryTableName).insert(
-            RequestObtainHistoryUpdate(
-              userId: userId,
-              markerId: markerId,
-              ingredientId: ingredientId,
-              nickName: nickname,
-              krLocationName: krLocationName,
-              enLocationName: enLocationName,
-              ingredientName: ingredientName,
-            ).toJson(),
-          );
+      await _client.from(_obtainHistoryTableName).insert(request.toJson());
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

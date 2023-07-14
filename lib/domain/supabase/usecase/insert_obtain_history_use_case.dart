@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history_update.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -23,13 +24,15 @@ class InsertObtainHistoryUseCase implements UseCase1<List<ObtainHistoryEntity>?,
       // 티켓이 아닐 경우에만 히스토리 추가.
       if (param.ingredientType != IngredientType.ticket) {
         await obtainHistoryRepository.insertObtainHistory(
-          userId: param.userId,
-          markerId: param.markerId,
-          ingredientId: param.ingredientId,
-          nickname: param.nickname,
-          krLocationName: param.krLocationName,
-          enLocationName: param.enLocationName,
-          ingredientName: param.ingredientName,
+          request: RequestObtainHistory(
+            userId: param.userId,
+            markerId: param.markerId,
+            ingredientId: param.ingredientId,
+            nickName: param.nickname,
+            krLocationName: param.krLocationName,
+            enLocationName: param.enLocationName,
+            ingredientName: param.ingredientName,
+          ),
         );
         final histories = await obtainHistoryRepository.getHistoriesByUser(userId: param.userId);
         return Right(histories);

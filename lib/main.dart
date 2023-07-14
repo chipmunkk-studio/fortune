@@ -28,7 +28,7 @@ main() {
 
       String startRoute = await serviceLocator<AuthService>().recoverSession();
 
-      await serviceTest();
+      // await serviceTest();
 
       runApp(
         EasyLocalization(

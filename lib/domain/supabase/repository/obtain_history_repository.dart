@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history_update.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 
 abstract class ObtainHistoryRepository {
@@ -10,13 +11,7 @@ abstract class ObtainHistoryRepository {
 
   // 히스토리 삽입.
   Future<void> insertObtainHistory({
-    required int ingredientId,
-    required int userId,
-    required String markerId,
-    required String krLocationName,
-    required String enLocationName,
-    required String ingredientName,
-    required String nickname,
+    required RequestObtainHistory request,
   });
 
   // 사용자 아이디와 재료 아이디로 조회.
