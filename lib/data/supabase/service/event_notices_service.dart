@@ -2,6 +2,7 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
 import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
+import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class EventNoticesService {
   static const fullSelectQuery = '*,'
       '${TableName.users}(*),'
-      '${TableName.eventRewards}(*)';
+      '${TableName.eventRewards}(*, ${TableName.markers}(${MarkerService.fullSelectQuery}))';
 
   final _tableName = TableName.eventNotices;
 

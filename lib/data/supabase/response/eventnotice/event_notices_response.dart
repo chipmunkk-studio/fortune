@@ -14,26 +14,26 @@ part 'event_notices_response.g.dart';
 class EventNoticesResponse extends EventNoticesEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'type')
-  final String type_;
-  @JsonKey(name: 'users')
-  final FortuneUserResponse? users_;
-  @JsonKey(name: 'event_rewards')
-  final EventRewardsResponse? eventRewards_;
   @JsonKey(name: 'headings')
   final String headings_;
   @JsonKey(name: 'content')
   final String content_;
-  @JsonKey(name: 'search_text')
-  final String? searchText_;
   @JsonKey(name: 'landing_route')
   final String? landingRoute_;
-  @JsonKey(name: 'created_at')
-  final String createdAt_;
+  @JsonKey(name: 'users')
+  final FortuneUserResponse? users_;
+  @JsonKey(name: 'type')
+  final String type_;
+  @JsonKey(name: 'event_rewards')
+  final EventRewardsResponse? eventRewards_;
+  @JsonKey(name: 'search_text')
+  final String? searchText_;
   @JsonKey(name: 'is_read')
   final bool isRead_;
   @JsonKey(name: 'is_receive')
   final bool isReceived_;
+  @JsonKey(name: 'created_at')
+  final String createdAt_;
 
   EventNoticesResponse({
     required this.users_,
