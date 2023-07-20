@@ -5,7 +5,6 @@ class MissionClearUserEntity {
   final int id;
   final MissionsEntity mission;
   final FortuneUserEntity user;
-  final String email;
   final bool isReceive;
   final String createdAt;
 
@@ -15,6 +14,5 @@ class MissionClearUserEntity {
     required this.isReceive,
     required this.mission,
     required this.user,
-    required this.email,
   });
 }

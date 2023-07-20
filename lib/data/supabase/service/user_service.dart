@@ -37,6 +37,8 @@ class UserService {
   }) async {
     try {
       FortuneUserEntity? user = await findUserByPhoneNonNull(phoneNumber);
+      // 다음 레벨.
+      final level = assignLevel(request.markerObtainCount ?? user.markerObtainCount);
 
       final requestToUpdate = RequestFortuneUser(
         phone: request.phone ?? user.phone,
@@ -44,11 +46,8 @@ class UserService {
         ticket: request.ticket ?? user.ticket,
         countryCode: request.countryCode ?? user.countryCode,
         markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
-        level: request.level ?? user.level,
+        level: level,
       );
-
-      // 다음 레벨.
-      final level = assignLevel(request.markerObtainCount ?? user.markerObtainCount);
 
       final updateUser = await _client
           .from(_tableName)

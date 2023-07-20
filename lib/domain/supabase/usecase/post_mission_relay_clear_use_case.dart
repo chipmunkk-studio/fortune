@@ -28,33 +28,36 @@ class PostMissionRelayClearUseCase implements UseCase1<void, int> {
       // 유저 조회.
       final user = await userRepository.findUserByPhone();
       // 마커가 있는 미션을 조회.
-      final mission = await missionRepository.getMissionByMarkerId(markerId);
-      // 미션 클리어 조건 들을 조회.
-      final clearConditions = await missionRepository.getMissionClearConditions(mission.id);
-      // 미션 클리어 조건.
-      final condition = clearConditions.firstWhereOrNull((element) => element.mission.id == mission.id);
-      // 마커 조회.
-      final markerEntity = await markerRepository.findMarkerById(markerId);
-      // 클리어 조건. (내가 클리어 한 건지)
-      final isClear = markerEntity.hitCount == condition?.requireCount && markerEntity.lastObtainUser == user.id;
-      if (isClear) {
-        // 미션 클리어.
-        await missionRepository.postMissionClear(
-          missionId: mission.id,
-          email: '',
-        );
-        await userNoticesRepository.insertNotice(
-          RequestEventNotices.insert(
-            headings: '릴레이 미션을 클리 하셨습니다.',
-            content: '릴레이 미션 클리어!!',
-            type: EventNoticeType.user.name,
-            users: user.id,
-            isRead: false,
-            isReceived: false,
-          ),
-        );
+      final mission = await missionRepository.getMissionOrNullByMarkerId(markerId);
+      if (mission != null) {
+        // 미션 클리어 조건 들을 조회.
+        final clearConditions = await missionRepository.getMissionClearConditions(mission.id);
+        // 미션 클리어 조건.
+        final condition = clearConditions.firstWhereOrNull((element) => element.mission.id == mission.id);
+        // 마커 조회.
+        final markerEntity = await markerRepository.findMarkerById(markerId);
+        // 클리어 조건. (내가 클리어 한 건지)
+        final isClear = markerEntity.hitCount == condition?.requireCount && markerEntity.lastObtainUser == user.id;
+        if (isClear) {
+          // 미션 클리어.
+          await missionRepository.postMissionClear(
+            missionId: mission.id,
+          );
+          await userNoticesRepository.insertNotice(
+            RequestEventNotices.insert(
+              headings: '릴레이 미션을 클리 하셨습니다.',
+              content: '릴레이 미션 클리어!!',
+              type: EventNoticeType.user.name,
+              users: user.id,
+              isRead: false,
+              isReceived: false,
+            ),
+          );
+        }
+        return Right(isClear);
+      } else {
+        return const Right(false);
       }
-      return Right(isClear);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

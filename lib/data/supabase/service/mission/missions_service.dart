@@ -76,4 +76,24 @@ class MissionsService {
       throw (e.handleException()); // using extension method here
     }
   }
+
+  // 마커 아이디로 미션을 조회.
+  Future<MissionsEntity?> findMissionOrNullByMarkerId(int markerId) async {
+    try {
+      final response = await _client
+          .from(TableName.missions)
+          .select(fullSelectQuery)
+          .filter('is_active', 'eq', true)
+          .filter('markers', 'eq', markerId)
+          .toSelect();
+      if (response.isEmpty) {
+        return null;
+      } else {
+        final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
+        return missions.single;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
 }

@@ -3,22 +3,14 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_insert_history_param.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_level_or_grade_up_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_re_locate_marker_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_fortune_user_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/insert_obtain_history_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/level_or_grade_up_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/re_locate_marker_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
@@ -34,32 +26,21 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
-  final InsertObtainHistoryUseCase insertObtainHistoryUseCase;
   final GetObtainCountUseCase getObtainCountUseCase;
-  final GetObtainableMarkerUseCase getObtainableMarkerUseCase;
-  final ReLocateMarkerUseCase reLocateMarkerUseCase;
   final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
-  final LevelOrGradeUpUseCase levelOrGradeUpUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
     required this.remoteConfig,
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
-    required this.insertObtainHistoryUseCase,
     required this.getObtainCountUseCase,
-    required this.getObtainableMarkerUseCase,
-    required this.reLocateMarkerUseCase,
     required this.postMissionRelayClearUseCase,
-    required this.levelOrGradeUpUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
     on<Main>(main);
-    on<MainMarkerClick>(
-      onMarkerClicked,
-      transformer: sequential(),
-    );
+    on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
     on<MainTimeOver>(timerOver);
     on<MainMarkerObtain>(
@@ -190,36 +171,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 클릭 시.
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
-    List<MainLocationData> newList = List.from(state.markers);
-    await getObtainableMarkerUseCase(data).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(MainError(l)),
-        (r) {
-          var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
-          // 획득 후 제거.
-          if (loc != null) {
-            newList.remove(loc);
-            emit(state.copyWith(markers: newList));
-          }
-          // 애니메이션 수행 여부 확인.
-          if (event.isAnimation) {
-            produceSideEffect(
-              MainMarkerClickSideEffect(
-                key: event.globalKey,
-                data: data,
-              ),
-            );
-          }
-          emit(
-            state.copyWith(
-              processingCount: state.processingCount + 1,
-            ),
-          );
-          // 마커 획득 이벤트 수행.
-          add(MainMarkerObtain(data));
-        },
-      ),
+    emit(
+      state.copyWith(processingCount: state.processingCount + 1),
     );
+    // 마커 획득 이벤트 수행.
+    add(MainMarkerObtain(data, event.isAnimation, event.globalKey));
   }
 
   FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
@@ -234,101 +190,48 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final krLocationName = await getLocationName(latitude, longitude);
     final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
-    // 마커 획득.
-    // #1 티켓 감소.
-    await obtainMarkerUseCase(marker).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(MainError(l)),
-        (user) async {
-          // #2 레벨업 여부 확인
-          _confirmLevelOrGradeUp(prevUser: state.user!, nextUser: user);
-
-          emit(state.copyWith(user: user));
-
-          // #3 마커 랜덤 배치. (티켓 감소 후 획득 했다고 판단)
-          await reLocateMarkerUseCase(
-            RequestReLocateMarkerParam(
-              markerId: marker.id,
-              user: state.user!,
-            ),
-          );
-
-          // #4 티켓이 아닌 경우에만. (획득 처리 다음 히스토리 추가)
-          await insertObtainHistoryUseCase(
-            RequestInsertHistoryParam(
-              userId: user.id,
-              ingredientType: marker.ingredient.type,
-              markerId: marker.id.toString(),
-              ingredientId: marker.ingredient.id,
-              ingredientName: marker.ingredient.name,
-              nickname: user.nickname,
-              krLocationName: krLocationName,
-              enLocationName: enLocationName,
-            ),
-          ).then(
-            (value) => value.fold(
-              (l) => produceSideEffect(MainError(l)),
-              (histories) async {
-                emit(
-                  state.copyWith(
-                    haveCount: histories != null ? histories.length : state.haveCount,
-                    processingCount: state.processingCount - 1,
-                  ),
-                );
-                if (histories != null) {
-                  await postMissionRelayClearUseCase(marker.id).then(
-                    (value) => value.fold(
-                      (l) => null,
-                      (isClear) {
-                        if (isClear) {
-                          produceSideEffect(
-                            MainShowDialog(
-                              landingRoute: Routes.userNoticesRoute,
-                              title: '릴레이 미션을 클리어 하셨습니다!!',
-                              subTitle: '축하합니다',
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  );
-                }
-              },
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  _confirmLevelOrGradeUp({
-    required FortuneUserEntity prevUser,
-    required FortuneUserEntity nextUser,
-  }) async {
-    FortuneLogger.info("_confirmLevelOrGradeUp");
-    await levelOrGradeUpUseCase(
-      RequestLevelOrGradeUpParam(
-        prevUser: prevUser,
-        nextUser: nextUser,
+    await obtainMarkerUseCase(
+      RequestObtainMarkerParam(
+        marker: marker,
+        kLocation: krLocationName,
+        eLocation: enLocationName,
       ),
     ).then(
       (value) => value.fold(
-        (l) => null,
-        (entity) {
-          // switch (type) {
-          //   case UserNoticeType.grade_up:
-          //   case UserNoticeType.level_up:
-          //     produceSideEffect(
-          //       MainShowDialog(
-          //         title: "레벨 업을 축하합니다!",
-          //         landingRoute: Routes.userNoticesRoute,
-          //         subTitle: '새로운 알림을 확인해보세요.',
-          //       ),
-          //     );
-          //     break;
-          //   default:
-          //     break;
-          // }
+        (l) => produceSideEffect(MainError(l)),
+        (result) async {
+          List<MainLocationData> newList = List.from(state.markers);
+          var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
+          newList.remove(loc);
+
+          emit(
+            state.copyWith(
+              markers: newList,
+              user: result.user,
+              haveCount: result.haveCount,
+              processingCount: state.processingCount - 1,
+            ),
+          );
+
+          // 애니메이션 수행 여부 확인.
+          if (event.isAnimation) {
+            produceSideEffect(
+              MainMarkerClickSideEffect(
+                key: event.key,
+                data: event.data,
+              ),
+            );
+          }
+
+          if (result.isLevelOrGradeUp) {
+            produceSideEffect(
+              MainShowDialog(
+                landingRoute: Routes.obtainHistoryRoute,
+                title: result.dialogHeadings,
+                subTitle: result.dialogContent,
+              ),
+            );
+          }
         },
       ),
     );

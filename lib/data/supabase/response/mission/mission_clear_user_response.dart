@@ -10,12 +10,10 @@ part 'mission_clear_user_response.g.dart';
 class MissionClearUserResponse extends MissionClearUserEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'mission')
+  @JsonKey(name: 'missions')
   final MissionsResponse mission_;
-  @JsonKey(name: 'user')
+  @JsonKey(name: 'users')
   final FortuneUserResponse user_;
-  @JsonKey(name: 'email')
-  final String email_;
   @JsonKey(name: 'is_receive')
   final bool isReceive_;
   @JsonKey(name: 'created_at')
@@ -27,12 +25,10 @@ class MissionClearUserResponse extends MissionClearUserEntity {
     required this.isReceive_,
     required this.mission_,
     required this.user_,
-    required this.email_,
   }) : super(
           id: id_.toInt(),
           mission: mission_,
           user: user_,
-          email: email_,
           isReceive: isReceive_,
           createdAt: createdAt_,
         );

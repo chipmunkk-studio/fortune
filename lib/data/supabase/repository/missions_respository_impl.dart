@@ -1,5 +1,6 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/missions_service.dart';
@@ -53,10 +54,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
   }
 
   @override
-  Future<void> postMissionClear({
-    required int missionId,
-    required String email,
-  }) async {
+  Future<void> postMissionClear({required int missionId}) async {
     try {
       final mission = await missionNormalService.findMissionById(missionId);
       final user = await userService.findUserByPhoneNonNull(Supabase.instance.client.auth.currentUser?.phone);
@@ -68,7 +66,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
 
       // 미션 리워드 상태 업데이트.
       await missionRewardService.update(
-        missionId,
+        mission.missionReward.id,
         request: RequestMissionRewardUpdate(
           remainCount: mission.missionReward.remainCount - 1,
         ),
@@ -76,9 +74,10 @@ class MissionsRepositoryImpl extends MissionsRepository {
 
       // 미션 클리어 사용자 추가.
       await missionClearUserService.insert(
-        email: email,
-        missionId: mission.id,
-        userId: user.id,
+        RequestMissionClearUser.insert(
+          mission: mission.id,
+          user: user.id,
+        ),
       );
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -101,6 +100,17 @@ class MissionsRepositoryImpl extends MissionsRepository {
   Future<MissionsEntity> getMissionByMarkerId(int markerId) async {
     try {
       final result = await missionNormalService.findMissionByMarkerId(markerId);
+      return result;
+    } on FortuneFailure catch (e) {
+      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MissionsEntity?> getMissionOrNullByMarkerId(int markerId) async {
+    try {
+      final result = await missionNormalService.findMissionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

@@ -8,6 +8,7 @@ abstract class TableName {
   static const missionRewardS = 'mission_reward_s';
   static const eventNotices = 'event_notices';
   static const eventRewards = 'event_rewards';
+  static const ingredients = 'ingredients';
   static const markers = "markers";
   static const users = "users";
 }

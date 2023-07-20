@@ -9,7 +9,7 @@ class RequestObtainHistory {
   @JsonKey(name: 'user')
   final int? userId;
   @JsonKey(name: 'marker_id')
-  final String? markerId;
+  final int? markerId;
   @JsonKey(name: 'nickname')
   final String? nickName;
   @JsonKey(name: 'ingredient_name')

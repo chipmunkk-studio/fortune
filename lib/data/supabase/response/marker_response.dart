@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

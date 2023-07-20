@@ -28,7 +28,6 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
       // 미션 클리어.
       final missions = await missionRepository.postMissionClear(
         missionId: request.missionId,
-        email: request.email,
       );
 
       // 삭제 대상인 것들만 다넣음.

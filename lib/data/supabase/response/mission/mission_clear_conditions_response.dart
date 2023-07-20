@@ -1,4 +1,5 @@
 import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,10 +11,10 @@ part 'mission_clear_conditions_response.g.dart';
 class MissionClearConditionResponse extends MissionClearConditionEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'mission')
+  @JsonKey(name: 'missions')
   final MissionsResponse mission_;
   @JsonKey(name: 'ingredient')
-  final IngredientResponse ingredient_;
+  final IngredientResponse? ingredient_;
   @JsonKey(name: 'require_count')
   final double requireCount_;
 
@@ -25,7 +26,7 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
   }) : super(
           id: id_.toInt(),
           mission: mission_,
-          ingredient: ingredient_,
+          ingredient: ingredient_ ?? IngredientEntity.empty(),
           requireCount: requireCount_.toInt(),
         );
 

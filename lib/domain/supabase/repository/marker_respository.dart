@@ -10,7 +10,7 @@ abstract class MarkerRepository {
     double? longitude,
   );
 
-  // 마커 획득.
+  // 마커 재배치.
   Future<void> reLocateMarker({
     required MarkerEntity marker,
     required FortuneUserEntity user,

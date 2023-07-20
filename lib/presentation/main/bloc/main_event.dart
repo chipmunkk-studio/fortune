@@ -55,8 +55,14 @@ class MainTimeOver extends MainEvent {
 
 class MainMarkerObtain extends MainEvent {
   final MainLocationData data;
+  final bool isAnimation;
+  final GlobalKey key;
 
-  MainMarkerObtain(this.data);
+  MainMarkerObtain(
+    this.data,
+    this.isAnimation,
+    this.key,
+  );
 
   @override
   List<Object?> get props => [data];

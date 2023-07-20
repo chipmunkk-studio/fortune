@@ -3,7 +3,7 @@ import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 class RequestInsertHistoryParam {
   final int ingredientId;
   final int userId;
-  final String markerId;
+  final int markerId;
   final String krLocationName;
   final String enLocationName;
   final String ingredientName;
