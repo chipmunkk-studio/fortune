@@ -8,13 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -75,7 +74,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       (event) async {
         event;
         try {
-          final notificationData = EventNoticesResponse.fromJson(event.notification.additionalData!);
+          final notificationData = FortuneNotificationResponse.fromJson(event.notification.additionalData!);
           // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
           await Future.delayed(const Duration(milliseconds: 1000));
           bloc.add(MainLandingPage(notificationData));

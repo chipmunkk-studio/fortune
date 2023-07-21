@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
@@ -69,7 +69,7 @@ class MainMarkerObtain extends MainEvent {
 }
 
 class MainLandingPage extends MainEvent {
-  final EventNoticesEntity entity;
+  final FortuneNotificationEntity entity;
 
   MainLandingPage(this.entity);
 
