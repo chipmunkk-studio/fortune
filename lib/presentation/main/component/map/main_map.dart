@@ -7,17 +7,21 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_animation.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/env.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'center_profile.dart';
+import 'obtain_loading_view.dart';
 
 class MainMap extends StatelessWidget {
   final BuildContext context;
@@ -134,6 +138,20 @@ class MainMap extends StatelessWidget {
                       },
                     ),
                   ),
+                ),
+              ),
+              // 로딩 뷰.
+              Positioned.fill(
+                child: BlocBuilder<MainBloc, MainState>(
+                  buildWhen: (previous, current) => previous.isObtainProcessing != current.isObtainProcessing,
+                  builder: (context, state) {
+                    final processingMarker = state.processingMarker;
+                    final isLoading = state.isObtainProcessing;
+                    return ObtainLoadingView(
+                      isLoading: isLoading,
+                      processingMarker: processingMarker,
+                    );
+                  },
                 ),
               ),
             ],

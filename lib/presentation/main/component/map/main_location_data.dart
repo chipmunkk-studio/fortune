@@ -17,8 +17,23 @@ class MainLocationData extends Equatable {
     required this.isObtainedUser,
   });
 
+  MainLocationData copyWith({
+    int? id,
+    LatLng? location,
+    IngredientEntity? ingredient,
+    bool? isObtainedUser,
+    bool? isProcessing,
+  }) {
+    return MainLocationData(
+      id: id ?? this.id,
+      location: location ?? this.location,
+      ingredient: ingredient ?? this.ingredient,
+      isObtainedUser: isObtainedUser ?? this.isObtainedUser,
+    );
+  }
+
   @override
-  List<Object?> get props => [location, isObtainedUser];
+  List<Object?> get props => [id, location, isObtainedUser];
 }
 
 // 37.394962

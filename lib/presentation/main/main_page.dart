@@ -243,18 +243,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       bloc,
                       cartKey,
                     ),
-                    const SizedBox(height: 10),
-                    BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.processingCount != current.processingCount,
-                      builder: (context, state) {
-                        return state.processingCount == 0
-                            ? Container()
-                            : Text(
-                                "${state.processingCount}개 마커 획득 처리 중..",
-                                style: FortuneTextStyle.body3Regular(),
-                              );
-                      },
-                    ),
                   ],
                 ),
               ),

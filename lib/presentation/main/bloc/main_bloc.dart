@@ -171,11 +171,22 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 클릭 시.
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
-    emit(
-      state.copyWith(processingCount: state.processingCount + 1),
-    );
     // 마커 획득 이벤트 수행.
-    add(MainMarkerObtain(data, event.isAnimation, event.globalKey));
+    if (!state.isObtainProcessing) {
+      emit(
+        state.copyWith(
+          isObtainProcessing: true,
+          processingMarker: data,
+        ),
+      );
+      add(
+        MainMarkerObtain(
+          data,
+          event.isAnimation,
+          event.globalKey,
+        ),
+      );
+    }
   }
 
   FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
@@ -204,15 +215,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
           newList.remove(loc);
 
-          emit(
-            state.copyWith(
-              markers: newList,
-              user: result.user,
-              haveCount: result.haveCount,
-              processingCount: state.processingCount - 1,
-            ),
-          );
-
           // 애니메이션 수행 여부 확인.
           if (event.isAnimation) {
             produceSideEffect(
@@ -222,6 +224,15 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               ),
             );
           }
+
+          emit(
+            state.copyWith(
+              markers: newList,
+              user: result.user,
+              haveCount: result.haveCount,
+              isObtainProcessing: false,
+            ),
+          );
 
           if (result.isLevelOrGradeUp) {
             produceSideEffect(
