@@ -18,7 +18,7 @@ class MissionsClearConditionsService {
   MissionsClearConditionsService(this._client);
 
   // 미션 아이디로 클리어 조건을 조회.
-  Future<List<MissionClearConditionEntity>> findMissionClearConditionByMissionId(int id) async {
+  Future<List<MissionClearConditionEntity>>  findMissionClearConditionByMissionId(int id) async {
     try {
       final response = await _client
           .from(_missionClearConditionTableName)

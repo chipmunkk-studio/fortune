@@ -13,7 +13,7 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
   final double id_;
   @JsonKey(name: 'missions')
   final MissionsResponse mission_;
-  @JsonKey(name: 'ingredient')
+  @JsonKey(name: 'ingredients')
   final IngredientResponse? ingredient_;
   @JsonKey(name: 'require_count')
   final double requireCount_;
