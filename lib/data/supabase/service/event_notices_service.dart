@@ -70,7 +70,6 @@ class EventNoticesService {
       users: request.users ?? eventNotice.user.id,
       eventRewardHistory: request.eventRewardHistory ?? eventNotice.eventRewardHistory.id,
       type: request.type ?? eventNotice.type.name,
-      landingRoute: request.landingRoute ?? eventNotice.landingRoute,
       isRead: request.isRead ?? eventNotice.isRead,
       headings: '',
       content: '',

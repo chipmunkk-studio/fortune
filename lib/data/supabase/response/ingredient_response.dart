@@ -16,8 +16,6 @@ class IngredientResponse extends IngredientEntity {
   final int rewardTicket_;
   @JsonKey(name: 'image_url')
   final String imageUrl_;
-  @JsonKey(name: 'is_global')
-  final bool isGlobal_;
   @JsonKey(name: 'distance')
   final int distance_;
 
@@ -28,7 +26,6 @@ class IngredientResponse extends IngredientEntity {
     required this.imageUrl_,
     required this.rewardTicket_,
     required this.distance_,
-    required this.isGlobal_,
   }) : super(
           id: id_.toInt(),
           name: name_,
@@ -36,7 +33,6 @@ class IngredientResponse extends IngredientEntity {
           rewardTicket: rewardTicket_,
           type: getIngredientType(type_),
           distance: distance_,
-          isGlobal: isGlobal_,
         );
 
   factory IngredientResponse.fromJson(Map<String, dynamic> json) => _$IngredientResponseFromJson(json);

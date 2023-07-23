@@ -8,8 +8,6 @@ class RequestFortuneUser {
   final String? phone;
   @JsonKey(name: 'nickname')
   final String? nickname;
-  @JsonKey(name: 'country_code')
-  final String? countryCode;
   @JsonKey(name: 'ticket')
   final int? ticket;
   @JsonKey(name: 'marker_obtain_count')
@@ -21,7 +19,6 @@ class RequestFortuneUser {
     this.phone,
     this.nickname,
     this.ticket,
-    this.countryCode,
     this.markerObtainCount,
     this.level,
   });
@@ -31,7 +28,6 @@ class RequestFortuneUser {
     required this.phone,
     required this.nickname,
     this.ticket = 0,
-    required this.countryCode,
     this.markerObtainCount = 0,
     this.level = 1,
   });

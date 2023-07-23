@@ -8,8 +8,7 @@ class ObtainHistoryEntity {
   final IngredientEntity ingredient;
   final String nickName;
   final String ingredientName;
-  final String krLocationName;
-  final String enLocationName;
+  final String locationName;
   final String createdAt;
   final bool isReward;
 
@@ -20,8 +19,7 @@ class ObtainHistoryEntity {
     required this.ingredient,
     required this.createdAt,
     required this.ingredientName,
-    required this.krLocationName,
-    required this.enLocationName,
+    required this.locationName,
     required this.nickName,
     required this.isReward,
   });

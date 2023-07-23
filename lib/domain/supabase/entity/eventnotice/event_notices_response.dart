@@ -8,7 +8,6 @@ class EventNoticesEntity {
   final EventNoticeType type;
   final FortuneUserEntity user;
   final EventRewardHistoryEntity eventRewardHistory;
-  final String landingRoute;
   final String createdAt;
   final String headings;
   final String content;
@@ -18,7 +17,6 @@ class EventNoticesEntity {
     required this.createdAt,
     required this.id,
     required this.type,
-    required this.landingRoute,
     required this.user,
     required this.eventRewardHistory,
     required this.isRead,

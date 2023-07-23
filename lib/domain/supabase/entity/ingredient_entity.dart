@@ -7,7 +7,6 @@ class IngredientEntity {
   final int rewardTicket;
   final IngredientType type;
   final int distance;
-  final bool isGlobal;
 
   IngredientEntity({
     required this.id,
@@ -16,7 +15,6 @@ class IngredientEntity {
     required this.type,
     required this.rewardTicket,
     required this.distance,
-    required this.isGlobal,
   });
 
   factory IngredientEntity.empty() {
@@ -28,7 +26,6 @@ class IngredientEntity {
       type: IngredientType.ticket,
       // assuming 'undefined' is a valid enum value for IngredientType
       distance: 0,
-      isGlobal: false,
     );
   }
 }

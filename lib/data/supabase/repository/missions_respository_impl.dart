@@ -31,7 +31,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
   Future<List<MissionsEntity>> getAllMissions() async {
     try {
       final user = await userService.findUserByPhoneNonNull(Supabase.instance.client.auth.currentUser?.phone);
-      final result = await missionNormalService.findAllMissions(isGlobal: user.isGlobal);
+      final result = await missionNormalService.findAllMissions();
       return result;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');

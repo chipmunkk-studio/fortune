@@ -36,14 +36,14 @@ class TopLocationArea extends StatelessWidget {
                 // 봐야할 알림이 있으면 나타냄.
                 if (state.notices.isNotEmpty)
                   Positioned(
-                    right: state.notices.length < 9 ? -14 : -16,
+                    right: state.notices.length < 9 ? -13 : -20,
                     top: -10,
                     child: Container(
                       decoration: BoxDecoration(
                         color: ColorName.negative,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: state.notices.length < 9 ? 5 : 5),
+                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: state.notices.length < 9 ? 6 : 5),
                       child: Text(
                         getHistoryCount(state.notices.length),
                         style: FortuneTextStyle.caption1SemiBold(),

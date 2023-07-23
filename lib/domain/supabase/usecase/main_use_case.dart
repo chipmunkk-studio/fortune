@@ -39,18 +39,13 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 유저 알림 가져오기.
       final userNotices = await userNoticesRepository.findAllNotices();
 
-      // 내 주변의 마커를 가져옴. (글로벌 여부 확인)
-      var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))
-          .where(
-            (element) =>
-                user.isGlobal == element.ingredient.isGlobal || element.ingredient.type == IngredientType.ticket,
-          )
-          .toList();
+      // 내 주변의 마커를 가져옴.
+      var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude)).toList();
 
       // 내가 보유한 마커 수.
       final haveCounts = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 
-      // 마커 리스트.
+      // 내 주변 마커 리스트.(티켓 X)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) => element.ingredient.type != IngredientType.ticket,
@@ -67,14 +62,14 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
               ingredient: e.ingredient,
               createdAt: e.createdAt,
               ingredientName: e.ingredientName,
-              locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
+              locationName: e.locationName,
               nickName: e.nickName,
             ),
           )
           .toList();
 
       // 재료 목록 가져옴.
-      final ingredients = await ingredientRepository.findAllIngredients(user.isGlobal);
+      final ingredients = await ingredientRepository.findAllIngredients();
       final keepMarkerCount = remoteConfig.markerCount;
       final keepTicketCount = remoteConfig.ticketCount;
 
@@ -106,11 +101,10 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
 
       // 내 주변의 마커 가져옴 (티켓, 글로벌 여부 확인)
       if (result) {
-        markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude))
-            .where(
-              (element) =>
-                  user.isGlobal == element.ingredient.isGlobal || element.ingredient.type == IngredientType.ticket,
-            )
+        markersNearByMe = (await markerRepository.getAllMarkers(
+          param.latitude,
+          param.longitude,
+        ))
             .toList();
       }
 

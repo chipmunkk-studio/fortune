@@ -14,10 +14,8 @@ class RequestObtainHistory {
   final String? nickName;
   @JsonKey(name: 'ingredient_name')
   final String? ingredientName;
-  @JsonKey(name: 'kr_location_name')
-  final String? krLocationName;
-  @JsonKey(name: 'en_location_name')
-  final String? enLocationName;
+  @JsonKey(name: 'location_name')
+  final String? locationName;
   @JsonKey(name: 'is_reward')
   final bool? isReward;
 
@@ -27,8 +25,7 @@ class RequestObtainHistory {
     this.nickName,
     this.ingredientName,
     this.markerId,
-    this.krLocationName,
-    this.enLocationName,
+    this.locationName,
     this.isReward,
   });
 
@@ -38,8 +35,7 @@ class RequestObtainHistory {
     required this.nickName,
     required this.ingredientName,
     this.markerId,
-    this.krLocationName,
-    this.enLocationName,
+    this.locationName,
     this.isReward = false,
   });
 

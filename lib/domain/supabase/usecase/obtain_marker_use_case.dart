@@ -9,6 +9,7 @@ import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_obtain_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -18,18 +19,20 @@ import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_par
 class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
-  final EventNoticesRepository userNoticesRepository;
+  final EventNoticesRepository eventNoticesRepository;
   final EventRewardsRepository rewardRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MissionsRepository missionsRepository;
+  final IngredientRepository ingredientRepository;
 
   ObtainMarkerUseCase({
     required this.markerRepository,
     required this.userRepository,
-    required this.userNoticesRepository,
+    required this.eventNoticesRepository,
     required this.obtainHistoryRepository,
     required this.missionsRepository,
     required this.rewardRepository,
+    required this.ingredientRepository,
   });
 
   @override
@@ -84,26 +87,11 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 레벨업 혹은 등급 업을 했을 경우.
       if (prevUser.level != updateUser.level) {
-        // #1 이벤트 타입에 따른 보상 정보를 찾음.
-        // final reward = await rewardRepository.insertRewardHistory(
-        //   user: prevUser,
-        //   type: EventRewardType.level,
-        // );
-        // await userNoticesRepository.insertNotice(
-        //   RequestEventNotices.insert(
-        //     users: prevUser.id,
-        //     type: EventNoticeType.user.name,
-        //     headings: dialogHeadings,
-        //     content: dialogContent,
-        //     eventRewards: reward.id,
-        //     isRead: false,
-        //     isReceived: false,
-        //   ),
-        // );
+        await _generateRewardHistory(prevUser);
       }
 
       // 마커 재배치.
-      await markerRepository.reLocateMarker(
+      markerRepository.reLocateMarker(
         marker: marker,
         user: prevUser,
       );
@@ -117,8 +105,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             markerId: marker.id,
             ingredientId: marker.ingredient.id,
             nickName: prevUser.nickname,
-            krLocationName: param.kLocation,
-            enLocationName: param.eLocation,
+            locationName: param.kLocation,
             ingredientName: param.marker.ingredient.name,
           ),
         )
@@ -166,7 +153,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       if (isClear) {
         // 미션 클리어.
         await missionsRepository.postMissionClear(missionId: mission.id);
-        await userNoticesRepository.insertNotice(
+        await eventNoticesRepository.insertNotice(
           RequestEventNotices.insert(
             headings: '릴레이 미션을 클리 하셨습니다.',
             content: '릴레이 미션 클리어!!',
@@ -177,5 +164,35 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         );
       }
     }
+  }
+
+  _generateRewardHistory(FortuneUserEntity user) async {
+    final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
+    final ingredient = await ingredientRepository.getIngredientByRandom();
+
+    await obtainHistoryRepository.insertObtainHistory(
+      request: RequestObtainHistory.insert(
+        ingredientId: ingredient.id,
+        userId: user.id,
+        nickName: user.nickname,
+        ingredientName: ingredient.name,
+      ),
+    );
+
+    final response = await rewardRepository.insertRewardHistory(
+      user: user,
+      eventRewardInfo: rewardType,
+      ingredient: ingredient,
+    );
+
+    await eventNoticesRepository.insertNotice(
+      RequestEventNotices.insert(
+        type: EventNoticeType.user.name,
+        headings: '레벨업을 축하합니다!',
+        content: '레벨업 축하!',
+        users: user.id,
+        eventRewardHistory: response.id,
+      ),
+    );
   }
 }

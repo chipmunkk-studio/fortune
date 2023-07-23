@@ -16,15 +16,14 @@ class MissionsService {
   MissionsService();
 
   // 진행 가능 한 모든 미션을 조회.
-  Future<List<MissionsEntity>> findAllMissions({
-    bool isGlobal = false,
-  }) async {
+  Future<List<MissionsEntity>> findAllMissions() async {
     try {
       final response = await _client
-          .from(TableName.missions)
+          .from(
+            TableName.missions,
+          )
           .select(fullSelectQuery)
           .filter('is_active', 'eq', true)
-          .filter('is_global', 'eq', isGlobal)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

@@ -22,7 +22,6 @@ class UserService {
             RequestFortuneUser.insert(
               phone: phone.replaceFirst('+', ''),
               nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
-              countryCode: "82",
             ).toJson(),
           );
     } on Exception catch (e) {
@@ -44,7 +43,6 @@ class UserService {
         phone: request.phone ?? user.phone,
         nickname: request.nickname ?? user.nickname,
         ticket: request.ticket ?? user.ticket,
-        countryCode: request.countryCode ?? user.countryCode,
         markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
         level: level,
       );

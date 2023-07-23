@@ -28,7 +28,7 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingView
               ingredient: e.ingredient,
               createdAt: e.createdAt,
               ingredientName: e.ingredientName,
-              locationName: e.user.isGlobal ? e.enLocationName : e.krLocationName,
+              locationName: e.locationName,
               nickName: e.nickName,
             ),
           )

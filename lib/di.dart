@@ -268,10 +268,11 @@ _initUseCase() async {
       () => ObtainMarkerUseCase(
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
-        userNoticesRepository: serviceLocator(),
+        eventNoticesRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
         rewardRepository: serviceLocator(),
+        ingredientRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetObtainHistoriesUseCase>(

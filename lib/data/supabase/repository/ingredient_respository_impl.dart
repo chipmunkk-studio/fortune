@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
-import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 
@@ -16,9 +15,9 @@ class IngredientRepositoryImpl extends IngredientRepository {
 
   // 맵에 뿌릴 재료들 찾기.
   @override
-  Future<List<IngredientEntity>> findAllIngredients(bool isGlobal) async {
+  Future<List<IngredientEntity>> findAllIngredients() async {
     try {
-      final List<IngredientEntity> ingredients = await _ingredientService.findAllIngredients(isGlobal);
+      final List<IngredientEntity> ingredients = await _ingredientService.findAllIngredients();
       return ingredients;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
@@ -26,10 +25,11 @@ class IngredientRepositoryImpl extends IngredientRepository {
     }
   }
 
+  // 랜덤으로 재료 하나 가져오기.
   @override
-  Future<IngredientEntity> getIngredientByRandom(bool isGlobal) async {
+  Future<IngredientEntity> getIngredientByRandom() async {
     try {
-      final List<IngredientEntity> ingredients = await findAllIngredients(isGlobal);
+      final List<IngredientEntity> ingredients = await findAllIngredients();
       if (ingredients.isNotEmpty) {
         final random = Random();
         final ingredient = ingredients[random.nextInt(ingredients.length)];

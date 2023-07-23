@@ -50,7 +50,6 @@ class UserRepositoryImpl extends UserRepository {
       request: RequestFortuneUser(
         nickname: user.nickname,
         ticket: user.ticket,
-        countryCode: user.countryCode,
         markerObtainCount: user.markerObtainCount,
       ),
     );

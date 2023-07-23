@@ -13,37 +13,10 @@ class IngredientService {
     this._client,
   );
 
-  Future<List<IngredientResponse>> findAllIngredients(bool isGlobal) async {
+  // 모든 재료 가져오기.
+  Future<List<IngredientResponse>> findAllIngredients() async {
     try {
-      final List<dynamic> response = await _client
-          .from(_ingredientTableName)
-          .select("*")
-          .or(
-            'type.eq.ticket,'
-            'is_global.eq.$isGlobal',
-          )
-          .toSelect();
-      if (response.isEmpty) {
-        return List.empty();
-      } else {
-        final ingredients = response.map((e) => IngredientResponse.fromJson(e)).toList();
-        return ingredients;
-      }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
-  Future<List<IngredientResponse>> getIngredientByRandom(bool isGlobal) async {
-    try {
-      final List<dynamic> response = await _client
-          .from(_ingredientTableName)
-          .select("*")
-          .or(
-        'type.eq.ticket,'
-            'is_global.eq.$isGlobal',
-      )
-          .toSelect();
+      final List<dynamic> response = await _client.from(_ingredientTableName).select("*").toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {

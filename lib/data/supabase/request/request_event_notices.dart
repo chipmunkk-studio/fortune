@@ -11,8 +11,6 @@ class RequestEventNotices {
   final int? users;
   @JsonKey(name: 'event_reward_history')
   final int? eventRewardHistory;
-  @JsonKey(name: 'landing_route')
-  final String? landingRoute;
   @JsonKey(name: 'headings')
   final String? headings;
   @JsonKey(name: 'content')
@@ -24,7 +22,6 @@ class RequestEventNotices {
     this.users,
     this.eventRewardHistory,
     this.type,
-    this.landingRoute,
     this.isRead,
     this.headings,
     this.content,
@@ -33,7 +30,6 @@ class RequestEventNotices {
   RequestEventNotices.insert({
     this.users,
     this.eventRewardHistory,
-    this.landingRoute = Routes.obtainHistoryRoute,
     required this.type,
     this.isRead = false,
     required this.headings,

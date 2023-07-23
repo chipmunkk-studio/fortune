@@ -271,3 +271,14 @@ class FaqBloc extends Bloc<FaqEvent, FaqState> with SideEffectBlocMixin<FaqEvent
     }
   }
 }
+
+
+
+   final List<dynamic> response = await _client
+          .from(_ingredientTableName)
+          .select("*")
+          .or(
+            'type.eq.ticket,'
+            'is_global.eq.$isGlobal',
+          )
+          .toSelect();
