@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 
 abstract class IngredientRepository {
@@ -5,5 +6,5 @@ abstract class IngredientRepository {
   Future<List<IngredientEntity>> findAllIngredients();
 
   // 재료 랜덤으로 하나 가져오기
-  Future<IngredientEntity> getIngredientByRandom();
+  Future<IngredientEntity> getIngredientByRandom(EventRewardInfoEntity rewardType);
 }

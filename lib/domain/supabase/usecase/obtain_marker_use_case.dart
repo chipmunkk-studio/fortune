@@ -152,23 +152,42 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final isClear = markerEntity.hitCount == condition?.requireCount && markerEntity.lastObtainUser == user.id;
       if (isClear) {
         // 미션 클리어.
-        await missionsRepository.postMissionClear(missionId: mission.id);
+        final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.relay);
+        final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
+
+        await obtainHistoryRepository.insertObtainHistory(
+          request: RequestObtainHistory.insert(
+            ingredientId: ingredient.id,
+            userId: user.id,
+            nickName: user.nickname,
+            ingredientName: ingredient.name,
+          ),
+        );
+
+        final response = await rewardRepository.insertRewardHistory(
+          user: user,
+          eventRewardInfo: rewardType,
+          ingredient: ingredient,
+        );
+
         await eventNoticesRepository.insertNotice(
           RequestEventNotices.insert(
-            headings: '릴레이 미션을 클리 하셨습니다.',
+            headings: '릴레이 미션을 클리어 하셨습니다.',
             content: '릴레이 미션 클리어!!',
             type: EventNoticeType.user.name,
             users: user.id,
-            isRead: false,
+            eventRewardHistory: response.id,
           ),
         );
+
+        await missionsRepository.postMissionClear(missionId: mission.id);
       }
     }
   }
 
   _generateRewardHistory(FortuneUserEntity user) async {
     final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
-    final ingredient = await ingredientRepository.getIngredientByRandom();
+    final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
     await obtainHistoryRepository.insertObtainHistory(
       request: RequestObtainHistory.insert(
@@ -188,7 +207,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     await eventNoticesRepository.insertNotice(
       RequestEventNotices.insert(
         type: EventNoticeType.user.name,
-        headings: '레벨업을 축하합니다!',
+        headings: '레벨 업을 축하합니다!',
         content: '레벨업 축하!',
         users: user.id,
         eventRewardHistory: response.id,

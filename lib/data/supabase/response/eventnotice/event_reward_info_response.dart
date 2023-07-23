@@ -10,25 +10,17 @@ class EventRewardInfoResponse extends EventRewardInfoEntity {
   final double id_;
   @JsonKey(name: 'type')
   final String type_;
-  @JsonKey(name: 'random_marker')
-  final bool randomMarker_;
   @JsonKey(name: 'has_unique_marker')
   final bool hasUniqueMarker_;
-  @JsonKey(name: 'marker_count')
-  final int markerCount_;
 
   EventRewardInfoResponse({
     required this.id_,
     required this.type_,
-    required this.randomMarker_,
     required this.hasUniqueMarker_,
-    required this.markerCount_,
   }) : super(
           id: id_.toInt(),
           type: getEventRewardType(type_),
-          randomMarker: randomMarker_,
           hasUniqueMarker: hasUniqueMarker_,
-          markerCount: markerCount_,
         );
 
   factory EventRewardInfoResponse.fromJson(Map<String, dynamic> json) => _$EventRewardInfoResponseFromJson(json);

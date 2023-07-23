@@ -151,13 +151,14 @@ class MarkerService {
   }
 
   // 마커 삽입.
-  Future<void> insertRandomMarkers({
+  Future<bool> insertRandomMarkers({
     required List<RequestMarkerRandomInsert> markers,
   }) async {
     try {
       for (var element in markers) {
         await _client.from(TableName.markers).insert(element.toJson());
       }
+      return true;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

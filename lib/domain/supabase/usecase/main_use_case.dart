@@ -70,13 +70,14 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
 
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
+
       final keepMarkerCount = remoteConfig.markerCount;
       final keepTicketCount = remoteConfig.ticketCount;
 
-      // 주변에 마커가 없으면 1개 있으면 0개.
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
           : 0;
+
       final isTicketEmpty = markersNearByMe
           .where(
             (element) => element.ingredient.type == IngredientType.ticket,
@@ -99,7 +100,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
         markerCount: markerCount,
       );
 
-      // 내 주변의 마커 가져옴 (티켓, 글로벌 여부 확인)
+      // 내 주변의 마커 가져옴.
       if (result) {
         markersNearByMe = (await markerRepository.getAllMarkers(
           param.latitude,

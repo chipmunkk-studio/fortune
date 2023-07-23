@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 
@@ -27,9 +30,14 @@ class IngredientRepositoryImpl extends IngredientRepository {
 
   // 랜덤으로 재료 하나 가져오기.
   @override
-  Future<IngredientEntity> getIngredientByRandom() async {
+  Future<IngredientEntity> getIngredientByRandom(EventRewardInfoEntity rewardType) async {
     try {
-      final List<IngredientEntity> ingredients = await findAllIngredients();
+      List<IngredientEntity> ingredients = await findAllIngredients();
+
+      if (!rewardType.hasUniqueMarker) {
+        ingredients = ingredients.whereNot((element) => element.type == IngredientType.unique).toList();
+      }
+
       if (ingredients.isNotEmpty) {
         final random = Random();
         final ingredient = ingredients[random.nextInt(ingredients.length)];

@@ -65,9 +65,9 @@ serviceTest() async {
 
   final user = await userRepository.findUserByPhone();
   final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
-  final ingredient = await ingredientRepository.getIngredientByRandom();
+  final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
-  final history = await obtainHistoryRepository.insertObtainHistory(
+  await obtainHistoryRepository.insertObtainHistory(
     request: RequestObtainHistory.insert(
       ingredientId: ingredient.id,
       userId: user.id,

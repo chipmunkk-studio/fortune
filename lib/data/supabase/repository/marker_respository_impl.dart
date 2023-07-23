@@ -57,7 +57,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
   }) async {
     try {
       // 티켓/유니크 가 아닌 리스트 들만 뽑음.
-      final nonTicketAndTrashIngredients = ingredients
+      final nonTicketAndUniqueIngredients = ingredients
           .where(
             (ingredient) => ingredient.type != IngredientType.ticket && ingredient.type != IngredientType.unique,
           )
@@ -67,27 +67,27 @@ class MarkerRepositoryImpl extends MarkerRepository {
       final ticketIngredient = ingredients.firstWhereOrNull((element) => element.type == IngredientType.ticket);
 
       // 티켓 아닌거 섞음.
-      nonTicketAndTrashIngredients.shuffle(Random());
+      nonTicketAndUniqueIngredients.shuffle(Random());
 
       List<RequestMarkerRandomInsert> markers = [];
 
       // 재료 N개 랜덤 픽.
-      final collectedList = nonTicketAndTrashIngredients.take(markerCount).toList();
+      final collectedList = nonTicketAndUniqueIngredients.take(markerCount).toList();
 
+      // 현재 위치를 기준으로 마커 N개 생성.
       for (var element in collectedList) {
         final requestMarker = generateRandomMarker(lat: latitude, lon: longitude, ingredient: element);
         markers.add(requestMarker);
       }
 
+      // 현재 위치를 기준으로 티켓을 N개 생성.
       if (ticketIngredient != null) {
         for (int i = 0; i < ticketCount; i++) {
           final requestMarker = generateRandomMarker(lat: latitude, lon: longitude, ingredient: ticketIngredient);
           markers.add(requestMarker);
         }
       }
-
-      await _markerService.insertRandomMarkers(markers: markers);
-      return markers.isNotEmpty;
+      return await _markerService.insertRandomMarkers(markers: markers);
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;
@@ -98,7 +98,10 @@ class MarkerRepositoryImpl extends MarkerRepository {
   Future<void> hitMarker(int id) async {
     try {
       final marker = await _markerService.findMarkerById(id);
-      await _markerService.update(id, hitCount: marker.hitCount + 1);
+      await _markerService.update(
+        id,
+        hitCount: marker.hitCount + 1,
+      );
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
       rethrow;
