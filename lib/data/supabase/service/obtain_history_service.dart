@@ -30,6 +30,7 @@ class ObtainHistoryService {
             'marker_id.ilike.$convertedQuery, '
             'nickname.ilike.$convertedQuery',
           )
+          .filter('is_reward', 'eq', false)
           .order('created_at', ascending: false)
           .range(start, end)
           .toSelect();

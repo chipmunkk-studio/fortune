@@ -161,6 +161,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             userId: user.id,
             nickName: user.nickname,
             ingredientName: ingredient.name,
+            isReward: true,
           ),
         );
 
@@ -195,6 +196,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         userId: user.id,
         nickName: user.nickname,
         ingredientName: ingredient.name,
+        isReward: true,
       ),
     );
 
