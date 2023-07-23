@@ -5,11 +5,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
-import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
@@ -54,17 +57,40 @@ main() {
 }
 
 serviceTest() async {
-  final service = serviceLocator<EventNoticesRepository>();
-  final list = await service.findAllNotices();
-  final temp = await service.insertNotice(
-    RequestEventNotices.insert(
-      type: EventNoticeType.user.name,
-      isRead: false,
-      isReceived: false,
-      headings: '테스트1',
-      content: '테스트2',
+  final rewardRepository = serviceLocator<EventRewardsRepository>();
+  final userRepository = serviceLocator<UserRepository>();
+  final ingredientRepository = serviceLocator<IngredientRepository>();
+  final obtainHistoryRepository = serviceLocator<ObtainHistoryRepository>();
+  final eventNoticesRepository = serviceLocator<EventNoticesRepository>();
+
+  final user = await userRepository.findUserByPhone();
+  final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
+  final ingredient = await ingredientRepository.getIngredientByRandom(user.isGlobal);
+
+  final history = await obtainHistoryRepository.insertObtainHistory(
+    request: RequestObtainHistory.insert(
+      ingredientId: ingredient.id,
+      userId: user.id,
+      nickName: user.nickname,
+      ingredientName: ingredient.name,
     ),
   );
 
-  FortuneLogger.info(list.toString());
+  final response = await rewardRepository.insertRewardHistory(
+    user: user,
+    eventRewardInfo: rewardType,
+    ingredient: ingredient,
+  );
+
+  eventNoticesRepository.insertNotice(
+    RequestEventNotices.insert(
+      type: EventNoticeType.user.name,
+      headings: '레벨업을 축하합니다!',
+      content: '레벨업 축하!',
+      users: user.id,
+      eventRewardHistory: response.id,
+    ),
+  );
+
+  FortuneLogger.info(response.ingredientName);
 }

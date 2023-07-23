@@ -14,15 +14,15 @@ class ObtainHistoryResponse extends ObtainHistoryEntity {
   @JsonKey(name: 'ingredient')
   final IngredientResponse ingredient_;
   @JsonKey(name: 'marker_id')
-  final String markerId_;
+  final String? markerId_;
   @JsonKey(name: 'nickname')
   final String nickName_;
   @JsonKey(name: 'ingredient_name')
   final String ingredientName_;
   @JsonKey(name: 'kr_location_name')
-  final String krLocationName_;
+  final String? krLocationName_;
   @JsonKey(name: 'en_location_name')
-  final String enLocationName_;
+  final String? enLocationName_;
   @JsonKey(name: 'is_reward')
   final bool isReward_;
   @JsonKey(name: 'created_at')
@@ -41,11 +41,11 @@ class ObtainHistoryResponse extends ObtainHistoryEntity {
     required this.isReward_,
   }) : super(
           id: id_.toInt(),
-          markerId: markerId_,
+          markerId: markerId_ ?? '',
           user: user_,
           ingredient: ingredient_,
-          enLocationName: enLocationName_,
-          krLocationName: krLocationName_,
+          enLocationName: enLocationName_ ?? '',
+          krLocationName: krLocationName_ ?? '',
           ingredientName: ingredientName_,
           nickName: nickName_,
           isReward: isReward_,

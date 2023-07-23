@@ -6,6 +6,7 @@ import 'package:foresh_flutter/data/supabase/ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_update.dart';
 import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
+import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
@@ -14,7 +15,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MarkerService {
-  static const fullSelectQuery = '*,ingredient(*)';
+  static const fullSelectQuery = '*,'
+      '${TableName.ingredients}(${IngredientService.fullSelectQuery})';
   final SupabaseClient _client;
   final Environment env;
 
@@ -50,6 +52,7 @@ class MarkerService {
           .lte('latitude', maxLat)
           .gte('longitude', minLng)
           .lte('longitude', maxLng)
+          .filter('is_reward', 'eq', false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

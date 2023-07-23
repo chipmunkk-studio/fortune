@@ -2,7 +2,7 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
 import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
-import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
+import 'package:foresh_flutter/data/supabase/service/event_reward_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,7 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class EventNoticesService {
   static const fullSelectQuery = '*,'
       '${TableName.users}(*),'
-      '${TableName.eventRewards}(*, ${TableName.markers}(${MarkerService.fullSelectQuery}))';
+      '${TableName.eventRewardHistory}(${EventRewardHistoryService.fullSelectQuery})';
 
   final _tableName = TableName.eventNotices;
 
@@ -68,12 +68,10 @@ class EventNoticesService {
 
     final requestToUpdate = RequestEventNotices(
       users: request.users ?? eventNotice.user.id,
-      searchText: request.searchText ?? eventNotice.searchText,
-      eventRewards: request.eventRewards ?? eventNotice.eventReward.id,
+      eventRewardHistory: request.eventRewardHistory ?? eventNotice.eventRewardHistory.id,
       type: request.type ?? eventNotice.type.name,
       landingRoute: request.landingRoute ?? eventNotice.landingRoute,
       isRead: request.isRead ?? eventNotice.isRead,
-      isReceived: request.isReceived ?? eventNotice.isReceive,
       headings: '',
       content: '',
     );

@@ -13,12 +13,12 @@ class MissionsClearConditionsService {
       '${TableName.missions}(${MissionsService.fullSelectQuery}),'
       '${TableName.ingredients}(*)';
 
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
 
-  MissionsClearConditionsService(this._client);
+  MissionsClearConditionsService();
 
   // 미션 아이디로 클리어 조건을 조회.
-  Future<List<MissionClearConditionEntity>>  findMissionClearConditionByMissionId(int id) async {
+  Future<List<MissionClearConditionEntity>> findMissionClearConditionByMissionId(int id) async {
     try {
       final response = await _client
           .from(_missionClearConditionTableName)

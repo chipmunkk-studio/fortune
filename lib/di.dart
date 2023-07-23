@@ -41,18 +41,20 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'data/supabase/repository/event_reward_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
 import 'data/supabase/service/event_notices_service.dart';
-import 'data/supabase/service/mission/missions_service.dart';
+import 'data/supabase/service/event_reward_history_service.dart';
+import 'data/supabase/service/event_reward_info_service.dart';
 import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission/mission_clear_user_service.dart';
+import 'data/supabase/service/mission/missions_service.dart';
+import 'domain/supabase/repository/event_rewards_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
-import 'domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
-import 'domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 
@@ -185,6 +187,9 @@ _initService() {
     ..registerLazySingleton<MissionRewardService>(
       () => MissionRewardService(),
     )
+    ..registerLazySingleton<EventRewardHistoryService>(
+      () => EventRewardHistoryService(),
+    )
     ..registerLazySingleton<MissionClearUserService>(
       () => MissionClearUserService(
         Supabase.instance.client,
@@ -193,10 +198,11 @@ _initService() {
     ..registerLazySingleton<EventNoticesService>(
       () => EventNoticesService(),
     )
+    ..registerLazySingleton<EventRewardInfoService>(
+      () => EventRewardInfoService(),
+    )
     ..registerLazySingleton<MissionsClearConditionsService>(
-      () => MissionsClearConditionsService(
-        Supabase.instance.client,
-      ),
+      () => MissionsClearConditionsService(),
     )
     ..registerLazySingleton<AuthService>(
       () => AuthService(
@@ -216,9 +222,7 @@ _initRepository() {
       ),
     )
     ..registerLazySingleton<IngredientRepository>(
-      () => IngredientRepositoryImpl(
-        serviceLocator<IngredientService>(),
-      ),
+      () => IngredientRepositoryImpl(serviceLocator<IngredientService>()),
     )
     ..registerLazySingleton<MarkerRepository>(
       () => MarkerRepositoryImpl(
@@ -233,6 +237,12 @@ _initRepository() {
     ..registerLazySingleton<EventNoticesRepository>(
       () => EventNoticesRepositoryImpl(
         eventNoticesService: serviceLocator<EventNoticesService>(),
+      ),
+    )
+    ..registerLazySingleton<EventRewardsRepository>(
+      () => EventRewardRepositoryImpl(
+        rewardsService: serviceLocator<EventRewardHistoryService>(),
+        eventRewardInfoService: serviceLocator<EventRewardInfoService>(),
       ),
     )
     ..registerLazySingleton<MissionsRepository>(
@@ -261,17 +271,12 @@ _initUseCase() async {
         userNoticesRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
+        rewardRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetObtainHistoriesUseCase>(
       () => GetObtainHistoriesUseCase(
         obtainHistoryRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<GetObtainCountUseCase>(
-      () => GetObtainCountUseCase(
-        obtainHistoryRepository: serviceLocator(),
-        userRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetMissionsUseCase>(
@@ -298,14 +303,6 @@ _initUseCase() async {
         missionRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<PostMissionRelayClearUseCase>(
-      () => PostMissionRelayClearUseCase(
-        missionRepository: serviceLocator(),
-        userRepository: serviceLocator(),
-        markerRepository: serviceLocator(),
-        userNoticesRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MainUseCase>(
@@ -342,8 +339,6 @@ _initBloc() {
         remoteConfig: serviceLocator<Environment>().remoteConfig,
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
-        getObtainCountUseCase: serviceLocator(),
-        postMissionRelayClearUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -59,7 +59,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
   final router = serviceLocator<FortuneRouter>().router;
-  late final StreamSubscription<LocationData> locationChangeSubscription;
+  late StreamSubscription<LocationData> locationChangeSubscription;
   late Function(GlobalKey) runAddToCartAnimation;
   LocationData? myLocation;
   bool _detectPermission = false;

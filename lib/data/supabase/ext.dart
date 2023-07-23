@@ -7,7 +7,8 @@ abstract class TableName {
   static const missionRewardA = 'mission_reward_a';
   static const missionRewardS = 'mission_reward_s';
   static const eventNotices = 'event_notices';
-  static const eventRewards = 'event_rewards';
+  static const eventRewardHistory = 'event_reward_history';
+  static const eventRewardInfo = 'event_reward_info';
   static const ingredients = 'ingredients';
   static const markers = "markers";
   static const users = "users";

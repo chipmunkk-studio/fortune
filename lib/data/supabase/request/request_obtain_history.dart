@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'request_obtain_history_update.g.dart';
+part 'request_obtain_history.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class RequestObtainHistory {
@@ -18,15 +18,29 @@ class RequestObtainHistory {
   final String? krLocationName;
   @JsonKey(name: 'en_location_name')
   final String? enLocationName;
+  @JsonKey(name: 'is_reward')
+  final bool? isReward;
 
   RequestObtainHistory({
+    this.ingredientId,
+    this.userId,
+    this.nickName,
+    this.ingredientName,
+    this.markerId,
+    this.krLocationName,
+    this.enLocationName,
+    this.isReward,
+  });
+
+  RequestObtainHistory.insert({
     required this.ingredientId,
     required this.userId,
     required this.nickName,
     required this.ingredientName,
-    required this.markerId,
-    required this.krLocationName,
-    required this.enLocationName,
+    this.markerId,
+    this.krLocationName,
+    this.enLocationName,
+    this.isReward = false,
   });
 
   factory RequestObtainHistory.fromJson(Map<String, dynamic> json) => _$RequestObtainHistoryFromJson(json);

@@ -4,7 +4,7 @@ part 'request_marker_random_insert.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class RequestMarkerRandomInsert {
-  @JsonKey(name: 'ingredient')
+  @JsonKey(name: 'ingredients')
   final int ingredient;
   @JsonKey(name: 'latitude')
   final double latitude;

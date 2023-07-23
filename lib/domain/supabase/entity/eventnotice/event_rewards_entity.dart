@@ -1,22 +1,27 @@
-import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-
-class EventRewardsEntity {
+class EventRewardInfoEntity {
   final int id;
-  final MarkerEntity markers;
-  final int ticket;
+  final EventRewardType type;
+  final bool randomMarker;
+  final bool hasUniqueMarker;
+  final int markerCount;
 
-  EventRewardsEntity({
+  EventRewardInfoEntity({
     required this.id,
-    required this.markers,
-    required this.ticket,
+    required this.type,
+    required this.randomMarker,
+    required this.hasUniqueMarker,
+    required this.markerCount,
   });
 
-  factory EventRewardsEntity.empty() {
-    return EventRewardsEntity(
-      id: 0,
-      markers: MarkerEntity.empty(), // Add or replace with a valid default value
-      ticket: 0,
-    );
-  }
+  factory EventRewardInfoEntity.empty() => EventRewardInfoEntity(
+        id: -1,
+        type: EventRewardType.none,
+        randomMarker: false,
+        hasUniqueMarker: false,
+        markerCount: 0,
+      );
 }

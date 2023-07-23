@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/data/supabase/request/request_obtain_history_update.dart';
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 
 abstract class ObtainHistoryRepository {

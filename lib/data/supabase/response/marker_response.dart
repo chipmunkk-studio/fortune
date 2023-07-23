@@ -10,7 +10,7 @@ part 'marker_response.g.dart';
 class MarkerResponse extends MarkerEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'ingredient')
+  @JsonKey(name: 'ingredients')
   final IngredientResponse ingredient_;
   @JsonKey(name: 'latitude')
   final double latitude_;
@@ -20,6 +20,8 @@ class MarkerResponse extends MarkerEntity {
   final int hitCount_;
   @JsonKey(name: 'last_obtain_user')
   final int? lastObtainUser_;
+  @JsonKey(name: 'is_reward')
+  final bool isReward_;
 
   MarkerResponse({
     required this.id_,
@@ -28,6 +30,7 @@ class MarkerResponse extends MarkerEntity {
     required this.hitCount_,
     required this.longitude_,
     required this.lastObtainUser_,
+    required this.isReward_,
   }) : super(
           id: id_.toInt(),
           ingredient: ingredient_,
@@ -35,6 +38,7 @@ class MarkerResponse extends MarkerEntity {
           latitude: latitude_,
           longitude: longitude_,
           lastObtainUser: lastObtainUser_,
+          isReward: isReward_,
         );
 
   factory MarkerResponse.fromJson(Map<String, dynamic> json) => _$MarkerResponseFromJson(json);

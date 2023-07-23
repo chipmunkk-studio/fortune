@@ -19,7 +19,9 @@ enum EventNoticeType {
 }
 
 enum EventRewardType {
-  ticket,
+  level,
+  event,
+  relay,
   none,
 }
 
@@ -53,8 +55,12 @@ getEventNoticeType(String type) {
 }
 
 getEventRewardType(String type) {
-  if (EventRewardType.ticket.name == type) {
-    return EventRewardType.ticket;
+  if (EventRewardType.level.name == type) {
+    return EventRewardType.level;
+  } else if (EventRewardType.event.name == type) {
+    return EventRewardType.event;
+  } else if (EventRewardType.relay.name == type) {
+    return EventRewardType.relay;
   } else {
     return EventRewardType.none;
   }

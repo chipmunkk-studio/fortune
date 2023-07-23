@@ -3,22 +3,23 @@ import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
-import 'package:foresh_flutter/data/supabase/request/request_obtain_history_update.dart';
+import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_obtain_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_param.dart';
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 
 class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
   final EventNoticesRepository userNoticesRepository;
+  final EventRewardsRepository rewardRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MissionsRepository missionsRepository;
 
@@ -28,6 +29,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     required this.userNoticesRepository,
     required this.obtainHistoryRepository,
     required this.missionsRepository,
+    required this.rewardRepository,
   });
 
   @override
@@ -82,16 +84,22 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 레벨업 혹은 등급 업을 했을 경우.
       if (prevUser.level != updateUser.level) {
-        await userNoticesRepository.insertNotice(
-          RequestEventNotices.insert(
-            users: prevUser.id,
-            type: EventNoticeType.user.name,
-            headings: dialogHeadings,
-            content: dialogContent,
-            isRead: false,
-            isReceived: false,
-          ),
-        );
+        // #1 이벤트 타입에 따른 보상 정보를 찾음.
+        // final reward = await rewardRepository.insertRewardHistory(
+        //   user: prevUser,
+        //   type: EventRewardType.level,
+        // );
+        // await userNoticesRepository.insertNotice(
+        //   RequestEventNotices.insert(
+        //     users: prevUser.id,
+        //     type: EventNoticeType.user.name,
+        //     headings: dialogHeadings,
+        //     content: dialogContent,
+        //     eventRewards: reward.id,
+        //     isRead: false,
+        //     isReceived: false,
+        //   ),
+        // );
       }
 
       // 마커 재배치.
@@ -104,7 +112,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       if (marker.ingredient.type != IngredientType.ticket) {
         await obtainHistoryRepository
             .insertObtainHistory(
-          request: RequestObtainHistory(
+          request: RequestObtainHistory.insert(
             userId: prevUser.id,
             markerId: marker.id,
             ingredientId: marker.ingredient.id,
@@ -165,7 +173,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             type: EventNoticeType.user.name,
             users: user.id,
             isRead: false,
-            isReceived: false,
           ),
         );
       }

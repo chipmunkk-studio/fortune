@@ -74,7 +74,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
           .toList();
 
       // 재료 목록 가져옴.
-      final ingredients = await ingredientRepository.getIngredients(user.isGlobal);
+      final ingredients = await ingredientRepository.findAllIngredients(user.isGlobal);
       final keepMarkerCount = remoteConfig.markerCount;
       final keepTicketCount = remoteConfig.ticketCount;
 

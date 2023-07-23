@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IngredientService {
   static const _ingredientTableName = "ingredients";
+  static const fullSelectQuery = '*';
 
   final SupabaseClient _client;
 
@@ -12,7 +13,7 @@ class IngredientService {
     this._client,
   );
 
-  Future<List<IngredientResponse>> findIngredients(bool isGlobal) async {
+  Future<List<IngredientResponse>> findAllIngredients(bool isGlobal) async {
     try {
       final List<dynamic> response = await _client
           .from(_ingredientTableName)
@@ -21,6 +22,27 @@ class IngredientService {
             'type.eq.ticket,'
             'is_global.eq.$isGlobal',
           )
+          .toSelect();
+      if (response.isEmpty) {
+        return List.empty();
+      } else {
+        final ingredients = response.map((e) => IngredientResponse.fromJson(e)).toList();
+        return ingredients;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  Future<List<IngredientResponse>> getIngredientByRandom(bool isGlobal) async {
+    try {
+      final List<dynamic> response = await _client
+          .from(_ingredientTableName)
+          .select("*")
+          .or(
+        'type.eq.ticket,'
+            'is_global.eq.$isGlobal',
+      )
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

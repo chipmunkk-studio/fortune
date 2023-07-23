@@ -7,10 +7,8 @@ import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_count_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_mission_relay_clear_use_case.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
@@ -26,16 +24,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
-  final GetObtainCountUseCase getObtainCountUseCase;
-  final PostMissionRelayClearUseCase postMissionRelayClearUseCase;
   final FortuneRemoteConfig remoteConfig;
 
   MainBloc({
     required this.remoteConfig,
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
-    required this.getObtainCountUseCase,
-    required this.postMissionRelayClearUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -171,7 +165,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 클릭 시.
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
-    // 마커 획득 이벤트 수행.
+    // 화면 프리징.
     if (!state.isObtainProcessing) {
       emit(
         state.copyWith(
