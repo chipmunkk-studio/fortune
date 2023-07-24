@@ -14,6 +14,7 @@ extension FortuneBottomSheet on BuildContext {
     bool isShowTopBar = false,
   }) async {
     return await showModalBottomSheet(
+      context: this,
       isScrollControlled: true,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
@@ -22,58 +23,60 @@ extension FortuneBottomSheet on BuildContext {
           topRight: Radius.circular(32.r),
         ),
       ),
-      context: this,
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 48.h),
-        child: Wrap(
-          children: [
-            isShowTopBar
-                ? Column(
-                    children: [
-                      SizedBox(height: 25.h),
-                      Row(
-                        children: [
-                          const Spacer(),
-                          Container(
-                            width: 40.w,
-                            height: 4.h,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16.r),
-                              color: ColorName.deActiveDark,
-                            ),
-                          ),
-                          const Spacer()
-                        ],
-                      ),
-                      SizedBox(height: isShowCloseButton ? 0.h : 25.h),
-                    ],
-                  )
-                : Container(),
-            isShowCloseButton
-                ? Align(
-                    alignment: Alignment.centerRight,
-                    child: Column(
+      builder: (context) => SafeArea(
+        bottom: true,
+        child: Container(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Wrap(
+            children: [
+              isShowTopBar
+                  ? Column(
                       children: [
                         SizedBox(height: 25.h),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            InkResponse(
-                              radius: 25,
-                              onTap: () => Navigator.pop(context),
-                              splashColor: ColorName.backgroundLight,
-                              child: Assets.icons.icCancel.svg(width: 24, height: 24),
+                            const Spacer(),
+                            Container(
+                              width: 40.w,
+                              height: 4.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: ColorName.deActiveDark,
+                              ),
                             ),
-                            SizedBox(width: 25.w),
+                            const Spacer()
                           ],
                         ),
+                        SizedBox(height: isShowCloseButton ? 0.h : 25.h),
                       ],
-                    ),
-                  )
-                : Container(),
-            content(context),
-          ],
+                    )
+                  : Container(),
+              isShowCloseButton
+                  ? Align(
+                      alignment: Alignment.centerRight,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 25.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              InkResponse(
+                                radius: 25,
+                                onTap: () => Navigator.pop(context),
+                                splashColor: ColorName.backgroundLight,
+                                child: Assets.icons.icCancel.svg(width: 24, height: 24),
+                              ),
+                              SizedBox(width: 25.w),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+              content(context),
+            ],
+          ),
         ),
       ),
     );

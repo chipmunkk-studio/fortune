@@ -40,6 +40,7 @@ import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
+import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -351,7 +352,6 @@ _initBloc() {
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
         signUpOrInUseCase: serviceLocator<SignUpOrInUseCase>(),
-        verifyPhoneNumberUseCase: serviceLocator<VerifyPhoneNumberUseCase>(),
       ),
     )
     ..registerFactory(
@@ -378,6 +378,11 @@ _initBloc() {
       () => MissionDetailBloc(
         getMissionDetailUseCase: serviceLocator(),
         postMissionClearUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => VerifyCodeBloc(
+        verifyPhoneNumberUseCase: serviceLocator(),
       ),
     )
     // ..registerFactory(

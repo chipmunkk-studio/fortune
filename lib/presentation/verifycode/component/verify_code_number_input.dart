@@ -5,8 +5,8 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
 
-class LoginVerifyCodeNumber extends StatelessWidget {
-  const LoginVerifyCodeNumber({
+class VerifyCodeNumberInput extends StatelessWidget {
+  const VerifyCodeNumberInput({
     super.key,
     required String verifyCode,
     required bool isRequestVerifyCodeEnable,
@@ -50,7 +50,7 @@ class LoginVerifyCodeNumber extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           FortuneTextButton(
             onPress: _isRequestVerifyCodeEnable ? () => onRequestClick() : null,
             text: '인증번호 요청',

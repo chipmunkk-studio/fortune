@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/checkbox/fortune_check_box.dart';
@@ -72,14 +73,14 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
             children: [
               Row(
                 children: [
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                   Text(
-                    "본인인증을 위해\n약관에 동의해주세요",
-                    style: FortuneTextStyle.headLine3(),
+                    "서비스 이용을 위해\n약관에 동의해주세요",
+                    style: FortuneTextStyle.subTitle1SemiBold(),
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: state.agreeTerms.length,
@@ -99,7 +100,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                           state: item.isChecked,
                         ),
                         const SizedBox(width: 12),
-                        Text(item.title, style: FortuneTextStyle.body1Medium()),
+                        Text(item.title, style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark)),
                         const Spacer(),
                         Assets.icons.icArrowRight16.svg(),
                         const SizedBox(width: 24),
@@ -108,9 +109,13 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                   );
                 },
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 40),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.only(
+                  right: 24,
+                  left: 24,
+                  bottom: 20,
+                ),
                 child: FortuneScaleButton(
                   text: "모두 동의하기",
                   isEnabled: true,

@@ -35,28 +35,21 @@ _checkboxThemeData() {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4.r),
     ),
-    checkColor: MaterialStateProperty.resolveWith<Color>(
-      (states) {
-        if (states.contains(MaterialState.disabled)) {
-          return ColorName.primary; // 체크박스가 비활성화된 경우
-        }
-        return Colors.black; // 체크박스가 활성화된 경우
-      },
-    ),
+    checkColor: MaterialStateProperty.resolveWith<Color>((states) => Colors.black),
     fillColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
         if (!states.contains(MaterialState.selected)) {
-          return ColorName.backgroundLight; // 체크박스가 비활성화된 경우
+          return ColorName.deActive; // 체크박스가 선택된경우.
         }
         return ColorName.primary; // 체크박스가 활성화된 경우
       },
     ),
     overlayColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
-        if (states.contains(MaterialState.disabled)) {
-          return ColorName.primary; // 체크박스가 비활성화된 경우
+        if (states.contains(MaterialState.pressed)) {
+          return ColorName.primary; // 체크박스가 눌린 경우
         }
-        return ColorName.primary; // 체크박스가 활성화된 경우
+        return Colors.transparent; // 체크박스가 눌리지 않은 경우
       },
     ),
   );
@@ -71,9 +64,7 @@ bottomSheetTheme() {
 elevatedButtonTheme() {
   return ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      minimumSize: Size.fromHeight(
-        56.h,
-      ),
+      minimumSize: const Size.fromHeight(56),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100.r),
       ),

@@ -8,7 +8,7 @@ class RequestFortuneUser {
   final String? phone;
   @JsonKey(name: 'nickname')
   final String? nickname;
-  @JsonKey(name: 'nickname')
+  @JsonKey(name: 'profileImage')
   final String? profileImage;
   @JsonKey(name: 'ticket')
   final int? ticket;

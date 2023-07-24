@@ -5,16 +5,16 @@ import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 
 class LoginBottomButton extends StatelessWidget {
   final bool isKeyboardVisible;
-  final FluroRouter router;
+  final String text;
   final Function0 onPressed;
   final bool isEnabled;
 
-  const LoginBottomButton(
-    this.isKeyboardVisible,
-    this.router, {
+  const LoginBottomButton({
     super.key,
+    required this.isKeyboardVisible,
+    required this.isEnabled,
     required this.onPressed,
-    this.isEnabled = false,
+    required this.text,
   });
 
   @override
@@ -23,7 +23,7 @@ class LoginBottomButton extends StatelessWidget {
       isKeyboardVisible: isKeyboardVisible,
       isEnabled: isEnabled,
       onPress: onPressed,
-      buttonText: '다음',
+      buttonText: text,
     );
   }
 }

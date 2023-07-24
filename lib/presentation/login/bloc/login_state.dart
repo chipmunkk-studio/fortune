@@ -7,30 +7,17 @@ part 'login_state.freezed.dart';
 class LoginState with _$LoginState {
   factory LoginState({
     required String phoneNumber,
-    required String verifyCode,
     required String guideTitle,
-    required bool isRequestVerifyCodeEnable,
     required bool isButtonEnabled,
     required LoginUserState loginUserState,
-    required int verifyTime,
-    required List<LoginStepper> steppers,
   }) = _LoginState;
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
         phoneNumber: "",
         isButtonEnabled: false,
-        verifyCode: "",
-        verifyTime: 0,
-        isRequestVerifyCodeEnable: true,
         loginUserState: LoginUserState.none,
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
-        steppers: [LoginStepper.phoneNumber],
       );
-}
-
-enum LoginStepper {
-  phoneNumber,
-  signInWithOtp,
 }
 
 enum LoginUserState {

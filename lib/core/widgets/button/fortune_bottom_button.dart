@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:dartz/dartz.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
+
 
 class FortuneBottomButton extends StatelessWidget {
   final bool isEnabled;
   final Function0 onPress;
   final String buttonText;
   final bool isKeyboardVisible;
-  final _deBouncer = _ButtonDeBouncer(milliseconds: 3000);
+  final _deBouncer = FortuneButtonDeBouncer(milliseconds: 3000);
 
   FortuneBottomButton({
     Key? key,
@@ -36,15 +36,15 @@ class FortuneBottomButton extends StatelessWidget {
   }
 }
 
-class _ButtonDeBouncer {
+class FortuneButtonDeBouncer {
   final int milliseconds;
   Timer? _timer;
 
-  _ButtonDeBouncer({required this.milliseconds});
+  FortuneButtonDeBouncer({required this.milliseconds});
 
-  run(VoidCallback action) {
+  run(VoidCallback? action) {
     if (_timer != null) return;
-    action();
+    action?.call();
     _timer = Timer(Duration(milliseconds: milliseconds), () {
       _timer = null;
     });

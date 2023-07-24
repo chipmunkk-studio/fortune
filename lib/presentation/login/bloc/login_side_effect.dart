@@ -39,8 +39,8 @@ class LoginShowTermsBottomSheet extends LoginSideEffect {
   List<Object?> get props => [];
 }
 
-class LoginNextStep extends LoginSideEffect {
-  LoginNextStep();
+class LoginShowVerifyCodeBottomSheet extends LoginSideEffect {
+  LoginShowVerifyCodeBottomSheet();
 
   @override
   List<Object?> get props => [];

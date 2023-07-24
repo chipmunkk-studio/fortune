@@ -26,17 +26,6 @@ class LoginPhoneNumberInput extends LoginEvent {
   List<Object?> get props => [];
 }
 
-class LoginVerifyCodeInput extends LoginEvent {
-  final String verifyCode;
-
-  LoginVerifyCodeInput({
-    required this.verifyCode,
-  });
-
-  @override
-  List<Object?> get props => [];
-}
-
 class LoginBottomButtonClick extends LoginEvent {
   @override
   List<Object?> get props => [];
@@ -47,7 +36,3 @@ class LoginRequestVerifyCode extends LoginEvent {
   List<Object?> get props => [];
 }
 
-class LoginRequestVerifyCodeCountdown extends LoginEvent {
-  @override
-  List<Object?> get props => [];
-}
