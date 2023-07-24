@@ -6,11 +6,9 @@ import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
 abstract class AgreeTermsEvent extends Equatable {}
 
 class AgreeTermsInit extends AgreeTermsEvent {
-  final List<AgreeTermsEntity> agreeTerms;
   final String phoneNumber;
 
   AgreeTermsInit(
-    this.agreeTerms,
     this.phoneNumber,
   );
 

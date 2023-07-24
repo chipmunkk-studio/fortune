@@ -63,7 +63,7 @@ serviceTest() async {
   final obtainHistoryRepository = serviceLocator<ObtainHistoryRepository>();
   final eventNoticesRepository = serviceLocator<EventNoticesRepository>();
 
-  final user = await userRepository.findUserByPhone();
+  final user = await userRepository.findUserByPhoneNonNull();
   final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
   final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
@@ -85,7 +85,7 @@ serviceTest() async {
   eventNoticesRepository.insertNotice(
     RequestEventNotices.insert(
       type: EventNoticeType.user.name,
-      headings: '레벨업을 축하합니다!',
+      headings: '레벨 업을 축하합니다!',
       content: '레벨업 축하!',
       users: user.id,
       eventRewardHistory: response.id,

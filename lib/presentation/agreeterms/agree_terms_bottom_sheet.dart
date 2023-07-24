@@ -13,11 +13,9 @@ import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class AgreeTermsBottomSheet extends StatelessWidget {
-  final List<AgreeTermsEntity> terms;
   final String phoneNumber;
 
   const AgreeTermsBottomSheet(
-    this.terms,
     this.phoneNumber, {
     Key? key,
   }) : super(key: key);
@@ -25,23 +23,14 @@ class AgreeTermsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<AgreeTermsBloc>()
-        ..add(
-          AgreeTermsInit(
-            terms,
-            phoneNumber,
-          ),
-        ),
-      child: _AgreeTermsBottomSheet(terms),
+      create: (_) => serviceLocator<AgreeTermsBloc>()..add(AgreeTermsInit(phoneNumber)),
+      child: const _AgreeTermsBottomSheet(),
     );
   }
 }
 
 class _AgreeTermsBottomSheet extends StatefulWidget {
-  final List<AgreeTermsEntity> terms;
-
-  const _AgreeTermsBottomSheet(
-    this.terms, {
+  const _AgreeTermsBottomSheet({
     super.key,
   });
 

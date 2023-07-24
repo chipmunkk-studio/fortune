@@ -8,6 +8,8 @@ class RequestFortuneUser {
   final String? phone;
   @JsonKey(name: 'nickname')
   final String? nickname;
+  @JsonKey(name: 'nickname')
+  final String? profileImage;
   @JsonKey(name: 'ticket')
   final int? ticket;
   @JsonKey(name: 'marker_obtain_count')
@@ -18,11 +20,11 @@ class RequestFortuneUser {
   RequestFortuneUser({
     this.phone,
     this.nickname,
+    this.profileImage,
     this.ticket,
     this.markerObtainCount,
     this.level,
   });
-
 
   RequestFortuneUser.insert({
     required this.phone,
@@ -30,6 +32,7 @@ class RequestFortuneUser {
     this.ticket = 0,
     this.markerObtainCount = 0,
     this.level = 1,
+    this.profileImage = '',
   });
 
   factory RequestFortuneUser.fromJson(Map<String, dynamic> json) => _$RequestFortuneUserFromJson(json);

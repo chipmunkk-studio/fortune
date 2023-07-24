@@ -1,32 +1,30 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'agree_terms.dart';
 
 class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
     with SideEffectBlocMixin<AgreeTermsEvent, AgreeTermsState, AgreeTermsSideEffect> {
-  final AuthRepository authRepository;
-  final UserRepository userRepository;
+  final GetTermsUseCase getTermsUseCase;
 
   static const tag = "[PhoneNumberBloc]";
 
   AgreeTermsBloc({
-    required this.authRepository,
-    required this.userRepository,
+    required this.getTermsUseCase,
   }) : super(AgreeTermsState.initial()) {
     on<AgreeTermsInit>(init);
     on<AgreeTermsTermClick>(onTermsClick);
     on<AgreeTermsAllClick>(onAllTermsClick);
   }
 
-  FutureOr<void> init(AgreeTermsInit event, Emitter<AgreeTermsState> emit) {
+  FutureOr<void> init(AgreeTermsInit event, Emitter<AgreeTermsState> emit) async {
+    final terms = await getTermsUseCase().then((value) => value.getOrElse(() => List.empty()));
     emit(
       AgreeTermsState.initial(
-        event.agreeTerms,
+        terms,
         event.phoneNumber,
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
@@ -24,8 +23,8 @@ class UserService {
               nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
             ).toJson(),
           );
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -83,12 +82,11 @@ class UserService {
   Future<FortuneUserEntity?> findUserByPhone(String? phone) async {
     try {
       final List<dynamic> response = await _client
-          .from(_tableName)
-          .select("*")
-          .eq(
-            'phone',
-            phone?.replaceFirst('+', ''),
+          .from(
+            _tableName,
           )
+          .select("*")
+          .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {
         return null;
@@ -96,9 +94,8 @@ class UserService {
         final user = response.map((e) => FortuneUserResponse.fromJson(e)).toList();
         return user.single;
       }
-    } on Exception catch (e) {
-      FortuneLogger.error(e.toString());
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -106,12 +103,11 @@ class UserService {
   Future<FortuneUserEntity> findUserByPhoneNonNull(String? phone) async {
     try {
       final List<dynamic> response = await _client
-          .from(_tableName)
-          .select("*")
-          .eq(
-            'phone',
-            phone?.replaceFirst('+', ''),
+          .from(
+            _tableName,
           )
+          .select("*")
+          .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '사용자가 존재하지 않습니다.');

@@ -56,8 +56,6 @@ class FortuneRouter {
       final loginParam = () {
         if (sessionsState.contains("needToLogin")) {
           return LoginUserState.needToLogin;
-        } else if (sessionsState.contains("sessionExpired")) {
-          return LoginUserState.sessionExpired;
         } else {
           return LoginUserState.none;
         }

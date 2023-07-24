@@ -11,7 +11,7 @@ class FortuneBottomButton extends StatelessWidget {
   final Function0 onPress;
   final String buttonText;
   final bool isKeyboardVisible;
-  final _debouncer = _ButtonDebouncer(milliseconds: 500);
+  final _deBouncer = _ButtonDeBouncer(milliseconds: 3000);
 
   FortuneBottomButton({
     Key? key,
@@ -31,22 +31,22 @@ class FortuneBottomButton extends StatelessWidget {
           borderRadius: isKeyboardVisible ? BorderRadius.circular(0.r) : BorderRadius.circular(100.r),
         ),
       ),
-      press: () => _debouncer.run(onPress),
+      press: () => _deBouncer.run(onPress),
     );
   }
 }
 
-class _ButtonDebouncer {
+class _ButtonDeBouncer {
   final int milliseconds;
-  VoidCallback? action;
   Timer? _timer;
 
-  _ButtonDebouncer({required this.milliseconds});
+  _ButtonDeBouncer({required this.milliseconds});
 
   run(VoidCallback action) {
-    if (null != _timer) {
-      _timer!.cancel();
-    }
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
+    if (_timer != null) return;
+    action();
+    _timer = Timer(Duration(milliseconds: milliseconds), () {
+      _timer = null;
+    });
   }
 }

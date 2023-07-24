@@ -20,7 +20,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
   @override
   Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
     try {
-      final user = await userRepository.findUserByPhone();
+      final user = await userRepository.findUserByPhoneNonNull();
       final mission = await missionRepository.getMissionById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditions(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);

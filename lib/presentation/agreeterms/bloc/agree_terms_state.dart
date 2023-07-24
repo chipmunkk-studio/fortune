@@ -10,7 +10,11 @@ class AgreeTermsState with _$AgreeTermsState {
     required List<AgreeTermsEntity> agreeTerms,
   }) = _AgreeTermsState;
 
-  factory AgreeTermsState.initial([List<AgreeTermsEntity>? agreeTerms, String? phoneNumber]) => AgreeTermsState(
+  factory AgreeTermsState.initial([
+    List<AgreeTermsEntity>? agreeTerms,
+    String? phoneNumber,
+  ]) =>
+      AgreeTermsState(
         phoneNumber: phoneNumber ?? "",
         agreeTerms: agreeTerms ?? List.empty(),
       );

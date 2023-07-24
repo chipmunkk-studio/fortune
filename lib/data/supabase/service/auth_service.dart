@@ -32,8 +32,8 @@ class AuthService {
   }) async {
     try {
       return await authClient.signInWithOtp(phone: phoneNumber);
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -48,8 +48,8 @@ class AuthService {
         password: password,
       );
       return response;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -65,8 +65,8 @@ class AuthService {
         type: OtpType.sms,
       );
       return response;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -79,8 +79,8 @@ class AuthService {
         errorCode: e.statusCode,
         errorMessage: e.message,
       );
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -90,8 +90,8 @@ class AuthService {
       final List<dynamic> response = await client.from(_termsTableName).select("*").toSelect();
       final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
       return terms;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -100,13 +100,18 @@ class AuthService {
     final isAnyPermissionDenied = await FortunePermissionUtil.checkPermissionsStatus(
       Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
     );
-    final isJoinMember = preferences.containsKey(supabaseSessionKey);
-    if (isAnyPermissionDenied && isJoinMember) {
-      return handlePermissionDeniedState();
-    } else if (isJoinMember) {
+    final isSigninedMember = preferences.containsKey(supabaseSessionKey);
+    // #1 권한이 없을 경우.
+    if (isAnyPermissionDenied) {
+      if (isSigninedMember) {
+        return handlePermissionDeniedState();
+      } else {
+        return handleNoLoginState();
+      }
+    }
+    // #2 권한이 있을 경우.
+    else {
       return handleJoinMemberState();
-    } else {
-      return handleNoLoginState();
     }
   }
 
@@ -119,7 +124,7 @@ class AuthService {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음.');
     // 세션이 만료된 경우.
     final currentLoginUserState = await refreshSession();
-    if (currentLoginUserState == LoginUserState.needToLogin || currentLoginUserState == LoginUserState.sessionExpired) {
+    if (currentLoginUserState == LoginUserState.needToLogin) {
       return "${Routes.loginRoute}/${currentLoginUserState.name}";
     }
     return Routes.mainRoute;
@@ -136,7 +141,7 @@ class AuthService {
       final session = authClient.currentSession;
       if (session == null || JwtDecoder.isExpired(session.accessToken)) {
         FortuneLogger.info('RecoverSession:: 세션 만료. ${session?.accessToken}');
-        return LoginUserState.sessionExpired;
+        return LoginUserState.needToLogin;
       } else {
         final jsonStr = preferences.getString(supabaseSessionKey)!;
         final response = await authClient.recoverSession(jsonStr);

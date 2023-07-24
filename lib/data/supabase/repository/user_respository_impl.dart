@@ -1,7 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -17,7 +15,7 @@ class UserRepositoryImpl extends UserRepository {
 
   // 휴대폰 번호로 현재 사용자 찾기.
   @override
-  Future<FortuneUserEntity> findUserByPhone() async {
+  Future<FortuneUserEntity> findUserByPhoneNonNull() async {
     try {
       final FortuneUserEntity? user = await _userService.findUserByPhone(
         Supabase.instance.client.auth.currentUser?.phone,
@@ -32,14 +30,15 @@ class UserRepositoryImpl extends UserRepository {
     }
   }
 
+  // 사용자를 찾음.
   @override
-  Future<FortuneResult<FortuneUserEntity?>> findUserByPhoneEither(phoneNumber) async {
+  Future<FortuneUserEntity?> findUserByPhone(phoneNumber) async {
     try {
       final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
-      return Right(user);
+      return user;
     } on FortuneFailure catch (e) {
       FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      return Left(e);
+      rethrow;
     }
   }
 

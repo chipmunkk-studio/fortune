@@ -37,6 +37,16 @@ class AuthFailure extends FortuneFailure {
           message: errorMessage,
         );
 
+  AuthFailure copyWith({
+    String? errorCode,
+    String? errorMessage,
+  }) {
+    return AuthFailure(
+      errorCode: errorCode ?? this.errorCode,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
   @override
   List<Object?> get props => [errorMessage, errorCode];
 }

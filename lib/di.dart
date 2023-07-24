@@ -26,8 +26,12 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -280,6 +284,28 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetUserUseCase>(
+      () => GetUserUseCase(
+        userRepository: serviceLocator(),
+        authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<VerifyPhoneNumberUseCase>(
+      () => VerifyPhoneNumberUseCase(
+        authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<SignUpOrInUseCase>(
+      () => SignUpOrInUseCase(
+        authRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetTermsUseCase>(
+      () => GetTermsUseCase(
+        authRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetMissionsUseCase>(
       () => GetMissionsUseCase(
         missionRepository: serviceLocator(),
@@ -323,8 +349,9 @@ _initBloc() {
   serviceLocator
     ..registerFactory(
       () => LoginBloc(
-        authRepository: serviceLocator<AuthRepository>(),
-        userRepository: serviceLocator<UserRepository>(),
+        getUserUseCase: serviceLocator<GetUserUseCase>(),
+        signUpOrInUseCase: serviceLocator<SignUpOrInUseCase>(),
+        verifyPhoneNumberUseCase: serviceLocator<VerifyPhoneNumberUseCase>(),
       ),
     )
     ..registerFactory(
@@ -361,8 +388,7 @@ _initBloc() {
     // )
     ..registerFactory(
       () => AgreeTermsBloc(
-        authRepository: serviceLocator<AuthRepository>(),
-        userRepository: serviceLocator<UserRepository>(),
+        getTermsUseCase: serviceLocator(),
       ),
     );
 }

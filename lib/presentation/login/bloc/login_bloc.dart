@@ -2,23 +2,28 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
-import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
-  final AuthRepository authRepository;
-  final UserRepository userRepository;
+  final GetUserUseCase getUserUseCase;
+  final VerifyPhoneNumberUseCase verifyPhoneNumberUseCase;
+  final SignUpOrInUseCase signUpOrInUseCase;
 
   static const tag = "[PhoneNumberBloc]";
 
   LoginBloc({
-    required this.authRepository,
-    required this.userRepository,
+    required this.getUserUseCase,
+    required this.verifyPhoneNumberUseCase,
+    required this.signUpOrInUseCase,
   }) : super(LoginState.initial()) {
     on<LoginInit>(init);
     on<LoginPhoneNumberInput>(
@@ -39,6 +44,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
+    FortuneLogger.info('현재 유저 상태: ${event.loginUserState.name}');
     emit(state.copyWith(loginUserState: event.loginUserState));
   }
 
@@ -52,128 +58,92 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> verifyCodeInput(LoginVerifyCodeInput event, Emitter<LoginState> emit) {
-    final newState = state.copyWith(verifyCode: event.verifyCode);
-    emit(newState);
+    emit(
+      state.copyWith(
+        verifyCode: event.verifyCode,
+        isButtonEnabled: FortuneValidator.isValidVerifyCode(event.verifyCode),
+      ),
+    );
   }
 
   FutureOr<void> clickNextButton(LoginBottomButtonClick event, Emitter<LoginState> emit) async {
+    // #0 문자 전송 때문에 앞에 +82 추가
     final convertedPhoneNumber = _getConvertedPhoneNumber(state.phoneNumber);
     final currentStep = state.steppers[0];
 
     switch (currentStep) {
       // 폰 번호 입력 상태.
       case LoginStepper.phoneNumber:
-        if (state.loginUserState == LoginUserState.none) {
-          await userRepository.findUserByPhoneEither(convertedPhoneNumber).then(
-                (value) => value.fold(
-                  (l) {
-                    // 회원가입을 할 수 없을 경우 에러를 보냄.
-                    produceSideEffect(LoginError(l));
-                  },
-                  (r) async {
-                    // 버튼 비활성화.
-                    emit(state.copyWith(isButtonEnabled: false));
-                    // 회원 등록이 되지 않았을 경우.
-                    if (r == null) {
-                      await authRepository.getTerms().then(
-                            (value) => value.fold(
-                              (l) => produceSideEffect(LoginError(l)),
-                              (terms) => produceSideEffect(
-                                LoginShowTermsBottomSheet(
-                                  terms,
-                                  convertedPhoneNumber,
-                                ),
-                              ),
-                            ),
-                          );
-                    } else {
+        // #1 사용자가 있는지 확인.
+        await getUserUseCase(
+          convertedPhoneNumber,
+        ).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(LoginError(l)),
+            (r) async {
+              // #2 가입된 사용자 인 경우 > 인증번호 전송 요구.
+              if (r != null) {
+                await signUpOrInUseCase(convertedPhoneNumber).then(
+                  (value) => value.fold(
+                    (l) => produceSideEffect(LoginError(l)),
+                    (r) {
                       final nextState = state.copyWith(
                         steppers: [LoginStepper.signInWithOtp, ...state.steppers],
                         guideTitle: LoginGuideTitle.signInWithOtp,
-                        isButtonEnabled: true,
-                        isRequestVerifyCodeEnable: true,
+                        isRequestVerifyCodeEnable: false,
+                        verifyTime: 10,
                       );
                       emit(nextState);
                       produceSideEffect(LoginNextStep());
-                    }
-                  },
-                ),
-              );
-        } else {
-          emit(state.copyWith(isButtonEnabled: false));
-          final nextState = state.copyWith(
-            steppers: [LoginStepper.signInWithOtp, ...state.steppers],
-            guideTitle: LoginGuideTitle.signInWithOtp,
-            isButtonEnabled: true,
-            isRequestVerifyCodeEnable: true,
-          );
-          emit(nextState);
-          produceSideEffect(LoginNextStep());
-        }
+                    },
+                  ),
+                );
+              }
+              // #3 가입된 사용자가 아닌 경우.
+              else {
+                // #4 약관 바텀 시트를 보여줌.
+                produceSideEffect(LoginShowTermsBottomSheet(convertedPhoneNumber));
+              }
+            },
+          ),
+        );
+
         break;
       case LoginStepper.signInWithOtp:
-        await authRepository
-            .verifyPhoneNumber(
-              otpCode: state.verifyCode,
-              phoneNumber: _getConvertedPhoneNumber(state.phoneNumber),
-            )
-            .then(
-              (value) => value.fold(
-                (l) => produceSideEffect(LoginError(l)),
-                (r) => produceSideEffect(LoginLandingRoute(Routes.mainRoute)),
-              ),
-            );
+        await verifyPhoneNumberUseCase(
+          RequestVerifyPhoneNumberParam(
+            phoneNumber: _getConvertedPhoneNumber(state.phoneNumber),
+            verifyCode: state.verifyCode,
+          ),
+        ).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(LoginError(l)),
+            (r) => produceSideEffect(LoginLandingRoute(Routes.mainRoute)),
+          ),
+        );
         break;
       default:
         break;
     }
   }
 
+  // 약관 동의 후 인증반호 요청.
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
     final convertedPhoneNumber = _getConvertedPhoneNumber(state.phoneNumber);
-    await userRepository.findUserByPhoneEither(convertedPhoneNumber).then(
-          (value) => value.fold(
-            (l) => produceSideEffect(LoginError(l)),
-            (r) async {
-              if (r != null) {
-                await authRepository
-                    .signInWithOtp(
-                      phoneNumber: _getConvertedPhoneNumber(state.phoneNumber),
-                    )
-                    .then(
-                      (value) => value.fold(
-                        (l) => produceSideEffect(LoginError(l)),
-                        (r) async {
-                          emit(
-                            state.copyWith(
-                              isRequestVerifyCodeEnable: false,
-                              verifyTime: 10,
-                            ),
-                          );
-                        },
-                      ),
-                    );
-              } else {
-                emit(state.copyWith(isButtonEnabled: false));
-                await authRepository.signUp(phoneNumber: convertedPhoneNumber).then(
-                      (value) => value.fold(
-                        (l) => produceSideEffect(LoginError(l)),
-                        (r) {
-                          final nextState = state.copyWith(
-                            steppers: [LoginStepper.signInWithOtp, ...state.steppers],
-                            guideTitle: LoginGuideTitle.signInWithOtpNewMember,
-                            isButtonEnabled: true,
-                            isRequestVerifyCodeEnable: false,
-                            verifyTime: 10,
-                          );
-                          emit(nextState);
-                        },
-                      ),
-                    );
-              }
-            },
-          ),
-        );
+    await signUpOrInUseCase(convertedPhoneNumber).then(
+      (value) => value.fold(
+        (l) => produceSideEffect(LoginError(l)),
+        (r) {
+          final nextState = state.copyWith(
+            steppers: [LoginStepper.signInWithOtp, ...state.steppers],
+            guideTitle: LoginGuideTitle.signInWithOtpNewMember,
+            isRequestVerifyCodeEnable: false,
+            verifyTime: 10,
+          );
+          emit(nextState);
+        },
+      ),
+    );
   }
 
   FutureOr<void> verifyCodeCountdown(LoginRequestVerifyCodeCountdown event, Emitter<LoginState> emit) {

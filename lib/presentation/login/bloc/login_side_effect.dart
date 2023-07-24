@@ -29,11 +29,9 @@ class LoginLandingRoute extends LoginSideEffect {
 }
 
 class LoginShowTermsBottomSheet extends LoginSideEffect {
-  final List<AgreeTermsEntity> terms;
   final String phoneNumber;
 
   LoginShowTermsBottomSheet(
-    this.terms,
     this.phoneNumber,
   );
 

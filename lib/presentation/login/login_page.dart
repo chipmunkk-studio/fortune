@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import '../agreeterms/agree_terms_bottom_sheet.dart';
@@ -19,20 +17,20 @@ import 'component/login_phone_number.dart';
 import 'component/login_verify_code_number.dart';
 
 class LoginPage extends StatelessWidget {
-  final LoginUserState isSessionExpired;
+  final LoginUserState loginState;
 
   const LoginPage(
-    this.isSessionExpired, {
+    this.loginState, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<LoginBloc>()..add(LoginInit(isSessionExpired)),
-      child: const Scaffold(
-        appBar: FortuneEmptyAppBar(),
-        body: SafeArea(
+      create: (_) => serviceLocator<LoginBloc>()..add(LoginInit(loginState)),
+      child: Scaffold(
+        appBar: FortuneCustomAppBar.leadingAppBar(context),
+        body: const SafeArea(
           bottom: false,
           child: _LoginPage(),
         ),
@@ -83,10 +81,8 @@ class _LoginPageState extends State<_LoginPage> {
           );
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showFortuneBottomSheet(
-            content: (context) => AgreeTermsBottomSheet(
-              sideEffect.terms,
-              sideEffect.phoneNumber,
-            ),
+            isDismissible: false,
+            content: (context) => AgreeTermsBottomSheet(sideEffect.phoneNumber),
           );
           if (result) {
             _bloc.add(LoginRequestVerifyCode());
@@ -99,7 +95,6 @@ class _LoginPageState extends State<_LoginPage> {
         builder: (BuildContext context, bool isKeyboardVisible) {
           return Container(
             padding: EdgeInsets.only(
-              top: 20,
               bottom: isKeyboardVisible ? 0 : 20,
             ),
             child: Column(
@@ -115,7 +110,7 @@ class _LoginPageState extends State<_LoginPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 28),
                           // 상단 타이틀.
                           BlocBuilder<LoginBloc, LoginState>(
                             buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,

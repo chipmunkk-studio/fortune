@@ -39,7 +39,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
       final ingredient = param.marker.ingredient;
-      final prevUser = await userRepository.findUserByPhone();
+      final prevUser = await userRepository.findUserByPhoneNonNull();
       final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.

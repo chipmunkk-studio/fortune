@@ -18,7 +18,7 @@ class LoginState with _$LoginState {
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
         phoneNumber: "",
-        isButtonEnabled: true,
+        isButtonEnabled: false,
         verifyCode: "",
         verifyTime: 0,
         isRequestVerifyCodeEnable: true,
@@ -34,7 +34,6 @@ enum LoginStepper {
 }
 
 enum LoginUserState {
-  sessionExpired,
   needToLogin,
   none,
 }

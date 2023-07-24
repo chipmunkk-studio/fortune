@@ -21,7 +21,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
   @override
   Future<FortuneResult<void>> call(RequestPostNormalMissionClear request) async {
     try {
-      final user = await userRepository.findUserByPhone();
+      final user = await userRepository.findUserByPhoneNonNull();
       final clearConditions = await missionRepository.getMissionClearConditions(request.missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 
