@@ -4,11 +4,8 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
@@ -60,15 +57,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
         (r) async {
           // #2 가입된 사용자 인 경우 > 인증번호 전송 요구.
           if (r != null) {
-            await signUpOrInUseCase(convertedPhoneNumber).then(
-              (value) => value.fold(
-                (l) => produceSideEffect(LoginError(l)),
-                (r) {
-                  emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
-                  produceSideEffect(LoginShowVerifyCodeBottomSheet());
-                },
-              ),
-            );
+            emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
+            produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
           }
           // #3 가입된 사용자가 아닌 경우.
           else {
@@ -80,26 +70,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     );
   }
 
-  // 약관 동의 후 인증 번호 요청.
+  // 약관 동의 후 인증 번호 바텀시트 띄움.
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
     final convertedPhoneNumber = _getConvertedPhoneNumber(state.phoneNumber);
-    produceSideEffect(LoginShowVerifyCodeBottomSheet());
-    // await signUpOrInUseCase(convertedPhoneNumber).then(
-    //   (value) => value.fold(
-    //     (l) => produceSideEffect(LoginError(l)),
-    //     (r) {
-    //       emit(
-    //         state.copyWith(
-    //           currentStep: LoginStep.signInWithOtp,
-    //           guideTitle: LoginGuideTitle.signInWithOtpNewMember,
-    //           isRequestVerifyCodeEnable: false,
-    //           verifyTime: 10,
-    //         ),
-    //       );
-    //       // produceSideEffect(LoginShowVerifyCodeBottomSheet());
-    //     },
-    //   ),
-    // );
+    produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
   }
 
   _getConvertedPhoneNumber(String phoneNumber) => phoneNumber.replaceFirst("0", "+82");

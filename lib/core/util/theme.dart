@@ -139,8 +139,6 @@ textButtonTheme() {
       backgroundColor: ColorName.backgroundLight,
       disabledBackgroundColor: ColorName.deActive,
       // 버튼의 최소 크기 설정
-      minimumSize: Size(88, 36),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
     ),
   );

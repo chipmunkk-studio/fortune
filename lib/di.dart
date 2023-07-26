@@ -383,6 +383,7 @@ _initBloc() {
     ..registerFactory(
       () => VerifyCodeBloc(
         verifyPhoneNumberUseCase: serviceLocator(),
+        signUpOrInUseCase: serviceLocator(),
       ),
     )
     // ..registerFactory(

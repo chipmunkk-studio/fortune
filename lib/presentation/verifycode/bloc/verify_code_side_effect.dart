@@ -5,19 +5,19 @@ import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 @immutable
 abstract class VerifyCodeSideEffect extends Equatable {}
 
-class AgreeTermsError extends VerifyCodeSideEffect {
+class VerifyCodeError extends VerifyCodeSideEffect {
   final FortuneFailure error;
 
-  AgreeTermsError(this.error);
+  VerifyCodeError(this.error);
 
   @override
   List<Object?> get props => [];
 }
 
-class AgreeTermsPop extends VerifyCodeSideEffect {
-  final bool flag;
+class VerifyCodeLandingRoute extends VerifyCodeSideEffect {
+  final String landingRoute;
 
-  AgreeTermsPop(this.flag);
+  VerifyCodeLandingRoute(this.landingRoute);
 
   @override
   List<Object?> get props => [];

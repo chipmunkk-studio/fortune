@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
+import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -12,12 +12,17 @@ import 'bloc/verify_code.dart';
 import 'component/verify_code_number_input.dart';
 
 class VerifyCodeBottomSheet extends StatelessWidget {
-  const VerifyCodeBottomSheet({super.key});
+  final String phoneNumber;
+
+  const VerifyCodeBottomSheet(
+    this.phoneNumber, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<VerifyCodeBloc>()..add(VerifyCodeInit()),
+      create: (_) => serviceLocator<VerifyCodeBloc>()..add(VerifyCodeInit(phoneNumber)),
       child: const _VerifyCodeBottomSheet(),
     );
   }
@@ -46,7 +51,17 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<VerifyCodeBloc, VerifyCodeSideEffect>(
-      listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {},
+      listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {
+        if (sideEffect is VerifyCodeError) {
+          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+        } else if (sideEffect is VerifyCodeLandingRoute) {
+          router.navigateTo(
+            context,
+            sideEffect.landingRoute,
+            clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
+          );
+        }
+      },
       child: BlocBuilder<VerifyCodeBloc, VerifyCodeState>(
         buildWhen: (previous, current) => previous.verifyCode != current.verifyCode,
         builder: (context, state) {
@@ -65,44 +80,29 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                     ],
                   ),
                   const SizedBox(height: 32),
+                  VerifyCodeNumberInput(
+                    verifyCode: state.verifyCode,
+                    verifyCodeController: _verifyCodeController,
+                    onTextChanged: (text) => _bloc.add(VerifyCodeInput(verifyCode: text)),
+                    onVerifyTimeCountdown: () {
+                      _bloc.add(VerifyCodeCountdown());
+                    },
+                  ),
+                  const SizedBox(height: 16),
                   BlocBuilder<VerifyCodeBloc, VerifyCodeState>(
+                    buildWhen: (previous, current) =>
+                        previous.isRequestVerifyCodeEnable != current.isRequestVerifyCodeEnable,
                     builder: (context, state) {
-                      return VerifyCodeNumberInput(
-                        verifyCode: state.verifyCode,
-                        isRequestVerifyCodeEnable: state.isRequestVerifyCodeEnable,
-                        verifyCodeController: _verifyCodeController,
-                        onRequestClick: () {},
-                        onTextChanged: (text) => _bloc.add(VerifyCodeInput(verifyCode: text)),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: FortuneTextButton(
+                          onPress:
+                              state.isRequestVerifyCodeEnable ? () => _bloc.add(VerifyCodeRequestVerifyCode()) : null,
+                          text: '인증번호 다시 받기',
+                        ),
                       );
                     },
                   ),
-                  // BlocListener<VerifyCodeBloc, VerifyCodeState>(
-                  //   listenWhen: (previous, current) =>
-                  //       previous.isRequestVerifyCodeEnable && !current.isRequestVerifyCodeEnable,
-                  //   listener: (context, state) {
-                  //     Timer.periodic(
-                  //       const Duration(seconds: 1),
-                  //       (timer) {
-                  //         if (_bloc.state.verifyTime == 0) {
-                  //           timer.cancel();
-                  //         } else {
-                  //           _bloc.add(LoginRequestVerifyCodeCountdown());
-                  //         }
-                  //       },
-                  //     );
-                  //   },
-                  //   child: BlocBuilder<LoginBloc, LoginState>(
-                  //     buildWhen: (previous, current) => previous.verifyTime != current.verifyTime,
-                  //     builder: (context, state) => state.verifyTime != 0
-                  //         ? () {
-                  //             int min = state.verifyTime ~/ 60; // 초를 분으로 변환
-                  //             int sec = state.verifyTime % 60; // 남은 초를 계산
-                  //             String displayTime = "${min.toString().padLeft(2, '0')}분 ${sec.toString().padLeft(2, '0')}초";
-                  //             return Text("$displayTime 뒤에 다시 인증번호 요청을 할 수 있습니다", style: FortuneTextStyle.body1Medium());
-                  //           }()
-                  //         : const SizedBox.shrink(),
-                  //   ),
-                  // ),
                   const SizedBox(height: 24),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 100),
@@ -113,14 +113,13 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                     ),
                     curve: Curves.easeInOut,
                     child: BlocBuilder<VerifyCodeBloc, VerifyCodeState>(
-                      buildWhen: (previous, current) =>
-                          previous.isRequestVerifyCodeEnable != current.isRequestVerifyCodeEnable,
+                      buildWhen: (previous, current) => previous.isConfirmEnable != current.isConfirmEnable,
                       builder: (context, state) {
                         return FortuneBottomButton(
                           isKeyboardVisible: isKeyboardVisible,
-                          isEnabled: state.isRequestVerifyCodeEnable,
-                          onPress: () {},
-                          buttonText: '다음',
+                          isEnabled: state.isConfirmEnable,
+                          onPress: () => _bloc.add(VerifyConfirm()),
+                          buttonText: '확인',
                         );
                       },
                     ),

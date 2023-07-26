@@ -68,12 +68,6 @@ class _LoginPageState extends State<_LoginPage> {
       listener: (context, sideEffect) async {
         if (sideEffect is LoginError) {
           dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
-        } else if (sideEffect is LoginLandingRoute) {
-          router.navigateTo(
-            context,
-            sideEffect.landingRoute,
-            clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
-          );
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showFortuneBottomSheet(
             isDismissible: false,
@@ -85,7 +79,7 @@ class _LoginPageState extends State<_LoginPage> {
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
           final result = await context.showFortuneBottomSheet(
             isDismissible: false,
-            content: (context) => const VerifyCodeBottomSheet(),
+            content: (context) => VerifyCodeBottomSheet(sideEffect.convertedPhoneNumber),
           );
         }
       },

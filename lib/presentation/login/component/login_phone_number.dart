@@ -26,7 +26,10 @@ class LoginPhoneNumber extends StatelessWidget {
       style: FortuneTextStyle.button1Medium(),
       controller: _phoneNumberController,
       keyboardType: TextInputType.phone,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters: [
+        FilteringTextInputFormatter.digitsOnly,
+        LengthLimitingTextInputFormatter(11),
+      ],
       onChanged: onTextChanged,
       decoration: InputDecoration(
         isDense: false,

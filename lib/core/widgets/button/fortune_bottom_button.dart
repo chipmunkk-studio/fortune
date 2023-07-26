@@ -28,7 +28,7 @@ class FortuneBottomButton extends StatelessWidget {
       isEnabled: isEnabled,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: isKeyboardVisible ? BorderRadius.circular(0.r) : BorderRadius.circular(100.r),
+          borderRadius: isKeyboardVisible ? BorderRadius.circular(0.r) : BorderRadius.circular(50.r),
         ),
       ),
       press: () => _deBouncer.run(onPress),

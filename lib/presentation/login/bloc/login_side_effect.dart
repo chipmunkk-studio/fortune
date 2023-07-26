@@ -15,19 +15,6 @@ class LoginError extends LoginSideEffect {
   List<Object?> get props => [];
 }
 
-class LoginLandingRoute extends LoginSideEffect {
-  final String landingRoute;
-  final String phoneNumber;
-
-  LoginLandingRoute(
-    this.landingRoute, {
-    this.phoneNumber = "",
-  });
-
-  @override
-  List<Object?> get props => [];
-}
-
 class LoginShowTermsBottomSheet extends LoginSideEffect {
   final String phoneNumber;
 
@@ -40,7 +27,9 @@ class LoginShowTermsBottomSheet extends LoginSideEffect {
 }
 
 class LoginShowVerifyCodeBottomSheet extends LoginSideEffect {
-  LoginShowVerifyCodeBottomSheet();
+  final String convertedPhoneNumber;
+
+  LoginShowVerifyCodeBottomSheet(this.convertedPhoneNumber);
 
   @override
   List<Object?> get props => [];
