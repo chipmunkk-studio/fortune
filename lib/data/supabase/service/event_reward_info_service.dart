@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
 import 'package:foresh_flutter/data/supabase/response/eventnotice/event_reward_history_response.dart';
 import 'package:foresh_flutter/data/supabase/response/eventnotice/event_reward_info_response.dart';
@@ -33,8 +33,8 @@ class EventRewardInfoService {
         final reward = response.map((e) => EventRewardInfoResponse.fromJson(e)).toList().single;
         return reward;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 }

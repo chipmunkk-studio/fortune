@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
@@ -40,12 +41,27 @@ class AuthService {
   // 회원가입.
   Future<AuthResponse> signUp({
     required String phoneNumber,
-    required String password,
   }) async {
+    final generatePassword = () {
+      // 비밀번호의 길이
+      const length = 12;
+      // 비밀번호에 사용할 문자
+      const String allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$&*~';
+      // 보안이 강화된 랜덤 숫자 생성기 생성
+      final random = Random.secure();
+      // allowedCharacters 문자열에서 랜덤한 문자를 선택하여 비밀번호를 생성
+      final charCodes =
+          List<int>.generate(length, (i) => allowedCharacters.codeUnits[random.nextInt(allowedCharacters.length)]);
+      // 랜덤으로 생성된 문자 코드들을 문자열로 변환하여 비밀번호를 생성
+      final password = String.fromCharCodes(charCodes);
+      // 생성된 비밀번호 반환
+      return password;
+    }();
+
     try {
       final response = await authClient.signUp(
         phone: phoneNumber,
-        password: password,
+        password: generatePassword,
       );
       return response;
     } catch (e) {

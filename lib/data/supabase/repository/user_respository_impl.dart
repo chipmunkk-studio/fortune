@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -17,40 +17,48 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity> findUserByPhoneNonNull() async {
     try {
-      final FortuneUserEntity? user = await _userService.findUserByPhone(
-        Supabase.instance.client.auth.currentUser?.phone,
-      );
+      final String? phoneNumber = Supabase.instance.client.auth.currentUser?.phone;
+      final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
       if (user == null) {
-        throw CommonFailure(errorMessage: '사용자가 존재하지 않습니다');
+        throw CommonFailure(errorMessage: FortuneCommonMessage.notExistUser);
       }
       return user;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: FortuneCommonMessage.notFoundUser,
+      );
     }
   }
 
-  // 사용자를 찾음.
+  // 사용자 찾기.
   @override
   Future<FortuneUserEntity?> findUserByPhone(phoneNumber) async {
     try {
       final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
       return user;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: FortuneCommonMessage.notFoundUser,
+      );
     }
   }
 
+  // 사용자 업데이트.
   @override
   Future<FortuneUserEntity> updateUser(FortuneUserEntity user) async {
-    return await _userService.update(
-      user.phone,
-      request: RequestFortuneUser(
-        nickname: user.nickname,
-        ticket: user.ticket,
-        markerObtainCount: user.markerObtainCount,
-      ),
-    );
+    try {
+      return await _userService.update(
+        user.phone,
+        request: RequestFortuneUser(
+          nickname: user.nickname,
+          ticket: user.ticket,
+          markerObtainCount: user.markerObtainCount,
+        ),
+      );
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneCommonMessage.notUpdateUser,
+      );
+    }
   }
 }

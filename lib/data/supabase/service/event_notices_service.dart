@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
 import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
 import 'package:foresh_flutter/data/supabase/service/event_reward_history_service.dart';
@@ -33,8 +33,8 @@ class EventNoticesService {
         final notices = response.map((e) => EventNoticesResponse.fromJson(e)).toList();
         return notices;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -90,7 +90,7 @@ class EventNoticesService {
   }
 
   // 알림 추가.
-  Future<EventNoticesEntity> insert(RequestEventNotices request) async {
+  Future<EventNoticesEntity>  insert(RequestEventNotices request) async {
     try {
       final insertUser = await _client
           .from(_tableName)

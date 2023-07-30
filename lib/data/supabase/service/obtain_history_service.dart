@@ -40,8 +40,8 @@ class ObtainHistoryService {
         final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
         return histories;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -62,8 +62,8 @@ class ObtainHistoryService {
         final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
         return histories;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -85,8 +85,8 @@ class ObtainHistoryService {
         final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
         return histories;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -94,8 +94,8 @@ class ObtainHistoryService {
   Future<void> insert({required RequestObtainHistory request}) async {
     try {
       await _client.from(_obtainHistoryTableName).insert(request.toJson());
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -103,8 +103,8 @@ class ObtainHistoryService {
   Future<void> delete(List<int> list) async {
     try {
       await _client.from(_obtainHistoryTableName).delete().in_('id', list);
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
@@ -27,8 +25,9 @@ class AuthRepositoryImpl extends AuthRepository {
       final response = await _authService.signInWithOtp(phoneNumber: phoneNumber);
       return response;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '로그인 요청 실패',
+      );
     }
   }
 
@@ -38,15 +37,16 @@ class AuthRepositoryImpl extends AuthRepository {
     required String phoneNumber,
   }) async {
     try {
+      // 회원이 없을 경우 추가.
       await _userService.insert(phone: phoneNumber);
       final response = await _authService.signUp(
         phoneNumber: phoneNumber,
-        password: _generatePassword(),
       );
       return response;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '회원가입 실패',
+      );
     }
   }
 
@@ -63,13 +63,9 @@ class AuthRepositoryImpl extends AuthRepository {
       await _authService.persistSession(response.session!);
       return response;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      if (e is AuthFailure) {
-        throw e.copyWith(
-          errorMessage: '인증번호를 확인해주세요',
-        );
-      }
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '인증 번호를 확인해주세요',
+      );
     }
   }
 
@@ -80,24 +76,9 @@ class AuthRepositoryImpl extends AuthRepository {
       final List<AgreeTermsEntity> terms = await _authService.getTerms();
       return terms;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '약관을 받아 오지 못했습니다',
+      );
     }
-  }
-
-  static _generatePassword() {
-    // 비밀번호의 길이
-    const length = 12;
-    // 비밀번호에 사용할 문자
-    const String allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#\$&*~';
-    // 보안이 강화된 랜덤 숫자 생성기 생성
-    final random = Random.secure();
-    // allowedCharacters 문자열에서 랜덤한 문자를 선택하여 비밀번호를 생성
-    final charCodes =
-        List<int>.generate(length, (i) => allowedCharacters.codeUnits[random.nextInt(allowedCharacters.length)]);
-    // 랜덤으로 생성된 문자 코드들을 문자열로 변환하여 비밀번호를 생성
-    final password = String.fromCharCodes(charCodes);
-    // 생성된 비밀번호 반환
-    return password;
   }
 }

@@ -39,7 +39,7 @@ class FortuneNotificationsManager {
 
   setupPushNotifications() async {
     if (_setupStarted) {
-      FortuneLogger.error(tag: _TAG, "알림매니저가 이미 초기화 되어있습니다.");
+      FortuneLogger.error(code: '400', message: '알림매니저가 이미 초기화 되어있습니다');
     }
     _setupStarted = true;
 

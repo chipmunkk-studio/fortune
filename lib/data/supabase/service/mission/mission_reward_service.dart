@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
 import 'package:foresh_flutter/data/supabase/response/mission/mission_reward_response.dart';
 import 'package:foresh_flutter/data/supabase/response/mission/missions_response.dart';

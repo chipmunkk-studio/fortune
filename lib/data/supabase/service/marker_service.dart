@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_update.dart';
 import 'package:foresh_flutter/data/supabase/response/marker_response.dart';
@@ -60,8 +60,8 @@ class MarkerService {
         final ingredients = response.map((e) => MarkerResponse.fromJson(e)).toList();
         return ingredients;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -83,9 +83,8 @@ class MarkerService {
         lastObtainUser: user.id,
         hitCount: marker.hitCount + 1,
       );
-    } on Exception catch (e) {
-      FortuneLogger.error(e.toString());
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -107,9 +106,8 @@ class MarkerService {
         final marker = response.map((e) => MarkerResponse.fromJson(e)).toList();
         return marker.single;
       }
-    } on Exception catch (e) {
-      FortuneLogger.error(e.toString());
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -122,21 +120,30 @@ class MarkerService {
   }) async {
     try {
       MarkerEntity marker = await findMarkerById(id);
+
+      final requestToUpdate = RequestMarkerUpdate(
+        latitude: location?.latitude ?? marker.latitude,
+        longitude: location?.longitude ?? marker.longitude,
+        lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
+        hitCount: () {
+          if (hitCount != null) {
+            return hitCount + marker.hitCount;
+          } else {
+            return marker.hitCount;
+          }
+        }(),
+      );
+
       final updateMarker = await _client
           .from(TableName.markers)
           .update(
-            RequestMarkerUpdate(
-              latitude: location?.latitude ?? marker.latitude,
-              longitude: location?.longitude ?? marker.longitude,
-              lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
-              hitCount: hitCount ?? marker.hitCount,
-            ).toJson(),
+            requestToUpdate.toJson(),
           )
           .eq("id", id)
           .select(fullSelectQuery);
       return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 
@@ -146,7 +153,7 @@ class MarkerService {
       MarkerEntity marker = await findMarkerById(id);
       await _client.from(TableName.markers).delete().eq("id", marker.id);
     } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+      throw e.handleException(); // using extension method here
     }
   }
 
@@ -159,8 +166,8 @@ class MarkerService {
         await _client.from(TableName.markers).insert(element.toJson());
       }
       return true;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 }

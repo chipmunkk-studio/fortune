@@ -27,8 +27,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       );
       return histories;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '히스토리 불러오기 실패',
+      );
     }
   }
 
@@ -40,8 +41,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
     try {
       await _obtainHistoryService.insert(request: request);
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '히스토리 삽입 실패',
+      );
     }
   }
 
@@ -57,8 +59,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       );
       return histories;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '히스토리 불러오기 실패',
+      );
     }
   }
 
@@ -70,8 +73,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       );
       return histories;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '히스토리 불러오기 실패',
+      );
     }
   }
 
@@ -83,8 +87,9 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
       final result = await _obtainHistoryService.delete(histories.map((e) => e.id).toList());
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message},');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '히스토리 삭제 실패',
+      );
     }
   }
 }

@@ -23,8 +23,8 @@ class IngredientService {
         final ingredients = response.map((e) => IngredientResponse.fromJson(e)).toList();
         return ingredients;
       }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
     }
   }
 }

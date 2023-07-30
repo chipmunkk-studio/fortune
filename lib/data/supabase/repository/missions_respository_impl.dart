@@ -30,12 +30,14 @@ class MissionsRepositoryImpl extends MissionsRepository {
   @override
   Future<List<MissionsEntity>> getAllMissions() async {
     try {
-      final user = await userService.findUserByPhoneNonNull(Supabase.instance.client.auth.currentUser?.phone);
+      final String? phoneNumber = Supabase.instance.client.auth.currentUser?.phone;
+      final user = await userService.findUserByPhoneNonNull(phoneNumber);
       final result = await missionNormalService.findAllMissions();
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 불러오기 실패',
+      );
     }
   }
 
@@ -44,24 +46,26 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
-        throw CommonFailure(errorMessage: '현재 미션 카드를 불러 올 수 없습니다');
+        throw const CustomFailure(errorDescription: '현재 미션 카드를 불러 올 수 없습니다');
       }
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 클리어 조건 불러오기 실패',
+      );
     }
   }
 
   @override
   Future<void> postMissionClear({required int missionId}) async {
     try {
+      final String? phoneNumber = Supabase.instance.client.auth.currentUser?.phone;
       final mission = await missionNormalService.findMissionById(missionId);
-      final user = await userService.findUserByPhoneNonNull(Supabase.instance.client.auth.currentUser?.phone);
+      final user = await userService.findUserByPhoneNonNull(phoneNumber);
 
       // 리워드가 모두 소진 되었을 경우.
       if (mission.missionReward.remainCount == 0) {
-        throw CommonFailure(errorMessage: "리워드가 모두 소진 되었습니다.");
+        throw const CustomFailure(errorDescription: "리워드가 모두 소진 되었습니다.");
       }
 
       // 미션 리워드 상태 업데이트.
@@ -80,8 +84,9 @@ class MissionsRepositoryImpl extends MissionsRepository {
         ),
       );
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 클리어 실패',
+      );
     }
   }
 
@@ -91,8 +96,9 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionById(missionId);
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 불러오기 실패',
+      );
     }
   }
 
@@ -102,8 +108,9 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 불러오기 실패',
+      );
     }
   }
 
@@ -113,8 +120,9 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '미션 불러오기 실패',
+      );
     }
   }
 }

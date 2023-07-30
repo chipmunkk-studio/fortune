@@ -203,7 +203,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       ),
     ).then(
       (value) => value.fold(
-        (l) => produceSideEffect(MainError(l)),
+        (l) {
+          emit(state.copyWith(isObtainProcessing: false));
+          produceSideEffect(MainError(l));
+        },
         (result) async {
           List<MainLocationData> newList = List.from(state.markers);
           var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);

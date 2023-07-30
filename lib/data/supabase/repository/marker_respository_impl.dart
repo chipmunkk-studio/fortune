@@ -28,8 +28,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
       final List<MarkerEntity> markers = await _markerService.findAllMarkersNearByMyLocation(latitude, longitude);
       return markers;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '마커 목록 불러오기 실패',
+      );
     }
   }
 
@@ -42,8 +43,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
     try {
       await _markerService.reLocateMarker(marker, user);
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '마커 배치 실패',
+      );
     }
   }
 
@@ -89,22 +91,23 @@ class MarkerRepositoryImpl extends MarkerRepository {
       }
       return await _markerService.insertRandomMarkers(markers: markers);
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '마커 생성 실패',
+      );
     }
   }
 
   @override
   Future<void> hitMarker(int id) async {
     try {
-      final marker = await _markerService.findMarkerById(id);
       await _markerService.update(
         id,
-        hitCount: marker.hitCount + 1,
+        hitCount: 1,
       );
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '마커 획득 실패',
+      );
     }
   }
 
@@ -114,8 +117,9 @@ class MarkerRepositoryImpl extends MarkerRepository {
       final marker = await _markerService.findMarkerById(markerId);
       return marker;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '마커를 찾을 수 없습니다',
+      );
     }
   }
 }

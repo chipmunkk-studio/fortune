@@ -36,8 +36,9 @@ class EventRewardRepositoryImpl extends EventRewardsRepository {
       );
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '이벤트 리워드 추가 실패',
+      );
     }
   }
 
@@ -47,8 +48,9 @@ class EventRewardRepositoryImpl extends EventRewardsRepository {
       final result = await eventRewardInfoService.findEventRewardsByType(type.name);
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '이벤트 리워드를 찾을 수 없습니다',
+      );
     }
   }
 }

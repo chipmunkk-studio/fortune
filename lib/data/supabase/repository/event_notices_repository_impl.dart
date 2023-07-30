@@ -18,8 +18,9 @@ class EventNoticesRepositoryImpl extends EventNoticesRepository {
       final result = await eventNoticesService.findAllEventNotices();
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '이벤트 알림 불러오기 실패',
+      );
     }
   }
 
@@ -29,8 +30,9 @@ class EventNoticesRepositoryImpl extends EventNoticesRepository {
       final result = await eventNoticesService.insert(content);
       return result;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '이벤트 알림 추가 실패',
+      );
     }
   }
 }

@@ -23,8 +23,9 @@ class IngredientRepositoryImpl extends IngredientRepository {
       final List<IngredientEntity> ingredients = await _ingredientService.findAllIngredients();
       return ingredients;
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '재료 불러오기 실패',
+      );
     }
   }
 
@@ -43,11 +44,12 @@ class IngredientRepositoryImpl extends IngredientRepository {
         final ingredient = ingredients[random.nextInt(ingredients.length)];
         return ingredient;
       } else {
-        throw CommonFailure(errorMessage: '생성할 수 있는 재료가 없습니다.');
+        throw const CustomFailure(errorDescription: '생성할 수 있는 재료가 없습니다.');
       }
     } on FortuneFailure catch (e) {
-      FortuneLogger.error('errorCode: ${e.code}, errorMessage: ${e.message}');
-      rethrow;
+      throw e.handleFortuneFailure(
+        description: '재료 가져오기 실패',
+      );
     }
   }
 }

@@ -76,7 +76,6 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                   listenWhen: (previous, current) =>
                       current.isRequestVerifyCodeEnable != previous.isRequestVerifyCodeEnable,
                   listener: (context, state) {
-                    FortuneLogger.info("listener: ${state.verifyTime}");
                     timer?.cancel();
                     timer = Timer.periodic(
                       const Duration(seconds: 1),
@@ -96,7 +95,6 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                       alignment: Alignment.center,
                       child: state.verifyTime != 0
                           ? () {
-                              FortuneLogger.info("builder: ${state.verifyTime}");
                               int min = state.verifyTime ~/ 60; // 초를 분으로 변환
                               int sec = state.verifyTime % 60; // 남은 초를 계산
                               String displayTime =

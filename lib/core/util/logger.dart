@@ -6,7 +6,12 @@ abstract class FortuneLogger {
 
   static void info(String? message, {String? tag}) => serviceLocator<AppLogger>().infoPrint(tag, message);
 
-  static void error(String? message, {String? tag}) => serviceLocator<AppLogger>().errorPrint(tag, message);
+  static void error({
+    String? code,
+    String? message,
+    String? description,
+  }) =>
+      serviceLocator<AppLogger>().errorPrint(code, message, description);
 }
 
 class AppLogger {
@@ -18,8 +23,12 @@ class AppLogger {
     logger.d("${tag ?? ''} >> $message");
   }
 
-  errorPrint(String? tag, String? message) {
-    logger.e("${tag ?? ''}>> $message");
+  errorPrint(
+    String? code,
+    String? message,
+    String? description,
+  ) {
+    logger.e("code:$code, message:$message, description:$description");
   }
 
   infoPrint(String? tag, String? message) {
