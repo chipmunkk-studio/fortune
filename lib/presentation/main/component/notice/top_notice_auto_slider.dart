@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 
 class TopNoticeAutoSlide extends StatefulWidget {
   final List<Widget> items;
   final Duration duration;
-  final MainBloc bloc;
   final PageController pageController;
 
   const TopNoticeAutoSlide(
-    this.bloc,
     this.pageController, {
     super.key,
     required this.items,

@@ -7,7 +7,6 @@ import 'package:foresh_flutter/core/notification/one_signal_manager.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dart';
-import 'package:foresh_flutter/data/supabase/repository/event_notices_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/obtain_history_respository_impl.dart';
@@ -20,7 +19,6 @@ import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_serv
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -34,6 +32,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.da
 import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
+import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
@@ -46,14 +45,16 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'data/supabase/repository/event_reward_repository_impl.dart';
+import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
+import 'data/supabase/repository/alarm_reward_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
-import 'data/supabase/service/event_notices_service.dart';
-import 'data/supabase/service/event_reward_history_service.dart';
-import 'data/supabase/service/event_reward_info_service.dart';
+import 'data/supabase/service/alarm_feeds_service.dart';
+import 'data/supabase/service/alarm_reward_history_service.dart';
+import 'data/supabase/service/alarm_reward_info_service.dart';
 import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission/mission_clear_user_service.dart';
 import 'data/supabase/service/mission/missions_service.dart';
+import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/event_rewards_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
@@ -192,19 +193,19 @@ _initService() {
     ..registerLazySingleton<MissionRewardService>(
       () => MissionRewardService(),
     )
-    ..registerLazySingleton<EventRewardHistoryService>(
-      () => EventRewardHistoryService(),
+    ..registerLazySingleton<AlarmRewardHistoryService>(
+      () => AlarmRewardHistoryService(),
     )
     ..registerLazySingleton<MissionClearUserService>(
       () => MissionClearUserService(
         Supabase.instance.client,
       ),
     )
-    ..registerLazySingleton<EventNoticesService>(
-      () => EventNoticesService(),
+    ..registerLazySingleton<AlarmFeedsService>(
+      () => AlarmFeedsService(),
     )
-    ..registerLazySingleton<EventRewardInfoService>(
-      () => EventRewardInfoService(),
+    ..registerLazySingleton<AlarmRewardInfoService>(
+      () => AlarmRewardInfoService(),
     )
     ..registerLazySingleton<MissionsClearConditionsService>(
       () => MissionsClearConditionsService(),
@@ -239,15 +240,15 @@ _initRepository() {
         serviceLocator<ObtainHistoryService>(),
       ),
     )
-    ..registerLazySingleton<EventNoticesRepository>(
-      () => EventNoticesRepositoryImpl(
-        eventNoticesService: serviceLocator<EventNoticesService>(),
+    ..registerLazySingleton<AlarmFeedsRepository>(
+      () => AlarmFeedsRepositoryImpl(
+        alarmFeedsService: serviceLocator<AlarmFeedsService>(),
       ),
     )
-    ..registerLazySingleton<EventRewardsRepository>(
-      () => EventRewardRepositoryImpl(
-        rewardsService: serviceLocator<EventRewardHistoryService>(),
-        eventRewardInfoService: serviceLocator<EventRewardInfoService>(),
+    ..registerLazySingleton<AlarmRewardsRepository>(
+      () => AlarmRewardRepositoryImpl(
+        rewardsService: serviceLocator<AlarmRewardHistoryService>(),
+        eventRewardInfoService: serviceLocator<AlarmRewardInfoService>(),
       ),
     )
     ..registerLazySingleton<MissionsRepository>(
@@ -356,6 +357,9 @@ _initBloc() {
     )
     ..registerFactory(
       () => RequestPermissionBloc(),
+    )
+    ..registerFactory(
+      () => AlarmFeedBloc(),
     )
     ..registerFactory(
       () => ObtainHistoryBloc(

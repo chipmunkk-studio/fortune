@@ -12,13 +12,13 @@ enum IngredientType {
   unique,
 }
 
-enum EventNoticeType {
+enum AlarmFeedType {
   user,
   server,
   none,
 }
 
-enum EventRewardType {
+enum AlarmRewardType {
   level,
   event,
   relay,
@@ -45,24 +45,24 @@ getIngredientType(String type) {
 }
 
 getEventNoticeType(String type) {
-  if (EventNoticeType.server.name == type) {
-    return EventNoticeType.server;
-  } else if (EventNoticeType.user.name == type) {
-    return EventNoticeType.user;
+  if (AlarmFeedType.server.name == type) {
+    return AlarmFeedType.server;
+  } else if (AlarmFeedType.user.name == type) {
+    return AlarmFeedType.user;
   } else {
-    return EventNoticeType.none;
+    return AlarmFeedType.none;
   }
 }
 
 getEventRewardType(String type) {
-  if (EventRewardType.level.name == type) {
-    return EventRewardType.level;
-  } else if (EventRewardType.event.name == type) {
-    return EventRewardType.event;
-  } else if (EventRewardType.relay.name == type) {
-    return EventRewardType.relay;
+  if (AlarmRewardType.level.name == type) {
+    return AlarmRewardType.level;
+  } else if (AlarmRewardType.event.name == type) {
+    return AlarmRewardType.event;
+  } else if (AlarmRewardType.relay.name == type) {
+    return AlarmRewardType.relay;
   } else {
-    return EventRewardType.none;
+    return AlarmRewardType.none;
   }
 }
 

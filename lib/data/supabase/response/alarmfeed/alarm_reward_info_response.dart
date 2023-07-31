@@ -1,11 +1,11 @@
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'event_reward_info_response.g.dart';
+part 'alarm_reward_info_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class EventRewardInfoResponse extends EventRewardInfoEntity {
+class AlarmRewardInfoResponse extends AlarmRewardInfoEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'type')
@@ -13,7 +13,7 @@ class EventRewardInfoResponse extends EventRewardInfoEntity {
   @JsonKey(name: 'has_unique_marker')
   final bool hasUniqueMarker_;
 
-  EventRewardInfoResponse({
+  AlarmRewardInfoResponse({
     required this.id_,
     required this.type_,
     required this.hasUniqueMarker_,
@@ -23,7 +23,7 @@ class EventRewardInfoResponse extends EventRewardInfoEntity {
           hasUniqueMarker: hasUniqueMarker_,
         );
 
-  factory EventRewardInfoResponse.fromJson(Map<String, dynamic> json) => _$EventRewardInfoResponseFromJson(json);
+  factory AlarmRewardInfoResponse.fromJson(Map<String, dynamic> json) => _$AlarmRewardInfoResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EventRewardInfoResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AlarmRewardInfoResponseToJson(this);
 }

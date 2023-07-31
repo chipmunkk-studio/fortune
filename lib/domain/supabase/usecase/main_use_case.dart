@@ -5,7 +5,7 @@ import 'package:foresh_flutter/core/util/usecase.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/main_view_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -17,7 +17,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   final IngredientRepository ingredientRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MarkerRepository markerRepository;
-  final EventNoticesRepository userNoticesRepository;
+  final AlarmFeedsRepository userNoticesRepository;
   final UserRepository userRepository;
   final FortuneRemoteConfig remoteConfig;
 

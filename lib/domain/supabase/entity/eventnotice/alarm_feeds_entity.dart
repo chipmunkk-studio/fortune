@@ -1,19 +1,19 @@
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 
-import 'event_rewards_history_entity.dart';
+import 'alarm_rewards_history_entity.dart';
 
-class EventNoticesEntity {
+class AlarmFeedsEntity {
   final int id;
-  final EventNoticeType type;
+  final AlarmFeedType type;
   final FortuneUserEntity user;
-  final EventRewardHistoryEntity eventRewardHistory;
+  final AlarmRewardHistoryEntity eventRewardHistory;
   final String createdAt;
   final String headings;
   final String content;
   final bool isRead;
 
-  EventNoticesEntity({
+  AlarmFeedsEntity({
     required this.createdAt,
     required this.id,
     required this.type,

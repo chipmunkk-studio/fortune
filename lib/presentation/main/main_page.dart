@@ -234,14 +234,21 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10),
-                    TopLocationArea(bloc),
-                    const SizedBox(height: 16),
-                    TopNotice(bloc),
-                    const SizedBox(height: 10),
-                    TopInformationArea(
-                      bloc,
-                      cartKey,
+                    TopLocationArea(
+                      onTap: () => router.navigateTo(
+                        context,
+                        Routes.alarmFeedRoute,
+                      ),
                     ),
+                    const SizedBox(height: 16),
+                    TopNotice(
+                      onTap: () => router.navigateTo(
+                        context,
+                        Routes.obtainHistoryRoute,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TopInformationArea(cartKey),
                   ],
                 ),
               ),

@@ -7,7 +7,7 @@ import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_obtain_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
@@ -19,8 +19,8 @@ import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_par
 class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
-  final EventNoticesRepository eventNoticesRepository;
-  final EventRewardsRepository rewardRepository;
+  final AlarmFeedsRepository eventNoticesRepository;
+  final AlarmRewardsRepository rewardRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MissionsRepository missionsRepository;
   final IngredientRepository ingredientRepository;
@@ -152,7 +152,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final isClear = markerEntity.hitCount == condition?.requireCount && markerEntity.lastObtainUser == user.id;
       if (isClear) {
         // 미션 클리어.
-        final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.relay);
+        final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.relay);
         final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
         await obtainHistoryRepository.insertObtainHistory(
@@ -167,7 +167,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
         final response = await rewardRepository.insertRewardHistory(
           user: user,
-          eventRewardInfo: rewardType,
+          alarmRewardInfo: rewardType,
           ingredient: ingredient,
         );
 
@@ -175,7 +175,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           RequestEventNotices.insert(
             headings: '릴레이 미션을 클리어 하셨습니다.',
             content: '릴레이 미션 클리어!!',
-            type: EventNoticeType.user.name,
+            type: AlarmFeedType.user.name,
             users: user.id,
             eventRewardHistory: response.id,
           ),
@@ -187,7 +187,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   }
 
   _generateRewardHistory(FortuneUserEntity user) async {
-    final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
+    final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
     final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
     await obtainHistoryRepository.insertObtainHistory(
@@ -202,13 +202,13 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
     final response = await rewardRepository.insertRewardHistory(
       user: user,
-      eventRewardInfo: rewardType,
+      alarmRewardInfo: rewardType,
       ingredient: ingredient,
     );
 
     await eventNoticesRepository.insertNotice(
       RequestEventNotices.insert(
-        type: EventNoticeType.user.name,
+        type: AlarmFeedType.user.name,
         headings: '레벨 업을 축하합니다!',
         content: '레벨업 축하!',
         users: user.id,

@@ -1,16 +1,17 @@
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 
-class EventRewardHistoryEntity {
+import 'alarm_rewards_entity.dart';
+
+class AlarmRewardHistoryEntity {
   final int id;
   final FortuneUserEntity user;
-  final EventRewardInfoEntity eventRewardInfo;
+  final AlarmRewardInfoEntity eventRewardInfo;
   final String ingredientImage;
   final String ingredientName;
   final bool isReceive;
   final String createdAt;
 
-  EventRewardHistoryEntity({
+  AlarmRewardHistoryEntity({
     required this.id,
     required this.eventRewardInfo,
     required this.user,
@@ -20,9 +21,9 @@ class EventRewardHistoryEntity {
     required this.createdAt,
   });
 
-  factory EventRewardHistoryEntity.empty() => EventRewardHistoryEntity(
+  factory AlarmRewardHistoryEntity.empty() => AlarmRewardHistoryEntity(
         id: -1,
-        eventRewardInfo: EventRewardInfoEntity.empty(),
+        eventRewardInfo: AlarmRewardInfoEntity.empty(),
         user: FortuneUserEntity.empty(),
         ingredientImage: '',
         ingredientName: '',

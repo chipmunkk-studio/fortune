@@ -1,25 +1,26 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
-import 'package:foresh_flutter/data/supabase/response/eventnotice/event_notices_response.dart';
-import 'package:foresh_flutter/data/supabase/service/event_reward_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class EventNoticesService {
+import 'alarm_reward_history_service.dart';
+
+class AlarmFeedsService {
   static const fullSelectQuery = '*,'
       '${TableName.users}(*),'
-      '${TableName.eventRewardHistory}(${EventRewardHistoryService.fullSelectQuery})';
+      '${TableName.alarmRewardHistory}(${AlarmRewardHistoryService.fullSelectQuery})';
 
-  final _tableName = TableName.eventNotices;
+  final _tableName = TableName.alarmFeeds;
 
   final SupabaseClient _client = Supabase.instance.client;
 
-  EventNoticesService();
+  AlarmFeedsService();
 
   // 모든 알림을 조회.
-  Future<List<EventNoticesEntity>> findAllEventNotices() async {
+  Future<List<AlarmFeedsEntity>> findAllEventNotices() async {
     try {
       final response = await _client
           .from(_tableName)
@@ -30,7 +31,7 @@ class EventNoticesService {
       if (response.isEmpty) {
         return List.empty();
       } else {
-        final notices = response.map((e) => EventNoticesResponse.fromJson(e)).toList();
+        final notices = response.map((e) => AlarmFeedsResponse.fromJson(e)).toList();
         return notices;
       }
     } catch (e) {
@@ -39,7 +40,7 @@ class EventNoticesService {
   }
 
   // 아이디로 알림을 조회
-  Future<EventNoticesEntity> findNoticeById(int noticeId) async {
+  Future<AlarmFeedsEntity> findNoticeById(int noticeId) async {
     try {
       final response = await _client
           .from(_tableName)
@@ -51,8 +52,8 @@ class EventNoticesService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '알림이 존재 하지 않습니다');
       } else {
-        final missions = response.map((e) => EventNoticesResponse.fromJson(e)).toList();
-        return missions.single;
+        final alarm = response.map((e) => AlarmFeedsResponse.fromJson(e)).toList();
+        return alarm.single;
       }
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
@@ -64,7 +65,7 @@ class EventNoticesService {
     int noticeId, {
     required RequestEventNotices request,
   }) async {
-    EventNoticesEntity eventNotice = await findNoticeById(noticeId);
+    AlarmFeedsEntity eventNotice = await findNoticeById(noticeId);
 
     final requestToUpdate = RequestEventNotices(
       users: request.users ?? eventNotice.user.id,
@@ -83,14 +84,14 @@ class EventNoticesService {
           )
           .eq('id', noticeId)
           .select(fullSelectQuery);
-      return updateResponse.map((e) => EventNoticesResponse.fromJson(e)).toList().single;
+      return updateResponse.map((e) => AlarmFeedsResponse.fromJson(e)).toList().single;
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
   }
 
   // 알림 추가.
-  Future<EventNoticesEntity>  insert(RequestEventNotices request) async {
+  Future<AlarmFeedsEntity>  insert(RequestEventNotices request) async {
     try {
       final insertUser = await _client
           .from(_tableName)
@@ -98,7 +99,7 @@ class EventNoticesService {
             request.toJson(),
           )
           .select(fullSelectQuery);
-      return insertUser.map((e) => EventNoticesResponse.fromJson(e)).toList().single;
+      return insertUser.map((e) => AlarmFeedsResponse.fromJson(e)).toList().single;
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

@@ -1,19 +1,19 @@
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'event_reward_info_response.dart';
+import 'alarm_reward_info_response.dart';
 
-part 'event_reward_history_response.g.dart';
+part 'alarm_reward_history_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class EventRewardHistoryResponse extends EventRewardHistoryEntity {
+class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'users')
   final FortuneUserResponse user_;
   @JsonKey(name: 'event_reward_info')
-  final EventRewardInfoResponse eventRewardInfo_;
+  final AlarmRewardInfoResponse eventRewardInfo_;
   @JsonKey(name: 'ingredient_image')
   final String ingredientImage_;
   @JsonKey(name: 'ingredient_name')
@@ -23,7 +23,7 @@ class EventRewardHistoryResponse extends EventRewardHistoryEntity {
   @JsonKey(name: 'is_receive')
   final bool isReceive_;
 
-  EventRewardHistoryResponse({
+  AlarmRewardHistoryResponse({
     required this.id_,
     required this.eventRewardInfo_,
     required this.user_,
@@ -41,7 +41,7 @@ class EventRewardHistoryResponse extends EventRewardHistoryEntity {
           createdAt: createdAt_,
         );
 
-  factory EventRewardHistoryResponse.fromJson(Map<String, dynamic> json) => _$EventRewardHistoryResponseFromJson(json);
+  factory AlarmRewardHistoryResponse.fromJson(Map<String, dynamic> json) => _$AlarmRewardHistoryResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EventRewardHistoryResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AlarmRewardHistoryResponseToJson(this);
 }

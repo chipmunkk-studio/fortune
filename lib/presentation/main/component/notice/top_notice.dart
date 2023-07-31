@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -15,11 +16,11 @@ import 'package:foresh_flutter/presentation/main/component/notice/top_notice_aut
 import 'package:transparent_image/transparent_image.dart';
 
 class TopNotice extends StatefulWidget {
-  final MainBloc _bloc;
+  final dartz.Function0 onTap;
 
-  const TopNotice(
-    this._bloc, {
+  const TopNotice({
     super.key,
+    required this.onTap,
   });
 
   @override
@@ -43,7 +44,7 @@ class _TopNoticeState extends State<TopNotice> {
         return state.histories.isEmpty
             ? Container()
             : Bounceable(
-                onTap: _onTap,
+                onTap: widget.onTap,
                 child: Container(
                   height: 64,
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
@@ -57,7 +58,6 @@ class _TopNoticeState extends State<TopNotice> {
                       children: [
                         Positioned.fill(
                           child: TopNoticeAutoSlide(
-                            widget._bloc,
                             pageController,
                             items: state.histories.map(
                               (e) {
@@ -161,10 +161,4 @@ class _TopNoticeState extends State<TopNotice> {
     );
   }
 
-  void _onTap() {
-    router.navigateTo(
-      context,
-      Routes.obtainHistoryRoute,
-    );
-  }
 }

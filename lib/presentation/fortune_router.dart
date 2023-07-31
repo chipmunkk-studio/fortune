@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -71,6 +72,12 @@ class FortuneRouter {
     },
   );
 
+  static var alarmFeedHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const AlarmFeedPage();
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -124,6 +131,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 알림 피드.
+      ..define(
+        Routes.alarmFeedRoute,
+        handler: alarmFeedHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
@@ -139,6 +153,7 @@ class Routes {
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
+  static const String alarmFeedRoute = 'alarmFeed';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNoticesRoute';

@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +16,7 @@ class MainState with _$MainState {
     required LocationData? myLocation,
     required FortuneUserEntity? user,
     required MainLocationData? processingMarker,
-    required List<EventNoticesEntity> notices,
+    required List<AlarmFeedsEntity> notices,
     required int haveCount,
     required int refreshTime,
     required int refreshCount,

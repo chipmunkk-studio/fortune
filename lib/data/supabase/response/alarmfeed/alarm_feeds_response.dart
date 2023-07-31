@@ -1,16 +1,16 @@
-import 'package:foresh_flutter/data/supabase/response/eventnotice/event_reward_history_response.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_notices_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../fortune_user_response.dart';
+import 'alarm_reward_history_response.dart';
 
-part 'event_notices_response.g.dart';
+part 'alarm_feeds_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class EventNoticesResponse extends EventNoticesEntity {
+class AlarmFeedsResponse extends AlarmFeedsEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'headings')
@@ -22,13 +22,13 @@ class EventNoticesResponse extends EventNoticesEntity {
   @JsonKey(name: 'type')
   final String type_;
   @JsonKey(name: 'event_reward_history')
-  final EventRewardHistoryResponse? eventRewards_;
+  final AlarmRewardHistoryResponse? eventRewards_;
   @JsonKey(name: 'is_read')
   final bool isRead_;
   @JsonKey(name: 'created_at')
   final String createdAt_;
 
-  EventNoticesResponse({
+  AlarmFeedsResponse({
     required this.users_,
     required this.createdAt_,
     required this.id_,
@@ -41,14 +41,14 @@ class EventNoticesResponse extends EventNoticesEntity {
           id: id_.toInt(),
           type: getEventNoticeType(type_),
           user: users_ ?? FortuneUserEntity.empty(),
-          eventRewardHistory: eventRewards_ ?? EventRewardHistoryEntity.empty(),
+          eventRewardHistory: eventRewards_ ?? AlarmRewardHistoryEntity.empty(),
           createdAt: createdAt_,
           headings: headings_,
           content: content_,
           isRead: isRead_,
         );
 
-  factory EventNoticesResponse.fromJson(Map<String, dynamic> json) => _$EventNoticesResponseFromJson(json);
+  factory AlarmFeedsResponse.fromJson(Map<String, dynamic> json) => _$AlarmFeedsResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EventNoticesResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AlarmFeedsResponseToJson(this);
 }

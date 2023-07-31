@@ -1,23 +1,23 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
 import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
-import 'package:foresh_flutter/data/supabase/response/eventnotice/event_reward_history_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/event_rewards_history_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class EventRewardHistoryService {
+class AlarmRewardHistoryService {
   static const fullSelectQuery = '*,'
       '${TableName.users}(*),'
-      '${TableName.eventRewardInfo}(*)';
+      '${TableName.alarmRewardInfo}(*)';
 
-  final _tableName = TableName.eventRewardHistory;
+  final _tableName = TableName.alarmRewardHistory;
 
   final SupabaseClient _client = Supabase.instance.client;
 
-  EventRewardHistoryService();
+  AlarmRewardHistoryService();
 
   // 리워드 히스토리 추가.
-  Future<EventRewardHistoryEntity> insertRewardHistory(RequestEventRewardHistory request) async {
+  Future<AlarmRewardHistoryEntity> insertRewardHistory(RequestEventRewardHistory request) async {
     try {
       final response = await _client
           .from(
@@ -28,7 +28,7 @@ class EventRewardHistoryService {
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '리워드 추가 실패');
       } else {
-        final reward = response.map((e) => EventRewardHistoryResponse.fromJson(e)).toList().single;
+        final reward = response.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
         return reward;
       }
     } catch (e) {

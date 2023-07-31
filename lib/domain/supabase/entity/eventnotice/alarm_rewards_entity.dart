@@ -1,19 +1,19 @@
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 
-class EventRewardInfoEntity {
+class AlarmRewardInfoEntity {
   final int id;
-  final EventRewardType type;
+  final AlarmRewardType type;
   final bool hasUniqueMarker;
 
-  EventRewardInfoEntity({
+  AlarmRewardInfoEntity({
     required this.id,
     required this.type,
     required this.hasUniqueMarker,
   });
 
-  factory EventRewardInfoEntity.empty() => EventRewardInfoEntity(
+  factory AlarmRewardInfoEntity.empty() => AlarmRewardInfoEntity(
         id: -1,
-        type: EventRewardType.none,
+        type: AlarmRewardType.none,
         hasUniqueMarker: false,
       );
 }

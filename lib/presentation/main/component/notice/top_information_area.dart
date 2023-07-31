@@ -10,11 +10,9 @@ import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TopInformationArea extends StatelessWidget {
-  final MainBloc _bloc;
   final GlobalKey<CartIconKey> _cartKey;
 
   const TopInformationArea(
-    this._bloc,
     this._cartKey, {
     super.key,
   });
@@ -50,7 +48,7 @@ class TopInformationArea extends StatelessWidget {
           },
         ),
         const SizedBox(width: 10),
-        // 마커 획득갯수.
+        // 마커 획득 갯수.
         BlocBuilder<MainBloc, MainState>(
           buildWhen: (previous, current) => previous.haveCount != current.haveCount,
           builder: (context, state) {
@@ -71,9 +69,8 @@ class _UserLevel extends StatelessWidget {
   const _UserLevel(
     this._grade,
     this._percentageNextLevel,
-    this._level, {
-    super.key,
-  });
+    this._level,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -124,9 +121,8 @@ class _TicketCount extends StatelessWidget {
   final int? _ticket;
 
   const _TicketCount(
-    this._ticket, {
-    super.key,
-  });
+    this._ticket,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -156,9 +152,8 @@ class _ObtainMarkerCount extends StatelessWidget {
 
   const _ObtainMarkerCount(
     this._cartKey,
-    this._markerObtainCount, {
-    super.key,
-  });
+    this._markerObtainCount,
+  );
 
   @override
   Widget build(BuildContext context) {

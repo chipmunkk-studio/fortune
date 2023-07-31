@@ -8,7 +8,6 @@ import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart'
 import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_notices_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
@@ -16,6 +15,7 @@ import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
+import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'env.dart';
 
 main() {
@@ -57,14 +57,14 @@ main() {
 }
 
 serviceTest() async {
-  final rewardRepository = serviceLocator<EventRewardsRepository>();
+  final rewardRepository = serviceLocator<AlarmRewardsRepository>();
   final userRepository = serviceLocator<UserRepository>();
   final ingredientRepository = serviceLocator<IngredientRepository>();
   final obtainHistoryRepository = serviceLocator<ObtainHistoryRepository>();
-  final eventNoticesRepository = serviceLocator<EventNoticesRepository>();
+  final eventNoticesRepository = serviceLocator<AlarmFeedsRepository>();
 
   final user = await userRepository.findUserByPhoneNonNull();
-  final rewardType = await rewardRepository.findRewardInfoByType(EventRewardType.level);
+  final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
   final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
   await obtainHistoryRepository.insertObtainHistory(
@@ -78,13 +78,13 @@ serviceTest() async {
 
   final response = await rewardRepository.insertRewardHistory(
     user: user,
-    eventRewardInfo: rewardType,
+    alarmRewardInfo: rewardType,
     ingredient: ingredient,
   );
 
   eventNoticesRepository.insertNotice(
     RequestEventNotices.insert(
-      type: EventNoticeType.user.name,
+      type: AlarmFeedType.user.name,
       headings: '레벨 업을 축하합니다!',
       content: '레벨업 축하!',
       users: user.id,
