@@ -59,7 +59,7 @@ class _AlarmRewardPageState extends State<_AlarmRewardPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("리워드",style: FortuneTextStyle.body3Regular(),)
+          Text("",style: FortuneTextStyle.body3Regular(),)
         ],
       ),
     );
