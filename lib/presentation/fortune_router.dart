@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
+import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -78,6 +79,13 @@ class FortuneRouter {
     },
   );
 
+  static var alarmRewardHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as int?;
+      return args != null ? AlarmRewardPage(args) : null;
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -138,6 +146,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 알림 보상.
+      ..define(
+        Routes.alarmRewardRoute,
+        handler: alarmRewardHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
@@ -154,6 +169,7 @@ class Routes {
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String alarmFeedRoute = 'alarmFeed';
+  static const String alarmRewardRoute = 'alarmReward';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNoticesRoute';

@@ -1,5 +1,6 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
@@ -27,6 +28,27 @@ class AlarmRewardHistoryService {
           .select(fullSelectQuery);
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '리워드 추가 실패');
+      } else {
+        final reward = response.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
+        return reward;
+      }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 리워드 타입으로 리워드 정보 검색 검색.
+  Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id) async {
+    try {
+      final response = await _client
+          .from(_tableName)
+          .select(
+            fullSelectQuery,
+          )
+          .filter('id', 'eq', id)
+          .toSelect();
+      if (response.isEmpty) {
+        throw CommonFailure(errorMessage: '등록된 리워드 정보가 없습니다');
       } else {
         final reward = response.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
         return reward;

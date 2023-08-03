@@ -122,6 +122,9 @@ class $AssetsIconsGen {
   SvgGenImage get icFortuneTicket =>
       const SvgGenImage('assets/icons/ic_fortune_ticket.svg');
 
+  /// File path: assets/icons/ic_gift.svg
+  SvgGenImage get icGift => const SvgGenImage('assets/icons/ic_gift.svg');
+
   /// File path: assets/icons/ic_grade_bronze.svg
   SvgGenImage get icGradeBronze =>
       const SvgGenImage('assets/icons/ic_grade_bronze.svg');
@@ -219,6 +222,7 @@ class $AssetsIconsGen {
         icFortuneMoney,
         icFortuneMoneyPlus,
         icFortuneTicket,
+        icGift,
         icGradeBronze,
         icGradeDiamond,
         icGradeGold,

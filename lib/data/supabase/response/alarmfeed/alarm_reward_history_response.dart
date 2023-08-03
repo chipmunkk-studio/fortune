@@ -12,8 +12,8 @@ class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
   final double id_;
   @JsonKey(name: 'users')
   final FortuneUserResponse user_;
-  @JsonKey(name: 'event_reward_info')
-  final AlarmRewardInfoResponse eventRewardInfo_;
+  @JsonKey(name: 'alarm_reward_info')
+  final AlarmRewardInfoResponse alarmRewardInfo_;
   @JsonKey(name: 'ingredient_image')
   final String ingredientImage_;
   @JsonKey(name: 'ingredient_name')
@@ -25,7 +25,7 @@ class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
 
   AlarmRewardHistoryResponse({
     required this.id_,
-    required this.eventRewardInfo_,
+    required this.alarmRewardInfo_,
     required this.user_,
     required this.ingredientImage_,
     required this.ingredientName_,
@@ -33,7 +33,7 @@ class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
     required this.isReceive_,
   }) : super(
           id: id_.toInt(),
-          eventRewardInfo: eventRewardInfo_,
+          eventRewardInfo: alarmRewardInfo_,
           user: user_,
           ingredientImage: ingredientImage_,
           ingredientName: ingredientName_,

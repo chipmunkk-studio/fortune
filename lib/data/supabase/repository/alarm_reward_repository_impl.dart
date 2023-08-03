@@ -1,5 +1,4 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
 import 'package:foresh_flutter/data/supabase/service/alarm_reward_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/alarm_reward_info_service.dart';
@@ -8,9 +7,9 @@ import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/alarm_reward_repository.dart';
 
-class AlarmRewardRepositoryImpl extends AlarmRewardsRepository {
+class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   final AlarmRewardHistoryService rewardsService;
   final AlarmRewardInfoService eventRewardInfoService;
 
@@ -46,6 +45,18 @@ class AlarmRewardRepositoryImpl extends AlarmRewardsRepository {
   Future<AlarmRewardInfoEntity> findRewardInfoByType(AlarmRewardType type) async {
     try {
       final result = await eventRewardInfoService.findEventRewardsByType(type.name);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '이벤트 리워드를 찾을 수 없습니다',
+      );
+    }
+  }
+
+  @override
+  Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id) async {
+    try {
+      final result = await rewardsService.findRewardHistoryById(id);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(

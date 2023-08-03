@@ -37,7 +37,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final user = await userRepository.findUserByPhoneNonNull();
 
       // 유저 알림 가져오기.
-      final userNotices = await userNoticesRepository.findAllNotices();
+      final userNotices = await userNoticesRepository.findAllAlarmsByUserId(user.id);
 
       // 내 주변의 마커를 가져옴.
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude)).toList();

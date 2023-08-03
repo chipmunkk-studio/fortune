@@ -8,7 +8,7 @@ import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/marker_obtain_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/alarm_reward_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
@@ -20,7 +20,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
   final AlarmFeedsRepository eventNoticesRepository;
-  final AlarmRewardsRepository rewardRepository;
+  final AlarmRewardRepository rewardRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MissionsRepository missionsRepository;
   final IngredientRepository ingredientRepository;
@@ -171,7 +171,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           ingredient: ingredient,
         );
 
-        await eventNoticesRepository.insertNotice(
+        await eventNoticesRepository.insertAlarm(
           RequestEventNotices.insert(
             headings: '릴레이 미션을 클리어 하셨습니다.',
             content: '릴레이 미션 클리어!!',
@@ -181,7 +181,10 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           ),
         );
 
-        await missionsRepository.postMissionClear(missionId: mission.id);
+        await missionsRepository.postMissionClear(
+          missionId: mission.id,
+          userId: user.id,
+        );
       }
     }
   }
@@ -206,7 +209,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       ingredient: ingredient,
     );
 
-    await eventNoticesRepository.insertNotice(
+    await eventNoticesRepository.insertAlarm(
       RequestEventNotices.insert(
         type: AlarmFeedType.user.name,
         headings: '레벨 업을 축하합니다!',

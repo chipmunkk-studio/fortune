@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/util/date.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed.dart';
+import 'package:foresh_flutter/presentation/alarmfeed/component/alarm_feed_skeleton.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 class AlarmFeedPage extends StatelessWidget {
   const AlarmFeedPage({Key? key}) : super(key: key);
@@ -12,9 +20,9 @@ class AlarmFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmFeedInit()),
+      create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmRewardInit()),
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
+        appBar: FortuneCustomAppBar.leadingAppBar(context, title: '알림'),
         child: const _AlarmFeedPage(),
       ),
     );
@@ -29,7 +37,6 @@ class _AlarmFeedPage extends StatefulWidget {
 }
 
 class _AlarmFeedPageState extends State<_AlarmFeedPage> {
-
   final _router = serviceLocator<FortuneRouter>().router;
   late AlarmFeedBloc _bloc;
 
@@ -53,9 +60,84 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
           dialogService.showErrorDialog(context, sideEffect.error);
         }
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [],
+      child: BlocBuilder<AlarmFeedBloc, AlarmFeedState>(
+        buildWhen: (previous, current) => previous.feeds != current.feeds,
+        builder: (context, state) {
+          return Skeleton(
+            skeleton: const AlarmFeedSkeleton(),
+            isLoading: state.isLoading,
+            child: state.feeds.isNotEmpty
+                ? ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: state.feeds.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 20),
+                    itemBuilder: (context, index) {
+                      final item = state.feeds[index];
+                      return Bounceable(
+                        onTap: () => _router.navigateTo(
+                          context,
+                          Routes.alarmRewardRoute,
+                          routeSettings: RouteSettings(
+                            arguments: item.reward.id,
+                          ),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorName.backgroundLight,
+                            borderRadius: BorderRadius.circular(
+                              20.r,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(width: 20),
+                                  Assets.icons.icMegaphone.svg(
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.headings + item.headings + item.headings + item.headings,
+                                          style: FortuneTextStyle.body2SemiBold(),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          item.content,
+                                          style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    FortuneDateExtension.convertTimeAgo(item.createdAt),
+                                    style: FortuneTextStyle.body3Regular(),
+                                  ),
+                                  const SizedBox(width: 20),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                      );
+                    })
+                : Center(
+                    child: Text(
+                      "알림이 없습니다",
+                      style: FortuneTextStyle.subTitle3SemiBold(),
+                    ),
+                  ),
+          );
+        },
       ),
     );
   }

@@ -28,10 +28,12 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
       // 미션 클리어.
       final missions = await missionRepository.postMissionClear(
         missionId: request.missionId,
+        userId: user.id,
       );
 
       // 삭제 대상인 것들만 다넣음.
       List<ObtainHistoryEntity> filteredUserHistories = [];
+
       for (var condition in clearConditions) {
         var matchedHistories = userHistories.where((history) => history.ingredient.id == condition.ingredient.id);
         filteredUserHistories.addAll(matchedHistories.take(condition.requireCount));
@@ -39,6 +41,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
 
       // 히스토리에서 삭제.
       await obtainHistoryRepository.delete(histories: filteredUserHistories);
+
       return Right(missions);
     } on FortuneFailure catch (e) {
       return Left(e);

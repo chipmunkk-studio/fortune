@@ -29,6 +29,7 @@ class Assets {
   static const String iconsIcFortuneMoney = 'assets/icons/ic_fortune_money.svg';
   static const String iconsIcFortuneMoneyPlus = 'assets/icons/ic_fortune_money_plus.svg';
   static const String iconsIcFortuneTicket = 'assets/icons/ic_fortune_ticket.svg';
+  static const String iconsIcGift = 'assets/icons/ic_gift.svg';
   static const String iconsIcGradeBronze = 'assets/icons/ic_grade_bronze.svg';
   static const String iconsIcGradeDiamond = 'assets/icons/ic_grade_diamond.svg';
   static const String iconsIcGradeGold = 'assets/icons/ic_grade_gold.svg';

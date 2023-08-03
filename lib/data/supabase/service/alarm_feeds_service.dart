@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
@@ -20,14 +21,16 @@ class AlarmFeedsService {
   AlarmFeedsService();
 
   // 모든 알림을 조회.
-  Future<List<AlarmFeedsEntity>> findAllEventNotices() async {
+  Future<List<AlarmFeedsEntity>> findAllAlarmFeeds(int userId) async {
     try {
       final response = await _client
           .from(_tableName)
           .select(
             fullSelectQuery,
           )
-          .toSelect();
+          .match({
+        TableName.users: userId,
+      }).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -69,7 +72,7 @@ class AlarmFeedsService {
 
     final requestToUpdate = RequestEventNotices(
       users: request.users ?? eventNotice.user.id,
-      eventRewardHistory: request.eventRewardHistory ?? eventNotice.eventRewardHistory.id,
+      eventRewardHistory: request.eventRewardHistory ?? eventNotice.reward.id,
       type: request.type ?? eventNotice.type.name,
       isRead: request.isRead ?? eventNotice.isRead,
       headings: '',
@@ -91,7 +94,7 @@ class AlarmFeedsService {
   }
 
   // 알림 추가.
-  Future<AlarmFeedsEntity>  insert(RequestEventNotices request) async {
+  Future<AlarmFeedsEntity> insert(RequestEventNotices request) async {
     try {
       final insertUser = await _client
           .from(_tableName)

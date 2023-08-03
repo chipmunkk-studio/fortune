@@ -12,7 +12,7 @@ class AlarmFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmFeedInit()),
+      create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmRewardInit()),
       child: FortuneScaffold(
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
         child: const _AlarmFeedPage(),

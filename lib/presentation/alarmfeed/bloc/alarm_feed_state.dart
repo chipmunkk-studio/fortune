@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'alarm_feed_state.freezed.dart';
@@ -5,13 +6,16 @@ part 'alarm_feed_state.freezed.dart';
 @freezed
 class AlarmFeedState with _$AlarmFeedState {
   factory AlarmFeedState({
-    required String phoneNumber,
+    required List<AlarmFeedsEntity> feeds,
+    required bool isLoading,
   }) = _AlarmFeedState;
 
   factory AlarmFeedState.initial([
-    String? phoneNumber,
+    List<AlarmFeedsEntity>? feeds,
+    bool? isLoading,
   ]) =>
       AlarmFeedState(
-        phoneNumber: phoneNumber ?? "",
+        feeds: feeds ?? List.empty(),
+        isLoading: isLoading ?? true,
       );
 }

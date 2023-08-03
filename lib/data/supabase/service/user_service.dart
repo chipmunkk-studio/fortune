@@ -11,6 +11,8 @@ class UserService {
   final SupabaseClient _client = Supabase.instance.client;
   final _tableName = TableName.users;
 
+  String? get phoneNumber => _client.auth.currentUser?.phone;
+
   UserService();
 
   // 회원가입.

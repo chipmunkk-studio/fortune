@@ -21,8 +21,8 @@ class AlarmFeedsResponse extends AlarmFeedsEntity {
   final FortuneUserResponse? users_;
   @JsonKey(name: 'type')
   final String type_;
-  @JsonKey(name: 'event_reward_history')
-  final AlarmRewardHistoryResponse? eventRewards_;
+  @JsonKey(name: 'alarm_reward_history')
+  final AlarmRewardHistoryResponse? alarmRewards_;
   @JsonKey(name: 'is_read')
   final bool isRead_;
   @JsonKey(name: 'created_at')
@@ -34,14 +34,14 @@ class AlarmFeedsResponse extends AlarmFeedsEntity {
     required this.id_,
     required this.headings_,
     required this.content_,
-    required this.eventRewards_,
+    required this.alarmRewards_,
     required this.type_,
     required this.isRead_,
   }) : super(
           id: id_.toInt(),
           type: getEventNoticeType(type_),
           user: users_ ?? FortuneUserEntity.empty(),
-          eventRewardHistory: eventRewards_ ?? AlarmRewardHistoryEntity.empty(),
+          reward: alarmRewards_ ?? AlarmRewardHistoryEntity.empty(),
           createdAt: createdAt_,
           headings: headings_,
           content: content_,

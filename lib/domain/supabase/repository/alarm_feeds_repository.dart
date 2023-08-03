@@ -3,8 +3,9 @@ import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_en
 
 abstract class AlarmFeedsRepository {
   // 사용자 알림 모두 조회.
-  Future<List<AlarmFeedsEntity>> findAllNotices();
+  Future<List<AlarmFeedsEntity>> findAllAlarmsByUserId(int userId);
 
   // 사용자 알림 추가
-  Future<AlarmFeedsEntity> insertNotice(RequestEventNotices content);
+  Future<AlarmFeedsEntity> insertAlarm(RequestEventNotices content);
+
 }

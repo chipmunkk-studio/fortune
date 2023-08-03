@@ -23,6 +23,7 @@ import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
@@ -33,6 +34,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_c
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
+import 'package:foresh_flutter/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
@@ -55,8 +57,9 @@ import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission/mission_clear_user_service.dart';
 import 'data/supabase/service/mission/missions_service.dart';
 import 'domain/supabase/repository/alarm_feeds_repository.dart';
-import 'domain/supabase/repository/event_rewards_repository.dart';
+import 'domain/supabase/repository/alarm_reward_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
+import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
@@ -245,7 +248,7 @@ _initRepository() {
         alarmFeedsService: serviceLocator<AlarmFeedsService>(),
       ),
     )
-    ..registerLazySingleton<AlarmRewardsRepository>(
+    ..registerLazySingleton<AlarmRewardRepository>(
       () => AlarmRewardRepositoryImpl(
         rewardsService: serviceLocator<AlarmRewardHistoryService>(),
         eventRewardInfoService: serviceLocator<AlarmRewardInfoService>(),
@@ -257,7 +260,6 @@ _initRepository() {
         missionClearConditionsService: serviceLocator<MissionsClearConditionsService>(),
         missionClearUserService: serviceLocator<MissionClearUserService>(),
         missionRewardService: serviceLocator<MissionRewardService>(),
-        userService: serviceLocator<UserService>(),
       ),
     )
     ..registerLazySingleton<AuthRepository>(
@@ -334,6 +336,17 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetAlarmFeedUseCase>(
+      () => GetAlarmFeedUseCase(
+        userRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetAlarmRewardUseCase>(
+      () => GetAlarmRewardUseCase(
+        alarmRewardRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -359,7 +372,9 @@ _initBloc() {
       () => RequestPermissionBloc(),
     )
     ..registerFactory(
-      () => AlarmFeedBloc(),
+      () => AlarmFeedBloc(
+        getAlarmFeedUseCase: serviceLocator(),
+      ),
     )
     ..registerFactory(
       () => ObtainHistoryBloc(
@@ -371,6 +386,11 @@ _initBloc() {
         remoteConfig: serviceLocator<Environment>().remoteConfig,
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => AlarmRewardBloc(
+        getAlarmRewardUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

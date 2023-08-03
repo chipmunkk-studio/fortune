@@ -9,7 +9,10 @@ abstract class MissionsRepository {
   Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId);
 
   // 미션 클리어 요청.
-  Future<void> postMissionClear({required int missionId});
+  Future<void> postMissionClear({
+    required int missionId,
+    required int userId,
+  });
 
   // 미션 아이디로 조회.
   Future<MissionsEntity> getMissionById(int missionId);
