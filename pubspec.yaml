@@ -36,7 +36,7 @@ dependencies:
   lottie: ^2.5.0
   material_dialogs: ^1.1.4
   page_view_indicators: ^2.0.0
-  location: ^5.0.1
+  location: ^5.0.2+1
   image_picker: ^1.0.1
   image_cropper: ^4.0.1
   flutter_animation_progress_bar: ^2.3.1

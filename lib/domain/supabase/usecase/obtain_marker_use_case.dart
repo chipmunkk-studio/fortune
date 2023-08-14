@@ -1,8 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
+import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
 import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -172,12 +173,12 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         );
 
         await eventNoticesRepository.insertAlarm(
-          RequestEventNotices.insert(
+          RequestAlarmFeeds.insert(
             headings: '릴레이 미션을 클리어 하셨습니다.',
             content: '릴레이 미션 클리어!!',
             type: AlarmFeedType.user.name,
             users: user.id,
-            eventRewardHistory: response.id,
+            alarmRewardHistory: response.id,
           ),
         );
 
@@ -193,16 +194,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
     final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
-    await obtainHistoryRepository.insertObtainHistory(
-      request: RequestObtainHistory.insert(
-        ingredientId: ingredient.id,
-        userId: user.id,
-        nickName: user.nickname,
-        ingredientName: ingredient.name,
-        isReward: true,
-      ),
-    );
-
     final response = await rewardRepository.insertRewardHistory(
       user: user,
       alarmRewardInfo: rewardType,
@@ -210,12 +201,12 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     );
 
     await eventNoticesRepository.insertAlarm(
-      RequestEventNotices.insert(
+      RequestAlarmFeeds.insert(
         type: AlarmFeedType.user.name,
         headings: '레벨 업을 축하합니다!',
         content: '레벨업 축하!',
         users: user.id,
-        eventRewardHistory: response.id,
+        alarmRewardHistory: response.id,
       ),
     );
   }

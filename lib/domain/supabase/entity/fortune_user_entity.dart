@@ -1,15 +1,28 @@
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'fortune_user_entity.g.dart';
+
+@JsonSerializable(ignoreUnannotated: false)
 class FortuneUserEntity {
+  @JsonKey(name: 'id')
   final int id;
+  @JsonKey(name: 'phone')
   final String phone;
+  @JsonKey(name: 'nickname')
   final String nickname;
+  @JsonKey(name: 'profileImage')
   final String profileImage;
+  @JsonKey(name: 'ticket')
   final int ticket;
+  @JsonKey(name: 'markerObtainCount')
   final int markerObtainCount;
+  @JsonKey(name: 'level')
   final int level;
+  @JsonKey(name: 'grade')
   final FortuneUserGradeEntity grade;
+  @JsonKey(name: 'percentageNextLevel')
   final double percentageNextLevel;
 
   FortuneUserEntity({
@@ -55,5 +68,9 @@ class FortuneUserEntity {
       level: 0,
     );
   }
+
+  factory FortuneUserEntity.fromJson(Map<String, dynamic> json) => _$FortuneUserEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FortuneUserEntityToJson(this);
 
 }

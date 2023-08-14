@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
@@ -16,6 +17,12 @@ abstract class AlarmRewardRepository {
   Future<AlarmRewardInfoEntity> findRewardInfoByType(
     AlarmRewardType type,
   );
+
   // 사용자 리워드 조회.
   Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id);
+
+  Future<AlarmRewardHistoryEntity> update(
+    int id, {
+    required RequestAlarmRewardHistory request,
+  });
 }

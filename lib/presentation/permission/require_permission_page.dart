@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -80,6 +82,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
   @override
   void initState() {
     super.initState();
+    AppMetrica.reportEvent('권한 요청');
     _bloc = BlocProvider.of<RequestPermissionBloc>(context);
   }
 
@@ -94,8 +97,10 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
     return BlocSideEffectListener<RequestPermissionBloc, RequestPermissionSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is RequestPermissionStart) {
+          AppMetrica.reportEvent('권한 요청 시작');
           FortunePermissionUtil.requestPermission(_bloc.state.permissions);
         } else if (sideEffect is RequestPermissionFail) {
+          AppMetrica.reportEvent('권한 요청 팝업');
           context.showFortuneDialog(
             title: '권한 요청',
             subTitle: '허용하지 않은 필수 권한이 있어요.',

@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
+import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
 import 'package:foresh_flutter/data/supabase/service/alarm_feeds_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
@@ -32,7 +32,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
   }
 
   @override
-  Future<AlarmFeedsEntity> insertAlarm(RequestEventNotices content) async {
+  Future<AlarmFeedsEntity> insertAlarm(RequestAlarmFeeds content) async {
     try {
       final result = await alarmFeedsService.insert(content);
       return result;

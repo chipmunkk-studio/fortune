@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';

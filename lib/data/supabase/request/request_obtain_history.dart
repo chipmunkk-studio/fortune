@@ -30,7 +30,7 @@ class RequestObtainHistory {
   });
 
   RequestObtainHistory.insert({
-    required this.ingredientId,
+    this.ingredientId,
     required this.userId,
     required this.nickName,
     required this.ingredientName,

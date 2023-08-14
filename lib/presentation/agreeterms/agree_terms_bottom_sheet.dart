@@ -1,15 +1,15 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/checkbox/fortune_check_box.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -46,6 +46,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   @override
   void initState() {
     super.initState();
+    AppMetrica.reportEvent('약관 동의 화면');
     _bloc = BlocProvider.of<AgreeTermsBloc>(context);
   }
 

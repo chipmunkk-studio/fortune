@@ -1,3 +1,4 @@
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -43,6 +44,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
   @override
   void initState() {
     super.initState();
+    AppMetrica.reportEvent('알림피드 진입');
     _bloc = BlocProvider.of<AlarmFeedBloc>(context);
   }
 
@@ -67,69 +69,74 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
             skeleton: const AlarmFeedSkeleton(),
             isLoading: state.isLoading,
             child: state.feeds.isNotEmpty
-                ? ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: state.feeds.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 20),
-                    itemBuilder: (context, index) {
-                      final item = state.feeds[index];
-                      return Bounceable(
-                        onTap: () => _router.navigateTo(
-                          context,
-                          Routes.alarmRewardRoute,
-                          routeSettings: RouteSettings(
-                            arguments: item.reward.id,
-                          ),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: ColorName.backgroundLight,
-                            borderRadius: BorderRadius.circular(
-                              20.r,
+                ? Stack(
+                    children: [
+                      ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: state.feeds.length,
+                        separatorBuilder: (context, index) => const SizedBox(height: 20),
+                        itemBuilder: (context, index) {
+                          final item = state.feeds[index];
+                          return Bounceable(
+                            onTap: () => _router.navigateTo(
+                              context,
+                              Routes.alarmRewardRoute,
+                              routeSettings: RouteSettings(
+                                arguments: item.reward.id,
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorName.backgroundLight,
+                                borderRadius: BorderRadius.circular(
+                                  20.r,
+                                ),
+                              ),
+                              child: Column(
                                 children: [
-                                  const SizedBox(width: 20),
-                                  Assets.icons.icMegaphone.svg(
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          item.headings + item.headings + item.headings + item.headings,
-                                          style: FortuneTextStyle.body2SemiBold(),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(width: 20),
+                                      Assets.icons.icMegaphone.svg(
+                                        width: 20,
+                                        height: 20,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.headings,
+                                              style: FortuneTextStyle.body2SemiBold(),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              item.content,
+                                              style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          item.content,
-                                          style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Text(
+                                        FortuneDateExtension.convertTimeAgo(item.createdAt),
+                                        style: FortuneTextStyle.body3Regular(),
+                                      ),
+                                      const SizedBox(width: 20),
+                                    ],
                                   ),
-                                  const SizedBox(width: 12),
-                                  Text(
-                                    FortuneDateExtension.convertTimeAgo(item.createdAt),
-                                    style: FortuneTextStyle.body3Regular(),
-                                  ),
-                                  const SizedBox(width: 20),
+                                  const SizedBox(height: 20),
                                 ],
                               ),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                        ),
-                      );
-                    })
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  )
                 : Center(
                     child: Text(
                       "알림이 없습니다",

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
 import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
-import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -66,13 +66,13 @@ class AlarmFeedsService {
   // 알림 업데이트.
   Future<void> update(
     int noticeId, {
-    required RequestEventNotices request,
+    required RequestAlarmFeeds request,
   }) async {
     AlarmFeedsEntity eventNotice = await findNoticeById(noticeId);
 
-    final requestToUpdate = RequestEventNotices(
+    final requestToUpdate = RequestAlarmFeeds(
       users: request.users ?? eventNotice.user.id,
-      eventRewardHistory: request.eventRewardHistory ?? eventNotice.reward.id,
+      alarmRewardHistory: request.alarmRewardHistory ?? eventNotice.reward.id,
       type: request.type ?? eventNotice.type.name,
       isRead: request.isRead ?? eventNotice.isRead,
       headings: '',
@@ -94,7 +94,7 @@ class AlarmFeedsService {
   }
 
   // 알림 추가.
-  Future<AlarmFeedsEntity> insert(RequestEventNotices request) async {
+  Future<AlarmFeedsEntity> insert(RequestAlarmFeeds request) async {
     try {
       final insertUser = await _client
           .from(_tableName)

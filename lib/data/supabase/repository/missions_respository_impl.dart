@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/core/error/failure/custom_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';

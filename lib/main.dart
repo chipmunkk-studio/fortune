@@ -3,18 +3,11 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_notices.dart';
-import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
-import 'domain/supabase/repository/alarm_feeds_repository.dart';
+import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'env.dart';
 
 main() {

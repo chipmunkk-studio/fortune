@@ -6,6 +6,12 @@ import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'failure/auth_failure.dart';
+import 'failure/common_failure.dart';
+import 'failure/custom_failure.dart';
+import 'failure/network_failure.dart';
+import 'failure/unknown_failure.dart';
+
 class FortuneException {
   final String? errorCode;
   final String? errorMessage;
@@ -32,160 +38,6 @@ abstract class FortuneFailure extends Equatable {
     String? message,
     String? description,
   });
-}
-
-/// 인증 에러.
-class AuthFailure extends FortuneFailure {
-  final String? errorCode;
-  final String? errorMessage;
-  final String? errorDescription;
-
-  const AuthFailure({
-    this.errorCode,
-    this.errorMessage,
-    this.errorDescription,
-  }) : super(
-          code: errorCode,
-          message: errorMessage,
-          description: errorDescription,
-        );
-
-  @override
-  AuthFailure copyWith({
-    String? code,
-    String? message,
-    String? description,
-  }) {
-    return AuthFailure(
-      errorCode: code ?? errorCode,
-      errorMessage: message ?? errorMessage,
-      errorDescription: description ?? errorDescription,
-    );
-  }
-
-  @override
-  List<Object?> get props => [code, message, description];
-}
-
-/// 공통 에러.
-class CommonFailure extends FortuneFailure {
-  final String? errorMessage;
-  final String? errorDescription;
-
-  CommonFailure({
-    this.errorMessage,
-    this.errorDescription,
-  }) : super(
-          code: HttpStatus.badRequest.toString(),
-          message: errorMessage,
-          description: errorDescription,
-        );
-
-  @override
-  List<Object?> get props => [code, message, description];
-
-  @override
-  CommonFailure copyWith({
-    String? code,
-    String? message,
-    String? description,
-  }) {
-    return CommonFailure(
-      errorMessage: message ?? errorMessage,
-      errorDescription: description ?? errorDescription,
-    );
-  }
-}
-
-/// 알 수 없는 에러.
-class NetworkFailure extends FortuneFailure {
-  final String? errorCode;
-  final String? errorMessage;
-  final String? errorDescription;
-
-  const NetworkFailure({
-    this.errorCode = '400',
-    this.errorMessage,
-    this.errorDescription,
-  }) : super(
-          code: errorCode,
-          message: errorMessage,
-          description: errorDescription,
-        );
-
-  @override
-  List<Object?> get props => [code, message, description];
-
-  @override
-  NetworkFailure copyWith({
-    String? code,
-    String? message,
-    String? description,
-  }) {
-    return NetworkFailure(
-      errorCode: code ?? errorCode,
-      errorMessage: message ?? errorMessage,
-      errorDescription: description ?? errorDescription,
-    );
-  }
-}
-
-/// 알 수 없는 에러.
-class UnknownFailure extends FortuneFailure {
-  final String? errorCode;
-  final String? errorMessage;
-  final String? errorDescription;
-
-  const UnknownFailure({
-    this.errorCode = '999',
-    this.errorMessage,
-    this.errorDescription,
-  }) : super(
-          code: errorCode,
-          message: errorMessage,
-          description: errorDescription,
-        );
-
-  @override
-  List<Object?> get props => [code, message, description];
-
-  @override
-  UnknownFailure copyWith({
-    String? code,
-    String? message,
-    String? description,
-  }) {
-    return UnknownFailure(
-      errorCode: code ?? errorCode,
-      errorMessage: message ?? errorMessage,
-      errorDescription: description ?? errorDescription,
-    );
-  }
-}
-
-/// 비즈니스 에러
-class CustomFailure extends FortuneFailure {
-  final String? errorDescription;
-
-  const CustomFailure({
-    this.errorDescription,
-  }) : super(
-          message: errorDescription,
-        );
-
-  @override
-  List<Object?> get props => [code, message, description];
-
-  @override
-  CustomFailure copyWith({
-    String? code,
-    String? message,
-    String? description,
-  }) {
-    return CustomFailure(
-      errorDescription: description ?? errorDescription,
-    );
-  }
 }
 
 extension FortuneExceptionX on Exception {
@@ -231,5 +83,15 @@ extension FortuneFailureX on FortuneFailure {
       description: description,
     );
     return copyWith(description: description);
+  }
+
+  Map<String, dynamic> toJsonMap() {
+    if (this is CommonFailure) return (this as CommonFailure).toJson();
+    if (this is AuthFailure) return (this as AuthFailure).toJson();
+    if (this is CustomFailure) return (this as CustomFailure).toJson();
+    if (this is NetworkFailure) return (this as NetworkFailure).toJson();
+    if (this is UnknownFailure) return (this as UnknownFailure).toJson();
+
+    return {};
   }
 }

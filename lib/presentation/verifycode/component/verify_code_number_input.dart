@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
@@ -31,6 +30,12 @@ class VerifyCodeNumberInput extends StatefulWidget {
 
 class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
   Timer? timer;
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {

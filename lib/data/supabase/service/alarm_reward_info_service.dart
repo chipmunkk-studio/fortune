@@ -1,3 +1,4 @@
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_reward_info_response.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';

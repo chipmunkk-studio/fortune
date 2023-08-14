@@ -1,4 +1,5 @@
 import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
+import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,10 +15,8 @@ class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
   final FortuneUserResponse user_;
   @JsonKey(name: 'alarm_reward_info')
   final AlarmRewardInfoResponse alarmRewardInfo_;
-  @JsonKey(name: 'ingredient_image')
-  final String ingredientImage_;
-  @JsonKey(name: 'ingredient_name')
-  final String ingredientName_;
+  @JsonKey(name: 'ingredients')
+  final IngredientResponse ingredients_;
   @JsonKey(name: 'created_at')
   final String createdAt_;
   @JsonKey(name: 'is_receive')
@@ -27,16 +26,14 @@ class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
     required this.id_,
     required this.alarmRewardInfo_,
     required this.user_,
-    required this.ingredientImage_,
-    required this.ingredientName_,
+    required this.ingredients_,
     required this.createdAt_,
     required this.isReceive_,
   }) : super(
           id: id_.toInt(),
-          eventRewardInfo: alarmRewardInfo_,
+          alarmRewardInfo: alarmRewardInfo_,
           user: user_,
-          ingredientImage: ingredientImage_,
-          ingredientName: ingredientName_,
+          ingredients: ingredients_,
           isReceive: isReceive_,
           createdAt: createdAt_,
         );

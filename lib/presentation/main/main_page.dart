@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
+import 'package:foresh_flutter/core/error/failure/network_failure.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/notification/notification_response.dart';
@@ -16,6 +18,7 @@ import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
@@ -67,8 +70,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   @override
   void initState() {
     super.initState();
+    appmetrica.AppMetrica.reportEvent('메인 화면');
     WidgetsBinding.instance.addObserver(this);
     bloc = BlocProvider.of<MainBloc>(context);
+
     // 푸시 알람으로 랜딩 할 경우.
     OneSignal.shared.setNotificationOpenedHandler(
       (event) async {

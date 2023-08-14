@@ -1,5 +1,5 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
+import 'package:foresh_flutter/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:foresh_flutter/data/supabase/service/alarm_reward_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/alarm_reward_info_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
@@ -26,11 +26,10 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   }) async {
     try {
       final result = await rewardsService.insertRewardHistory(
-        RequestEventRewardHistory.insert(
-          eventRewardInfo: alarmRewardInfo.id,
+        RequestAlarmRewardHistory.insert(
+          alarmRewardInfo: alarmRewardInfo.id,
           user: user.id,
-          ingredientImage: ingredient.imageUrl,
-          ingredientName: ingredient.name,
+          ingredients: ingredient.id,
         ),
       );
       return result;
@@ -61,6 +60,21 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '이벤트 리워드를 찾을 수 없습니다',
+      );
+    }
+  }
+
+  @override
+  Future<AlarmRewardHistoryEntity> update(
+    int id, {
+    required RequestAlarmRewardHistory request,
+  }) async {
+    try {
+      final result = await rewardsService.update(id, request: request);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '알림 리워드 업데이트 실패.',
       );
     }
   }

@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -18,7 +21,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   final SignUpOrInUseCase signUpOrInUseCase;
 
   static const tag = "[PhoneNumberBloc]";
-  static const verifyTime = 5;
+  static const verifyTime = 180;
 
   VerifyCodeBloc({
     required this.verifyPhoneNumberUseCase,
@@ -71,10 +74,12 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         verifyCode: state.verifyCode,
       ),
     ).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(VerifyCodeError(l)),
-        (r) => produceSideEffect(VerifyCodeLandingRoute(Routes.mainRoute)),
-      ),
+      (value) => value.fold((l) {
+        AppMetrica.reportEventWithJson('인증 실패', jsonEncode(l.toJsonMap()));
+        produceSideEffect(VerifyCodeError(l));
+      }, (r) {
+        produceSideEffect(VerifyCodeLandingRoute(Routes.mainRoute));
+      }),
     );
   }
 

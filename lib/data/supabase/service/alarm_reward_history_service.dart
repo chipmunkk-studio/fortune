@@ -1,14 +1,17 @@
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
+import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
-import 'package:foresh_flutter/data/supabase/request/request_event_reward_history.dart';
 import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AlarmRewardHistoryService {
   static const fullSelectQuery = '*,'
       '${TableName.users}(*),'
+      '${TableName.ingredients}(${IngredientService.fullSelectQuery}),'
       '${TableName.alarmRewardInfo}(*)';
 
   final _tableName = TableName.alarmRewardHistory;
@@ -18,7 +21,7 @@ class AlarmRewardHistoryService {
   AlarmRewardHistoryService();
 
   // 리워드 히스토리 추가.
-  Future<AlarmRewardHistoryEntity> insertRewardHistory(RequestEventRewardHistory request) async {
+  Future<AlarmRewardHistoryEntity> insertRewardHistory(RequestAlarmRewardHistory request) async {
     try {
       final response = await _client
           .from(
@@ -37,7 +40,7 @@ class AlarmRewardHistoryService {
     }
   }
 
-  // 리워드 타입으로 리워드 정보 검색 검색.
+  // 리워드 타입으로 리워드 정보 검색.
   Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id) async {
     try {
       final response = await _client
@@ -53,6 +56,35 @@ class AlarmRewardHistoryService {
         final reward = response.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
         return reward;
       }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 알림 리워드 업데이트.
+  Future<AlarmRewardHistoryEntity> update(
+    int id, {
+    required RequestAlarmRewardHistory request,
+  }) async {
+    try {
+      AlarmRewardHistoryEntity history = await findRewardHistoryById(id);
+
+      final requestToUpdate = RequestAlarmRewardHistory(
+        alarmRewardInfo: request.alarmRewardInfo ?? history.alarmRewardInfo.id,
+        user: request.user ?? history.user.id,
+        ingredients: request.ingredients ?? history.ingredients.id,
+        isReceive: request.isReceive ?? history.isReceive,
+      );
+
+      final updateHistory = await _client
+          .from(_tableName)
+          .update(
+            requestToUpdate.toJson(),
+          )
+          .eq('id', id)
+          .select(fullSelectQuery);
+
+      return updateHistory.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

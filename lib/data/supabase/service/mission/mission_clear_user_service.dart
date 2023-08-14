@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user.dart';
 import 'package:foresh_flutter/data/supabase/response/mission/mission_clear_user_response.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/missions_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -20,8 +20,7 @@ class AlarmFeedBloc extends Bloc<AlarmFeedEvent, AlarmFeedState>
     await getAlarmFeedUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(AlarmFeedError(l)),
-        (r) {
-
+        (r) async {
           emit(
             state.copyWith(
               feeds: r,

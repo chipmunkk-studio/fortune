@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'agree_terms.dart';
@@ -31,6 +34,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
   }
 
   FutureOr<void> onTermsClick(AgreeTermsTermClick event, Emitter<AgreeTermsState> emit) {
+    AppMetrica.reportEvent('약관 개별 동의');
     final updatedAgreeTerms = state.agreeTerms.map((term) {
       if (event.terms != term) return term;
       return term.copyWith(isChecked: !term.isChecked);
@@ -39,6 +43,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
   }
 
   FutureOr<void> onAllTermsClick(AgreeTermsAllClick event, Emitter<AgreeTermsState> emit) async {
+    AppMetrica.reportEvent('약관 모두 동의');
     for (var element in state.agreeTerms) {
       final updatedAgreeTerms = state.agreeTerms.map((term) {
         if (element != term) return term;

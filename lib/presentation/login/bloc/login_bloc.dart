@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
+import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
@@ -59,9 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
           if (r != null) {
             emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
             produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
-          }
-          // #3 가입된 사용자가 아닌 경우.
-          else {
+          } else {
             // #4 약관 바텀 시트를 보여줌.
             produceSideEffect(LoginShowTermsBottomSheet(convertedPhoneNumber));
           }
