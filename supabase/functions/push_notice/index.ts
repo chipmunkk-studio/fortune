@@ -16,7 +16,7 @@ const configuration = OneSignal.createConfiguration({
 
 const onesignal = new OneSignal.DefaultApi(configuration)
 
-serve(async (req) => {
+serve(async (req) => {ㄴ
   try {
     const { record } = await req.json()
 
