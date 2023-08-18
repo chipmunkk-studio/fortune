@@ -20,8 +20,6 @@ class MissionsResponse extends MissionsEntity {
   final String missionType_;
   @JsonKey(name: 'mission_reward')
   final MissionRewardResponse? missionReward_;
-  @JsonKey(name: 'markers')
-  final MarkerResponse? marker_;
   @JsonKey(name: 'is_global')
   final bool isGlobal_;
   @JsonKey(name: 'is_active')
@@ -33,7 +31,6 @@ class MissionsResponse extends MissionsEntity {
     required this.content_,
     required this.missionType_,
     required this.missionReward_,
-    required this.marker_,
     required this.isGlobal_,
     required this.isActive_,
   }) : super(
@@ -42,7 +39,6 @@ class MissionsResponse extends MissionsEntity {
           content: content_,
           missionType: getMissionType(missionType_),
           missionReward: missionReward_ ?? MissionRewardEntity.empty(),
-          marker: marker_ ?? MarkerEntity.empty(),
           isGlobal: isGlobal_,
           isActive: isActive_,
         );

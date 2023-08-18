@@ -16,9 +16,10 @@ enum BuildType {
 }
 
 enum EnvKey {
-  anonKey,
-  product,
-  develop,
+  devAnonKey,
+  devUrl,
+  productAnonKey,
+  productUrl,
   mapAccessToken,
   mapStyleId,
   mapUrlTemplate,
@@ -146,20 +147,31 @@ getRemoteConfigArgs() async {
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
-    final anonKey = remoteConfig.getString(describeEnum(EnvKey.anonKey));
     final oneSignalApiKey = remoteConfig.getString(describeEnum(EnvKey.oneSignalApiKey));
     final randomDistance = remoteConfig.getDouble(describeEnum(EnvKey.randomDistance));
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
     final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
+
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.product);
+          return describeEnum(EnvKey.productUrl);
         case false:
-          return describeEnum(EnvKey.develop);
+          return describeEnum(EnvKey.devUrl);
         default:
-          return describeEnum(EnvKey.develop);
+          return describeEnum(EnvKey.devUrl);
+      }
+    }());
+
+    final anonKey = remoteConfig.getString(() {
+      switch (kReleaseMode) {
+        case true:
+          return describeEnum(EnvKey.productAnonKey);
+        case false:
+          return describeEnum(EnvKey.devAnonKey);
+        default:
+          return describeEnum(EnvKey.devAnonKey);
       }
     }());
     return FortuneRemoteConfig(

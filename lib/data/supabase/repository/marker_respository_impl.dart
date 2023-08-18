@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
@@ -93,20 +92,6 @@ class MarkerRepositoryImpl extends MarkerRepository {
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '마커 생성 실패',
-      );
-    }
-  }
-
-  @override
-  Future<void> hitMarker(int id) async {
-    try {
-      await _markerService.update(
-        id,
-        hitCount: 1,
-      );
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '마커 획득 실패',
       );
     }
   }

@@ -125,13 +125,7 @@ class MarkerService {
         latitude: location?.latitude ?? marker.latitude,
         longitude: location?.longitude ?? marker.longitude,
         lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
-        hitCount: () {
-          if (hitCount != null) {
-            return hitCount + marker.hitCount;
-          } else {
-            return marker.hitCount;
-          }
-        }(),
+        hitCount: hitCount ?? marker.hitCount,
       );
 
       final updateMarker = await _client
