@@ -33,6 +33,7 @@ class FortuneDialogService {
           () {
             if (error is AuthFailure) {
               _isDialogShowing = false;
+              // 인증에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
               if (needToFinish) {
                 router.navigateTo(
                   context,
