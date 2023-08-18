@@ -141,16 +141,12 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     required FortuneUserEntity user,
     required int markerId,
   }) async {
-    final mission = await missionsRepository.getMissionOrNullByMarkerId(markerId);
-    if (mission != null) {
-      // 미션 클리어 조건 들을 조회.
-      final clearConditions = await missionsRepository.getMissionClearConditions(mission.id);
-      // 미션 클리어 조건.
-      final condition = clearConditions.firstWhereOrNull((element) => element.mission.id == mission.id);
+    final clearConditions = await missionsRepository.getMissionClearConditionsOrNullByMarkerId(markerId);
+    if (clearConditions != null) {
       // 마커 조회.
       final markerEntity = await markerRepository.findMarkerById(markerId);
       // 클리어 조건. (내가 클리어 한 건지)
-      final isClear = markerEntity.hitCount == condition?.requireCount && markerEntity.lastObtainUser == user.id;
+      final isClear = markerEntity.hitCount == clearConditions.requireCount && markerEntity.lastObtainUser == user.id;
       if (isClear) {
         // 미션 클리어.
         final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.relay);
@@ -183,7 +179,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         );
 
         await missionsRepository.postMissionClear(
-          missionId: mission.id,
+          missionId: clearConditions.mission.id,
           userId: user.id,
         );
       }

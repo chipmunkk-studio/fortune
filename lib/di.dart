@@ -144,7 +144,7 @@ initAppLogger() {
   final appLogger = AppLogger(
     Logger(
       printer: PrettyPrinter(
-        methodCount: 3,
+        methodCount: 6,
         // 보이는 메소드 콜 갯수.
         errorMethodCount: 8,
         // 보이는 에러 메소드 콜 갯수.

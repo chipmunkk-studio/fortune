@@ -9,8 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionsService {
   static const fullSelectQuery = "*,"
-      "${TableName.missionReward}(*),"
-      "${TableName.markers}(${MarkerService.fullSelectQuery})";
+      "${TableName.missionReward}(*)";
 
   final SupabaseClient _client = Supabase.instance.client;
 

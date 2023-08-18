@@ -36,7 +36,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
   }
 
   @override
-  Future<List<MissionClearConditionEntity>> getMissionClearConditions(int missionId) async {
+  Future<List<MissionClearConditionEntity>> getMissionClearConditionsByMissionId(int missionId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
@@ -113,6 +113,18 @@ class MissionsRepositoryImpl extends MissionsRepository {
   Future<MissionsEntity?> getMissionOrNullByMarkerId(int markerId) async {
     try {
       final result = await missionNormalService.findMissionOrNullByMarkerId(markerId);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '미션 불러오기 실패',
+      );
+    }
+  }
+
+  @override
+  Future<MissionClearConditionEntity?> getMissionClearConditionsOrNullByMarkerId(int markerId) async  {
+    try {
+      final result = await missionClearConditionsService.findMissionClearConditionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
