@@ -1,6 +1,7 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
+// supabase functions deploy push_notice --project-ref zctjjaievaizbprjjrvp
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import * as OneSignal from 'https://esm.sh/@onesignal/node-onesignal@1.0.0-beta7'
