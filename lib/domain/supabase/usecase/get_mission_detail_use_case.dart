@@ -22,7 +22,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
     try {
       final user = await userRepository.findUserByPhoneNonNull();
       final mission = await missionRepository.getMissionById(missionId);
-      final clearConditions = await missionRepository.getMissionClearConditions(missionId);
+      final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 
       // 재료가 있는 것 끼리만 추스림.

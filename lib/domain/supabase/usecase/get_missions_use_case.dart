@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/usecase.dart';
+import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-
 
 class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   final MissionsRepository missionRepository;
@@ -27,7 +28,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
       final missionViewItemsFutures = missions.map(
         (e) async {
           // 클리어 조건들을 가져옴.
-          final clearConditions = await missionRepository.getMissionClearConditions(e.id);
+          final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(e.id);
 
           // 사용자 획득량.
           final userHaveCountFutures = clearConditions.map((e) async {
@@ -44,11 +45,22 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           // 클리어에 필요한 총 획득량.
           final requireCount = clearConditions.map((e) => e.requireCount).reduce((a, b) => a + b).toInt();
 
-          return MissionViewEntity(
-            mission: e,
-            userHaveCount: userHaveCount, // 사용자가 가진 마커 획득 량.
-            requiredTotalCount: requireCount, // 요구하는 총 마커 갯수.
-          );
+          if (e.missionType == MissionType.relay) {
+            final relayMarker = clearConditions.single.marker;
+            return MissionViewEntity(
+              mission: e,
+              relayMarker: relayMarker, // 릴레이 마커.
+              userHaveCount: userHaveCount, // 사용자가 가진 마커 획득 량.
+              requiredTotalCount: requireCount, // 요구하는 총 마커 갯수.
+            );
+          } else {
+            return MissionViewEntity(
+              mission: e,
+              relayMarker: MarkerEntity.empty(),
+              userHaveCount: userHaveCount, // 사용자가 가진 마커 획득 량.
+              requiredTotalCount: requireCount, // 요구하는 총 마커 갯수.
+            );
+          }
         },
       );
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);

@@ -9,7 +9,6 @@ class MissionsEntity {
   final String content;
   final MissionType missionType;
   final MissionRewardEntity missionReward;
-  final MarkerEntity marker;
   final bool isGlobal;
   final bool isActive;
 
@@ -19,7 +18,6 @@ class MissionsEntity {
     required this.content,
     required this.missionType,
     required this.missionReward,
-    required this.marker,
     required this.isGlobal,
     required this.isActive,
   });
@@ -31,7 +29,6 @@ class MissionsEntity {
       content: '',
       missionType: MissionType.none,
       missionReward: MissionRewardEntity.empty(),
-      marker: MarkerEntity.empty(),
       isGlobal: false,
       isActive: false,
     );

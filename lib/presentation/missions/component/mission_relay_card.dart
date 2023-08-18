@@ -67,7 +67,7 @@ class MissionRelayCard extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "${item.mission.marker.hitCount}",
+                                text: "${item.relayMarker.hitCount}",
                                 style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
                               ),
                               TextSpan(
@@ -122,9 +122,9 @@ class MissionRelayCard extends StatelessWidget {
                     animation: true,
                     lineHeight: 12,
                     animationDuration: 2000,
-                    percent: item.mission.marker.hitCount / item.requiredTotalCount > 1
+                    percent: item.relayMarker.hitCount / item.requiredTotalCount > 1
                         ? 1
-                        :  item.mission.marker.hitCount / item.requiredTotalCount,
+                        : item.relayMarker.hitCount / item.requiredTotalCount,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
                     backgroundColor: ColorName.deActive.withOpacity(0.3),
@@ -136,7 +136,7 @@ class MissionRelayCard extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "${item.mission.marker.hitCount}",
+                        text: "${item.relayMarker.hitCount}",
                         style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
                       ),
                       TextSpan(
