@@ -44,7 +44,10 @@ extension FortuneExceptionX on Exception {
   FortuneFailure handleException() {
     if (this is PostgrestException) {
       final postgrestException = this as PostgrestException;
-      if (postgrestException.message.contains("Token") || postgrestException.message.contains("JWT")) {
+      if (postgrestException.message.contains("Token") ||
+          postgrestException.message.contains("JWT") ||
+          postgrestException.message.contains("JWSError")
+      ) {
         return AuthFailure(
           errorCode: postgrestException.code,
           errorMessage: postgrestException.message,
