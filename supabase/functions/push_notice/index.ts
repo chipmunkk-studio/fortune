@@ -1,7 +1,8 @@
 // Follow this setup guide to integrate the Deno language server with your editor:
 // https://deno.land/manual/getting_started/setup_your_environment
 // This enables autocomplete, go to definition, etc.
-// supabase functions deploy push_notice --project-ref zctjjaievaizbprjjrvp
+// supabase secrets set --env-file ./supabase/.env
+// supabase functions deploy push_notice --project-ref zctjjaievaizbprjjrvp --no-verify-jwt
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 import * as OneSignal from 'https://esm.sh/@onesignal/node-onesignal@1.0.0-beta7'
@@ -17,7 +18,7 @@ const configuration = OneSignal.createConfiguration({
 
 const onesignal = new OneSignal.DefaultApi(configuration)
 
-serve(async (req) => {ㄴ
+serve(async (req) => {
   try {
     const { record } = await req.json()
 
