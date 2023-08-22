@@ -18,8 +18,13 @@ abstract class OneSignalManager {
       FortuneLogger.debug(tag: 'OneSignal', "권한 변경.");
     });
 
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((event) {
+      FortuneLogger.debug(tag: 'OneSignal', "권한 변경.");
+    });
+
     OneSignal.shared.setSubscriptionObserver((OSSubscriptionStateChanges changes) {
       FortuneLogger.debug(tag: 'OneSignal', "구독 상태 변경. ${changes.jsonRepresentation()}");
     });
+
   }
 }
