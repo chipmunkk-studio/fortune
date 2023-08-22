@@ -48,16 +48,12 @@ serve(async (req) => {
     })
   } catch (err) {
     console.error('Failed to create OneSignal notification', err)
-       const errorMsg = `
-        ONESIGNAL_APP_ID: ${_OnesignalAppId_}
-        USER_AUTH_KEY: ${_OnesignalUserAuthKey_}
-        ONESIGNAL_REST_API_KEY: ${_OnesignalRestApiKey_}
-        Server Error:: ${err.toString()}
-            `
-        return new Response(errorMsg, {
-          headers: { 'Content-Type': 'application/json' },
-          status: 400,
-        })
+    const errorMsg = `
+    ONESIGNAL_APP_ID: ${_OnesignalAppId_}
+    USER_AUTH_KEY: ${_OnesignalUserAuthKey_}
+    ONESIGNAL_REST_API_KEY: ${_OnesignalRestApiKey_}
+    Server Error:: ${err.toString()}
+        `
     return new Response(errorMsg, {
       headers: { 'Content-Type': 'application/json' },
       status: 400,
