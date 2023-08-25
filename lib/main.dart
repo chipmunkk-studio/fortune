@@ -8,7 +8,6 @@ import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
-import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'env.dart';
 
 main() {
