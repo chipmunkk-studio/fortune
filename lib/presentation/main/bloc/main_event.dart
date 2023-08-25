@@ -9,7 +9,9 @@ import '../component/map/main_location_data.dart';
 abstract class MainEvent extends Equatable {}
 
 class MainInit extends MainEvent {
-  MainInit();
+  final FortuneNotificationEntity? notificationEntity;
+
+  MainInit({this.notificationEntity});
 
   @override
   List<Object?> get props => [];

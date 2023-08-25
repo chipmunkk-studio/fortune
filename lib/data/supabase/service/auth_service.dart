@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -113,14 +114,14 @@ class AuthService {
   }
 
   // 세션 복구
-  Future<String> recoverSession() async {
+  Future<String> recoverSession(Map<String, dynamic> data) async {
     final isAnyPermissionDenied = await FortunePermissionUtil.checkPermissionsStatus(
       Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
     );
-    final isSigninedMember = preferences.containsKey(supabaseSessionKey);
+    final isSignedMember = preferences.containsKey(supabaseSessionKey);
     // #1 권한이 없을 경우.
     if (isAnyPermissionDenied) {
-      if (isSigninedMember) {
+      if (isSignedMember) {
         return handlePermissionDeniedState();
       } else {
         return handleNoLoginState();
@@ -128,7 +129,7 @@ class AuthService {
     }
     // #2 권한이 있을 경우.
     else {
-      return handleJoinMemberState();
+      return handleJoinMemberState(data);
     }
   }
 
@@ -137,14 +138,14 @@ class AuthService {
     return Future.value(Routes.requestPermissionRoute);
   }
 
-  Future<String> handleJoinMemberState() async {
-    FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음.');
+  Future<String> handleJoinMemberState(Map<String, dynamic> data) async {
+    FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음. ');
     // 세션이 만료된 경우.
     final currentLoginUserState = await refreshSession();
     if (currentLoginUserState == LoginUserState.needToLogin) {
       return "${Routes.loginRoute}/${currentLoginUserState.name}";
     }
-    return Routes.mainRoute;
+    return data.isNotEmpty ? "${Routes.mainRoute}/${jsonEncode(data)}" : Routes.mainRoute;
   }
 
   Future<String> handleNoLoginState() {

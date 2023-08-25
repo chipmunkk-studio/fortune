@@ -4,11 +4,11 @@ part 'notification_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class FortuneNotificationResponse extends FortuneNotificationEntity {
-  @JsonKey(name: 'landingRoute')
+  @JsonKey(name: 'landing_route')
   final String? landingRoute_;
-  @JsonKey(name: 'searchText')
+  @JsonKey(name: 'search_text')
   final String? searchText_;
-  @JsonKey(name: 'createdAt')
+  @JsonKey(name: 'created_at')
   final String? createdAt_;
 
   FortuneNotificationResponse({
@@ -20,6 +20,12 @@ class FortuneNotificationResponse extends FortuneNotificationEntity {
           landingRoute: landingRoute_ ?? '',
           createdAt: createdAt_ ?? '',
         );
+
+  factory FortuneNotificationResponse.empty() => FortuneNotificationResponse(
+        createdAt_: '',
+        searchText_: '',
+        landingRoute_: '',
+      );
 
   factory FortuneNotificationResponse.fromJson(Map<String, dynamic> json) =>
       _$FortuneNotificationResponseFromJson(json);

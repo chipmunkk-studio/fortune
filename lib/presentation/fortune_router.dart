@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
@@ -18,11 +22,20 @@ import 'permission/require_permission_page.dart';
 class FortuneRouter {
   late final FluroRouter router;
 
-  static const String param = "landingParam";
+  static const String loginParam = "loginParam";
+  static const String mainParam = "mainParam";
 
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const MainPage();
+      final data = params[mainParam]?.first.toString() ?? '';
+      FortuneLogger.debug(data);
+      if (data.isNotEmpty) {
+        Map<String, dynamic> decodedMap = jsonDecode(params[mainParam]?.first ?? '');
+        FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
+        return MainPage(notification);
+      } else {
+        return const MainPage(null);
+      }
     },
   );
 
@@ -54,15 +67,15 @@ class FortuneRouter {
 
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      String sessionsState = params[param]?.first ?? LoginUserState.none.name;
-      final loginParam = () {
+      String sessionsState = params[loginParam]?.first ?? LoginUserState.none.name;
+      final loginUserState = () {
         if (sessionsState.contains("needToLogin")) {
           return LoginUserState.needToLogin;
         } else {
           return LoginUserState.none;
         }
       }();
-      return LoginPage(loginParam);
+      return LoginPage(loginUserState);
     },
   );
 
@@ -98,7 +111,7 @@ class FortuneRouter {
 
       /// 로그인 > 세션 만료 인 경우
       ..define(
-        "${Routes.loginRoute}/:$param",
+        "${Routes.loginRoute}/:$loginParam",
         handler: loginHandler,
         transitionType: TransitionType.cupertino,
       )
@@ -110,7 +123,14 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 권한요청.
+      /// 메인. > 노티피케이션
+      ..define(
+        "${Routes.mainRoute}/:$mainParam",
+        handler: mainHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 권한 요청.
       ..define(
         Routes.requestPermissionRoute,
         handler: permissionHandler,
