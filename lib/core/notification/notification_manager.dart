@@ -53,6 +53,7 @@ class FortuneNotificationsManager {
     final fcmToken = await _fcm.getToken();
     _onFCMTokenReceived(fcmToken);
 
+    _fcm.subscribeToTopic('all');
     _fcm.onTokenRefresh.listen((token) {
       FortuneLogger.info(tag: _TAG, "FCM Token refresh");
       _onFCMTokenReceived(token);
@@ -170,8 +171,8 @@ class FortuneNotificationsManager {
       final entity = NotificationEntity.fromJson(remoteMessageData);
       await flNotification.show(
         NOTIFICATION_ID,
-        entity.title,
-        entity.content,
+        message.notification?.title,
+        message.notification?.body,
         platformChannelSpecifics(androidNotificationDetails),
       );
     }

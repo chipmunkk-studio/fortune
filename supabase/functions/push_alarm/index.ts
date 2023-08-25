@@ -1,59 +1,48 @@
-// Follow this setup guide to integrate the Deno language server with your editor:
-// https://deno.land/manual/getting_started/setup_your_environment
-// This enables autocomplete, go to definition, etc.
-// supabase secrets set --env-file ./supabase/.env
-// supabase functions deploy push_notice --project-ref zctjjaievaizbprjjrvp --no-verify-jwt
-
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
-import * as OneSignal from 'https://esm.sh/@onesignal/node-onesignal@1.0.0-beta7'
 
-const _OnesignalAppId_ = Deno.env.get('ONESIGNAL_APP_ID')!
-const _OnesignalUserAuthKey_ = Deno.env.get('USER_AUTH_KEY')!
-const _OnesignalRestApiKey_ = Deno.env.get('ONESIGNAL_REST_API_KEY')!
-
-const configuration = OneSignal.createConfiguration({
-  userKey: _OnesignalUserAuthKey_,
-  appKey: _OnesignalRestApiKey_,
-})
-
-const onesignal = new OneSignal.DefaultApi(configuration)
+const _FCMServerKey_ = Deno.env.get('FCM_SERVER_KEY')!
+const _FCMEndpoint_ = "https://fcm.googleapis.com/fcm/send"
 
 serve(async (req) => {
   try {
     const { record } = await req.json()
 
-    // Create custom object
-    const custom = {
-      landingRoute: record.landing_route,
-      searchText: record.search_text,
-      createdAt: record.created_at,
+    // Build FCM notification object
+    const message = {
+        notification: {
+            "title": record.headings,
+            "body": record.content
+        },
+        priority: "high",
+        data: {
+            "landing_route": record.landing_route,
+            "search_text": record.search_text,
+            "created_at": record.created_at,
+        },
+        to: "/topics/all"
     }
 
-    // Build OneSignal notification object
-    const notification = new OneSignal.Notification()
-    notification.app_id = _OnesignalAppId_
-    notification.included_segments = ['Active Users']
-    notification.headings = {
-      en: record.headings,  // set title here
-    }
-    notification.contents = {
-      en: record.content,  // set content here
-    }
-    notification.data = custom  // add custom data
+    const headers = new Headers()
+    headers.set('Authorization', `key=${_FCMServerKey_}`)
+    headers.set('Content-Type', 'application/json')
 
-    const onesignalApiRes = await onesignal.createNotification(notification)
+    const fcmResponse = await fetch(_FCMEndpoint_, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(message)
+    })
 
-    return new Response(JSON.stringify({ onesignalResponse: onesignalApiRes }), {
+    const fcmResData = await fcmResponse.json()
+
+    return new Response(JSON.stringify({ fcmResponse: fcmResData }), {
       headers: { 'Content-Type': 'application/json' },
     })
   } catch (err) {
-    console.error('Failed to create OneSignal notification', err)
+    console.error('Failed to send FCM notification', err)
     const errorMsg = `
-    ONESIGNAL_APP_ID: ${_OnesignalAppId_}
-    USER_AUTH_KEY: ${_OnesignalUserAuthKey_}
-    ONESIGNAL_REST_API_KEY: ${_OnesignalRestApiKey_}
+    FCM_SERVER_KEY: ${_FCMServerKey_}
     Server Error:: ${err.toString()}
-        `
+    `
     return new Response(errorMsg, {
       headers: { 'Content-Type': 'application/json' },
       status: 400,

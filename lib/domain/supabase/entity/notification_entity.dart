@@ -5,17 +5,17 @@ part 'notification_entity.g.dart';
 
 @JsonSerializable(nullable: true, ignoreUnannotated: false)
 class NotificationEntity extends Equatable {
-  @JsonKey(name: 'title')
-  final String title;
-  @JsonKey(name: 'content')
-  final String content;
-  @JsonKey(name: 'landingRoute')
+  @JsonKey(name: 'landing_route')
   final String landingRoute;
+  @JsonKey(name: 'search_text')
+  final String searchText;
+  @JsonKey(name: 'created_at')
+  final String createdAt;
 
   const NotificationEntity({
-    required this.title,
-    required this.content,
     required this.landingRoute,
+    required this.searchText,
+    required this.createdAt,
   });
 
   factory NotificationEntity.fromJson(Map<String, dynamic> json) => _$NotificationEntityFromJson(json);
@@ -23,5 +23,5 @@ class NotificationEntity extends Equatable {
   Map<String, dynamic> toJson() => _$NotificationEntityToJson(this);
 
   @override
-  List<Object?> get props => [title, content, landingRoute];
+  List<Object?> get props => [landingRoute, searchText, createdAt];
 }
