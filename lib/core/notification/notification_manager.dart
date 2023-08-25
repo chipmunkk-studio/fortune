@@ -1,9 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/domain/supabase/entity/notification_entity.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
 import 'package:single_item_storage/storage.dart';
 
@@ -166,16 +167,14 @@ class FortuneNotificationsManager {
   /// ios동작을 바꿀려면 우측 참조 > setForegroundNotificationPresentationOptions in setupPushNotifications
   _onMessage(RemoteMessage message) async {
     FortuneLogger.info(tag: _TAG, "_onMessage > ${message.data.toString()}");
-    final remoteMessageData = message.data;
-    if (remoteMessageData.isNotEmpty) {
-      final entity = NotificationEntity.fromJson(remoteMessageData);
-      await flNotification.show(
-        NOTIFICATION_ID,
-        message.notification?.title,
-        message.notification?.body,
-        platformChannelSpecifics(androidNotificationDetails),
-      );
-    }
+    final temp1 = jsonEncode(message.data);
+    final temp2 = jsonDecode(temp1);
+    await flNotification.show(
+      NOTIFICATION_ID,
+      message.notification?.title,
+      message.notification?.body,
+      platformChannelSpecifics(androidNotificationDetails),
+    );
   }
 
   _onAppOpenedFromMessage(RemoteMessage message) {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 
@@ -20,8 +21,8 @@ main() {
       // FlutterError.onError는 Flutter 프레임워크 에러를 처리하고,
       // runZonedGuarded는 그 외 Dart 수준에서 발생하는 예외를 처리함.
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-
-      String startRoute = await serviceLocator<AuthService>().recoverSession();
+      RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+      String startRoute = await serviceLocator<AuthService>().recoverSession(initialMessage?.data ?? {});
 
       runApp(
         EasyLocalization(

@@ -21,6 +21,12 @@ class FortuneNotificationResponse extends FortuneNotificationEntity {
           createdAt: createdAt_ ?? '',
         );
 
+  factory FortuneNotificationResponse.empty() => FortuneNotificationResponse(
+        createdAt_: '',
+        searchText_: '',
+        landingRoute_: '',
+      );
+
   factory FortuneNotificationResponse.fromJson(Map<String, dynamic> json) =>
       _$FortuneNotificationResponseFromJson(json);
 

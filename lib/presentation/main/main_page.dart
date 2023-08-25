@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/failure/network_failure.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
@@ -32,14 +34,17 @@ import 'component/notice/top_notice.dart';
 import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({
+  final FortuneNotificationEntity notificationEntity;
+
+  const MainPage(
+    this.notificationEntity, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit()),
+      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
       child: const _MainPage(),
     );
   }
