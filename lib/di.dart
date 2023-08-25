@@ -3,7 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
-import 'package:foresh_flutter/core/notification/one_signal_manager.dart';
+import 'package:foresh_flutter/core/notification/notification_ext.dart';
+import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dart';
@@ -93,7 +94,8 @@ Future<void> init() async {
   );
 
   /// OneSignal푸시 알람.
-  await OneSignalManager.init();
+  // await OneSignalManager.init();
+  await initFCM();
 
   /// 파이어베이스 analytics.
   final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
@@ -137,6 +139,12 @@ initEnvironment() async {
   )..init();
 
   serviceLocator.registerLazySingleton<Environment>(() => environment);
+}
+
+initFCM() async {
+  final FortuneNotificationsManager notificationsManager = FortuneNotificationsManager(initializeSettings);
+  notificationsManager.setupPushNotifications();
+  serviceLocator.registerLazySingleton<FortuneNotificationsManager>(() => notificationsManager);
 }
 
 /// 로거.

@@ -72,7 +72,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
-    // generateRandomMarkers();
+    final notificationEntity = event.notificationEntity;
     bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
 
     // 위치 권한이 없을 경우.
@@ -82,6 +82,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     }
     // 마커 목록들을 받아옴.
     add(Main());
+
+    if (notificationEntity != null) {
+      add(MainLandingPage(notificationEntity));
+    }
   }
 
   // 위치 정보 초기화.

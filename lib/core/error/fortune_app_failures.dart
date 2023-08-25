@@ -46,7 +46,8 @@ extension FortuneExceptionX on Exception {
       final postgrestException = this as PostgrestException;
       if (postgrestException.message.contains("Token") ||
           postgrestException.message.contains("JWT") ||
-          postgrestException.message.contains("JWSError")
+          postgrestException.message.contains("JWSError") ||
+          postgrestException.message.contains("Invalid API")
       ) {
         return AuthFailure(
           errorCode: postgrestException.code,

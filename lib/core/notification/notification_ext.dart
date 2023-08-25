@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:foresh_flutter/domain/supabase/entity/notification_entity.dart';
+import 'package:foresh_flutter/core/notification/notification_response.dart';
 
 import 'notification_manager.dart';
 
@@ -37,16 +37,12 @@ NotificationDetails platformChannelSpecifics(AndroidNotificationDetails details)
     NotificationDetails(android: details);
 
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
-  final notificationMessage = message.data;
-  if (notificationMessage.isNotEmpty) {
-    final entity = NotificationEntity.fromJson(notificationMessage);
-    await FortuneNotificationsManager.flNotification.show(
-      NOTIFICATION_ID,
-      entity.title,
-      entity.content,
-      platformChannelSpecifics(androidNotificationDetails),
-    );
-  }
+  await FortuneNotificationsManager.flNotification.show(
+    NOTIFICATION_ID,
+    message.notification?.title,
+    message.notification?.body,
+    platformChannelSpecifics(androidNotificationDetails),
+  );
 }
 
 bool shouldConfigureFirebase() => true;

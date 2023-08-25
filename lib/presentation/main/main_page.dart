@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/failure/network_failure.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -18,13 +18,11 @@ import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -36,14 +34,17 @@ import 'component/notice/top_notice.dart';
 import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
-  const MainPage({
+  final FortuneNotificationEntity? notificationEntity;
+
+  const MainPage(
+    this.notificationEntity, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit()),
+      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
       child: const _MainPage(),
     );
   }
@@ -73,21 +74,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     appmetrica.AppMetrica.reportEvent('메인 화면');
     WidgetsBinding.instance.addObserver(this);
     bloc = BlocProvider.of<MainBloc>(context);
-
-    // 푸시 알람으로 랜딩 할 경우.
-    OneSignal.shared.setNotificationOpenedHandler(
-      (event) async {
-        event;
-        try {
-          final notificationData = FortuneNotificationResponse.fromJson(event.notification.additionalData!);
-          // 초기화 이슈 때문에 잠깐 딜레이 주고 이동.
-          await Future.delayed(const Duration(milliseconds: 1000));
-          bloc.add(MainLandingPage(notificationData));
-        } catch (e) {
-          dialogService.showErrorDialog(context, CommonFailure(errorMessage: '알림피드를 확인해주세요'));
-        }
-      },
-    );
   }
 
   @override
