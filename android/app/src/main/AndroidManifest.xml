@@ -40,7 +40,6 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" />
         <!-- Don't delete the meta-data below.
              This is used by the Flut
              ter tool to generate GeneratedPluginRegistrant.java -->
