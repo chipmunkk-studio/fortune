@@ -34,7 +34,7 @@ class FortuneRouter {
         FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
         return MainPage(notification);
       } else {
-        return MainPage(FortuneNotificationResponse.empty());
+        return const MainPage(null);
       }
     },
   );

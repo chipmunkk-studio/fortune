@@ -34,7 +34,7 @@ import 'component/notice/top_notice.dart';
 import 'main_ext.dart';
 
 class MainPage extends StatelessWidget {
-  final FortuneNotificationEntity notificationEntity;
+  final FortuneNotificationEntity? notificationEntity;
 
   const MainPage(
     this.notificationEntity, {

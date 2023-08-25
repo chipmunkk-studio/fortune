@@ -83,8 +83,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     // 마커 목록들을 받아옴.
     add(Main());
 
-    // 페이지 랜딩
-    produceSideEffect(MainShowDialog(landingRoute: '', title: notificationEntity?.landingRoute ?? '', subTitle: ''));
+    if (notificationEntity != null) {
+      add(MainLandingPage(notificationEntity));
+    }
   }
 
   // 위치 정보 초기화.

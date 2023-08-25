@@ -4,11 +4,11 @@ part 'notification_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class FortuneNotificationResponse extends FortuneNotificationEntity {
-  @JsonKey(name: 'landingRoute')
+  @JsonKey(name: 'landing_route')
   final String? landingRoute_;
-  @JsonKey(name: 'searchText')
+  @JsonKey(name: 'search_text')
   final String? searchText_;
-  @JsonKey(name: 'createdAt')
+  @JsonKey(name: 'created_at')
   final String? createdAt_;
 
   FortuneNotificationResponse({
