@@ -28,7 +28,6 @@ class FortuneRouter {
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final data = params[mainParam]?.first.toString() ?? '';
-      FortuneLogger.debug(data);
       if (data.isNotEmpty) {
         Map<String, dynamic> decodedMap = jsonDecode(params[mainParam]?.first ?? '');
         FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
