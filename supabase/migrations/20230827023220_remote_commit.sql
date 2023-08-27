@@ -28,6 +28,8 @@ CREATE EXTENSION IF NOT EXISTS "supabase_vault" WITH SCHEMA "vault";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "extensions";
 
+CREATE EXTENSION IF NOT EXISTS "wrappers" WITH SCHEMA "extensions";
+
 SET default_tablespace = '';
 
 SET default_table_access_method = "heap";
@@ -91,7 +93,8 @@ CREATE TABLE "public"."mission_clear_conditions" (
     "id" bigint NOT NULL,
     "missions" bigint NOT NULL,
     "require_count" bigint DEFAULT '0'::bigint NOT NULL,
-    "ingredients" bigint
+    "ingredients" bigint,
+    "markers" bigint
 );
 
 ALTER TABLE "public"."mission_clear_conditions" OWNER TO "postgres";
@@ -252,8 +255,7 @@ CREATE TABLE "public"."missions" (
     "is_global" boolean DEFAULT false NOT NULL,
     "is_active" boolean DEFAULT false NOT NULL,
     "mission_type" "text" NOT NULL,
-    "mission_reward" bigint,
-    "markers" bigint
+    "mission_reward" bigint
 );
 
 ALTER TABLE "public"."missions" OWNER TO "postgres";
@@ -272,7 +274,7 @@ CREATE TABLE "public"."push_alarm" (
     "headings" "text" DEFAULT ''::"text" NOT NULL,
     "content" "text" DEFAULT ''::"text" NOT NULL,
     "id" bigint NOT NULL,
-    "landing_route" "text" DEFAULT 'obtainHistory'::"text" NOT NULL,
+    "landing_route" "text" DEFAULT 'alarmFeed'::"text",
     "search_text" "text" DEFAULT ''::"text"
 );
 
@@ -397,7 +399,7 @@ ALTER TABLE ONLY "public"."missions"
     ADD CONSTRAINT "missions_title_key" UNIQUE ("title");
 
 ALTER TABLE ONLY "public"."push_alarm"
-    ADD CONSTRAINT "push_alaram_pkey" PRIMARY KEY ("id");
+    ADD CONSTRAINT "push_alarm_pkey" PRIMARY KEY ("id");
 
 ALTER TABLE ONLY "public"."alarm_reward_info"
     ADD CONSTRAINT "reward_pkey" PRIMARY KEY ("id");
@@ -414,13 +416,16 @@ ALTER TABLE ONLY "public"."users"
 ALTER TABLE ONLY "public"."users"
     ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
 
-CREATE TRIGGER "push_alarm" AFTER INSERT ON "public"."push_alarm" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://xmufibipxesmoqzqwwwp.functions.supabase.co/push_notices', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
+CREATE TRIGGER "push_alarm" AFTER INSERT ON "public"."push_alarm" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://zctjjaievaizbprjjrvp.functions.supabase.co/push_alarm', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
 
 ALTER TABLE ONLY "public"."alarm_feeds"
     ADD CONSTRAINT "alarm_feeds_alarm_reward_history_fkey" FOREIGN KEY ("alarm_reward_history") REFERENCES "public"."alarm_reward_history"("id");
 
 ALTER TABLE ONLY "public"."alarm_feeds"
     ADD CONSTRAINT "alarm_feeds_type_fkey" FOREIGN KEY ("type") REFERENCES "public"."alarm_feed_type"("type");
+
+ALTER TABLE ONLY "public"."alarm_feeds"
+    ADD CONSTRAINT "alarm_feeds_users_fkey" FOREIGN KEY ("users") REFERENCES "public"."users"("id");
 
 ALTER TABLE ONLY "public"."alarm_reward_history"
     ADD CONSTRAINT "alarm_reward_history_alarm_reward_info_fkey" FOREIGN KEY ("alarm_reward_info") REFERENCES "public"."alarm_reward_info"("id");
@@ -450,6 +455,9 @@ ALTER TABLE ONLY "public"."mission_clear_conditions"
     ADD CONSTRAINT "mission_clear_conditions_ingredients_fkey" FOREIGN KEY ("ingredients") REFERENCES "public"."ingredients"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."mission_clear_conditions"
+    ADD CONSTRAINT "mission_clear_conditions_markers_fkey" FOREIGN KEY ("markers") REFERENCES "public"."markers"("id") ON DELETE SET NULL;
+
+ALTER TABLE ONLY "public"."mission_clear_conditions"
     ADD CONSTRAINT "mission_clear_conditions_missions_fkey" FOREIGN KEY ("missions") REFERENCES "public"."missions"("id") ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."mission_clear_user"
@@ -457,9 +465,6 @@ ALTER TABLE ONLY "public"."mission_clear_user"
 
 ALTER TABLE ONLY "public"."mission_clear_user"
     ADD CONSTRAINT "mission_clear_user_users_fkey" FOREIGN KEY ("users") REFERENCES "public"."users"("id") ON DELETE CASCADE;
-
-ALTER TABLE ONLY "public"."missions"
-    ADD CONSTRAINT "missions_markers_fkey" FOREIGN KEY ("markers") REFERENCES "public"."markers"("id") ON DELETE SET NULL;
 
 ALTER TABLE ONLY "public"."missions"
     ADD CONSTRAINT "missions_mission_reward_fkey" FOREIGN KEY ("mission_reward") REFERENCES "public"."mission_reward"("id");
@@ -561,11 +566,11 @@ ALTER TABLE "public"."users" ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "앱을 사용하는 모든 유저는 읽을 수 있음." ON "public"."terms" FOR SELECT TO "anon" USING (true);
 
-CREATE POLICY "앱의 키를 갖고 있거나 인증받은 사용자라면 조" ON "public"."users" FOR SELECT TO "anon", "authenticated" USING (true);
+CREATE POLICY "앱의 키를 갖고 있거나 인증받은 사용자라면 조" ON "public"."users" FOR SELECT TO "authenticated", "anon" USING (true);
 
 CREATE POLICY "인증되지 않은 사용자라도 가입되게 함." ON "public"."users" FOR INSERT TO "anon" WITH CHECK (true);
 
-CREATE POLICY "인증받은 유저들만 insert" ON "public"."markers" FOR INSERT TO "anon", "authenticated" WITH CHECK (true);
+CREATE POLICY "인증받은 유저들만 insert" ON "public"."markers" FOR INSERT TO "authenticated", "anon" WITH CHECK (true);
 
 CREATE POLICY "인증받은 유저들만 삭제." ON "public"."markers" FOR DELETE TO "authenticated" USING (true);
 
@@ -576,5 +581,151 @@ CREATE POLICY "인증받은 유저들만 추가 가능." ON "public"."ingredient
 CREATE POLICY "인증받은 유저만 읽기 가능. " ON "public"."markers" FOR SELECT TO "authenticated" USING (true);
 
 REVOKE USAGE ON SCHEMA "public" FROM PUBLIC;
+GRANT USAGE ON SCHEMA "public" TO "anon";
+GRANT USAGE ON SCHEMA "public" TO "authenticated";
+GRANT USAGE ON SCHEMA "public" TO "service_role";
+
+GRANT ALL ON TABLE "public"."alarm_feeds" TO "anon";
+GRANT ALL ON TABLE "public"."alarm_feeds" TO "authenticated";
+GRANT ALL ON TABLE "public"."alarm_feeds" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."notice_user_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."notice_user_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."notice_user_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."alarm_feed_type" TO "anon";
+GRANT ALL ON TABLE "public"."alarm_feed_type" TO "authenticated";
+GRANT ALL ON TABLE "public"."alarm_feed_type" TO "service_role";
+
+GRANT ALL ON TABLE "public"."alarm_reward_history" TO "anon";
+GRANT ALL ON TABLE "public"."alarm_reward_history" TO "authenticated";
+GRANT ALL ON TABLE "public"."alarm_reward_history" TO "service_role";
+
+GRANT ALL ON TABLE "public"."alarm_reward_info" TO "anon";
+GRANT ALL ON TABLE "public"."alarm_reward_info" TO "authenticated";
+GRANT ALL ON TABLE "public"."alarm_reward_info" TO "service_role";
+
+GRANT ALL ON TABLE "public"."alarm_reward_type" TO "anon";
+GRANT ALL ON TABLE "public"."alarm_reward_type" TO "authenticated";
+GRANT ALL ON TABLE "public"."alarm_reward_type" TO "service_role";
+
+GRANT ALL ON TABLE "public"."mission_clear_conditions" TO "anon";
+GRANT ALL ON TABLE "public"."mission_clear_conditions" TO "authenticated";
+GRANT ALL ON TABLE "public"."mission_clear_conditions" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."clear_codition_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."clear_codition_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."clear_codition_id_seq" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."event_reward_history_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."event_reward_history_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."event_reward_history_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."ingredient_image" TO "anon";
+GRANT ALL ON TABLE "public"."ingredient_image" TO "authenticated";
+GRANT ALL ON TABLE "public"."ingredient_image" TO "service_role";
+
+GRANT ALL ON TABLE "public"."ingredient_type" TO "anon";
+GRANT ALL ON TABLE "public"."ingredient_type" TO "authenticated";
+GRANT ALL ON TABLE "public"."ingredient_type" TO "service_role";
+
+GRANT ALL ON TABLE "public"."ingredients" TO "anon";
+GRANT ALL ON TABLE "public"."ingredients" TO "authenticated";
+GRANT ALL ON TABLE "public"."ingredients" TO "service_role";
+
+GRANT ALL ON TABLE "public"."obtain_histories" TO "anon";
+GRANT ALL ON TABLE "public"."obtain_histories" TO "authenticated";
+GRANT ALL ON TABLE "public"."obtain_histories" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."marker_obtain_history_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."marker_obtain_history_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."marker_obtain_history_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."markers" TO "anon";
+GRANT ALL ON TABLE "public"."markers" TO "authenticated";
+GRANT ALL ON TABLE "public"."markers" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."markers_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."markers_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."markers_id_seq" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."markers_id_seq1" TO "anon";
+GRANT ALL ON SEQUENCE "public"."markers_id_seq1" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."markers_id_seq1" TO "service_role";
+
+GRANT ALL ON TABLE "public"."mission_clear_user" TO "anon";
+GRANT ALL ON TABLE "public"."mission_clear_user" TO "authenticated";
+GRANT ALL ON TABLE "public"."mission_clear_user" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."mission_clear_user_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."mission_clear_user_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."mission_clear_user_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."mission_reward" TO "anon";
+GRANT ALL ON TABLE "public"."mission_reward" TO "authenticated";
+GRANT ALL ON TABLE "public"."mission_reward" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."mission_reward_s_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."mission_reward_s_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."mission_reward_s_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."mission_reward_type" TO "anon";
+GRANT ALL ON TABLE "public"."mission_reward_type" TO "authenticated";
+GRANT ALL ON TABLE "public"."mission_reward_type" TO "service_role";
+
+GRANT ALL ON TABLE "public"."mission_type" TO "anon";
+GRANT ALL ON TABLE "public"."mission_type" TO "authenticated";
+GRANT ALL ON TABLE "public"."mission_type" TO "service_role";
+
+GRANT ALL ON TABLE "public"."missions" TO "anon";
+GRANT ALL ON TABLE "public"."missions" TO "authenticated";
+GRANT ALL ON TABLE "public"."missions" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."missions_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."missions_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."missions_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."push_alarm" TO "anon";
+GRANT ALL ON TABLE "public"."push_alarm" TO "authenticated";
+GRANT ALL ON TABLE "public"."push_alarm" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."push_alaram_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."push_alaram_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."push_alaram_id_seq" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."reward_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."reward_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."reward_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."terms" TO "anon";
+GRANT ALL ON TABLE "public"."terms" TO "authenticated";
+GRANT ALL ON TABLE "public"."terms" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."terms_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."terms_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."terms_id_seq" TO "service_role";
+
+GRANT ALL ON TABLE "public"."users" TO "anon";
+GRANT ALL ON TABLE "public"."users" TO "authenticated";
+GRANT ALL ON TABLE "public"."users" TO "service_role";
+
+GRANT ALL ON SEQUENCE "public"."user_id_seq" TO "anon";
+GRANT ALL ON SEQUENCE "public"."user_id_seq" TO "authenticated";
+GRANT ALL ON SEQUENCE "public"."user_id_seq" TO "service_role";
+
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES  TO "postgres";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES  TO "anon";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES  TO "authenticated";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON SEQUENCES  TO "service_role";
+
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS  TO "postgres";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS  TO "anon";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS  TO "authenticated";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON FUNCTIONS  TO "service_role";
+
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "postgres";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "anon";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "authenticated";
+ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "service_role";
 
 RESET ALL;
