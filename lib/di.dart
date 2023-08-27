@@ -75,13 +75,13 @@ final FortuneDialogService dialogService = FortuneDialogService();
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// 앱로거
-  initAppLogger();
-
   /// Firebase 초기화.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  /// 앱로거
+  await initAppLogger();
 
   /// 개발 환경 설정.
   await initEnvironment();
@@ -93,8 +93,7 @@ Future<void> init() async {
     debug: false,
   );
 
-  /// OneSignal푸시 알람.
-  // await OneSignalManager.init();
+  /// FCM
   await initFCM();
 
   /// 파이어베이스 analytics.

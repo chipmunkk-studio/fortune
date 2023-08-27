@@ -182,8 +182,8 @@ class FortuneRouter {
 }
 
 class Routes {
-  static const String mainRoute = 'mainRoute';
-  static const String loginRoute = 'loginRoute';
+  static const String mainRoute = 'main';
+  static const String loginRoute = 'login';
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
