@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:foresh_flutter/core/error/failure/auth_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
@@ -115,9 +116,14 @@ class AuthService {
 
   // 세션 복구
   Future<String> recoverSession(Map<String, dynamic> data) async {
+    if (kIsWeb) {
+      return Routes.loginRoute;
+    }
+
     final isAnyPermissionDenied = await FortunePermissionUtil.checkPermissionsStatus(
       Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
     );
+
     final isSignedMember = preferences.containsKey(supabaseSessionKey);
     // #1 권한이 없을 경우.
     if (isAnyPermissionDenied) {

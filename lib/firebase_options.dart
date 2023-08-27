@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,6 +43,16 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyA80KcNjR7vxokbPJ2KV82t5jCrodsLBDM',
+    appId: '1:756092673843:web:eb6c4ab0864a9882786846',
+    messagingSenderId: '756092673843',
+    projectId: 'fortune-938ea',
+    authDomain: 'fortune-938ea.firebaseapp.com',
+    storageBucket: 'fortune-938ea.appspot.com',
+    measurementId: 'G-HMHGJYQ465',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAMsyX3yngptd4A4mkiWrVV_in4DO07auo',
     appId: '1:756092673843:android:c56f0cdc7a24b618786846',
@@ -65,5 +69,15 @@ class DefaultFirebaseOptions {
     storageBucket: 'fortune-938ea.appspot.com',
     iosClientId: '756092673843-aobbdelvomu1or34mmq429aqrnoko9pf.apps.googleusercontent.com',
     iosBundleId: 'com.foresh.fortune',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBI9KdFJi33ynkCELOPP_njjDJFcRYvNo8',
+    appId: '1:756092673843:ios:0bbd2a214044d44b786846',
+    messagingSenderId: '756092673843',
+    projectId: 'fortune-938ea',
+    storageBucket: 'fortune-938ea.appspot.com',
+    iosClientId: '756092673843-qidkcek8jt583cgv3jrct0j1ulcel85b.apps.googleusercontent.com',
+    iosBundleId: 'com.foresh.fortune.RunnerTests',
   );
 }

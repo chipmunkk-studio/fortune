@@ -114,8 +114,16 @@ class Environment {
       ..setCustomKey("packageName", packageInfo.packageName)
       ..setCustomKey("version", packageInfo.version)
       ..setCustomKey("buildNumber", packageInfo.buildNumber)
-      ..setCustomKey("buildType", buildType.toString())
-      ..setCrashlyticsCollectionEnabled(isDebuggable ? false : true);
+      ..setCustomKey("buildType", buildType.toString());
+
+    // 웹은 크래실리틱스 수집 안함.
+    if (!kIsWeb) {
+      if (kDebugMode) {
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+      } else {
+        await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+      }
+    }
 
     /// 앱메트리카.
     AppMetrica.activate(AppMetricaConfig(remoteConfig.appMetricaKey));
