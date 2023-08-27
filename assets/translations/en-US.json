@@ -1,6 +1,6 @@
 {
   "loginGuideTitle": {
-    "phoneNumber": "본인 확인을 위해\n휴대폰 번호가 필요해요",
+    "phoneNumber": "본인 확인을 위해\n휴대폰 번호가 필요합니다",
     "signInWithOtp": "잘오신거에요!\n문자로 전송된 인증번호를 입력해주세요",
     "signInWithOtpNewMember": "처음 오셨네요?\n문자로 전송된 인증번호를 입력해주세요"
   },
