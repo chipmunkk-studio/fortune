@@ -7,12 +7,14 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'failure/auth_failure.dart';
 import 'fortune_app_failures.dart';
 
 class FortuneDialogService {
   bool _isDialogShowing = false;
+  final supabaseClient = Supabase.instance.client;
 
   Future<void> showErrorDialog(
     BuildContext context,
@@ -35,6 +37,7 @@ class FortuneDialogService {
               _isDialogShowing = false;
               // 인증에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
               if (needToFinish) {
+                supabaseClient.auth.signOut();
                 router.navigateTo(
                   context,
                   "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
