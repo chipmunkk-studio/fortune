@@ -57,6 +57,7 @@ jobs:
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_FORTUNE_938EA }}"
+          channelId: develop
           projectId: fortune-938ea
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
