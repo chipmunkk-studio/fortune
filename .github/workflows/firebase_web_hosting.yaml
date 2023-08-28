@@ -1,4 +1,4 @@
-name: build
+name: Firebase Web Hosting
 
 on:
   push:
@@ -45,8 +45,7 @@ jobs:
       - name: Flutter SDK 설치 및 설정 (dev 채널 사용)
         uses: subosito/flutter-action@v1
         with:
-          channel: dev
-          flutter-version: '>=3.0.0'
+          channel: master # 마스터는 최신 개발 버전을 사용함.
 
       - run: flutter pub get
       - run: flutter pub run build_runner build
