@@ -3,7 +3,6 @@ name: Supabase CI
 # 트리거 설정
 on:
   pull_request: # 풀 리퀘스트가 생성될 때
-  push: # 브랜치에 푸시될 때
     branches:
       - main
       - develop
