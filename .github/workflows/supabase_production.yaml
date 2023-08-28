@@ -1,4 +1,4 @@
-name: [Release] Supabase DataBase Push
+name: Release Supabase DataBase Push
 
 on:
   push:
@@ -17,7 +17,8 @@ jobs:
 
     steps:
       # 저장소의 코드를 체크아웃.
-      - uses: actions/checkout@v3
+      - name: 브랜치 체크아웃
+        uses: actions/checkout@v3
 
       # Supabase CLI를 설정합니다.
       - name: Supabase CLI 설정
