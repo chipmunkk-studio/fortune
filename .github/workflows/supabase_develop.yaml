@@ -1,4 +1,4 @@
-name: Develop Supabase DataBase Push
+name: Supabase Develop
 
 on:
   push:

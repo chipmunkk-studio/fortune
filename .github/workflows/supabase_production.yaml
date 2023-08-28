@@ -1,4 +1,4 @@
-name: Release Supabase DataBase Push
+name: Supabase Production
 
 on:
   push:
