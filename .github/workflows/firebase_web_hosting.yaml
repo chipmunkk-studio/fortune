@@ -33,28 +33,10 @@ jobs:
 
   deploy:
     if: github.event_name == 'push'
+    needs: build # 빌드가 성공했을 경우.
     runs-on: ubuntu-latest
 
     steps:
-      - name: 코드 체크아웃
-        uses: actions/checkout@v2
-
-      - name: Java 12.x 설정
-        uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-
-      - name: Flutter SDK 설치 및 설정 (master 채널 사용)
-        uses: subosito/flutter-action@v1
-        with:
-          channel: master # 마스터는 최신 개발 버전을 사용함.
-
-      - run: dart pub global activate flutter_gen
-      - run: flutter pub get
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - run: fluttergen -c pubspec.yaml
-      - run: flutter build web --release
-
       - name: Firebase 웹 앱 배포
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
