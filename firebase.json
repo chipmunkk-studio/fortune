@@ -22,7 +22,6 @@
           }
         ]
       }
-    ],
-    "predeploy": ["flutter build web"]
+    ]
   }
 }
