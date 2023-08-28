@@ -1,0 +1,47 @@
+name: Firebase Web Hosting
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v2
+
+      - name: Java 12.x 설정
+        uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+
+      - name: Flutter SDK 설치 및 설정
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      - run: dart pub global activate flutter_gen
+      - run: flutter pub get
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: fluttergen -c pubspec.yaml
+      - run: flutter build web --release
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: build # 빌드가 성공했을 경우.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Firebase 웹 앱 배포
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_FORTUNE_938EA }}"
+          projectId: fortune-938ea
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
