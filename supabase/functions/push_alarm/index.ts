@@ -1,5 +1,5 @@
 // supabase secrets set --env-file ./supabase/.env
-// supabase functions deploy push_notice --project-ref bpxfujgpliwavynkkpuq --no-verify-jwt
+// supabase functions deploy push_alarm --project-ref bpxfujgpliwavynkkpuq --no-verify-jwt
 
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts'
 

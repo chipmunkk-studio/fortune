@@ -1,0 +1,42 @@
+name: Supabase CI
+
+# 트리거 설정
+on:
+  pull_request: # 풀 리퀘스트가 생성될 때
+  push: # 브랜치에 푸시될 때
+    branches:
+      - main
+      - develop
+  workflow_dispatch: # 수동으로 워크플로우 실행 가능
+
+jobs:
+  test: # 'test'라는 이름의 작업
+    runs-on: ubuntu-latest # 최신 버전의 우분투에서 실행
+
+    steps:
+      # 저장소 코드를 체크아웃합니다.
+      - uses: actions/checkout@v3
+
+      # Supabase CLI를 설정합니다.
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      # Supabase 데이터베이스를 시작합니다.
+      - run: supabase db start
+
+      # Supabase 데이터베이스의 lint를 확인합니다.
+      - run: supabase db lint
+
+      # 생성된 타입들이 저장소에 체크인되어 있는지 확인합니다.
+      - name: Verify generated types are checked in
+        run: |
+          # 로컬에서 타입을 생성하고 결과를 'types.gen.ts' 파일에 저장합니다.
+          supabase gen types typescript --local > types.gen.ts
+
+          # 'types.gen.ts' 파일에 변경 사항이 있는지 확인합니다.
+          if ! git diff --ignore-space-at-eol --exit-code --quiet types.gen.ts; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff # 변경 사항을 출력합니다.
+            exit 1 # 에러 코드 1로 종료하여 실패를 표시합니다.
+          fi
