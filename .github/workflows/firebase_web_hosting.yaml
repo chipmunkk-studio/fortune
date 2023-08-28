@@ -1,11 +1,10 @@
 name: Firebase Web Hosting
 
 on:
-  push: # 푸시가 될떄
-  pull_request: # 풀 리퀘스트가 생성될 때
-  branches:
-    - main
-  workflow_dispatch: # 수동으로 워크플로우 실행 가능
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
