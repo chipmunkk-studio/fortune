@@ -61,7 +61,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
           // #2 가입된 사용자 인 경우 > 인증번호 전송 요구.
           if (r != null) {
             emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
-            produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
+            // produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
+            // #4 약관 바텀 시트를 보여줌.
+            produceSideEffect(LoginShowTermsBottomSheet(convertedPhoneNumber));
           } else {
             // #4 약관 바텀 시트를 보여줌.
             produceSideEffect(LoginShowTermsBottomSheet(convertedPhoneNumber));

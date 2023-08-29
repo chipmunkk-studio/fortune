@@ -15,4 +15,7 @@ abstract class AuthRepository {
 
   // 약관 받아오기.
   Future<List<AgreeTermsEntity>> getTerms();
+
+  // 약관 받아오기.
+  Future<AgreeTermsEntity> getTermsByIndex(int index);
 }

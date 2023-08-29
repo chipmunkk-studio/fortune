@@ -26,6 +26,7 @@ import 'package:foresh_flutter/domain/supabase/repository/obtain_history_reposit
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
@@ -42,6 +43,7 @@ import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
+import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -307,6 +309,11 @@ _initUseCase() async {
         authRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetTermsByIndexUseCase>(
+      () => GetTermsByIndexUseCase(
+        authRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<SignUpOrInUseCase>(
       () => SignUpOrInUseCase(
         authRepository: serviceLocator(),
@@ -401,6 +408,11 @@ _initBloc() {
         remoteConfig: serviceLocator<Environment>().remoteConfig,
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => TermsDetailBloc(
+        getTermsByIndexUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

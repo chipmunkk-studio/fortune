@@ -81,4 +81,16 @@ class AuthRepositoryImpl extends AuthRepository {
       );
     }
   }
+
+  @override
+  Future<AgreeTermsEntity> getTermsByIndex(int index) async{
+    try {
+      final AgreeTermsEntity terms = await _authService.getTermsByIndex(index);
+      return terms;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '약관을 받아 오지 못했습니다',
+      );
+    }
+  }
 }
