@@ -45,22 +45,17 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           // 클리어에 필요한 총 획득량.
           final requireCount = clearConditions.map((e) => e.requireCount).reduce((a, b) => a + b).toInt();
 
-          if (e.missionType == MissionType.relay) {
-            final relayMarker = clearConditions.single.marker;
-            return MissionViewEntity(
-              mission: e,
-              relayMarker: relayMarker, // 릴레이 마커.
-              userHaveCount: userHaveCount, // 사용자가 가진 마커 획득 량.
-              requiredTotalCount: requireCount, // 요구하는 총 마커 갯수.
-            );
-          } else {
-            return MissionViewEntity(
-              mission: e,
-              relayMarker: MarkerEntity.empty(),
-              userHaveCount: userHaveCount, // 사용자가 가진 마커 획득 량.
-              requiredTotalCount: requireCount, // 요구하는 총 마커 갯수.
-            );
-          }
+          // 릴레이마커
+          final relayMarker = (e.missionType == MissionType.relay)
+              ? clearConditions.single.marker
+              : MarkerEntity.empty();
+
+          return MissionViewEntity(
+            mission: e,
+            relayMarker: relayMarker,
+            userHaveCount: userHaveCount,
+            requiredTotalCount: requireCount,
+          );
         },
       );
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
