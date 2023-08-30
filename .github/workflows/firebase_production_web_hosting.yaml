@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-    if: github.event_name == 'pull_request' # 풀 리퀘스트에만 빌드 수행.
     runs-on: ubuntu-latest
 
     steps:
