@@ -7,6 +7,7 @@ import 'package:foresh_flutter/data/supabase/service/mission/mission_clear_user_
 import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/missions_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
 
@@ -122,13 +123,25 @@ class MissionsRepositoryImpl extends MissionsRepository {
   }
 
   @override
-  Future<MissionClearConditionEntity?> getMissionClearConditionsOrNullByMarkerId(int markerId) async  {
+  Future<MissionClearConditionEntity?> getMissionClearConditionsOrNullByMarkerId(int markerId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '미션 불러오기 실패',
+      );
+    }
+  }
+
+  @override
+  Future<MissionRewardEntity> getMissionRewardById(int markerId) async {
+    try {
+      final result = await missionRewardService.findMissionRewardNullableById(markerId) ?? MissionRewardEntity.empty();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '미션보상 불러오기 실패',
       );
     }
   }

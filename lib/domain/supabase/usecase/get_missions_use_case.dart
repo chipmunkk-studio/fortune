@@ -24,13 +24,12 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
     try {
       final user = await userRepository.findUserByPhoneNonNull();
       final missions = await missionRepository.getAllMissions();
-
       final missionViewItemsFutures = missions.map(
         (e) async {
           // 클리어 조건들을 가져옴.
           final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(e.id);
 
-          // 사용자 획득량.
+          // 사용자가 갖고있는 재료의 획득량.
           final userHaveCountFutures = clearConditions.map((e) async {
             final history = await obtainHistoryRepository.getHistoriesByUserAndIngredient(
               userId: user.id,
@@ -46,9 +45,8 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           final requireCount = clearConditions.map((e) => e.requireCount).reduce((a, b) => a + b).toInt();
 
           // 릴레이마커
-          final relayMarker = (e.missionType == MissionType.relay)
-              ? clearConditions.single.marker
-              : MarkerEntity.empty();
+          final relayMarker =
+              (e.missionType == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
 
           return MissionViewEntity(
             mission: e,
