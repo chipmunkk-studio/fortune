@@ -4,10 +4,10 @@ import 'package:foresh_flutter/core/notification/notification_response.dart';
 
 import 'notification_manager.dart';
 
-const int NOTIFICATION_ID = 7016;
-const String CHANNEL_ID = 'fortune';
-const String CHANNEL_NAME = 'fortune forever';
-const String CHANNEL_DESCRIPTION = 'fortune channel';
+const int notificationId = 7016;
+const String channelId = 'fortune';
+const String channelName = 'fortune forever';
+const String channelDescription = 'fortune channel';
 
 const androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -26,9 +26,9 @@ const initializeSettings = InitializationSettings(
 );
 
 AndroidNotificationDetails androidNotificationDetails = const AndroidNotificationDetails(
-  CHANNEL_ID,
-  CHANNEL_NAME,
-  channelDescription: CHANNEL_DESCRIPTION,
+  channelId,
+  channelName,
+  channelDescription: channelDescription,
   importance: Importance.defaultImportance,
   priority: Priority.defaultPriority,
 );
@@ -38,7 +38,7 @@ NotificationDetails platformChannelSpecifics(AndroidNotificationDetails details)
 
 Future<void> backgroundMessageHandler(RemoteMessage message) async {
   await FortuneNotificationsManager.flNotification.show(
-    NOTIFICATION_ID,
+    notificationId,
     message.notification?.title,
     message.notification?.body,
     platformChannelSpecifics(androidNotificationDetails),
