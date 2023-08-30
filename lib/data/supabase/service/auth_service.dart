@@ -4,7 +4,9 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:foresh_flutter/core/error/failure/auth_failure.dart';
+import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/data/supabase/response/agree_terms_response.dart';
@@ -103,12 +105,29 @@ class AuthService {
     }
   }
 
-  // 필수/선택 약관 목록 받아오기.
+  //약관 목록 받아오기.
   Future<List<AgreeTermsEntity>> getTerms() async {
     try {
       final List<dynamic> response = await client.from(_termsTableName).select("*").toSelect();
       final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
       return terms;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 약관 목록 받아오기 by index
+  Future<AgreeTermsEntity> getTermsByIndex(int index) async {
+    try {
+      final List<dynamic> response =
+          await client.from(_termsTableName).select("*").filter('index', 'eq', index).toSelect();
+      final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
+      if (terms.isEmpty) {
+        throw CommonFailure(errorMessage: FortuneCommonMessage.notExistTerms);
+      } else {
+        final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
+        return terms.single;
+      }
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

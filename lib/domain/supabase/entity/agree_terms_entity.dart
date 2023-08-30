@@ -1,5 +1,5 @@
 class AgreeTermsEntity {
-  final double index;
+  final int index;
   final bool isRequire;
   final String title;
   final String content;
@@ -14,7 +14,7 @@ class AgreeTermsEntity {
   });
 
   AgreeTermsEntity copyWith({
-    double? index,
+    int? index,
     bool? isRequire,
     String? title,
     String? content,
@@ -28,4 +28,13 @@ class AgreeTermsEntity {
       isChecked: isChecked ?? this.isChecked,
     );
   }
+
+  // empty 속성 추가
+  static AgreeTermsEntity get empty => AgreeTermsEntity(
+        index: 0,
+        isRequire: false,
+        title: '',
+        content: '',
+        isChecked: false,
+      );
 }

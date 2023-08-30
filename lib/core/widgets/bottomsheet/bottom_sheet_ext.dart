@@ -32,13 +32,13 @@ extension FortuneBottomSheet on BuildContext {
               isShowTopBar
                   ? Column(
                       children: [
-                        SizedBox(height: 25.h),
+                        SizedBox(height: 25),
                         Row(
                           children: [
                             const Spacer(),
                             Container(
-                              width: 40.w,
-                              height: 4.h,
+                              width: 40,
+                              height: 4,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16.r),
                                 color: ColorName.deActiveDark,
@@ -47,7 +47,7 @@ extension FortuneBottomSheet on BuildContext {
                             const Spacer()
                           ],
                         ),
-                        SizedBox(height: isShowCloseButton ? 0.h : 25.h),
+                        SizedBox(height: isShowCloseButton ? 0 : 25),
                       ],
                     )
                   : Container(),
@@ -56,7 +56,7 @@ extension FortuneBottomSheet on BuildContext {
                       alignment: Alignment.centerRight,
                       child: Column(
                         children: [
-                          SizedBox(height: 25.h),
+                          const SizedBox(height: 25),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
@@ -67,7 +67,7 @@ extension FortuneBottomSheet on BuildContext {
                                 splashColor: ColorName.backgroundLight,
                                 child: Assets.icons.icCancel.svg(width: 24, height: 24),
                               ),
-                              SizedBox(width: 25.w),
+                              const SizedBox(width: 25),
                             ],
                           ),
                         ],

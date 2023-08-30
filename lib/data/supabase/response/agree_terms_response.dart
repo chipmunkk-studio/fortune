@@ -6,7 +6,7 @@ part 'agree_terms_response.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class AgreeTermsResponse extends AgreeTermsEntity {
   @JsonKey(name: 'index')
-  final double? index_;
+  final int? index_;
   @JsonKey(name: 'is_require')
   final bool? isRequire_;
   @JsonKey(name: 'title')

@@ -9,6 +9,7 @@ import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entit
 import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
+import 'package:foresh_flutter/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
 import 'login/login_page.dart';
@@ -24,6 +25,7 @@ class FortuneRouter {
 
   static const String loginParam = "loginParam";
   static const String mainParam = "mainParam";
+  static const String termsParam = "termsParam";
 
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -54,6 +56,17 @@ class FortuneRouter {
   static var onBoardingHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return OnBoardingPage();
+    },
+  );
+
+  static var termsDetailHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      int? data;
+      var paramValue = params[termsParam]?.first;
+      if (paramValue != null) {
+        data = int.tryParse(paramValue);
+      }
+      return data != null ? TermsDetailPage(data) : null;
     },
   );
 
@@ -172,6 +185,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 약관 상세.
+      ..define(
+        "${Routes.termsDetailRoute}/:$termsParam",
+        handler: termsDetailHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
@@ -191,5 +211,6 @@ class Routes {
   static const String alarmRewardRoute = 'alarmReward';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
   static const String ingredientActionRoute = 'ingredientAction';
-  static const String userNoticesRoute = 'userNoticesRoute';
+  static const String userNoticesRoute = 'userNotices';
+  static const String termsDetailRoute = 'termsDetail';
 }
