@@ -20,7 +20,7 @@ class TermsDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<TermsDetailBloc>()..add(TermsDetailInit(index)),
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
+        appBar: FortuneCustomAppBar.leadingAppBar(context, title: '포춘 이용 약관'),
         child: const _TermsDetailPage(),
       ),
     );

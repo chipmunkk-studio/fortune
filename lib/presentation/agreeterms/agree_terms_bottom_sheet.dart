@@ -89,28 +89,29 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                 itemBuilder: (context, index) {
                   final item = state.agreeTerms[index];
                   return Bounceable(
+                    scaleFactor: 0.9,
                     onTap: () => _bloc.add(AgreeTermsTermClick(item)),
-                    child: GestureDetector(
-                      onTap: () => router.navigateTo(
-                        context,
-                        "${Routes.termsDetailRoute}/${item.index}",
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(width: 24),
-                          FortuneCheckBox(
-                            onCheck: (isCheck) => _bloc.add(AgreeTermsTermClick(item)),
-                            state: item.isChecked,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(width: 24),
+                        FortuneCheckBox(
+                          onCheck: (isCheck) => _bloc.add(AgreeTermsTermClick(item)),
+                          state: item.isChecked,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(item.title, style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark)),
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () => router.navigateTo(
+                            context,
+                            "${Routes.termsDetailRoute}/${item.index}",
                           ),
-                          const SizedBox(width: 12),
-                          Text(item.title, style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark)),
-                          const Spacer(),
-                          Assets.icons.icArrowRight16.svg(),
-                          const SizedBox(width: 24),
-                        ],
-                      ),
+                          child: Assets.icons.icArrowRight16.svg(),
+                        ),
+                        const SizedBox(width: 24),
+                      ],
                     ),
                   );
                 },
