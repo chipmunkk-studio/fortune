@@ -29,7 +29,7 @@ jobs:
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - run: fluttergen -c pubspec.yaml
       - run: flutter config --enable-web
-      - run: flutter build web --debug
+      - run: flutter build web --profile
 
       - name: 업로드 빌드 파일
         uses: actions/upload-artifact@master
