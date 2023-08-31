@@ -251,12 +251,16 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/ic_launcher.png
+  AssetGenImage get icLauncher =>
+      const AssetGenImage('assets/images/ic_launcher.png');
+
   /// File path: assets/images/iv_default_profile.svg
   SvgGenImage get ivDefaultProfile =>
       const SvgGenImage('assets/images/iv_default_profile.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [ivDefaultProfile];
+  List<dynamic> get values => [icLauncher, ivDefaultProfile];
 }
 
 class $AssetsTranslationsGen {

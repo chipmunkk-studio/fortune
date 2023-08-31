@@ -1,5 +1,4 @@
 import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
 
 import 'mission_reward_entity.dart';
 
@@ -9,7 +8,6 @@ class MissionsEntity {
   final String content;
   final MissionType missionType;
   final MissionRewardEntity missionReward;
-  final bool isGlobal;
   final bool isActive;
 
   MissionsEntity({
@@ -18,7 +16,6 @@ class MissionsEntity {
     required this.content,
     required this.missionType,
     required this.missionReward,
-    required this.isGlobal,
     required this.isActive,
   });
 
@@ -29,7 +26,6 @@ class MissionsEntity {
       content: '',
       missionType: MissionType.none,
       missionReward: MissionRewardEntity.empty(),
-      isGlobal: false,
       isActive: false,
     );
   }

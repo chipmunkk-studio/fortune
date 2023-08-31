@@ -37,6 +37,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
     on<MainTimeOver>(timerOver);
+    on<MainSetRewardAd>(setRewardAd);
     on<MainMarkerObtain>(
       _markerObtain,
       transformer: sequential(),
@@ -180,7 +181,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       add(
         MainMarkerObtain(
           data,
-          event.isAnimation,
           event.globalKey,
         ),
       );
@@ -217,14 +217,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           newList.remove(loc);
 
           // 애니메이션 수행 여부 확인.
-          if (event.isAnimation) {
-            produceSideEffect(
-              MainMarkerClickSideEffect(
-                key: event.key,
-                data: event.data,
-              ),
-            );
-          }
+          produceSideEffect(
+            MainMarkerClickSideEffect(
+              key: event.key,
+              data: event.data,
+            ),
+          );
 
           emit(
             state.copyWith(
@@ -247,5 +245,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         },
       ),
     );
+  }
+
+  FutureOr<void> setRewardAd(MainSetRewardAd event, Emitter<MainState> emit) async {
+    emit(state.copyWith(rewardAd: event.ad));
   }
 }

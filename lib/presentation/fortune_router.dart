@@ -72,7 +72,7 @@ class FortuneRouter {
 
   static var ingredientActionHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as IngredientEntity?;
+      final args = context?.settings?.arguments as IngredientActionParam?;
       return args != null ? IngredientActionPage(args) : null;
     },
   );

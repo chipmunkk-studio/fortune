@@ -6,7 +6,7 @@ import 'package:foresh_flutter/core/gen/fonts.gen.dart';
 abstract class FortuneTextStyle {
   static TextStyle body1Medium({Color? fontColor}) {
     return TextStyle(
-      fontSize: 18.spMax,
+      fontSize: 18.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
@@ -16,7 +16,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body1Regular({Color? fontColor}) {
     return TextStyle(
-      fontSize: 18.spMax,
+      fontSize: 18.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,
@@ -26,7 +26,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body1SemiBold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 18.spMax,
+      fontSize: 18.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -36,7 +36,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body2Regular({Color? fontColor}) {
     return TextStyle(
-      fontSize: 16.spMax,
+      fontSize: 16.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,
@@ -46,7 +46,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body2SemiBold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 16.spMax,
+      fontSize: 16.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -56,7 +56,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body3Bold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 15.spMax,
+      fontSize: 15.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardBold,
@@ -66,7 +66,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle body3Regular({Color? fontColor}) {
     return TextStyle(
-      fontSize: 15.spMax,
+      fontSize: 15.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,
@@ -76,7 +76,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle button1Medium({Color? fontColor}) {
     return TextStyle(
-      fontSize: 18.spMax,
+      fontSize: 18.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
@@ -86,7 +86,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle caption1SemiBold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 11.spMax,
+      fontSize: 11.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -96,7 +96,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle headLine1({Color? fontColor}) {
     return TextStyle(
-      fontSize: 36.spMax,
+      fontSize: 36.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -106,7 +106,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle headLine2({Color? fontColor}) {
     return TextStyle(
-      fontSize: 30.spMax,
+      fontSize: 30.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -118,7 +118,7 @@ abstract class FortuneTextStyle {
     Color? fontColor,
   }) {
     return TextStyle(
-      fontSize: 28.spMax,
+      fontSize: 28.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -128,7 +128,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle1SemiBold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 24.spMax,
+      fontSize: 24.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -138,7 +138,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle1Regular({Color? fontColor}) {
     return TextStyle(
-      fontSize: 24.spMax,
+      fontSize: 24.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,
@@ -148,7 +148,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle2Medium({Color? fontColor}) {
     return TextStyle(
-      fontSize: 22.spMax,
+      fontSize: 22.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
@@ -158,7 +158,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle2Bold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 20.spMax,
+      fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -168,7 +168,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle3SemiBold({Color? fontColor}) {
     return TextStyle(
-      fontSize: 20.spMax,
+      fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -178,7 +178,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle3Medium({Color? fontColor}) {
     return TextStyle(
-      fontSize: 20.spMax,
+      fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
@@ -188,7 +188,7 @@ abstract class FortuneTextStyle {
 
   static TextStyle subTitle3Regular({Color? fontColor}) {
     return TextStyle(
-      fontSize: 20.spMax,
+      fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,

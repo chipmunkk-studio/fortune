@@ -60,14 +60,16 @@ class _TermsDetailPageState extends State<_TermsDetailPage> {
       },
       child: BlocBuilder<TermsDetailBloc, TermsDetailState>(
         builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                state.terms.content,
-                style: FortuneTextStyle.body1Medium(),
-              )
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  state.terms.content,
+                  style: FortuneTextStyle.body1Medium(),
+                )
+              ],
+            ),
           );
         },
       ),

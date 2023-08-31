@@ -12,7 +12,6 @@ class MissionsEntity {
   final int remainCount;
   final String rewardImage;
   final MissionType type;
-  final bool isGlobal;
   final bool isActive;
   final MarkerEntity marker;
 
@@ -26,7 +25,6 @@ class MissionsEntity {
     required this.rewardCount,
     required this.remainCount,
     required this.rewardImage,
-    required this.isGlobal,
     required this.isActive,
     required this.marker,
     required this.type,
@@ -45,7 +43,6 @@ class MissionsEntity {
       type: MissionType.none,
       rewardImage: '',
       isActive: false,
-      isGlobal: false,
       marker: MarkerEntity.empty(),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:foresh_flutter/core/util/adhelper.dart';
 import 'package:foresh_flutter/core/util/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -132,6 +133,7 @@ class Environment {
       "buildType: $buildType,\n"
       "--------------configArgs--------------"
       "${remoteConfig.toString()}"
+      "rewardAdUnitId: ${AdHelper.rewardedAdUnitId}\n"
       "--------------------------------------",
     );
   }

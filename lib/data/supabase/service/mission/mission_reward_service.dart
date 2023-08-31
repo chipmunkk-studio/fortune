@@ -14,7 +14,7 @@ class MissionRewardService {
   MissionRewardService();
 
   // 아이디로 미션 리워드를 조회.
-  Future<MissionRewardResponse> findMissionRewardById(int id) async {
+  Future<MissionRewardResponse> findMissionRewardNonNullById(int id) async {
     try {
       final response =
           await _client.from(TableName.missionReward).select(fullSelectQuery).filter('id', 'eq', id).toSelect();
@@ -29,13 +29,25 @@ class MissionRewardService {
     }
   }
 
+  // 아이디로 미션 리워드를 조회.
+  Future<MissionRewardResponse?> findMissionRewardNullableById(int id) async {
+    try {
+      final response =
+          await _client.from(TableName.missionReward).select(fullSelectQuery).filter('id', 'eq', id).toSelect();
+      final missions = response.map((e) => MissionRewardResponse.fromJson(e)).toList();
+      return missions.singleOrNull;
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
   // 미션 리워드 업데이트.
   Future<MissionRewardResponse> update(
     int id, {
     required RequestMissionRewardUpdate request,
   }) async {
     try {
-      MissionRewardResponse missionReward = await findMissionRewardById(id);
+      MissionRewardResponse missionReward = await findMissionRewardNonNullById(id);
 
       final requestToUpdate = RequestMissionRewardUpdate(
         totalCount: request.totalCount ?? missionReward.totalCount_,

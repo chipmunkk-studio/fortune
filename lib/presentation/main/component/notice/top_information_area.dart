@@ -8,6 +8,7 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:skeletons/skeletons.dart';
 
 class TopInformationArea extends StatelessWidget {
   final GlobalKey<CartIconKey> _cartKey;
@@ -19,44 +20,48 @@ class TopInformationArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 레벨 프로그레스.
-        Flexible(
-          child: BlocBuilder<MainBloc, MainState>(
-            buildWhen: (previous, current) => previous.user?.percentageNextLevel != current.user?.percentageNextLevel,
-            builder: (context, state) {
-              final user = state.user;
-              return user != null
-                  ? _UserLevel(
-                      user.grade,
-                      user.percentageNextLevel,
-                      user.level,
-                    )
-                  : const SizedBox.shrink();
-            },
+    return BlocBuilder<MainBloc, MainState>(
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+      builder: (context, state) {
+        return Skeleton(
+          isLoading: state.isLoading,
+          skeleton: const SizedBox.shrink(),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 레벨 프로그레스.
+              Flexible(
+                child: BlocBuilder<MainBloc, MainState>(
+                  buildWhen: (previous, current) =>
+                      previous.user?.percentageNextLevel != current.user?.percentageNextLevel,
+                  builder: (context, state) {
+                    final user = state.user;
+                    return user != null
+                        ? _UserLevel(
+                            user.grade,
+                            user.percentageNextLevel,
+                            user.level,
+                          )
+                        : const SizedBox.shrink();
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
+              // 티켓 카운트.
+              BlocBuilder<MainBloc, MainState>(
+                buildWhen: (previous, current) => previous.user?.ticket != current.user?.ticket,
+                builder: (context, state) => _TicketCount(state.user?.ticket ?? 0),
+              ),
+              const SizedBox(width: 10),
+              // 마커 획득 갯수.
+              BlocBuilder<MainBloc, MainState>(
+                buildWhen: (previous, current) => previous.haveCount != current.haveCount,
+                builder: (context, state) => _ObtainMarkerCount(_cartKey, state.haveCount),
+              ),
+            ],
           ),
-        ),
-        const SizedBox(width: 10),
-        // 티켓 카운트.
-        BlocBuilder<MainBloc, MainState>(
-          buildWhen: (previous, current) => previous.user?.ticket != current.user?.ticket,
-          builder: (context, state) {
-            final user = state.user;
-            return user != null ? _TicketCount(user.ticket) : const SizedBox.shrink();
-          },
-        ),
-        const SizedBox(width: 10),
-        // 마커 획득 갯수.
-        BlocBuilder<MainBloc, MainState>(
-          buildWhen: (previous, current) => previous.haveCount != current.haveCount,
-          builder: (context, state) {
-            final user = state.user;
-            return user != null ? _ObtainMarkerCount(_cartKey, state.haveCount) : const SizedBox.shrink();
-          },
-        ),
-      ],
+        );
+      },
     );
   }
 }
@@ -188,10 +193,5 @@ class _ObtainMarkerCount extends StatelessWidget {
         ],
       ),
     );
-    // return AddToCartIcon(
-    //   key: _cartKey,
-    //   badgeOptions: const BadgeOptions(active: false),
-    //   icon:
-    // );
   }
 }

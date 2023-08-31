@@ -13,9 +13,11 @@ import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
 import 'package:foresh_flutter/presentation/main/main_ext.dart';
+import 'package:google_mobile_ads/src/ad_containers.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -177,20 +179,25 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    _bloc.add(
-      MainMarkerClick(
-        data: data,
-        isAnimation: true,
-        globalKey: globalKey,
-      ),
+    final result = await _processMarkerAction(
+      ingredient: data.ingredient,
+      rewardAd: _bloc.state.rewardAd,
     );
 
-    // todo 여기서 해야 됨.
+    if (result) {
+      _bloc.add(
+        MainMarkerClick(
+          data: data,
+          globalKey: globalKey,
+        ),
+      );
+    }
+
     // if (distance < 0) {
     //   context.showSnackBar('거리가 $distance만큼 모자랍니다.');
     // } else {
     //   // 티켓일 경우에는 광고, 그 외 다른 액션.
-    //   // final isAnimation = await _processMarkerAction(data.ingredient);
+    //   final isAnimation = await _processMarkerAction(data.ingredient);
     //   _bloc.add(
     //     MainMarkerClick(
     //       data: data,
@@ -201,12 +208,18 @@ class MainMap extends StatelessWidget {
     // }
   }
 
-  Future<bool> _processMarkerAction(IngredientEntity ingredient) async {
+  Future<bool> _processMarkerAction({
+    required IngredientEntity ingredient,
+    RewardedAd? rewardAd,
+  }) async {
     return await router.navigateTo(
       context,
       Routes.ingredientActionRoute,
       routeSettings: RouteSettings(
-        arguments: ingredient,
+        arguments: IngredientActionParam(
+          ingredient: ingredient,
+          ad: rewardAd,
+        ),
       ),
     );
   }

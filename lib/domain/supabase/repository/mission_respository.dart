@@ -1,4 +1,5 @@
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
 
 abstract class MissionsRepository {
@@ -25,4 +26,7 @@ abstract class MissionsRepository {
 
   // 마커 아이디로 조회.
   Future<MissionsEntity?> getMissionOrNullByMarkerId(int markerId);
+
+  // 미션 리워드 조회
+  Future<MissionRewardEntity> getMissionRewardById(int markerId);
 }
