@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "756092673843",
-    "project_id": "fortune-938ea",
-    "storage_bucket": "fortune-938ea.appspot.com"
+    "project_number": "897338692724",
+    "project_id": "fortune-50ef2",
+    "storage_bucket": "fortune-50ef2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:756092673843:android:c56f0cdc7a24b618786846",
+        "mobilesdk_app_id": "1:897338692724:android:9104ff5508d6833c606d21",
         "android_client_info": {
           "package_name": "com.foresh.fortune"
         }
       },
       "oauth_client": [
         {
-          "client_id": "756092673843-emplrvkqnt4r57erfve0ro21o8vgg1pe.apps.googleusercontent.com",
+          "client_id": "897338692724-po84q12jltkcakj86a90ap5rbdlct22i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAMsyX3yngptd4A4mkiWrVV_in4DO07auo"
+          "current_key": "AIzaSyBeHIQOfmd2jDZdg5Iw4zmasS1nSyLoA28"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "756092673843-emplrvkqnt4r57erfve0ro21o8vgg1pe.apps.googleusercontent.com",
+              "client_id": "897338692724-po84q12jltkcakj86a90ap5rbdlct22i.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "756092673843-aobbdelvomu1or34mmq429aqrnoko9pf.apps.googleusercontent.com",
+              "client_id": "897338692724-43nvkrjo88k80rdcr5ab65jdtqml96e1.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.foresh.fortune"
