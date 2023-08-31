@@ -71,7 +71,7 @@ class MissionRelayCard extends StatelessWidget {
                                 style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
                               ),
                               TextSpan(
-                                text: "/${item.requiredTotalCount}",
+                                text: "/${item.requiredTotalCount} ${item.isRelayMissionCleared}",
                                 style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
                               ),
                             ],

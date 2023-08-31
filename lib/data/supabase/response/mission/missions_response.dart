@@ -18,8 +18,6 @@ class MissionsResponse extends MissionsEntity {
   final String missionType_;
   @JsonKey(name: 'mission_reward')
   final MissionRewardResponse? missionReward_;
-  @JsonKey(name: 'is_global')
-  final bool isGlobal_;
   @JsonKey(name: 'is_active')
   final bool isActive_;
 
@@ -29,7 +27,6 @@ class MissionsResponse extends MissionsEntity {
     required this.content_,
     required this.missionType_,
     required this.missionReward_,
-    required this.isGlobal_,
     required this.isActive_,
   }) : super(
           id: id_.toInt(),
@@ -37,7 +34,6 @@ class MissionsResponse extends MissionsEntity {
           content: content_,
           missionType: getMissionType(missionType_),
           missionReward: missionReward_ ?? MissionRewardEntity.empty(),
-          isGlobal: isGlobal_,
           isActive: isActive_,
         );
 

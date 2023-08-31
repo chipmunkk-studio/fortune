@@ -27,4 +27,13 @@ class MarkerEntity {
         lastObtainUser = null,
         isReward = false,
         hitCount = 0;
+
+  bool get isEmpty =>
+      id == -1 &&
+      ingredient == IngredientEntity.empty() &&
+      latitude == 0.0 &&
+      longitude == 0.0 &&
+      lastObtainUser == null &&
+      !isReward &&
+      hitCount == 0;
 }
