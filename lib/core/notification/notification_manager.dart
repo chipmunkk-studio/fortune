@@ -170,7 +170,7 @@ class FortuneNotificationsManager {
     final temp1 = jsonEncode(message.data);
     final temp2 = jsonDecode(temp1);
     await flNotification.show(
-      NOTIFICATION_ID,
+      notificationId,
       message.notification?.title,
       message.notification?.body,
       platformChannelSpecifics(androidNotificationDetails),

@@ -17,11 +17,11 @@ class FortuneApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => ScreenUtilInit(
+    Widget build(BuildContext context) => ScreenUtilInit(
         designSize: const Size(390, 844),
         splitScreenMode: false,
         minTextAdapt: true,
-        rebuildFactor: RebuildFactors.all,
+        rebuildFactor: RebuildFactors.change,
         builder: (BuildContext context, Widget? child) {
           /// 강제로 언어를 한글로 설정. 배포 시 삭제해야 함.
           // EasyLocalization.of(context)?.setLocale(const Locale('en', 'US'));

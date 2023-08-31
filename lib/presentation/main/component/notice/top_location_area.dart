@@ -25,42 +25,45 @@ class TopLocationArea extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              child: Text(
-                state.locationName,
-                style: FortuneTextStyle.body2SemiBold(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              child: Center(
+                child: Text(
+                  state.locationName,
+                  style: FortuneTextStyle.body2SemiBold(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
-            const SizedBox(width: 24),
-            GestureDetector(
-              onTap: onTap,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Assets.icons.icBell.svg(),
-                  // 봐야할 알림이 있으면 나타냄.
-                  if (state.notices.isNotEmpty)
-                    Positioned(
-                      right: state.notices.length < 9 ? -13 : -20,
-                      top: -10,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ColorName.negative,
-                          borderRadius: BorderRadius.circular(12.r),
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: state.notices.length < 9 ? 6 : 5),
-                        child: Text(
-                          getHistoryCount(state.notices.length),
-                          style: FortuneTextStyle.caption1SemiBold(),
-                        ),
-                      ),
-                    )
-                ],
-              ),
-            ),
-            const SizedBox(width: 20),
-            Assets.icons.icUser.svg(),
+            // const SizedBox(width: 24),
+            // GestureDetector(
+            //   onTap: onTap,
+            //   child: Stack(
+            //     clipBehavior: Clip.none,
+            //     children: [
+            //       Assets.icons.icBell.svg(),
+            //       // 봐야할 알림이 있으면 나타냄.
+            //       if (state.notices.isNotEmpty)
+            //         Positioned(
+            //           right: state.notices.length < 9 ? -13 : -20,
+            //           top: -10,
+            //           child: Container(
+            //             decoration: BoxDecoration(
+            //               color: ColorName.negative,
+            //               borderRadius: BorderRadius.circular(12.r),
+            //             ),
+            //             padding: EdgeInsets.symmetric(vertical: 2, horizontal: state.notices.length < 9 ? 6 : 5),
+            //             child: Text(
+            //               getHistoryCount(state.notices.length),
+            //               style: FortuneTextStyle.caption1SemiBold(),
+            //             ),
+            //           ),
+            //         )
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(width: 20),
+            // Assets.icons.icUser.svg(),
+            // todo 다음 업데이트에 추가 해야 됨.
           ],
         );
       },
