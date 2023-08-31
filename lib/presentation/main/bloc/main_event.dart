@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/notification/notification_response.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
@@ -35,12 +36,10 @@ class MainMyLocationChange extends MainEvent {
 
 class MainMarkerClick extends MainEvent {
   final MainLocationData data;
-  final bool isAnimation;
   final GlobalKey globalKey;
 
   MainMarkerClick({
     required this.data,
-    required this.isAnimation,
     required this.globalKey,
   });
 
@@ -57,12 +56,10 @@ class MainTimeOver extends MainEvent {
 
 class MainMarkerObtain extends MainEvent {
   final MainLocationData data;
-  final bool isAnimation;
   final GlobalKey key;
 
   MainMarkerObtain(
     this.data,
-    this.isAnimation,
     this.key,
   );
 
@@ -76,5 +73,14 @@ class MainLandingPage extends MainEvent {
   MainLandingPage(this.entity);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [entity];
+}
+
+class MainSetRewardAd extends MainEvent {
+  final RewardedAd? ad;
+
+  MainSetRewardAd(this.ad);
+
+  @override
+  List<Object?> get props => [ad];
 }

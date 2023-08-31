@@ -2,6 +2,7 @@ import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_en
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
@@ -21,6 +22,7 @@ class MainState with _$MainState {
     required int refreshTime,
     required int refreshCount,
     required bool isObtainProcessing,
+    required RewardedAd? rewardAd,
     required String locationName,
     required bool isLoading,
     required double clickableRadiusLength,
@@ -41,6 +43,7 @@ class MainState with _$MainState {
         refreshCount: 0,
         isObtainProcessing: false,
         isLoading: true,
+        rewardAd: null,
         clickableRadiusLength: 60,
         zoomThreshold: 18,
       );

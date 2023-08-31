@@ -25,26 +25,7 @@ class TopInformationArea extends StatelessWidget {
       builder: (context, state) {
         return Skeleton(
           isLoading: state.isLoading,
-          skeleton: Row(
-            children: [
-              Flexible(
-                child: SkeletonLine(
-                  style: SkeletonLineStyle(
-                    height: 32,
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              SkeletonLine(
-                style: SkeletonLineStyle(
-                  height: 32,
-                  width: 100,
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-              ),
-            ],
-          ),
+          skeleton: const SizedBox.shrink(),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

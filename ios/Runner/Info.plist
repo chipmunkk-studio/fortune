@@ -64,6 +64,7 @@
 	<true/>
 	<key>UIStatusBarHidden</key>
     <false/>
+     <!-- 테스트 광고 아이디 ca-app-pub-3940256099942544~1458002511 -->
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-8638803250596668~4162509895</string>
 </dict>

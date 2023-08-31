@@ -11,6 +11,7 @@ import 'package:foresh_flutter/core/error/failure/network_failure.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/notification/notification_response.dart';
+import 'package:foresh_flutter/core/util/adhelper.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
@@ -21,6 +22,7 @@ import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
@@ -59,7 +61,7 @@ class _MainPage extends StatefulWidget {
 
 class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, TickerProviderStateMixin {
   final MapController _mapController = MapController();
-  late MainBloc bloc;
+  late MainBloc _bloc;
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
   final router = serviceLocator<FortuneRouter>().router;
@@ -71,9 +73,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   @override
   void initState() {
     super.initState();
-    appmetrica.AppMetrica.reportEvent('메인 화면');
     WidgetsBinding.instance.addObserver(this);
-    bloc = BlocProvider.of<MainBloc>(context);
+    appmetrica.AppMetrica.reportEvent('메인 화면');
+    _bloc = BlocProvider.of<MainBloc>(context);
+    _loadRewardedAd();
   }
 
   @override
@@ -81,7 +84,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
     locationChangeSubscription.cancel();
-    bloc.close();
+    _bloc.close();
   }
 
   @override
@@ -91,10 +94,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         PermissionStatus status = await Permission.location.status;
         if (_detectPermission) {
           if (!status.isGranted) {
-            bloc.add(MainInit());
+            _bloc.add(MainInit());
             _detectPermission = false;
           } else {
-            bloc.add(Main());
+            _bloc.add(Main());
             _detectPermission = false;
           }
         }
@@ -141,7 +144,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         } else if (sideEffect is MainError) {
           dialogService.showErrorDialog(context, sideEffect.error);
           if (sideEffect.error is NetworkFailure) {
-            bloc.add(Main());
+            _bloc.add(Main());
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
@@ -172,7 +175,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           children: [
             // 메인 맵.
             MainMap(
-              bloc,
+              _bloc,
               router: router,
               context: context,
               remoteConfigArgs: environment,
@@ -181,10 +184,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               onZoomChanged: () {
                 _animatedMapMove(
                   LatLng(
-                    bloc.state.myLocation!.latitude!,
-                    bloc.state.myLocation!.longitude!,
+                    _bloc.state.myLocation!.latitude!,
+                    _bloc.state.myLocation!.longitude!,
                   ),
-                  bloc.state.zoomThreshold,
+                  _bloc.state.zoomThreshold,
                 );
               },
             ),
@@ -247,7 +250,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             Positioned(
               left: 16,
               bottom: 16,
-              child: TopRefreshTime(bloc),
+              child: TopRefreshTime(_bloc),
             ),
             // 하단 그라데이션.
             Positioned(
@@ -278,14 +281,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
     return myLocation.onLocationChanged.listen(
       (newLoc) {
-        _animatedMapMove(
-          LatLng(
-            newLoc.latitude!,
-            newLoc.longitude!,
-          ),
-          bloc.state.zoomThreshold,
-        );
-        bloc.add(MainMyLocationChange(newLoc));
+        // _animatedMapMove(
+        //   LatLng(
+        //     newLoc.latitude!,
+        //     newLoc.longitude!,
+        //   ),
+        //   bloc.state.zoomThreshold,
+        // );
+        // bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }
@@ -319,6 +322,29 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     controller.forward();
   }
 
+  // 광고 로드
+  void _loadRewardedAd() {
+    RewardedAd.load(
+      adUnitId: AdHelper.rewardedAdUnitId,
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _loadRewardedAd();
+              _bloc.add(MainSetRewardAd(null));
+            },
+          );
+          _bloc.add(MainSetRewardAd(ad));
+        },
+        onAdFailedToLoad: (err) {
+          FortuneLogger.error(message: "보상형 광고 로딩 실패: ${err.message}");
+        },
+      ),
+    );
+  }
+
   // 마커 트랜지션.
   startAnimation(GlobalKey key) async {
     try {
@@ -331,7 +357,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   _onMyBagClick() {
     context.showFortuneBottomSheet(
-      content: (context) => MissionsBottomPage(bloc),
+      content: (context) => MissionsBottomPage(_bloc),
     );
   }
 }
