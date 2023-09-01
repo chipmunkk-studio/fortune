@@ -46,7 +46,6 @@ import 'package:foresh_flutter/presentation/permission/bloc/request_permission_b
 import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -69,7 +68,6 @@ import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
-
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 
