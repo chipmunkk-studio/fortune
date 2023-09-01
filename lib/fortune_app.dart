@@ -17,7 +17,7 @@ class FortuneApp extends StatelessWidget {
   }) : super(key: key);
 
   @override
-    Widget build(BuildContext context) => ScreenUtilInit(
+  Widget build(BuildContext context) => ScreenUtilInit(
         designSize: const Size(390, 844),
         splitScreenMode: false,
         minTextAdapt: true,
