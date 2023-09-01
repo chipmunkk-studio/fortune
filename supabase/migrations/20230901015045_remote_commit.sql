@@ -14,8 +14,6 @@ CREATE EXTENSION IF NOT EXISTS "pg_net" WITH SCHEMA "extensions";
 
 CREATE EXTENSION IF NOT EXISTS "pgsodium" WITH SCHEMA "pgsodium";
 
-ALTER SCHEMA "public" OWNER TO "postgres";
-
 CREATE EXTENSION IF NOT EXISTS "pg_graphql" WITH SCHEMA "graphql";
 
 CREATE EXTENSION IF NOT EXISTS "pg_stat_statements" WITH SCHEMA "extensions";
@@ -252,7 +250,6 @@ CREATE TABLE "public"."missions" (
     "id" bigint NOT NULL,
     "title" "text" DEFAULT ''::"text" NOT NULL,
     "content" "text" DEFAULT ''::"text" NOT NULL,
-    "is_global" boolean DEFAULT false NOT NULL,
     "is_active" boolean DEFAULT false NOT NULL,
     "mission_type" "text" NOT NULL,
     "mission_reward" bigint
@@ -416,7 +413,7 @@ ALTER TABLE ONLY "public"."users"
 ALTER TABLE ONLY "public"."users"
     ADD CONSTRAINT "users_pkey" PRIMARY KEY ("id");
 
-CREATE TRIGGER "push_alarm" AFTER INSERT ON "public"."push_alarm" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://zctjjaievaizbprjjrvp.functions.supabase.co/push_alarm', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
+CREATE TRIGGER "push_alarm" AFTER INSERT ON "public"."push_alarm" FOR EACH ROW EXECUTE FUNCTION "supabase_functions"."http_request"('https://bpxfujgpliwavynkkpuq.functions.supabase.co/push_alarm', 'POST', '{"Content-type":"application/json"}', '{}', '1000');
 
 ALTER TABLE ONLY "public"."alarm_feeds"
     ADD CONSTRAINT "alarm_feeds_alarm_reward_history_fkey" FOREIGN KEY ("alarm_reward_history") REFERENCES "public"."alarm_reward_history"("id");
@@ -580,7 +577,7 @@ CREATE POLICY "인증받은 유저들만 추가 가능." ON "public"."ingredient
 
 CREATE POLICY "인증받은 유저만 읽기 가능. " ON "public"."markers" FOR SELECT TO "authenticated" USING (true);
 
-REVOKE USAGE ON SCHEMA "public" FROM PUBLIC;
+GRANT USAGE ON SCHEMA "public" TO "postgres";
 GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
