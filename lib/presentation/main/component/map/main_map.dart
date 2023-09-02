@@ -6,12 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/snackbar.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/animation/scale_animation.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
@@ -20,7 +17,6 @@ import 'package:foresh_flutter/presentation/main/main_ext.dart';
 import 'package:google_mobile_ads/src/ad_containers.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import 'center_profile.dart';
 import 'obtain_loading_view.dart';
@@ -193,18 +189,22 @@ class MainMap extends StatelessWidget {
       );
     }
 
-    // if (distance < 0) {
-    //   context.showSnackBar('거리가 $distance만큼 모자랍니다.');
+    // if (distance > 0) {
+    //   context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
     // } else {
     //   // 티켓일 경우에는 광고, 그 외 다른 액션.
-    //   final isAnimation = await _processMarkerAction(data.ingredient);
-    //   _bloc.add(
-    //     MainMarkerClick(
-    //       data: data,
-    //       isAnimation: true,
-    //       globalKey: globalKey,
-    //     ),
+    //   final result = await _processMarkerAction(
+    //     ingredient: data.ingredient,
+    //     rewardAd: _bloc.state.rewardAd,
     //   );
+    //   if (result) {
+    //     _bloc.add(
+    //       MainMarkerClick(
+    //         data: data,
+    //         globalKey: globalKey,
+    //       ),
+    //     );
+    //   }
     // }
   }
 

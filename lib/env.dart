@@ -119,15 +119,15 @@ class Environment {
     /// 파이어베이스 crashlytics
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    FirebaseCrashlytics.instance
-      ..setCustomKey("appName", packageInfo.appName)
-      ..setCustomKey("packageName", packageInfo.packageName)
-      ..setCustomKey("version", packageInfo.version)
-      ..setCustomKey("buildNumber", packageInfo.buildNumber)
-      ..setCustomKey("buildType", buildType.toString());
-
     // 웹은 크래실리틱스 수집 안함.
     if (!kIsWeb) {
+      FirebaseCrashlytics.instance
+        ..setCustomKey("appName", packageInfo.appName)
+        ..setCustomKey("packageName", packageInfo.packageName)
+        ..setCustomKey("version", packageInfo.version)
+        ..setCustomKey("buildNumber", packageInfo.buildNumber)
+        ..setCustomKey("buildType", buildType.toString());
+
       if (kDebugMode) {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
       } else {

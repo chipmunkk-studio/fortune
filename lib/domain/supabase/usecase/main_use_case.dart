@@ -84,14 +84,13 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
           )
           .toList();
 
-      // 티켓이 없으면 3개 뿌려주고 아니면 3-N개 뿌려줌.
+      // 티켓이 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
       final ticketCount = isTicketEmpty.length < keepTicketCount ? keepTicketCount - isTicketEmpty.length : 0;
 
       FortuneLogger.info(
           "markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");
 
-      // 주변에 마커가 없다면 랜덤 생성.
-      // 내 위치를 중심으로 랜덤 생성.
+      // 주변에 마커가 없다면, 필요한 개수 만큼 내 위치를 중심으로 랜덤 생성.
       final result = await markerRepository.getRandomMarkers(
         latitude: param.latitude,
         longitude: param.longitude,
