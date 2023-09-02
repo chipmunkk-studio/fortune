@@ -286,9 +286,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         //     newLoc.latitude!,
         //     newLoc.longitude!,
         //   ),
-        //   bloc.state.zoomThreshold,
+        //   _bloc.state.zoomThreshold,
         // );
-        // bloc.add(MainMyLocationChange(newLoc));
+        // _bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }

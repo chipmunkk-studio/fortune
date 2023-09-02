@@ -30,7 +30,7 @@ class ItemObtainHistory extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("${item.ingredient.name} (${item.markerId})", style: FortuneTextStyle.body1SemiBold()),
+                Text(item.ingredient.name, style: FortuneTextStyle.body1SemiBold()),
                 const SizedBox(height: 6),
                 Text(
                   item.locationName,

@@ -26,9 +26,12 @@ class ObtainLoadingView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: processingMarker?.ingredient.imageUrl ?? transparentImageUrl,
+                    SizedBox.square(
+                      dimension: 92,
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: processingMarker?.ingredient.imageUrl ?? transparentImageUrl,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     Text(
