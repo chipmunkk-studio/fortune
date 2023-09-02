@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/notification/notification_response.dart';
 
 import 'notification_manager.dart';
@@ -9,7 +10,7 @@ const String channelId = 'fortune';
 const String channelName = 'fortune forever';
 const String channelDescription = 'fortune channel';
 
-const androidInitialize = AndroidInitializationSettings('@mipmap/ic_launcher');
+const androidInitialize = AndroidInitializationSettings('@drawable/ic_push_notification');
 
 const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
   // 앱이 알림 권한을 요청해야 하는지 여부.
@@ -31,6 +32,7 @@ AndroidNotificationDetails androidNotificationDetails = const AndroidNotificatio
   channelDescription: channelDescription,
   importance: Importance.defaultImportance,
   priority: Priority.defaultPriority,
+  color: ColorName.backgroundLight
 );
 
 NotificationDetails platformChannelSpecifics(AndroidNotificationDetails details) =>

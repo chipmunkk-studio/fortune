@@ -1,6 +1,7 @@
 import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/message_ext.dart';
+import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
 import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -9,16 +10,20 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserService _userService;
+  final LocalDataSource _localDataSource;
 
   UserRepositoryImpl(
     this._userService,
+    this._localDataSource,
   );
 
   // 휴대폰 번호로 현재 사용자 찾기.
   @override
   Future<FortuneUserEntity> findUserByPhoneNonNull() async {
     try {
-      final String? phoneNumber = Supabase.instance.client.auth.currentUser?.phone;
+      final String currentPhoneNumber = Supabase.instance.client.auth.currentUser?.phone ?? '';
+      final String testAccount = await _localDataSource.getTestAccount();
+      final String phoneNumber = currentPhoneNumber.isNotEmpty ? currentPhoneNumber : testAccount;
       final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
       if (user == null) {
         throw CommonFailure(errorMessage: FortuneCommonMessage.notExistUser);

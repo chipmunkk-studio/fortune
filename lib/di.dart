@@ -7,6 +7,8 @@ import 'package:foresh_flutter/core/notification/notification_ext.dart';
 import 'package:foresh_flutter/core/notification/notification_manager.dart';
 import 'package:foresh_flutter/core/util/analytics.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
+import 'package:foresh_flutter/data/local/repository/local_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
@@ -19,6 +21,7 @@ import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
+import 'package:foresh_flutter/domain/local/local_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
@@ -32,6 +35,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
@@ -178,6 +182,11 @@ _initService() {
     ..registerLazySingleton<UserService>(
       () => UserService(),
     )
+    ..registerLazySingleton<LocalDataSource>(
+      () => LocalDataSourceImpl(
+        sharedPreferences: serviceLocator<SharedPreferences>(),
+      ),
+    )
     ..registerLazySingleton<BoardService>(
       () => BoardService(
         Supabase.instance.client,
@@ -238,6 +247,12 @@ _initRepository() {
     ..registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         serviceLocator<UserService>(),
+        serviceLocator<LocalDataSource>(),
+      ),
+    )
+    ..registerLazySingleton<LocalRepository>(
+      () => LocalRepositoryImpl(
+        localDataSource: serviceLocator<LocalDataSource>(),
       ),
     )
     ..registerLazySingleton<IngredientRepository>(
@@ -351,6 +366,13 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<SignUpOrInWithTestUseCase>(
+      () => SignUpOrInWithTestUseCase(
+        authRepository: serviceLocator<AuthRepository>(),
+        userRepository: serviceLocator<UserRepository>(),
+        localRepository: serviceLocator<LocalRepository>(),
+      ),
+    )
     ..registerLazySingleton<GetAlarmFeedUseCase>(
       () => GetAlarmFeedUseCase(
         userRepository: serviceLocator(),
@@ -387,7 +409,9 @@ _initBloc() {
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        signUpOrInUseCase: serviceLocator<SignUpOrInUseCase>(),
+        localRepository: serviceLocator<LocalRepository>(),
+        signUpOrInWithTestUseCase: serviceLocator<SignUpOrInWithTestUseCase>(),
+        env: serviceLocator<Environment>(),
       ),
     )
     ..registerFactory(
