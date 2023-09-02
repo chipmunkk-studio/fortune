@@ -74,6 +74,38 @@ class AuthService {
     }
   }
 
+  // 회원가입(테스트 계정용).
+  Future<AuthResponse> signUpWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await authClient.signUp(
+        email: email,
+        password: password,
+      );
+      return response;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 로그인(테스트 계정용).
+  Future<AuthResponse> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await authClient.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      return response;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
   // 휴대폰 번호 인증.
   Future<AuthResponse> verifyPhoneNumber({
     required String otpCode,

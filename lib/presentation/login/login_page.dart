@@ -83,6 +83,12 @@ class _LoginPageState extends State<_LoginPage> {
             isDismissible: false,
             content: (context) => VerifyCodeBottomSheet(sideEffect.convertedPhoneNumber),
           );
+        } else if (sideEffect is LoginLandingRoute){
+          router.navigateTo(
+            context,
+            sideEffect.route,
+            clearStack: true,
+          );
         }
       },
       child: KeyboardVisibilityBuilder(

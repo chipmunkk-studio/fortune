@@ -34,3 +34,12 @@ class LoginShowVerifyCodeBottomSheet extends LoginSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+class LoginLandingRoute extends LoginSideEffect {
+  final String route;
+
+  LoginLandingRoute(this.route);
+
+  @override
+  List<Object?> get props => [route];
+}

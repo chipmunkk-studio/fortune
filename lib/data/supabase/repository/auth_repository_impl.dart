@@ -1,5 +1,4 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
@@ -83,13 +82,54 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<AgreeTermsEntity> getTermsByIndex(int index) async{
+  Future<AgreeTermsEntity> getTermsByIndex(int index) async {
     try {
       final AgreeTermsEntity terms = await _authService.getTermsByIndex(index);
       return terms;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '약관을 받아 오지 못했습니다',
+      );
+    }
+  }
+
+  @override
+  Future<AuthResponse> signInWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _authService.signInWithEmail(
+        email: email,
+        password: password,
+      );
+      await _authService.persistSession(response.session!);
+      return response;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '테스트 계정 로그인 실패',
+      );
+    }
+  }
+
+  @override
+  Future<AuthResponse> signUpWithEmail({
+    required String phoneNumber,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // 회원이 없을 경우 추가.
+      await _userService.insert(phone: phoneNumber);
+      final response = await _authService.signUpWithEmail(
+        email: email,
+        password: password,
+      );
+      _authService.persistSession(response.session!);
+      return response;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '테스트 계정 회원가입 실패',
       );
     }
   }
