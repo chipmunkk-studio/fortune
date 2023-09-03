@@ -22,7 +22,6 @@ class FortuneDialogService {
     Function0? btnOkOnPress,
     bool needToFinish = true,
   }) async {
-
     if (_isDialogShowing) return;
     _isDialogShowing = true;
 
@@ -68,28 +67,28 @@ class FortuneDialogService {
       buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.backgroundLight),
       dismissOnTouchOutside: false,
       dismissOnBackKeyPress: false,
-      body: Container(
-        color: ColorName.backgroundLight,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 32.h),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Text(
-                error.description ?? error.message ?? '알 수 없는 에러',
-                style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
-              ),
+      body: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  error.description ?? error.message ?? '알 수 없는 에러',
+                  style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-            SizedBox(height: 32.h),
-          ],
-        ),
+          ),
+        ],
       ),
-      padding: EdgeInsets.only(
-        bottom: 10.h,
-      ),
+      padding: const EdgeInsets.only(bottom: 10),
       dialogBorderRadius: BorderRadius.circular(
         32.r,
       ),

@@ -12,7 +12,7 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 extension FortuneDialogEx on BuildContext {
   void showFortuneDialog({
     required String title,
-    required String subTitle,
+    String? subTitle,
     required String btnOkText,
     required Function0 btnOkPressed,
     String? btnCancelText,
@@ -28,23 +28,35 @@ extension FortuneDialogEx on BuildContext {
       buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.backgroundLight),
       dismissOnTouchOutside: dismissOnTouchOutside,
       dismissOnBackKeyPress: dismissOnBackKeyPress,
-      body: Container(
-        height: 120.h,
-        color: ColorName.backgroundLight,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(title, style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active)),
-            SizedBox(height: 8.h),
-            Text(subTitle, style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark))
-          ],
-        ),
+      body: Wrap(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Text(
+                  title,
+                  style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                if (subTitle != null)
+                  Text(
+                    subTitle,
+                    style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    textAlign: TextAlign.center,
+                  ),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ],
       ),
-      padding: EdgeInsets.only(
-        bottom: 10.h,
-      ),
+      padding: const EdgeInsets.only(bottom: 10),
       dialogBorderRadius: BorderRadius.circular(
         32.r,
       ),

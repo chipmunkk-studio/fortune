@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -15,7 +14,7 @@ import 'package:foresh_flutter/core/util/adhelper.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
-import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
+import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
@@ -281,14 +280,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
     return myLocation.onLocationChanged.listen(
       (newLoc) {
-        // _animatedMapMove(
-        //   LatLng(
-        //     newLoc.latitude!,
-        //     newLoc.longitude!,
-        //   ),
-        //   _bloc.state.zoomThreshold,
-        // );
-        // _bloc.add(MainMyLocationChange(newLoc));
+        _animatedMapMove(
+          LatLng(
+            newLoc.latitude!,
+            newLoc.longitude!,
+          ),
+          _bloc.state.zoomThreshold,
+        );
+        _bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }
