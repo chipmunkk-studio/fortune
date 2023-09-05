@@ -1,9 +1,11 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -83,7 +85,7 @@ class _LoginPageState extends State<_LoginPage> {
             isDismissible: false,
             content: (context) => VerifyCodeBottomSheet(sideEffect.convertedPhoneNumber),
           );
-        } else if (sideEffect is LoginLandingRoute){
+        } else if (sideEffect is LoginLandingRoute) {
           router.navigateTo(
             context,
             sideEffect.route,
@@ -121,6 +123,7 @@ class _LoginPageState extends State<_LoginPage> {
                           );
                         },
                       ),
+                      if (!kReleaseMode) buildDebugRow(context)
                     ],
                   ),
                 ),
@@ -151,6 +154,32 @@ class _LoginPageState extends State<_LoginPage> {
           );
         },
       ),
+    );
+  }
+
+  Row buildDebugRow(BuildContext context) {
+    return Row(
+      children: [
+        FortuneTextButton(
+          onPress: () {
+            context.showFortuneBottomSheet(
+              isDismissible: false,
+              content: (context) => const AgreeTermsBottomSheet(''),
+            );
+          },
+          text: '약관동의 바텀시트',
+        ),
+        const SizedBox(width: 12),
+        FortuneTextButton(
+          onPress: () {
+            context.showFortuneBottomSheet(
+              isDismissible: false,
+              content: (context) => const VerifyCodeBottomSheet(''),
+            );
+          },
+          text: '인증번호 확인 바텀시트',
+        ),
+      ],
     );
   }
 }
