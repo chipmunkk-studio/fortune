@@ -15,6 +15,8 @@ class MissionRewardResponse extends MissionRewardEntity {
   final int remainCount_;
   @JsonKey(name: 'reward_image')
   final String rewardImage_;
+  @JsonKey(name: 'note')
+  final String note_;
   @JsonKey(name: 'created_at')
   final String createdAt_;
 
@@ -24,6 +26,7 @@ class MissionRewardResponse extends MissionRewardEntity {
     required this.rewardName_,
     required this.remainCount_,
     required this.rewardImage_,
+    required this.note_,
     required this.createdAt_,
   }) : super(
           id: id_.toInt(),
@@ -31,6 +34,7 @@ class MissionRewardResponse extends MissionRewardEntity {
           remainCount: remainCount_,
           rewardName: rewardName_,
           rewardImage: rewardImage_,
+          note: note_,
           createdAt: createdAt_,
         );
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
+import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';

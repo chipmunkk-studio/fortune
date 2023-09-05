@@ -6,6 +6,7 @@ class MissionsEntity {
   final int id;
   final String title;
   final String content;
+  final String note;
   final MissionType missionType;
   final MissionRewardEntity missionReward;
   final bool isActive;
@@ -14,6 +15,7 @@ class MissionsEntity {
     required this.id,
     required this.title,
     required this.content,
+    required this.note,
     required this.missionType,
     required this.missionReward,
     required this.isActive,
@@ -24,6 +26,7 @@ class MissionsEntity {
       id: 0,
       title: '',
       content: '',
+      note: '',
       missionType: MissionType.none,
       missionReward: MissionRewardEntity.empty(),
       isActive: false,
