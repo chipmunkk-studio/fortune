@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 
 import '../di.dart';
 import '../fortune_app.dart';
@@ -22,6 +23,9 @@ main() {
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
       String startRoute = await serviceLocator<AuthService>().recoverSession(initialMessage?.data ?? {});
+
+      final usecase = serviceLocator<GetMyIngredientsUseCase>();
+      final histories = await usecase();
 
       runApp(
         EasyLocalization(

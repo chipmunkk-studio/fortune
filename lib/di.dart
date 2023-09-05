@@ -28,6 +28,7 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
@@ -362,6 +363,13 @@ _initUseCase() async {
     ..registerLazySingleton<PostMissionClearUseCase>(
       () => PostMissionClearUseCase(
         missionRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+        obtainHistoryRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetMyIngredientsUseCase>(
+      () => GetMyIngredientsUseCase(
+        ingredientRepository: serviceLocator(),
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
       ),
