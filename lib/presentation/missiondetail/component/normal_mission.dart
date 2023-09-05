@@ -69,7 +69,7 @@ class NormalMission extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.missionReward.n  ote,
+                      state.entity.mission.missionReward.note,
                       style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
                     ),
                   ),
