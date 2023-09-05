@@ -4,6 +4,7 @@ class MissionRewardEntity {
   final String rewardName;
   final int remainCount;
   final String rewardImage;
+  final String note;
   final String createdAt;
 
   MissionRewardEntity({
@@ -12,6 +13,7 @@ class MissionRewardEntity {
     required this.rewardName,
     required this.remainCount,
     required this.rewardImage,
+    required this.note,
     required this.createdAt,
   });
 
@@ -21,6 +23,7 @@ class MissionRewardEntity {
         rewardName: '',
         remainCount: 0,
         rewardImage: '',
+        note: '',
         createdAt: '',
       );
 }

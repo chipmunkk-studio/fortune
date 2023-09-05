@@ -64,30 +64,31 @@ class MarkerRepositoryImpl extends MarkerRepository {
           )
           .toList();
 
-      // 티켓.
-      final ticketIngredient = ingredients.firstWhereOrNull((element) => element.type == IngredientType.ticket);
+      // 티켓들.
+      final ticketIngredients = ingredients.where((element) => element.type == IngredientType.ticket).toList();
 
-      // 티켓 아닌거 섞음.
+      // 티켓/마커 섞음.
       nonTicketAndUniqueIngredients.shuffle(Random());
+      ticketIngredients.shuffle(Random());
 
       List<RequestMarkerRandomInsert> markers = [];
 
-      // 재료 N개 랜덤 픽.
-      final collectedList = nonTicketAndUniqueIngredients.take(markerCount).toList();
+      // 재료 N개 / 티켓 N개 랜덤 픽.
+      final collectedMarkerList = nonTicketAndUniqueIngredients.take(markerCount).toList();
+      final collectedTicketList = ticketIngredients.take(ticketCount).toList();
 
       // 현재 위치를 기준으로 마커 N개 생성.
-      for (var element in collectedList) {
+      for (var element in collectedMarkerList) {
         final requestMarker = generateRandomMarker(lat: latitude, lon: longitude, ingredient: element);
         markers.add(requestMarker);
       }
 
       // 현재 위치를 기준으로 티켓을 N개 생성.
-      if (ticketIngredient != null) {
-        for (int i = 0; i < ticketCount; i++) {
-          final requestMarker = generateRandomMarker(lat: latitude, lon: longitude, ingredient: ticketIngredient);
-          markers.add(requestMarker);
-        }
+      for (var element in collectedTicketList) {
+        final requestMarker = generateRandomMarker(lat: latitude, lon: longitude, ingredient: element);
+        markers.add(requestMarker);
       }
+
       return await _markerService.insertRandomMarkers(markers: markers);
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(

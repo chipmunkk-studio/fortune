@@ -57,6 +57,22 @@ class NormalMission extends StatelessWidget {
                       style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      state.entity.mission.note,
+                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      state.entity.mission.missionReward.note,
+                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    ),
+                  ),
                 ],
               ),
               Positioned(

@@ -24,8 +24,10 @@ class AdHelper {
 
   // 배너.
   static String get bannerAdUnitId => _ads[_getPlatformKey()]?['banner'] ?? '';
+
   // 전면.
   static String get interstitialAdUnitId => _ads[_getPlatformKey()]?['interstitial'] ?? '';
+
   // 보상형.
   static String get rewardedAdUnitId => _ads[_getPlatformKey()]?['rewarded'] ?? '';
 }

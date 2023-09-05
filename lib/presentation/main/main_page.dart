@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -14,12 +14,15 @@ import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/adhelper.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/snackbar.dart';
+import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
-import 'package:foresh_flutter/core/widgets/dialog/defalut_dialog.dart';
+import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
+import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/login/bloc/login_state.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -27,6 +30,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
@@ -243,6 +247,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(cartKey),
+                    if (!kReleaseMode) _buildDebugLogout(context),
                   ],
                 ),
               ),
@@ -277,18 +282,37 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     );
   }
 
+  Align _buildDebugLogout(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: FortuneTextButton(
+        onPress: () {
+          Supabase.instance.client.auth.signOut();
+          router.navigateTo(
+            context,
+            "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
+            clearStack: true,
+            replace: false,
+          );
+        },
+        text: '로그아웃',
+        textStyle: FortuneTextStyle.body3Regular(),
+      ),
+    );
+  }
+
   // 위치변경감지.
   Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
     return myLocation.onLocationChanged.listen(
       (newLoc) {
-        // _animatedMapMove(
-        //   LatLng(
-        //     newLoc.latitude!,
-        //     newLoc.longitude!,
-        //   ),
-        //   bloc.state.zoomThreshold,
-        // );
-        // bloc.add(MainMyLocationChange(newLoc));
+        _animatedMapMove(
+          LatLng(
+            newLoc.latitude!,
+            newLoc.longitude!,
+          ),
+          _bloc.state.zoomThreshold,
+        );
+        _bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }

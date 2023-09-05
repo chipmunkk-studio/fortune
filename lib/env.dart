@@ -27,6 +27,9 @@ enum EnvKey {
   appMetrica,
   oneSignalApiKey,
   randomDistance,
+  twilioTestAccountEmail,
+  twilioTestPassword,
+  twilioTestPhoneNumber,
   refreshTime,
   ticketCount,
   markerCount,
@@ -40,6 +43,9 @@ class FortuneRemoteConfig {
   final String mapUrlTemplate;
   final String appMetricaKey;
   final String oneSignalApiKey;
+  final String twilioTestAccountEmail;
+  final String twilioTestPassword;
+  final String twilioTestPhoneNumber;
   final double randomDistance;
   final int refreshTime;
   final int markerCount;
@@ -57,6 +63,9 @@ class FortuneRemoteConfig {
     required this.markerCount,
     required this.ticketCount,
     required this.refreshTime,
+    required this.twilioTestAccountEmail,
+    required this.twilioTestPassword,
+    required this.twilioTestPhoneNumber,
   });
 
   @override
@@ -110,15 +119,15 @@ class Environment {
     /// 파이어베이스 crashlytics
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    FirebaseCrashlytics.instance
-      ..setCustomKey("appName", packageInfo.appName)
-      ..setCustomKey("packageName", packageInfo.packageName)
-      ..setCustomKey("version", packageInfo.version)
-      ..setCustomKey("buildNumber", packageInfo.buildNumber)
-      ..setCustomKey("buildType", buildType.toString());
-
     // 웹은 크래실리틱스 수집 안함.
     if (!kIsWeb) {
+      FirebaseCrashlytics.instance
+        ..setCustomKey("appName", packageInfo.appName)
+        ..setCustomKey("packageName", packageInfo.packageName)
+        ..setCustomKey("version", packageInfo.version)
+        ..setCustomKey("buildNumber", packageInfo.buildNumber)
+        ..setCustomKey("buildType", buildType.toString());
+
       if (kDebugMode) {
         await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
       } else {
@@ -162,6 +171,9 @@ getRemoteConfigArgs() async {
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
     final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
+    final twilioTestAccountEmail = remoteConfig.getString(describeEnum(EnvKey.twilioTestAccountEmail));
+    final twilioTestPassword = remoteConfig.getString(describeEnum(EnvKey.twilioTestPassword));
+    final twilioTestPhoneNumber = remoteConfig.getString(describeEnum(EnvKey.twilioTestPhoneNumber));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
@@ -196,6 +208,9 @@ getRemoteConfigArgs() async {
       refreshTime: refreshTime,
       markerCount: markerCount,
       ticketCount: ticketCount,
+      twilioTestAccountEmail: twilioTestAccountEmail,
+      twilioTestPassword: twilioTestPassword,
+      twilioTestPhoneNumber: twilioTestPhoneNumber,
     );
   } catch (e) {
     throw (e is Exception) ? e.handleException() : e;

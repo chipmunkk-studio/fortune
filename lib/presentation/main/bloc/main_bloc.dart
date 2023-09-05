@@ -216,7 +216,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
           newList.remove(loc);
 
-          // 애니메이션 수행 여부 확인.
           produceSideEffect(
             MainMarkerClickSideEffect(
               key: event.key,
@@ -233,15 +232,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             ),
           );
 
-          if (result.isLevelOrGradeUp) {
-            produceSideEffect(
-              MainShowDialog(
-                landingRoute: Routes.obtainHistoryRoute,
-                title: result.dialogHeadings,
-                subTitle: result.dialogContent,
-              ),
-            );
-          }
+          // todo 레벨업 혹은 등급업일 경우 다이얼로그 노출
+          // if (result.isLevelOrGradeUp) {
+          //   produceSideEffect(
+          //     MainShowDialog(
+          //       landingRoute: Routes.obtainHistoryRoute,
+          //       title: result.dialogHeadings,
+          //       subTitle: result.dialogContent,
+          //     ),
+          //   );
+          // }
         },
       ),
     );

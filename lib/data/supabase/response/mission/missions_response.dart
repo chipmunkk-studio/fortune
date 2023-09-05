@@ -14,6 +14,8 @@ class MissionsResponse extends MissionsEntity {
   final String title_;
   @JsonKey(name: 'content')
   final String content_;
+  @JsonKey(name: 'note')
+  final String note_;
   @JsonKey(name: 'mission_type')
   final String missionType_;
   @JsonKey(name: 'mission_reward')
@@ -28,10 +30,12 @@ class MissionsResponse extends MissionsEntity {
     required this.missionType_,
     required this.missionReward_,
     required this.isActive_,
+    required this.note_,
   }) : super(
           id: id_.toInt(),
           title: title_,
           content: content_,
+          note: note_,
           missionType: getMissionType(missionType_),
           missionReward: missionReward_ ?? MissionRewardEntity.empty(),
           isActive: isActive_,
