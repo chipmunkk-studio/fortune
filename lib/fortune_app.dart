@@ -32,11 +32,11 @@ class FortuneApp extends StatelessWidget {
             child: SkeletonTheme(
               shimmerGradient: const LinearGradient(
                 colors: [
-                  ColorName.backgroundLight,
-                  ColorName.deActiveDark,
-                  ColorName.backgroundLight,
-                  ColorName.deActiveDark,
-                  ColorName.backgroundLight,
+                  ColorName.grey800,
+                  ColorName.grey700,
+                  ColorName.grey800,
+                  ColorName.grey700,
+                  ColorName.grey800,
                 ],
                 stops: [0.1, 0.5, 0.9, 0.5, 0.9],
               ),

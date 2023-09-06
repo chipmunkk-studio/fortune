@@ -24,8 +24,8 @@ extension FortuneDialogEx on BuildContext {
       context: this,
       animType: AnimType.scale,
       dialogType: DialogType.noHeader,
-      dialogBackgroundColor: ColorName.backgroundLight,
-      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.backgroundLight),
+      dialogBackgroundColor: ColorName.grey800,
+      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey800),
       dismissOnTouchOutside: dismissOnTouchOutside,
       dismissOnBackKeyPress: dismissOnBackKeyPress,
       body: Wrap(
@@ -40,14 +40,14 @@ extension FortuneDialogEx on BuildContext {
                 const SizedBox(height: 20),
                 Text(
                   title,
-                  style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active),
+                  style: FortuneTextStyle.headLine2(),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
                 if (subTitle != null)
                   Text(
                     subTitle,
-                    style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                    style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                     textAlign: TextAlign.center,
                   ),
                 const SizedBox(height: 20),
@@ -61,7 +61,7 @@ extension FortuneDialogEx on BuildContext {
         32.r,
       ),
       btnOkColor: ColorName.primary,
-      btnCancelColor: ColorName.deActive,
+      btnCancelColor: ColorName.grey700,
       btnCancelText: btnCancelText,
       btnCancelOnPress: btnCancelPressed,
       btnOkText: btnOkText,

@@ -63,8 +63,8 @@ class FortuneDialogService {
       context: context,
       animType: AnimType.scale,
       dialogType: DialogType.noHeader,
-      dialogBackgroundColor: ColorName.backgroundLight,
-      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.backgroundLight),
+      dialogBackgroundColor: ColorName.grey800,
+      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey800),
       dismissOnTouchOutside: false,
       dismissOnBackKeyPress: false,
       body: Wrap(
@@ -79,7 +79,7 @@ class FortuneDialogService {
                 const SizedBox(height: 20),
                 Text(
                   error.description ?? error.message ?? '알 수 없는 에러',
-                  style: FortuneTextStyle.subTitle1SemiBold(fontColor: ColorName.active),
+                  style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),

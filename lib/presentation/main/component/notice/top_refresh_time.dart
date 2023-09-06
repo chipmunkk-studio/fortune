@@ -78,7 +78,7 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
                         builder: (BuildContext context, Widget? child) {
                           return CircularProgressIndicator(
                             value: controller.value,
-                            backgroundColor: ColorName.deActiveDark,
+                            backgroundColor: ColorName.grey700,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               controller.value == 0.0
                                   ? Colors.transparent
@@ -95,7 +95,7 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
                           builder: (BuildContext context, Widget? child) => Center(
                             child: Text(
                               _timerString,
-                              style: FortuneTextStyle.body3Bold(),
+                              style: FortuneTextStyle.body3Semibold(),
                             ),
                           ),
                         ),
@@ -109,7 +109,7 @@ class _TopRefreshTimeState extends State<TopRefreshTime> with TickerProviderStat
                       return controller.value < 0.4
                           ? Text(
                               "$_timerString초 후 새로고침",
-                              style: FortuneTextStyle.body3Bold(),
+                              style: FortuneTextStyle.body3Semibold(),
                             )
                           : const SizedBox.shrink();
                     },

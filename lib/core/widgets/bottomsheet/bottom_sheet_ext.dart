@@ -32,7 +32,7 @@ extension FortuneBottomSheet on BuildContext {
               isShowTopBar
                   ? Column(
                       children: [
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         Row(
                           children: [
                             const Spacer(),
@@ -41,7 +41,7 @@ extension FortuneBottomSheet on BuildContext {
                               height: 4,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16.r),
-                                color: ColorName.deActiveDark,
+                                color: ColorName.grey700,
                               ),
                             ),
                             const Spacer()
@@ -64,7 +64,7 @@ extension FortuneBottomSheet on BuildContext {
                               InkResponse(
                                 radius: 25,
                                 onTap: () => Navigator.pop(context),
-                                splashColor: ColorName.backgroundLight,
+                                splashColor: ColorName.grey800,
                                 child: Assets.icons.icCancel.svg(width: 24, height: 24),
                               ),
                               const SizedBox(width: 25),

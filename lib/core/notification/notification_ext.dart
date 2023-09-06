@@ -32,7 +32,7 @@ AndroidNotificationDetails androidNotificationDetails = const AndroidNotificatio
   channelDescription: channelDescription,
   importance: Importance.defaultImportance,
   priority: Priority.defaultPriority,
-  color: ColorName.backgroundLight
+  color: ColorName.grey800
 );
 
 NotificationDetails platformChannelSpecifics(AndroidNotificationDetails details) =>

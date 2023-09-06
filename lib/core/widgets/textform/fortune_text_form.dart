@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foresh_flutter/core/gen/colors.gen.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/suffixicon/default_prefix_icon.dart';
 import 'package:foresh_flutter/core/widgets/suffixicon/default_suffix_icon.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
 
 class FortuneTextForm extends StatefulWidget {
   final dartz.Function1<String, void> onTextChanged;
@@ -75,9 +74,9 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
         hintText: widget.hint,
         contentPadding: EdgeInsets.fromLTRB(prefixIcon == null ? 16 : 0, 16, suffixIcon == null ? 16 : 0, 16),
         counterText: "",
-        hintStyle: FortuneTextStyle.subTitle3Regular(fontColor: ColorName.deActive),
+        hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
         errorText: widget.errorMessage,
-        errorStyle: FortuneTextStyle.body3Regular(fontColor: ColorName.negative),
+        errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
       ),

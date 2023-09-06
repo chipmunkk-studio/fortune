@@ -22,7 +22,7 @@ class MissionNormalCard extends StatelessWidget {
               topLeft: Radius.circular(24.r),
               topRight: Radius.circular(24.r),
             ),
-            color: ColorName.backgroundDark,
+            color: ColorName.grey700,
           ),
           child: Row(
             children: [
@@ -32,7 +32,7 @@ class MissionNormalCard extends StatelessWidget {
                   children: [
                     Text(
                       item.mission.title,
-                      style: FortuneTextStyle.subTitle3SemiBold(),
+                      style: FortuneTextStyle.subTitle2SemiBold(),
                       maxLines: 2,
                     ),
                     const SizedBox(height: 4),
@@ -40,8 +40,8 @@ class MissionNormalCard extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: Text(
                         item.mission.content,
-                        style: FortuneTextStyle.body2Regular(
-                          fontColor: ColorName.activeDark,
+                        style: FortuneTextStyle.body2Light(
+                          fontColor: ColorName.grey200,
                         ),
                         maxLines: 2,
                       ),
@@ -53,12 +53,12 @@ class MissionNormalCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24.r),
-                            color: ColorName.deActiveDark,
+                            color: ColorName.primary.withOpacity(0.1),
                           ),
                           child: Text(
                             "남은 리워드",
                             style: FortuneTextStyle.caption1SemiBold(
-                              fontColor: Colors.white,
+                              fontColor: ColorName.primary,
                             ),
                           ),
                         ),
@@ -68,11 +68,11 @@ class MissionNormalCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "${item.mission.missionReward.remainCount}",
-                                style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
+                                style: FortuneTextStyle.body3Semibold(fontColor: Colors.white),
                               ),
                               TextSpan(
                                 text: "/${item.mission.missionReward.totalCount}",
-                                style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                                style: FortuneTextStyle.body3Light(fontColor: ColorName.grey400),
                               ),
                             ],
                           ),
@@ -99,7 +99,7 @@ class MissionNormalCard extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: ColorName.deActiveDark,
+                color: ColorName.grey600,
                 width: 0.5,
               ),
             ),
@@ -111,7 +111,7 @@ class MissionNormalCard extends StatelessWidget {
                 bottomLeft: Radius.circular(24.r),
                 bottomRight: Radius.circular(24.r),
               ),
-              color: ColorName.backgroundDark,
+              color: ColorName.grey700,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,7 @@ class MissionNormalCard extends StatelessWidget {
                         : item.userHaveCount / item.requiredTotalCount,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
-                    backgroundColor: ColorName.deActive.withOpacity(0.3),
+                    backgroundColor: ColorName.grey500.withOpacity(0.3),
                     progressColor: ColorName.primary,
                   ),
                 ),
@@ -137,11 +137,11 @@ class MissionNormalCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.userHaveCount}",
-                        style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
+                        style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.requiredTotalCount}",
-                        style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                        style: FortuneTextStyle.caption2Regular(fontColor: ColorName.grey400),
                       ),
                     ],
                   ),

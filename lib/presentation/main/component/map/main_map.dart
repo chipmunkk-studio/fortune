@@ -106,7 +106,7 @@ class MainMap extends StatelessWidget {
                                 state.myLocation!.latitude!,
                                 state.myLocation!.longitude!,
                               ),
-                              color: ColorName.deActive.withOpacity(0.1),
+                              color: ColorName.grey700.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
                               radius: state.clickableRadiusLength,

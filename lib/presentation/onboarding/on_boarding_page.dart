@@ -36,14 +36,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           const Spacer(),
           Text(
             tr("onboarding_greeting_title"),
-            style: FortuneTextStyle.headLine3(),
+            style: FortuneTextStyle.headLine2(),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           Text(
             tr("onboarding_greeting_sub_title"),
-            style: FortuneTextStyle.subTitle3Regular(
-              fontColor: ColorName.activeDark,
+            style: FortuneTextStyle.subTitle2SemiBold(
+              fontColor: ColorName.grey200,
             ),
             textAlign: TextAlign.center,
           ),

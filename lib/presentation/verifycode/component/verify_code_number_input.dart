@@ -64,11 +64,11 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                       hintText: "6자리 숫자 ",
                       contentPadding: const EdgeInsets.all(16),
                       counterText: "",
-                      hintStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.deActive),
+                      hintStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey700),
                       errorText: FortuneValidator.isValidVerifyCode(widget._verifyCode) || widget._verifyCode.isEmpty
                           ? null
                           : "인증번호는 숫자 6자리입니다.",
-                      errorStyle: FortuneTextStyle.body3Regular(fontColor: ColorName.negative),
+                      errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
                     ),
                   );
                 },
@@ -106,8 +106,8 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                                   "${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}";
                               return Text(
                                 displayTime,
-                                style: FortuneTextStyle.body2Regular(
-                                  fontColor: ColorName.activeDark,
+                                style: FortuneTextStyle.body2Light(
+                                  fontColor: ColorName.grey200,
                                 ),
                               );
                             }()

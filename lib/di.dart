@@ -46,6 +46,7 @@ import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
+import 'package:foresh_flutter/presentation/myingredients/bloc/my_ingredients.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
@@ -467,6 +468,11 @@ _initBloc() {
       () => VerifyCodeBloc(
         verifyPhoneNumberUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MyIngredientsBloc(
+        getMyIngredientsUseCase: serviceLocator(),
       ),
     )
     // ..registerFactory(

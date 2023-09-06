@@ -13,35 +13,35 @@ import 'package:flutter/material.dart';
 class ColorName {
   ColorName._();
 
-  /// Color: #FFFFFFFF
-  static const Color active = Color(0xFFFFFFFF);
+  /// Color: #D8D8E3
+  static const Color grey100 = Color(0xFFD8D8E3);
 
-  /// Color: #FF9DA2B1
-  static const Color activeDark = Color(0xFF9DA2B1);
+  /// Color: #A2A2AD
+  static const Color grey200 = Color(0xFFA2A2AD);
 
-  /// Color: #FF1b1c24
-  static const Color background = Color(0xFF1B1C24);
+  /// Color: #777782
+  static const Color grey400 = Color(0xFF777782);
 
-  /// Color: #D91B1C24
-  static const Color backgroundBlur = Color(0xD91B1C24);
+  /// Color: #505058
+  static const Color grey500 = Color(0xFF505058);
 
-  /// Color: #FF2B2D3C
-  static const Color backgroundDark = Color(0xFF2B2D3C);
+  /// Color: #3A3A40
+  static const Color grey600 = Color(0xFF3A3A40);
 
-  /// Color: #FF262734
-  static const Color backgroundLight = Color(0xFF262734);
+  /// Color: #2E2E34
+  static const Color grey700 = Color(0xFF2E2E34);
 
-  /// Color: #FF636778
-  static const Color deActive = Color(0xFF636778);
+  /// Color: #25252A
+  static const Color grey800 = Color(0xFF25252A);
 
-  /// Color: #FF3E424D
-  static const Color deActiveDark = Color(0xFF3E424D);
+  /// Color: #1A1A1E
+  static const Color grey900 = Color(0xFF1A1A1E);
 
-  /// Color: #FFE02644
-  static const Color negative = Color(0xFFE02644);
+  /// Color: #EF5248
+  static const Color negative = Color(0xFFEF5248);
 
-  /// Color: #FFFADFE3
-  static const Color negativeLight = Color(0xFFFADFE3);
+  /// Color: #FAE1E1
+  static const Color negativeLight = Color(0xFFFAE1E1);
 
   /// Color: #FF28AF58
   static const Color positive = Color(0xFF28AF58);
@@ -49,10 +49,10 @@ class ColorName {
   /// Color: #FFE6FAED
   static const Color positiveLight = Color(0xFFE6FAED);
 
-  /// Color: #FF4bf0c8
-  static const Color primary = Color(0xFF4BF0C8);
+  /// Color: #45E2AA
+  static const Color primary = Color(0xFF45E2AA);
 
-  /// Color: #FF7367FF
+  /// Color: #7367FF
   static const Color secondary = Color(0xFF7367FF);
 
   /// Color: #FFEDBE13
@@ -60,4 +60,7 @@ class ColorName {
 
   /// Color: #FFF9F4E4
   static const Color warningLight = Color(0xFFF9F4E4);
+
+  /// Color: #FFFFFF
+  static const Color white = Color(0xFFFFFFFF);
 }

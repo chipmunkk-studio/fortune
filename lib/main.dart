@@ -24,9 +24,6 @@ main() {
       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
       String startRoute = await serviceLocator<AuthService>().recoverSession(initialMessage?.data ?? {});
 
-      final usecase = serviceLocator<GetMyIngredientsUseCase>();
-      final histories = await usecase();
-
       runApp(
         EasyLocalization(
           // 지원 언어 리스트

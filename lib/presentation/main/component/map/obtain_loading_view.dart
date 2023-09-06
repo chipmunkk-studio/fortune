@@ -36,7 +36,7 @@ class ObtainLoadingView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       "${processingMarker?.ingredient.name} 줍줍 중..",
-                      style: FortuneTextStyle.body3Regular(),
+                      style: FortuneTextStyle.body3Light(),
                       textAlign: TextAlign.center,
                     ),
                   ],

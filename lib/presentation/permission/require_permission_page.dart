@@ -121,7 +121,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
         children: [
           Text(
             "서비스 이용을 위해\n권한 허용이 필요해요",
-            style: FortuneTextStyle.headLine3(),
+            style: FortuneTextStyle.headLine1(),
             textAlign: TextAlign.start,
           ),
           const SizedBox(height: 40),
@@ -136,7 +136,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           Text(
             "선택 권한의 경우 허용하지 않으셔도 서비스를 이용하실 수 있으나, "
             "일부 서비스 이용이 제한될 수 있습니다.",
-            style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+            style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
           ),
           const Spacer(),
           FortuneScaleButton(
@@ -158,12 +158,12 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           children: [
             Text(
               permissionItem.title,
-              style: FortuneTextStyle.body2Regular(),
+              style: FortuneTextStyle.body1Semibold(),
             ),
             const SizedBox(height: 4),
             Text(
               permissionItem.subTitle,
-              style: FortuneTextStyle.body2Regular(fontColor: ColorName.activeDark),
+              style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
             ),
           ],
         )

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#FF1b1c24</color>
-    <color name="backgroundLight">#FF262734</color>
-    <color name="backgroundDark">#FF2B2D3C</color>
-    <color name="backgroundBlur">#D91B1C24</color>
-    <color name="primary">#FF4bf0c8</color>
-    <color name="secondary">#FF7367FF</color>
+    <color name="grey900">#1A1A1E</color>
+    <color name="grey800">#25252A</color>
+    <color name="grey700">#2E2E34</color>
+    <color name="grey600">#3A3A40</color>
+    <color name="grey500">#505058</color>
+    <color name="grey400">#777782</color>
+    <color name="grey200">#A2A2AD</color>
+    <color name="grey100">#D8D8E3</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="primary">#45E2AA</color>
+    <color name="secondary">#7367FF</color>
+
     <color name="positiveLight">#FFE6FAED</color>
     <color name="positive">#FF28AF58</color>
-
-    <color name="negativeLight">#FFFADFE3</color>
-    <color name="negative">#FFE02644</color>
+    <color name="negativeLight">#FAE1E1</color>
+    <color name="negative">#EF5248</color>
     <color name="warningLight">#FFF9F4E4</color>
     <color name="warning">#FFEDBE13</color>
-
-    <color name="active">#FFFFFFFF</color>
-    <color name="activeDark">#FF9DA2B1</color>
-    <color name="deActive">#FF636778</color>
-    <color name="deActiveDark">#FF3E424D</color>
 </resources>

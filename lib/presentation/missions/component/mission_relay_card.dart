@@ -22,7 +22,7 @@ class MissionRelayCard extends StatelessWidget {
               topLeft: Radius.circular(24.r),
               topRight: Radius.circular(24.r),
             ),
-            color: ColorName.backgroundDark,
+            color: ColorName.grey900,
           ),
           child: Row(
             children: [
@@ -32,7 +32,7 @@ class MissionRelayCard extends StatelessWidget {
                   children: [
                     Text(
                       item.mission.title,
-                      style: FortuneTextStyle.subTitle3SemiBold(),
+                      style: FortuneTextStyle.subTitle1Bold(),
                       maxLines: 2,
                     ),
                     const SizedBox(height: 4),
@@ -40,8 +40,8 @@ class MissionRelayCard extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: Text(
                         item.mission.content,
-                        style: FortuneTextStyle.body2Regular(
-                          fontColor: ColorName.activeDark,
+                        style: FortuneTextStyle.body2Semibold(
+                          fontColor: ColorName.grey200,
                         ),
                         maxLines: 2,
                       ),
@@ -53,7 +53,7 @@ class MissionRelayCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24.r),
-                            color: ColorName.deActiveDark,
+                            color: ColorName.grey700,
                           ),
                           child: Text(
                             "선착순",
@@ -68,11 +68,11 @@ class MissionRelayCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "${item.relayMarker.hitCount}",
-                                style: FortuneTextStyle.body3Regular(fontColor: Colors.white),
+                                style: FortuneTextStyle.body3Light(fontColor: Colors.white),
                               ),
                               TextSpan(
                                 text: "/${item.requiredTotalCount} ${item.isRelayMissionCleared}",
-                                style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                                style: FortuneTextStyle.body2Semibold(fontColor: ColorName.grey700),
                               ),
                             ],
                           ),
@@ -99,7 +99,7 @@ class MissionRelayCard extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: ColorName.deActiveDark,
+                color: ColorName.grey700,
                 width: 0.5,
               ),
             ),
@@ -111,7 +111,7 @@ class MissionRelayCard extends StatelessWidget {
                 bottomLeft: Radius.circular(24.r),
                 bottomRight: Radius.circular(24.r),
               ),
-              color: ColorName.backgroundDark,
+              color: ColorName.grey900,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,7 @@ class MissionRelayCard extends StatelessWidget {
                         : item.relayMarker.hitCount / item.requiredTotalCount,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
-                    backgroundColor: ColorName.deActive.withOpacity(0.3),
+                    backgroundColor: ColorName.grey700.withOpacity(0.3),
                     progressColor: ColorName.primary,
                   ),
                 ),
@@ -137,11 +137,11 @@ class MissionRelayCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.relayMarker.hitCount}",
-                        style: FortuneTextStyle.body3Bold(fontColor: ColorName.primary),
+                        style: FortuneTextStyle.body3Light(fontColor: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.requiredTotalCount}",
-                        style: FortuneTextStyle.body3Regular(fontColor: ColorName.deActive),
+                        style: FortuneTextStyle.body3Light(fontColor: ColorName.grey700),
                       ),
                     ],
                   ),

@@ -76,7 +76,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                   const SizedBox(width: 24),
                   Text(
                     "서비스 이용을 위해\n약관에 동의해주세요",
-                    style: FortuneTextStyle.subTitle1SemiBold(),
+                    style: FortuneTextStyle.headLine2(),
                   ),
                 ],
               ),
@@ -101,7 +101,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                           state: item.isChecked,
                         ),
                         const SizedBox(width: 12),
-                        Text(item.title, style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark)),
+                        Text(item.title, style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200)),
                         const Spacer(),
                         GestureDetector(
                           onTap: () => router.navigateTo(

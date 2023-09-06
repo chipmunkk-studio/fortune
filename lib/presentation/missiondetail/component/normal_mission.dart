@@ -36,7 +36,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.title,
-                      style: FortuneTextStyle.subTitle1SemiBold(),
+                      style: FortuneTextStyle.headLine2(),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -44,7 +44,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.content,
-                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                      style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -54,7 +54,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.content,
-                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                      style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -62,7 +62,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.note,
-                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                      style: FortuneTextStyle.body1Semibold(fontColor: ColorName.grey200),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -70,7 +70,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.missionReward.note,
-                      style: FortuneTextStyle.body1Regular(fontColor: ColorName.activeDark),
+                      style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                     ),
                   ),
                 ],
@@ -86,8 +86,8 @@ class NormalMission extends StatelessWidget {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        ColorName.background.withOpacity(1.0),
-                        ColorName.background.withOpacity(0.0),
+                        ColorName.grey900.withOpacity(1.0),
+                        ColorName.grey900.withOpacity(0.0),
                       ],
                     ),
                   ),
@@ -127,7 +127,7 @@ class NormalMission extends StatelessWidget {
               Text(
                 "50개가 차감되며, 회원정보에 등록된 휴대폰 메세지로 모바일 상품권이 발송됩니다. 지금받으시겠습니까?",
                 textAlign: TextAlign.center,
-                style: FortuneTextStyle.body2Regular(),
+                style: FortuneTextStyle.body2Light(),
               ),
               const SizedBox(height: 16),
               FortuneBottomButton(
@@ -207,7 +207,7 @@ class _IngredientLayout extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1.0,
                 child: CustomPaint(
-                  painter: SquirclePainter(color: ColorName.backgroundLight),
+                  painter: SquirclePainter(color: ColorName.grey800),
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     child: item.isEmpty
@@ -240,9 +240,9 @@ class _IngredientLayout extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.h),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
-                    color: ColorName.backgroundLight,
+                    color: ColorName.grey800,
                     border: Border.all(
-                      color: ColorName.background,
+                      color: ColorName.grey900,
                       width: 2.h,
                     ),
                   ),
@@ -251,11 +251,11 @@ class _IngredientLayout extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: "${item.haveCount}",
-                          style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
+                          style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.primary),
                         ),
                         TextSpan(
                           text: "/${item.requireCount}",
-                          style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.deActive),
+                          style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.grey500),
                         ),
                       ],
                     ),
@@ -264,7 +264,7 @@ class _IngredientLayout extends StatelessWidget {
                 SizedBox(height: 8.h),
                 Text(
                   item.ingredient.name.isEmpty ? '-' : item.ingredient.name,
-                  style: FortuneTextStyle.body3Regular(),
+                  style: FortuneTextStyle.body3Light(),
                 )
               ],
             ),

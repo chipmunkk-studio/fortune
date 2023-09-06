@@ -50,7 +50,7 @@ class _TopNoticeState extends State<TopNotice> {
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
-                    color: ColorName.backgroundLight,
+                    color: ColorName.grey800,
                   ),
                   child: Material(
                     color: Colors.transparent,
@@ -83,7 +83,7 @@ class _TopNoticeState extends State<TopNotice> {
                                         children: [
                                           Text(
                                             "${e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname}님이",
-                                            style: FortuneTextStyle.body3Bold(),
+                                            style: FortuneTextStyle.body3Semibold(),
                                           ),
                                           Flexible(
                                             child: Row(
@@ -92,14 +92,14 @@ class _TopNoticeState extends State<TopNotice> {
                                                 Flexible(
                                                   child: Text(
                                                     e.ingredient.name,
-                                                    style: FortuneTextStyle.body3Regular(),
+                                                    style: FortuneTextStyle.body3Light(),
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                                 Text(
                                                   "를 획득했어요!",
-                                                  style: FortuneTextStyle.body3Regular(),
+                                                  style: FortuneTextStyle.body3Light(),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                                 const SizedBox(width: 40),

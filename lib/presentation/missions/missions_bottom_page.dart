@@ -65,14 +65,14 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text('수행 가능한 미션', style: FortuneTextStyle.subTitle1SemiBold()),
+                  child: Text('수행 가능한 미션', style: FortuneTextStyle.headLine2()),
                 ),
                 const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     '미션을 완료하시면 리워드를 드려요!',
-                    style: FortuneTextStyle.body2Regular(fontColor: ColorName.deActiveDark),
+                    style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                   ),
                 ),
                 const SizedBox(height: 20),
