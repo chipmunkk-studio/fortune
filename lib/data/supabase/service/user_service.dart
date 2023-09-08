@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:foresh_flutter/core/error/failure/common_failure.dart';
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/core/message_ext.dart';
@@ -45,6 +47,7 @@ class UserService {
       final requestToUpdate = RequestFortuneUser(
         phone: request.phone ?? user.phone,
         nickname: request.nickname ?? user.nickname,
+        profileImage: request.profileImage ?? user.profileImage,
         ticket: request.ticket ?? user.ticket,
         markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
         level: level,
@@ -64,23 +67,43 @@ class UserService {
     }
   }
 
-  //
-  // // 프로필 이미지 업데이트.
-  // Future<bool> updateProfile(String path) async {
-  //   try {
-  //     await _client.from(_tableName).update(
-  //       {'profile': path},
-  //     ).match(
-  //       {"email": _client.auth.currentUser?.email},
-  //     );
-  //     return true;
-  //   } on PostgrestException catch (e) {
-  //     throw PostgrestFailure(
-  //       errorMessage: e.message,
-  //       errorCode: e.code,
-  //     );
-  //   }
-  // }
+  // 프로필 업데이트
+  Future<FortuneUserEntity> updateProfile(
+    FortuneUserEntity user, {
+    required String filePath,
+  }) async {
+    try {
+      final storage = _client.storage;
+      final uploadFile = File(filePath);
+      final now = DateTime.now();
+      final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
+      final fullName = "${_client.auth.currentUser?.phone}/$timestamp.jpg";
+
+      final String path = await storage
+          .from(
+            BucketName.userProfile,
+          )
+          .upload(
+            fullName,
+            uploadFile,
+            fileOptions: const FileOptions(
+              cacheControl: '3600',
+              upsert: false,
+            ),
+          );
+
+      final String imagePath = storage.from(BucketName.userProfile).getPublicUrl(fullName);
+
+      return await update(
+        user.phone,
+        request: RequestFortuneUser(
+          profileImage: imagePath,
+        ),
+      );
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
 
   // 휴대폰 번호로 사용자를 찾음.
   Future<FortuneUserEntity?> findUserByPhone(String? phone) async {

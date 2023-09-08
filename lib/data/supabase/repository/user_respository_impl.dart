@@ -53,6 +53,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity> updateUser(FortuneUserEntity user) async {
     try {
+      final user = await findUserByPhoneNonNull();
       return await _userService.update(
         user.phone,
         request: RequestFortuneUser(
@@ -60,6 +61,22 @@ class UserRepositoryImpl extends UserRepository {
           ticket: user.ticket,
           markerObtainCount: user.markerObtainCount,
         ),
+      );
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneCommonMessage.notUpdateUser,
+      );
+    }
+  }
+
+  @override
+  Future<FortuneUserEntity> updateUserProfile(String filePath) async {
+    try {
+      // 테스트 계정 때문에 아이디 찾아야됨.
+      final user = await findUserByPhoneNonNull();
+      return await _userService.updateProfile(
+        user,
+        filePath: filePath,
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(

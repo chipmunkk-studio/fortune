@@ -32,4 +32,28 @@ class LocalRepositoryImpl extends LocalRepository {
       );
     }
   }
+
+  @override
+  Future<bool> getAllowPushAlarm() async {
+    try {
+      final result = await localDataSource.getAllowPushAlarm();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '푸시 알람을 설정할 수 없습니다',
+      );
+    }
+  }
+
+  @override
+  Future<void> setAllowPushAlarm(bool isAllow)  async {
+    try {
+      final result = await localDataSource.setAllowPushAlarm(isAllow);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '테스트 계정을 설정 할 수 없습니다',
+      );
+    }
+  }
 }

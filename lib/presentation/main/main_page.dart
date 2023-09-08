@@ -242,9 +242,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   children: [
                     const SizedBox(height: 10),
                     TopLocationArea(
-                      onTap: () => router.navigateTo(
+                      onProfileTap: () => router.navigateTo(
                         context,
-                        Routes.alarmFeedRoute,
+                        Routes.myPageRoute,
                       ),
                     ),
                     const SizedBox(height: 16),
