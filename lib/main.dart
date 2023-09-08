@@ -40,7 +40,7 @@ main() {
       );
     },
     (error, stack) => FirebaseCrashlytics.instance.recordError(
-      error,
+      error.toString(),
       stack,
       fatal: true,
     ),

@@ -86,10 +86,10 @@ android {
 
     signingConfigs {
         release {
-            storePassword System.getenv("KEYSTORE_PASSWORD")
-            keyPassword System.getenv("KEY_PASSWORD")
-            keyAlias System.getenv("KEY_ALIAS")
-            storeFile file('product.jks') // storeFile의 위치를 정확하게 지정해야 합니다
+            storePassword keystoreProperties['storePassword'] ?: System.getenv("KEYSTORE_PASSWORD")
+            keyPassword keystoreProperties['keyPassword'] ?: System.getenv("KEY_PASSWORD")
+            keyAlias keystoreProperties['keyAlias'] ?: System.getenv("KEY_ALIAS")
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : file('product.jks')
         }
     }
 
