@@ -21,7 +21,6 @@ import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/agreeterms/agree_terms_bottom_sheet.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_state.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
