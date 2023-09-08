@@ -1,4 +1,4 @@
-name: Android Product Build and Sign Flutter App
+name: Android Product Build
 
 on:
   push:
