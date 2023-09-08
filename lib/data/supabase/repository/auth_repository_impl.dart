@@ -125,7 +125,7 @@ class AuthRepositoryImpl extends AuthRepository {
         email: email,
         password: password,
       );
-      _authService.persistSession(response.session!);
+      await _authService.persistSession(response.session!);
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
