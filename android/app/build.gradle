@@ -89,7 +89,7 @@ android {
             storePassword System.getenv("KEYSTORE_PASSWORD")
             keyPassword System.getenv("KEY_PASSWORD")
             keyAlias System.getenv("KEY_ALIAS")
-            storeFile file('android/app/product.jks') // storeFile의 위치를 정확하게 지정해야 합니다
+            storeFile file('product.jks') // storeFile의 위치를 정확하게 지정해야 합니다
         }
     }
 
