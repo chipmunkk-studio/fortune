@@ -24,6 +24,7 @@ class MyIngredientsBloc extends Bloc<MyIngredientsEvent, MyIngredientsState>
           emit(
             state.copyWith(
               entities: r,
+              isLoading: false,
             ),
           );
         },

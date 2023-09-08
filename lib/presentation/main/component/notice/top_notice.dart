@@ -50,7 +50,7 @@ class _TopNoticeState extends State<TopNotice> {
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
-                    color: ColorName.grey800,
+                    color: ColorName.grey700,
                   ),
                   child: Material(
                     color: Colors.transparent,

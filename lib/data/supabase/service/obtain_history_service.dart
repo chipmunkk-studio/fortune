@@ -55,6 +55,7 @@ class ObtainHistoryService {
           .select(_fullSelectQuery)
           .eq('user', userId)
           .eq('ingredient', ingredientId)
+          .order('created_at', ascending: false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

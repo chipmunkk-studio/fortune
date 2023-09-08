@@ -52,6 +52,12 @@ def getBranchName = { ->
     }
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 apply plugin: 'com.android.application'
 // START: FlutterFire Configuration
 apply plugin: 'com.google.gms.google-services'
@@ -79,13 +85,12 @@ android {
     }
 
     signingConfigs {
-        // todo 나중에 배포할 때 써야 됨.
-//        releaseWithSignedKey {
-//            storeFile file("SampleKeyStore.jks")
-//            storePassword "password1"
-//            keyAlias "sample"
-//            keyPassword "password2"
-//        }
+        release {
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyPassword System.getenv("KEY_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            storeFile file('android/app/product.jks') // storeFile의 위치를 정확하게 지정해야 합니다
+        }
     }
 
     defaultConfig {
@@ -109,8 +114,7 @@ android {
         }
 
         release {
-            // todo 추가할거 추가해야 됨.(스토어 배포시 난독화 포함)
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
         }

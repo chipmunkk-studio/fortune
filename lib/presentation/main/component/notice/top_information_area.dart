@@ -91,7 +91,7 @@ class _UserLevel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.grey800,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -113,12 +113,12 @@ class _UserLevel extends StatelessWidget {
                     animationDuration: 2000,
                     center: Text(
                       "Lv. $_level",
-                      style: FortuneTextStyle.caption1SemiBold(),
+                      style: FortuneTextStyle.caption3Semibold(),
                     ),
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(100.r),
-                    backgroundColor: ColorName.grey700.withOpacity(0.3),
+                    backgroundColor: ColorName.grey500,
                     progressColor: ColorName.secondary,
                   ),
                 );
@@ -143,7 +143,7 @@ class _TicketCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.grey800,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -174,7 +174,7 @@ class _ObtainMarkerCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.grey800,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -194,7 +194,7 @@ class _ObtainMarkerCount extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: ColorName.grey700,
+              color: ColorName.grey500,
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: Assets.icons.icPlus.svg(width: 8, height: 8),

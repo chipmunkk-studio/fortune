@@ -43,15 +43,17 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
           userId: user.id,
           ingredientId: e.id,
         );
-        return histories;
+        return MyIngredientsViewListEntity(
+          ingredient: e,
+          histories: histories,
+        );
       });
 
       final histories = await Future.wait(historiesFutures);
-      final historyEntities = histories.map((e) => MyIngredientsViewListEntity(histories: e)).toList();
-      final totalCount = histories.map((e) => e.length).reduce((a, b) => a + b);
+      final totalCount = histories.map((e) => e.histories.length).reduce((a, b) => a + b);
 
       final entity = MyIngredientsViewEntity(
-        histories: historyEntities,
+        histories: histories,
         totalCount: totalCount,
       );
 

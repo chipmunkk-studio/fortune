@@ -32,13 +32,15 @@ class FortuneApp extends StatelessWidget {
             child: SkeletonTheme(
               shimmerGradient: const LinearGradient(
                 colors: [
-                  ColorName.grey800,
                   ColorName.grey700,
+                  ColorName.grey600,
+                  ColorName.grey600,
                   ColorName.grey800,
+                  ColorName.grey600,
+                  ColorName.grey600,
                   ColorName.grey700,
-                  ColorName.grey800,
                 ],
-                stops: [0.1, 0.5, 0.9, 0.5, 0.9],
+                stops: [0.3, 0.5, 0.7, 0.9, 0.7, 0.5, 0.3],
               ),
               child: MaterialApp(
                 // 기본적으로 필요한 언어 설정

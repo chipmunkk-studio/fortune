@@ -27,7 +27,7 @@ class FortuneDialogService {
 
     final router = serviceLocator<FortuneRouter>().router;
 
-    _fortuneDialog(
+    _fortuneErrorDialog(
       context,
       error,
       btnOkOnPress ??
@@ -53,7 +53,7 @@ class FortuneDialogService {
     ).show();
   }
 
-  AwesomeDialog _fortuneDialog(
+  AwesomeDialog _fortuneErrorDialog(
     BuildContext context,
     FortuneFailure error,
     Function0<dynamic>? btnOkOnPress,

@@ -1,0 +1,40 @@
+name: Android Product Build and Sign Flutter App
+
+on:
+  push:
+    branches:
+      - feature/myinventory
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Flutter SDK 설치 및 설정
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Decode Keystore
+        run: echo "${{secrets.KEYSTORE_BASE64}}" | base64 --decode > android/app/product.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Build APK
+        run: flutter build apk --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+
+      - name: Upload APK to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk

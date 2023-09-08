@@ -7,6 +7,7 @@ part 'my_ingredients_state.freezed.dart';
 class MyIngredientsState with _$MyIngredientsState {
   factory MyIngredientsState({
     required MyIngredientsViewEntity entities,
+    required bool isLoading,
   }) = _MyIngredientsState;
 
   factory MyIngredientsState.initial([
@@ -14,5 +15,6 @@ class MyIngredientsState with _$MyIngredientsState {
   ]) =>
       MyIngredientsState(
         entities: entities ?? MyIngredientsViewEntity.empty(),
+        isLoading: true,
       );
 }

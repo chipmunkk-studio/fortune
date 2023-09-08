@@ -33,6 +33,7 @@ import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
@@ -51,9 +52,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
-      child: const _MainPage(),
+    return UpgradeAlert(
+      child: BlocProvider(
+        create: (_) => serviceLocator<MainBloc>()
+          ..add(
+            MainInit(
+              notificationEntity: notificationEntity,
+            ),
+          ),
+        child: const _MainPage(),
+      ),
     );
   }
 }
@@ -292,7 +300,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   Align _buildDebugLogout(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: FortuneTextButton(
         onPress: () {
           Supabase.instance.client.auth.signOut();

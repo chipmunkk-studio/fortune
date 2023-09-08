@@ -13,8 +13,8 @@ extension FortuneDialogEx on BuildContext {
   void showFortuneDialog({
     required String title,
     String? subTitle,
-    required String btnOkText,
-    required Function0 btnOkPressed,
+    String? btnOkText,
+    Function0? btnOkPressed,
     String? btnCancelText,
     Function0? btnCancelPressed,
     dismissOnTouchOutside = false,
@@ -43,7 +43,7 @@ extension FortuneDialogEx on BuildContext {
                   style: FortuneTextStyle.headLine2(),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 12),
+                if (subTitle != null) const SizedBox(height: 12),
                 if (subTitle != null)
                   Text(
                     subTitle,

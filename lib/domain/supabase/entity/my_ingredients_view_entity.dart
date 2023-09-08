@@ -1,6 +1,5 @@
-import 'eventnotice/alarm_feeds_entity.dart';
-import 'fortune_user_entity.dart';
-import 'marker_entity.dart';
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
+
 import 'obtain_history_entity.dart';
 
 class MyIngredientsViewEntity {
@@ -19,9 +18,11 @@ class MyIngredientsViewEntity {
 }
 
 class MyIngredientsViewListEntity {
+  final IngredientEntity ingredient;
   final List<ObtainHistoryEntity> histories;
 
   MyIngredientsViewListEntity({
     required this.histories,
+    required this.ingredient,
   });
 }
