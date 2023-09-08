@@ -95,7 +95,7 @@
 //           builder: (context, constraints) {
 //             final text = Text(
 //               data.keys.elementAt(index),
-//               style: FortuneTextStyle.body1SemiBold(fontColor: !active ? ColorName.deActive : ColorName.active),
+//               style: FortuneTextStyle.body1SemiBold(fontColor: !active ? ColorName.grey700 : ColorName.active),
 //             );
 //             final textSpan = TextSpan(
 //               text: text.data,
@@ -115,7 +115,7 @@
 //                         height: 2.h,
 //                         decoration: BoxDecoration(
 //                           borderRadius: BorderRadius.circular(16.r),
-//                           color: !active ? ColorName.deActive : ColorName.active,
+//                           color: !active ? ColorName.grey700 : ColorName.active,
 //                         ),
 //                       )
 //                     : Container(),
@@ -152,7 +152,7 @@
 //                         mainAxisAlignment: MainAxisAlignment.center,
 //                         children: [
 //                           CustomPaint(
-//                             painter: SquirclePainter(color: ColorName.backgroundLight),
+//                             painter: SquirclePainter(color: ColorName.grey800),
 //                             child: Container(
 //                               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
 //                               child: Assets.icons.icLock.svg(width: 60.w, height: 60.h),

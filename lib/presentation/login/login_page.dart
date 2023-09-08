@@ -108,7 +108,7 @@ class _LoginPageState extends State<_LoginPage> {
                       BlocBuilder<LoginBloc, LoginState>(
                         buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
                         builder: (context, state) {
-                          return Text(state.guideTitle, style: FortuneTextStyle.headLine3());
+                          return Text(state.guideTitle, style: FortuneTextStyle.headLine1());
                         },
                       ),
                       const SizedBox(height: 20),

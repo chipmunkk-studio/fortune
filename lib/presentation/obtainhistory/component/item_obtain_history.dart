@@ -19,7 +19,7 @@ class ItemObtainHistory extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        color: ColorName.backgroundLight,
+        color: ColorName.grey800,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 21),
       child: Row(
@@ -30,11 +30,11 @@ class ItemObtainHistory extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.ingredient.name, style: FortuneTextStyle.body1SemiBold()),
+                Text(item.ingredient.name, style: FortuneTextStyle.body1Semibold()),
                 const SizedBox(height: 6),
                 Text(
                   item.locationName,
-                  style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+                  style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

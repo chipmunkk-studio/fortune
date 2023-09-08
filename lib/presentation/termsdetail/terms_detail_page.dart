@@ -66,7 +66,7 @@ class _TermsDetailPageState extends State<_TermsDetailPage> {
               children: [
                 Text(
                   state.terms.content,
-                  style: FortuneTextStyle.body1Medium(),
+                  style: FortuneTextStyle.body2Light(),
                 )
               ],
             ),

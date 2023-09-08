@@ -38,6 +38,9 @@ abstract class FortuneFailure extends Equatable {
     String? message,
     String? description,
   });
+
+  @override
+  String toString() => "code:$code\nmessage:$message\ndescription:$description";
 }
 
 extension FortuneExceptionX on Exception {
@@ -47,8 +50,7 @@ extension FortuneExceptionX on Exception {
       if (postgrestException.message.contains("Token") ||
           postgrestException.message.contains("JWT") ||
           postgrestException.message.contains("JWSError") ||
-          postgrestException.message.contains("Invalid API")
-      ) {
+          postgrestException.message.contains("Invalid API")) {
         return AuthFailure(
           errorCode: postgrestException.code,
           errorMessage: postgrestException.message,

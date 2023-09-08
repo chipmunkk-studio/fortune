@@ -67,7 +67,7 @@ abstract class FortuneCustomAppBar {
         ),
         title: Text(
           title,
-          style: FortuneTextStyle.subTitle3SemiBold(),
+          style: FortuneTextStyle.subTitle2SemiBold(),
         ),
       );
 }

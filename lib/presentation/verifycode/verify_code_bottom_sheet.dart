@@ -6,7 +6,6 @@ import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -78,7 +77,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                       const SizedBox(width: 24),
                       Text(
                         "인증번호를 입력해주세요",
-                        style: FortuneTextStyle.subTitle1SemiBold(),
+                        style: FortuneTextStyle.headLine2(),
                       ),
                     ],
                   ),

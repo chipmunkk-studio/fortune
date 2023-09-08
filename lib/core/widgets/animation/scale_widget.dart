@@ -76,7 +76,7 @@ class _ScaleWidgetState extends State<ScaleWidget> with SingleTickerProviderStat
       onTapDown: _onTapDown,
       onTapUp: _onTapUp,
       onTapCancel: _onTapCancel,
-      splashColor: widget.isRipple ? ColorName.backgroundLight : Colors.transparent,
+      splashColor: widget.isRipple ? ColorName.grey800 : Colors.transparent,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
