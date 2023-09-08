@@ -77,12 +77,12 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                 backIconColor: Colors.white,
                 centerTitle: '포춘 스팟',
                 searchIconColor: Colors.white,
-                textStyle: FortuneTextStyle.body2Regular(),
-                hintStyle: FortuneTextStyle.body1Regular(fontColor: Colors.grey),
+                textStyle: FortuneTextStyle.body2Light(),
+                hintStyle: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                 closeIconColor: Colors.white,
                 cursorColor: Colors.white,
                 hintText: "검색어를 입력하세요",
-                centerTitleStyle: FortuneTextStyle.subTitle3SemiBold(),
+                centerTitleStyle: FortuneTextStyle.subTitle2SemiBold(),
                 onChanged: (text) => _bloc.add(ObtainHistorySearchText(text)),
                 searchTextEditingController: _controller,
                 horizontalPadding: 8,
@@ -121,7 +121,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                   : Center(
                       child: Text(
                         "히스토리가 없습니다",
-                        style: FortuneTextStyle.subTitle3SemiBold(),
+                        style: FortuneTextStyle.subTitle2SemiBold(),
                       ),
                     ),
             );

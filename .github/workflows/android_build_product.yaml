@@ -1,0 +1,47 @@
+name: Android Product Build and Sign Flutter App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Flutter SDK 설치 및 설정
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      # 터미널 인코딩 명령어 - base64 -i app/product.jks > product_base64.txt
+      # base64로 인코드된 key.txt를 디코드해서 product.jks로 다시 저장.
+      - name: Decode Keystore
+        run: echo "${{secrets.KEYSTORE_BASE64}}" | base64 --decode > android/app/product.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - run: dart pub global activate flutter_gen
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: fluttergen -c pubspec.yaml
+
+      # KEYSTORE_PASSWORD, KEY_PASSWORD, KEY_ALIAS를 환경변수로 제공해야 app에서 사용할 수 있음.
+      - name: Build APK
+        run: flutter build apk --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+
+      - name: Upload APK to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk

@@ -30,7 +30,7 @@ class CenterProfile extends StatelessWidget {
         child: SquircleNetworkImageView(
           imageUrl: imageUrl,
           size: 42,
-          backgroundColor: ColorName.deActiveDark,
+          backgroundColor: ColorName.grey700,
           placeHolder: Assets.images.ivDefaultProfile.svg(
             fit: BoxFit.none,
           ),

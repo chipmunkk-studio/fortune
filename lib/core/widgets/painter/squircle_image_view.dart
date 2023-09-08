@@ -20,7 +20,7 @@ class SquircleNetworkImageView extends StatelessWidget {
     super.key,
     required this.imageUrl,
     required this.size,
-    this.backgroundColor = ColorName.deActiveDark,
+    this.backgroundColor = ColorName.grey700,
     this.placeHolder,
     this.placeHolderPadding,
   });

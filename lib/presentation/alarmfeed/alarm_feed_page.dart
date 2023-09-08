@@ -87,7 +87,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: ColorName.backgroundLight,
+                                color: ColorName.grey800,
                                 borderRadius: BorderRadius.circular(
                                   20.r,
                                 ),
@@ -110,12 +110,12 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                                           children: [
                                             Text(
                                               item.headings,
-                                              style: FortuneTextStyle.body2SemiBold(),
+                                              style: FortuneTextStyle.body2Semibold(),
                                             ),
                                             const SizedBox(height: 8),
                                             Text(
                                               item.content,
-                                              style: FortuneTextStyle.body3Regular(fontColor: ColorName.activeDark),
+                                              style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
                                             ),
                                           ],
                                         ),
@@ -123,7 +123,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                                       const SizedBox(width: 12),
                                       Text(
                                         FortuneDateExtension.convertTimeAgo(item.createdAt),
-                                        style: FortuneTextStyle.body3Regular(),
+                                        style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
                                       ),
                                       const SizedBox(width: 20),
                                     ],
@@ -140,7 +140,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                 : Center(
                     child: Text(
                       "알림이 없습니다",
-                      style: FortuneTextStyle.subTitle3SemiBold(),
+                      style: FortuneTextStyle.subTitle1Medium(),
                     ),
                   ),
           );

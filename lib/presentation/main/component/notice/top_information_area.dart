@@ -1,6 +1,8 @@
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
@@ -12,10 +14,12 @@ import 'package:skeletons/skeletons.dart';
 
 class TopInformationArea extends StatelessWidget {
   final GlobalKey<CartIconKey> _cartKey;
+  final Function0 onInventoryTap;
 
   const TopInformationArea(
     this._cartKey, {
     super.key,
+    required this.onInventoryTap,
   });
 
   @override
@@ -56,7 +60,13 @@ class TopInformationArea extends StatelessWidget {
               // 마커 획득 갯수.
               BlocBuilder<MainBloc, MainState>(
                 buildWhen: (previous, current) => previous.haveCount != current.haveCount,
-                builder: (context, state) => _ObtainMarkerCount(_cartKey, state.haveCount),
+                builder: (context, state) => Bounceable(
+                  onTap: onInventoryTap,
+                  child: _ObtainMarkerCount(
+                    _cartKey,
+                    state.haveCount,
+                  ),
+                ),
               ),
             ],
           ),
@@ -81,7 +91,7 @@ class _UserLevel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.backgroundLight,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -103,12 +113,12 @@ class _UserLevel extends StatelessWidget {
                     animationDuration: 2000,
                     center: Text(
                       "Lv. $_level",
-                      style: FortuneTextStyle.caption1SemiBold(),
+                      style: FortuneTextStyle.caption3Semibold(),
                     ),
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(100.r),
-                    backgroundColor: ColorName.deActive.withOpacity(0.3),
+                    backgroundColor: ColorName.grey500,
                     progressColor: ColorName.secondary,
                   ),
                 );
@@ -133,7 +143,7 @@ class _TicketCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.backgroundLight,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -143,7 +153,7 @@ class _TicketCount extends StatelessWidget {
             child: Assets.icons.icFortuneMoney.svg(width: 20, height: 20),
           ),
           const SizedBox(width: 8),
-          Text("$_ticket", style: FortuneTextStyle.body3Bold()),
+          Text("$_ticket", style: FortuneTextStyle.body3Semibold()),
           const SizedBox(width: 12),
         ],
       ),
@@ -164,7 +174,7 @@ class _ObtainMarkerCount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorName.backgroundLight,
+        color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -178,13 +188,13 @@ class _ObtainMarkerCount extends StatelessWidget {
             badgeOptions: const BadgeOptions(active: false),
             icon: Text(
               "$_markerObtainCount",
-              style: FortuneTextStyle.body3Bold(),
+              style: FortuneTextStyle.body3Semibold(),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: ColorName.deActive,
+              color: ColorName.grey500,
               borderRadius: BorderRadius.circular(6.r),
             ),
             child: Assets.icons.icPlus.svg(width: 8, height: 8),

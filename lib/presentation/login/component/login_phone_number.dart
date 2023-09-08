@@ -36,10 +36,10 @@ class LoginPhoneNumber extends StatelessWidget {
         hintText: "휴대폰 번호를 입력하세요",
         contentPadding: EdgeInsets.all(16),
         counterText: "",
-        hintStyle: FortuneTextStyle.subTitle3Regular(fontColor: ColorName.deActive),
+        hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
         errorText:
             FortuneValidator.isValidPhoneNumber(_phoneNumber) || _phoneNumber.isEmpty ? null : "올바른 휴대폰 번호가 아닙니다.",
-        errorStyle: FortuneTextStyle.body3Regular(fontColor: ColorName.negative),
+        errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
       ),
     );
   }

@@ -21,16 +21,19 @@ import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
+import 'package:foresh_flutter/presentation/agreeterms/agree_terms_bottom_sheet.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_state.dart';
 import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
+import 'package:foresh_flutter/presentation/myingredients/my_ingredients_page.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
@@ -49,9 +52,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
-      child: const _MainPage(),
+    return UpgradeAlert(
+      child: BlocProvider(
+        create: (_) => serviceLocator<MainBloc>()
+          ..add(
+            MainInit(
+              notificationEntity: notificationEntity,
+            ),
+          ),
+        child: const _MainPage(),
+      ),
     );
   }
 }
@@ -204,7 +214,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: ColorName.backgroundLight,
+                    color: ColorName.grey800,
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   child: Padding(
@@ -246,7 +256,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       ),
                     ),
                     const SizedBox(height: 10),
-                    TopInformationArea(cartKey),
+                    TopInformationArea(
+                      cartKey,
+                      onInventoryTap: () => context.showFortuneBottomSheet(
+                        isDismissible: true,
+                        content: (context) => const MyIngredientsPage(),
+                      ),
+                    ),
                     if (!kReleaseMode) _buildDebugLogout(context),
                   ],
                 ),
@@ -269,8 +285,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      ColorName.background.withOpacity(1.0),
-                      ColorName.background.withOpacity(0.0),
+                      ColorName.grey900.withOpacity(1.0),
+                      ColorName.grey900.withOpacity(0.0),
                     ],
                   ),
                 ),
@@ -284,7 +300,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   Align _buildDebugLogout(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: FortuneTextButton(
         onPress: () {
           Supabase.instance.client.auth.signOut();
@@ -296,7 +312,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           );
         },
         text: '로그아웃',
-        textStyle: FortuneTextStyle.body3Regular(),
+        textStyle: FortuneTextStyle.body3Light(),
       ),
     );
   }

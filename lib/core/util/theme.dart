@@ -11,8 +11,8 @@ theme() {
     highlightColor: Colors.transparent,
     hoverColor: Colors.transparent,
     checkboxTheme: _checkboxThemeData(),
-    unselectedWidgetColor: ColorName.backgroundLight,
-    scaffoldBackgroundColor: ColorName.background,
+    unselectedWidgetColor: ColorName.grey800,
+    scaffoldBackgroundColor: ColorName.grey900,
     fontFamily: FontFamily.pretendard,
     appBarTheme: appBarTheme(),
     elevatedButtonTheme: elevatedButtonTheme(),
@@ -29,7 +29,7 @@ _checkboxThemeData() {
   return CheckboxThemeData(
     side: const BorderSide(
       width: 1.5,
-      color: ColorName.deActive,
+      color: ColorName.grey700,
     ),
     splashRadius: 0,
     shape: RoundedRectangleBorder(
@@ -39,7 +39,7 @@ _checkboxThemeData() {
     fillColor: MaterialStateProperty.resolveWith<Color>(
       (states) {
         if (!states.contains(MaterialState.selected)) {
-          return ColorName.deActive; // 체크박스가 선택된경우.
+          return ColorName.grey700; // 체크박스가 선택된경우.
         }
         return ColorName.primary; // 체크박스가 활성화된 경우
       },
@@ -57,7 +57,7 @@ _checkboxThemeData() {
 
 bottomSheetTheme() {
   return const BottomSheetThemeData(
-    backgroundColor: ColorName.background,
+    backgroundColor: ColorName.grey800,
   );
 }
 
@@ -71,11 +71,11 @@ elevatedButtonTheme() {
       // Enabled button color
       backgroundColor: ColorName.primary,
       // Disabled button color
-      disabledBackgroundColor: ColorName.backgroundLight,
+      disabledBackgroundColor: ColorName.grey600,
       // Enabled text color
-      foregroundColor: ColorName.backgroundLight,
+      foregroundColor: ColorName.grey900,
       // Disabled text color
-      disabledForegroundColor: ColorName.deActive,
+      disabledForegroundColor: ColorName.grey400,
       textStyle: FortuneTextStyle.button1Medium(),
     ),
   );
@@ -83,7 +83,7 @@ elevatedButtonTheme() {
 
 bottomNavigationBarTheme() {
   return BottomNavigationBarThemeData(
-    backgroundColor: ColorName.background,
+    backgroundColor: ColorName.grey900,
     selectedLabelStyle: TextStyle(
       fontFamily: FontFamily.pretendardRegular,
       color: Colors.white,
@@ -91,12 +91,12 @@ bottomNavigationBarTheme() {
     ),
     unselectedLabelStyle: TextStyle(
       fontFamily: FontFamily.pretendardRegular,
-      color: ColorName.deActive,
+      color: ColorName.grey700,
       fontSize: 13.sp,
     ),
     type: BottomNavigationBarType.fixed,
     selectedItemColor: Colors.white,
-    unselectedItemColor: ColorName.deActive,
+    unselectedItemColor: ColorName.grey700,
     showUnselectedLabels: true,
     showSelectedLabels: true,
   );
@@ -108,11 +108,11 @@ inputDecorationTheme() {
     // contentPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
     disabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: const BorderSide(color: ColorName.deActiveDark),
+      borderSide: const BorderSide(color: ColorName.grey700),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: const BorderSide(color: ColorName.deActiveDark),
+      borderSide: const BorderSide(color: ColorName.grey700),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
@@ -124,7 +124,7 @@ inputDecorationTheme() {
     ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.r),
-      borderSide: const BorderSide(color: ColorName.deActiveDark),
+      borderSide: const BorderSide(color: ColorName.grey700),
     ),
     counterStyle: const TextStyle(color: ColorName.primary),
   );
@@ -136,8 +136,8 @@ textButtonTheme() {
       // 버튼의 텍스트 색상을 변경
       foregroundColor: Colors.white,
       // 버튼의 배경색을 변경
-      backgroundColor: ColorName.backgroundLight,
-      disabledBackgroundColor: ColorName.deActive,
+      backgroundColor: ColorName.grey800,
+      disabledBackgroundColor: ColorName.grey700,
       // 버튼의 최소 크기 설정
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -147,7 +147,8 @@ textButtonTheme() {
 
 appBarTheme() {
   return AppBarTheme(
-    color: ColorName.background,
+    // 상단 스테이터스 바 컬러.
+    color: ColorName.grey900,
     elevation: 0,
     iconTheme: const IconThemeData(color: Colors.white24),
     toolbarTextStyle: FortuneTextStyle.subTitle2Medium(),
@@ -161,7 +162,8 @@ appBarTheme() {
       statusBarIconBrightness: Brightness.light,
       // For Android (dark icons)
       systemNavigationBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: ColorName.background,
+      // 네비게이션 바 컬러.
+      systemNavigationBarColor: ColorName.grey900,
     ),
   );
 }

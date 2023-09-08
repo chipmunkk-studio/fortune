@@ -5,7 +5,7 @@ class SquirclePainter extends CustomPainter {
   final Color color;
 
   SquirclePainter({
-    this.color = ColorName.deActiveDark,
+    this.color = ColorName.grey700,
   });
 
   @override

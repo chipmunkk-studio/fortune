@@ -22,7 +22,7 @@ class FortuneCheckBox extends StatelessWidget {
         height: 16,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4.r),
-          color: ColorName.backgroundLight,
+          color: ColorName.grey800,
         ),
         child: Checkbox(
           value: state,
