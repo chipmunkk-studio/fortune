@@ -21,11 +21,16 @@ jobs:
       - name: Install Flutter Dependencies
         run: flutter pub get
 
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: fluttergen -c pubspec.yaml
+
+      # base64로 인코드된 key.txt를 디코드해서 product.jks로 다시 저장.
       - name: Decode Keystore
         run: echo "${{secrets.KEYSTORE_BASE64}}" | base64 --decode > android/app/product.jks
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
 
+      # KEYSTORE_PASSWORD, KEY_PASSWORD, KEY_ALIAS를 환경변수로 제공해야 app에서 사용할 수 있음.
       - name: Build APK
         run: flutter build apk --release
         env:
