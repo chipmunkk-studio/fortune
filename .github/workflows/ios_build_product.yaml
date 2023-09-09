@@ -43,13 +43,21 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 
-      # 7. iOS 릴리즈 빌드 및 .ipa 생성
-      - name: Build iOS IPA
-        run: flutter build ios --release
+      # 7. 코드 사인 없이 iOS 릴리즈 빌드
+      - name: Build iOS without codesign
+        run: flutter build ios --release --no-codesign
 
-      # 8. 생성된 .ipa 파일을 아티팩트로 업로드
-      - name: 아티팩트에 .ipa 업로드
+      # 8. xcodebuild를 사용하여 앱 사인
+      - name: Sign the app using xcodebuild
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release clean archive -archivePath ios/build/Runner.xcarchive -allowProvisioningUpdates
+          xcodebuild -exportArchive -archivePath ios/build/Runner.xcarchive -exportPath ios/build -exportOptionsPlist ios/ExportOptions.plist
+        env:
+          APPLE_P12_PASSWORD: ${{ secrets.APPLE_P12_PASSWORD }}
+
+      # 9. 생성된 .ipa 파일을 아티팩트로 업로드
+      - name: Upload .ipa to Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: release-ios-ipa
-          path: build/ios/iphoneos/*.ipa
+          path: ios/build/*.ipa
