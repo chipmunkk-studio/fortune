@@ -1,0 +1,55 @@
+name: iOS Product Build
+
+on:
+  push:
+    branches:
+      - feature/myinventory
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      # 1. 저장소 체크아웃
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v2
+
+      # 2. Flutter SDK 설치 및 설정
+      - name: Flutter SDK 설치 및 설정
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      # 3. Flutter 의존성 설치
+      - name: Flutter 의존성 설치
+        run: flutter pub get
+
+      # 4. Flutter 추가 설정 (옵션)
+      - run: dart pub global activate flutter_gen
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - run: fluttergen -c pubspec.yaml
+
+      # 5. APPLE_P12_CERTIFICATE와 APPLE_PROVISIONING_PROFILE 디코딩
+      - name: Apple Certificate 디코딩
+        run: echo "${{ secrets.APPLE_P12_CERTIFICATE }}" | base64 --decode > /tmp/certificate.p12
+
+      - name: Provisioning Profile 디코딩
+        run: echo "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > /tmp/profile.mobileprovision
+
+      # 6. 인증서와 프로비저닝 프로파일을 Xcode에 설치
+      - name: Install Apple Certificate and Provisioning Profile
+        run: |
+          security import /tmp/certificate.p12 -k ~/Library/Keychains/login.keychain -P ${{ secrets.APPLE_P12_PASSWORD }} -T /usr/bin/codesign
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      # 7. iOS 릴리즈 빌드 및 .ipa 생성
+      - name: Build iOS IPA
+        run: flutter build ios --release
+
+      # 8. 생성된 .ipa 파일을 아티팩트로 업로드
+      - name: 아티팩트에 .ipa 업로드
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-ios-ipa
+          path: build/ios/iphoneos/*.ipa
