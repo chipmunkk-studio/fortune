@@ -34,7 +34,7 @@ jobs:
 
       # KEYSTORE_PASSWORD, KEY_PASSWORD, KEY_ALIAS를 환경변수로 제공해야 app에서 사용할 수 있음.
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build appbundle --release
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
@@ -43,5 +43,5 @@ jobs:
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: release-app-bundle
+          path: build/app/outputs/flutter-apk/fortune-app-bundle.apk
