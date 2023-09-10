@@ -3,7 +3,7 @@ name: Android Product Build
 on:
   push:
     branches:
-      - feature/myinventory
+      - main
 
 jobs:
   build:
