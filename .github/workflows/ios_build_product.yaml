@@ -60,7 +60,7 @@ jobs:
                      DEVELOPMENT_TEAM="HQ5SJU4229" \
                      PROVISIONING_PROFILE="2132d8ea-ae4e-465f-9b00-aa0beaee0231" \
                      clean archive \
-                     CODE_SIGN_IDENTITY="iPhone Developer: HyeokShin Kwon" 
+                     CODE_SIGN_IDENTITY="iPhone Distribution: HyeokShin Kwon" 
 
       - name: Export ipa
         run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
