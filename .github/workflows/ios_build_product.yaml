@@ -13,6 +13,21 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Install Apple Certificate
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_P12_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_P12_PASSWORD }}
+
+      - name: Install the provisioning profile
+        env:
+          PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
+        run: |
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles     
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
         with:
@@ -21,36 +36,36 @@ jobs:
       - name: Install Flutter Dependencies
         run: flutter pub get
 
-      - name: Build Flutter for iOS
-        run: flutter build ios --release --no-codesign
-
-      - name: Decode Certificate
-        run: echo "${{ secrets.APPLE_P12_CERTIFICATE }}" | base64 --decode > cert.p12
-
-      - name: Decode Provisioning Profile
-        run: echo "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > profile.mobileprovision
-
-      - name: Install Certificate and Provisioning Profile
-        run: |
-          security create-keychain -p password build.keychain
-          security default-keychain -s build.keychain
-          security import cert.p12 -k build.keychain -P ${{ secrets.APPLE_P12_PASSWORD }} -T /usr/bin/codesign
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
-          cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-
-      - name: Build and Sign
-        run: |
-          xcodebuild -workspace ios/Runner.xcworkspace \
-                     -scheme Runner \
-                     -sdk iphoneos \
-                     -configuration Release \
-                     -archivePath $PWD/build/Runner.xcarchive \
-                     archive \
-                     CODE_SIGN_IDENTITY="iPhone Developer" \
-                     PROVISIONING_PROFILE_SPECIFIER="fortune_product"  
-
       - run: dart pub global activate flutter_gen
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
 
-      - name: Install CocoaPods Dependencies
-        run: cd ios && pod install
+      - name: Build Flutter for iOS
+        run: flutter build ios --release --no-codesign
+
+      - name: Build resolve Swift dependencies
+        run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
+
+      # DEVELOPMENT_TEAM: 애플 팀 아이디 (홈피에서 확인)
+      # CODE_SIGN_IDENTITY: 키체인에서 확인.
+      # PROVISIONING_PROFILE:
+      - name: Build xArchive
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace \
+                     -scheme Runner \
+                     -configuration Release \
+                     -sdk 'iphoneos' \
+                     -destination 'generic/platform=iOS' \
+                     -archivePath build-output/app.xcarchive \
+                     DEVELOPMENT_TEAM=HQ5SJU4229 \
+                     PROVISIONING_PROFILE=2132d8ea-ae4e-465f-9b00-aa0beaee0231 \
+                     clean archive \
+                     CODE_SIGN_IDENTITY="iPhone Developer: HyeokShin Kwon" 
+
+      - name: Export ipa
+        run: xcodebuild -exportArchive -archivePath build-output/app.xcarchive -exportPath build-output/ios -exportOptionsPlist ios/ExportOptions.plist
+
+      - name: Publish iOS Artefacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: release-ios
+          path: build-output/ios
