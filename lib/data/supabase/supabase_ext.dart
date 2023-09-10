@@ -13,3 +13,7 @@ abstract class TableName {
   static const markers = "markers";
   static const users = "users";
 }
+
+abstract class BucketName {
+  static const userProfile = 'userProfile';
+}

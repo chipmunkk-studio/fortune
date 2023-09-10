@@ -10,4 +10,7 @@ abstract class UserRepository {
 
   // 사용자 업데이트.
   Future<FortuneUserEntity> updateUser(FortuneUserEntity user);
+
+  // 사용자 프로필 업데이트.
+  Future<FortuneUserEntity> updateUserProfile(String filePath);
 }

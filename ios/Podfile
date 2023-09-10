@@ -37,10 +37,15 @@ target 'Runner' do
   end
 end
 
-
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    # [ios-github-action] 빌드 할때 반드시 넣어야 됨.
+    target.build_configurations.each do |config|
+      config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
+      config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+    end
+
        # Start of the permission_handler configuration
     target.build_configurations.each do |config|
             # You can enable the permissions needed here. For example to enable camera

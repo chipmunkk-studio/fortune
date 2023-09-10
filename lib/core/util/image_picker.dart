@@ -11,7 +11,7 @@ class FortuneImagePicker {
   static const String _tag = "[FortuneImagePicker]";
 
 // 이미지 가져오기.
-  void loadImagePicker(Function1 onLoad, Function0 onError) async {
+  void loadImagePicker(Function1 onLoad, {Function0? onError}) async {
     try {
       final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image != null) {
@@ -30,9 +30,9 @@ class FortuneImagePicker {
         result = await Permission.photos.request();
       }
       if (!result.isGranted) {
-        onError();
+        onError?.call();
       } else {
-        loadImagePicker(onLoad, onError);
+        loadImagePicker(onLoad, onError: onError);
       }
     }
   }
