@@ -58,7 +58,7 @@ jobs:
                      -destination 'generic/platform=iOS' \
                      -archivePath build-output/app.xcarchive \
                      DEVELOPMENT_TEAM="HQ5SJU4229" \
-                     PROVISIONING_PROFILE="2132d8ea-ae4e-465f-9b00-aa0beaee0231" \
+                     PROVISIONING_PROFILE="42a506b7-8ee3-43c7-8543-17abf59826b0" \
                      clean archive \
                      CODE_SIGN_IDENTITY="iPhone Distribution: HyeokShin Kwon" 
 
