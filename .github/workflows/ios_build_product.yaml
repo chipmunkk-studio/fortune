@@ -48,6 +48,7 @@ jobs:
       # DEVELOPMENT_TEAM: 애플 팀 아이디 (홈피에서 확인)
       # CODE_SIGN_IDENTITY: 키체인에서 확인.
       # PROVISIONING_PROFILE:
+      # cat xxxx.mobileprovision | grep -A 1 -a UUID | grep "string" | sed -E "s/.*>([^<]*)<.*/\1/g" 의 값임.
       - name: Build xArchive
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace \
@@ -56,8 +57,8 @@ jobs:
                      -sdk 'iphoneos' \
                      -destination 'generic/platform=iOS' \
                      -archivePath build-output/app.xcarchive \
-                     DEVELOPMENT_TEAM=HQ5SJU4229 \
-                     PROVISIONING_PROFILE=2132d8ea-ae4e-465f-9b00-aa0beaee0231 \
+                     DEVELOPMENT_TEAM="HQ5SJU4229" \
+                     PROVISIONING_PROFILE="2132d8ea-ae4e-465f-9b00-aa0beaee0231" \
                      clean archive \
                      CODE_SIGN_IDENTITY="iPhone Developer: HyeokShin Kwon" 
 
