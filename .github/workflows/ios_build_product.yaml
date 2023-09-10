@@ -3,7 +3,7 @@ name: iOS Build and Sign
 on:
   push:
     branches:
-      - feature/myinventory
+      - main
 
 jobs:
   build:
