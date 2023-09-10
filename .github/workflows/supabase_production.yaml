@@ -12,8 +12,8 @@ jobs:
 
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_PRODUCTION_DB_PASSWORD: ${{ secrets.SUPABASE_PRODUCTION_DB_PASSWORD }}
-      SUPABASE_PRODUCTION_PROJECT_ID: ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_PRODUCTION_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PRODUCTION_PROJECT_ID }}
 
     steps:
       # 저장소의 코드를 체크아웃.
@@ -28,7 +28,7 @@ jobs:
 
       # Supabase 프로젝트를 연결합니다.
       - name: Supabase 프로젝트 연결 (Production)
-        run: supabase link --project-ref $SUPABASE_PRODUCTION_PROJECT_ID
+        run: supabase link --project-ref $SUPABASE_PROJECT_ID
 
       # 데이터베이스의 변경 사항을 푸시합니다.
       - name: 데이터베이스 푸시
