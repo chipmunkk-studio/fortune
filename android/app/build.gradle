@@ -87,10 +87,10 @@ android {
     signingConfigs {
         release {
             // 키스토어에서 없으면 깃허브에서 찾음.
-            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-            keyAlias System.getenv("ANDROID_KEY_ALIAS")
-            storeFile file('product.jks')
+            storePassword keystoreProperties['storePassword'] ?: System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyPassword keystoreProperties['keyPassword'] ?: System.getenv("ANDROID_KEY_PASSWORD")
+            keyAlias keystoreProperties['keyAlias'] ?: System.getenv("ANDROID_KEY_ALIAS")
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : file('product.jks')
         }
     }
 
