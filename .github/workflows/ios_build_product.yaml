@@ -45,10 +45,9 @@ jobs:
       - name: Build resolve Swift dependencies
         run: xcodebuild -resolvePackageDependencies -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release
 
-      # DEVELOPMENT_TEAM: 애플 팀 아이디 (홈피에서 확인)
+      # DEVELOPMENT_TEAM: 팀 아이디(Xcode 혹 검색해보면나옴) ex) "DEVELOPMENT_TEAM[sdk=iphoneos*]" = HQ5SJU4229;
       # CODE_SIGN_IDENTITY: 키체인에서 확인.
-      # PROVISIONING_PROFILE:
-      # cat xxxx.mobileprovision | grep -A 1 -a UUID | grep "string" | sed -E "s/.*>([^<]*)<.*/\1/g" 의 값임.
+      # PROVISIONING_PROFILE: cat xxxx.mobileprovision | grep -A 1 -a UUID | grep "string" | sed -E "s/.*>([^<]*)<.*/\1/g"
       - name: Build xArchive
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace \

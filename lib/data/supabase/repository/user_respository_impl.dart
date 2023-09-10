@@ -53,7 +53,6 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity> updateUser(FortuneUserEntity user) async {
     try {
-      final user = await findUserByPhoneNonNull();
       return await _userService.update(
         user.phone,
         request: RequestFortuneUser(
