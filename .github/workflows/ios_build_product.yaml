@@ -29,7 +29,7 @@ jobs:
 
       - name: Build and Sign
         run: |
-          xcodebuild -workspace Runner.xcworkspace \
+          xcodebuild -workspace ios/Runner.xcworkspace \
                      -scheme Runner \
                      -sdk iphoneos \
                      -configuration Release \
