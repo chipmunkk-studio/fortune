@@ -13,20 +13,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: stable
-
-      - name: Install Flutter Dependencies
-        run: flutter pub get
-
-      - run: dart pub global activate flutter_gen
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-
-      - name: Install CocoaPods Dependencies
-        run: cd ios && pod install
-
       - name: Build Flutter for iOS
         run: flutter build ios --release --no-codesign
 
@@ -50,7 +36,21 @@ jobs:
                      -scheme Runner \
                      -sdk iphoneos \
                      -configuration Release \
-                     -archivePath $PWD/build/YourApp.xcarchive \
+                     -archivePath $PWD/build/Runner.xcarchive \
                      archive \
-                     CODE_SIGN_IDENTITY="iPhone Distribution" \
-                     PROVISIONING_PROFILE_SPECIFIER="fortune_product"
+                     CODE_SIGN_IDENTITY="iPhone Developer" \
+                     PROVISIONING_PROFILE_SPECIFIER="fortune_product"  
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - run: dart pub global activate flutter_gen
+      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
+
+      - name: Install CocoaPods Dependencies
+        run: cd ios && pod install
