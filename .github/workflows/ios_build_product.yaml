@@ -1,4 +1,4 @@
-name: iOS Product Build
+name: iOS Build and Sign
 
 on:
   push:
@@ -10,54 +10,30 @@ jobs:
     runs-on: macOS-latest
 
     steps:
-      # 1. 저장소 체크아웃
-      - name: 저장소 체크아웃
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # 2. Flutter SDK 설치 및 설정
-      - name: Flutter SDK 설치 및 설정
-        uses: subosito/flutter-action@v1
-        with:
-          channel: stable
+      - name: Decode Certificate
+        run: echo "${{ secrets.APPLE_P12_CERTIFICATE }}" | base64 --decode > cert.p12
 
-      # 3. Flutter 의존성 설치
-      - name: Flutter 의존성 설치
-        run: flutter pub get
+      - name: Decode Provisioning Profile
+        run: echo "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > profile.mobileprovision
 
-      # 4. Flutter 추가 설정 (옵션)
-      - run: dart pub global activate flutter_gen
-      - run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - run: fluttergen -c pubspec.yaml
-
-      # 5. APPLE_P12_CERTIFICATE와 APPLE_PROVISIONING_PROFILE 디코딩
-      - name: Apple Certificate 디코딩
-        run: echo "${{ secrets.APPLE_P12_CERTIFICATE }}" | base64 --decode > /tmp/certificate.p12
-
-      - name: Provisioning Profile 디코딩
-        run: echo "${{ secrets.APPLE_PROVISIONING_PROFILE }}" | base64 --decode > /tmp/profile.mobileprovision
-
-      # 6. 인증서와 프로비저닝 프로파일을 Xcode에 설치
-      - name: Install Apple Certificate and Provisioning Profile
+      - name: Install Certificate and Provisioning Profile
         run: |
-          security import /tmp/certificate.p12 -k ~/Library/Keychains/login.keychain -P ${{ secrets.APPLE_P12_PASSWORD }} -T /usr/bin/codesign
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+          security create-keychain -p password build.keychain
+          security default-keychain -s build.keychain
+          security import cert.p12 -k build.keychain -P ${{ secrets.APPLE_P12_PASSWORD }} -T /usr/bin/codesign
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/
+          cp profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 
-      # 7. 코드 사인 없이 iOS 릴리즈 빌드
-      - name: Build iOS without codesign
-        run: flutter build ios --release --no-codesign
-
-      # 8. xcodebuild를 사용하여 앱 사인
-      - name: Sign the app using xcodebuild
+      - name: Build and Sign
         run: |
-          xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release clean archive -archivePath ios/build/Runner.xcarchive -allowProvisioningUpdates
-          xcodebuild -exportArchive -archivePath ios/build/Runner.xcarchive -exportPath ios/build -exportOptionsPlist ios/ExportOptions.plist
-        env:
-          APPLE_P12_PASSWORD: ${{ secrets.APPLE_P12_PASSWORD }}
-
-      # 9. 생성된 .ipa 파일을 아티팩트로 업로드
-      - name: Upload .ipa to Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-ios-ipa
-          path: ios/build/*.ipa
+          xcodebuild -workspace Runner.xcworkspace \
+                     -scheme Runner \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $PWD/build/YourApp.xcarchive \
+                     archive \
+                     CODE_SIGN_IDENTITY="iPhone Distribution" \
+                     PROVISIONING_PROFILE_SPECIFIER="fortune_product"
