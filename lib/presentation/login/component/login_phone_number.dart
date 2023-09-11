@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 
@@ -33,12 +34,13 @@ class LoginPhoneNumber extends StatelessWidget {
       onChanged: onTextChanged,
       decoration: InputDecoration(
         isDense: false,
-        hintText: "휴대폰 번호를 입력하세요",
-        contentPadding: EdgeInsets.all(16),
+        hintText: FortuneTr.msgInputPhoneNumber,
+        contentPadding: const EdgeInsets.all(16),
         counterText: "",
         hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
-        errorText:
-            FortuneValidator.isValidPhoneNumber(_phoneNumber) || _phoneNumber.isEmpty ? null : "올바른 휴대폰 번호가 아닙니다.",
+        errorText: FortuneValidator.isValidPhoneNumber(_phoneNumber) || _phoneNumber.isEmpty
+            ? null
+            : FortuneTr.msgInputPhoneNumberNotValid,
         errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
       ),
     );

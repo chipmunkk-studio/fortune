@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/error/failure/network_failure.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/adhelper.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
@@ -147,9 +148,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         } else if (sideEffect is MainRequireLocationPermission) {
           FortuneLogger.debug("Permission Denied :$sideEffect");
           context.showFortuneDialog(
-            title: '권한요청',
-            subTitle: '위치 권한이 필요합니다.',
-            btnOkText: '이동',
+            title: FortuneTr.msgRequirePermissionLocation,
+            subTitle: FortuneTr.msgRequirePermissionLocationContent,
+            btnOkText: FortuneTr.move,
             btnOkPressed: () {
               openAppSettings();
             },
@@ -160,12 +161,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
-          context.showSnackBar("거리가 ${sideEffect.meters.toStringAsFixed(1)} 미터 만큼 부족합니다.");
+          context.showSnackBar(
+            FortuneTr.msgRequireMarkerObtainDistance(sideEffect.meters.toStringAsFixed(1)),
+          );
         } else if (sideEffect is MainShowDialog) {
           context.showFortuneDialog(
             title: sideEffect.title,
             subTitle: sideEffect.subTitle,
-            btnOkText: '확인',
+            btnOkText: FortuneTr.confirm,
             dismissOnBackKeyPress: true,
             dismissOnTouchOutside: true,
             btnOkPressed: () {},

@@ -1,47 +1,66 @@
 import 'package:easy_localization/easy_localization.dart';
 
 abstract class FortuneTr {
+  static String msgRequireMarkerObtainDistance(String args) {
+    return tr('msgRequireMarkerObtainDistance', args: [args]);
+  }
+
   // 사용자
-  static final notExistUser = tr('msg_not_exist_user');
-  static final notExistTerms = tr('msg_not_exist_terms');
-  static final notFoundUser = tr('msg_not_found_user');
-  static final notUpdateUser = tr('msg_not_update_user');
-  static final renewAuthInfo = tr('msg_renew_auth_info');
+  static final notExistUser = tr('msgNotExistUser');
+  static final notExistTerms = tr('msgNotExistTerms');
+  static final notFoundUser = tr('msgNotFoundUser');
+  static final notUpdateUser = tr('msgNotUpdateUser');
+  static final renewAuthInfo = tr('msgRenewAuthInfo');
 
   static final start = tr('start');
   static final next = tr('next');
   static final move = tr('move');
+  static final modify = tr('modify');
   static final confirm = tr('confirm');
+  static final noHistory = tr('noHistory');
+  static final myInfo = tr('myInfo');
+  static final faq = tr('faq');
+  static final notice = tr('notice');
+  static final pushAlarm = tr('pushAlarm');
+  static final gradeGuide = tr('gradeGuide');
 
   // 온보딩
-  static final msgOnboardingTitle1 = tr('msg_onboarding_title_1');
-  static final msgOnboardingTitle2 = tr('msg_onboarding_title_2');
-  static final msgOnboardingTitle3 = tr('msg_onboarding_title_3');
-  static final msgOnboarding1 = tr('msg_onboarding_1');
-  static final msgOnboarding2 = tr('msg_onboarding_2');
-  static final msgOnboarding3 = tr('msg_onboarding_3');
-  static final fortuneTermsOfUse = tr('fortune_terms_of_use');
+  static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');
+  static final msgOnboardingTitle2 = tr('msgOnboardingTitle2');
+  static final msgOnboardingTitle3 = tr('msgOnboardingTitle3');
+  static final msgOnboarding1 = tr('msgOnboarding1');
+  static final msgOnboarding2 = tr('msgOnboarding2');
+  static final msgOnboarding3 = tr('msgOnboarding3');
+  static final fortuneTermsOfUse = tr('fortuneTermsOfUse');
 
   // 권한
-  static final msgRequirePermissionPhone = tr('msg_require_permission_phone');
-  static final msgRequirePermissionLocation = tr('msg_require_permission_location');
-  static final msgRequirePermissionPhoto = tr('msg_require_permission_photo');
-  static final msgRequirePermissionNotice = tr('msg_require_permission_notice');
-  static final msgRequirePermissionPhoneContent = tr('msg_require_permission_phone_content');
-  static final msgRequirePermissionLocationContent = tr('msg_require_permission_location_content');
-  static final msgRequirePermissionPhotoContent = tr('msg_require_permission_photo_content');
-  static final msgRequirePermissionNoticeContent = tr('msg_require_permission_notice_content');
-  static final msgRequirePermissionTitle = tr('msg_require_permission_title');
-  static final msgRequirePermissionSubTitle = tr('msg_require_permission_sub_title');
-  static final msgRequirePermission = tr('msg_require_permission');
-  static final msgRequirePermissionContent = tr('msg_require_permission_content');
+  static final msgRequirePermissionPhone = tr('msgRequirePermissionPhone');
+  static final msgRequirePermissionLocation = tr('msgRequirePermissionLocation');
+  static final msgRequirePermissionPhoto = tr('msgRequirePermissionPhoto');
+  static final msgRequirePermissionNotice = tr('msgRequirePermissionNotice');
+  static final msgRequirePermissionPhoneContent = tr('msgRequirePermissionPhoneContent');
+  static final msgRequirePermissionLocationContent = tr('msgRequirePermissionLocationContent');
+  static final msgRequirePermissionPhotoContent = tr('msgRequirePermissionPhotoContent');
+  static final msgRequirePermissionNoticeContent = tr('msgRequirePermissionNoticeContent');
+  static final msgRequirePermissionTitle = tr('msgRequirePermissionTitle');
+  static final msgRequirePermissionSubTitle = tr('msgRequirePermissionSubTitle');
+  static final msgRequirePermission = tr('msgRequirePermission');
+  static final msgRequirePermissionContent = tr('msgRequirePermissionContent');
+  static final msgInputPhoneNumber = tr('msgInputPhoneNumber');
+  static final msgInputPhoneNumberNotValid = tr('msgInputPhoneNumberNotValid');
+  static final msgRequireTermsUse = tr('msgRequireTermsUse');
+  static final msgRequireTermsApprove = tr('msgRequireTermsApprove');
+
+  // 히스토리
+  static final historyFortuneSpot = tr('historyFortuneSpot');
+  static final historyFortuneSpotSearchInput = tr('historyFortuneSpotSearchInput');
 
   // 인증번호
-  static final msgRequireVerifyCodeInput = tr('msg_require_verify_code_input');
-  static final msgRequireVerifyCodeReceive = tr('msg_require_verify_code_receive');
-  static final msgRequireVerifySixNumber = tr('msg_require_verify_six_number');
-  static final msgRequireVerifySixNumberContent = tr('msg_require_verify_six_number_content');
+  static final msgRequireVerifyCodeInput = tr('msgRequireVerifyCodeInput');
+  static final msgRequireVerifyCodeReceive = tr('msgRequireVerifyCodeReceive');
+  static final msgRequireVerifySixNumber = tr('msgRequireVerifySixNumber');
+  static final msgRequireVerifySixNumberContent = tr('msgRequireVerifySixNumberContent');
 
   // 네트워크 에러
-  static final confirmNetworkConnection = tr('msg_confirm_network_connection');
+  static final confirmNetworkConnection = tr('msgConfirmNetworkConnection');
 }

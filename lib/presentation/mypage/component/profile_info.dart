@@ -4,6 +4,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
@@ -127,7 +128,7 @@ class _Nickname extends StatelessWidget {
               border: Border.all(color: ColorName.grey500, width: 1),
             ),
             child: Text(
-              "수정",
+              FortuneTr.modify,
               style: FortuneTextStyle.caption3Semibold(),
             ),
           ),
@@ -142,7 +143,6 @@ class _Grade extends StatelessWidget {
   final FortuneUserGradeEntity entity;
 
   const _Grade({
-    super.key,
     required this.onGradeGuideTap,
     required this.entity,
   });
@@ -175,7 +175,7 @@ class _Grade extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Text(
-            "등급 안내",
+            FortuneTr.gradeGuide,
             style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
           ),
           const SizedBox(width: 4),

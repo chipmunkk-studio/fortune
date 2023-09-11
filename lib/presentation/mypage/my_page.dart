@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/image_picker.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
@@ -52,7 +53,7 @@ class _MyPageState extends State<_MyPage> {
         }
       },
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: "내정보"),
+        appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.myInfo),
         child: BlocBuilder<MyPageBloc, MyPageState>(
           buildWhen: (previous, current) => previous.isLoading != current.isLoading,
           builder: (context, state) {
@@ -78,17 +79,17 @@ class _MyPageState extends State<_MyPage> {
                   ),
                   const SizedBox(height: 32),
                   InfoMenu(
-                    "공지사항",
+                    FortuneTr.notice,
                     icon: Assets.icons.icMegaphone.svg(),
                     onTap: () => router.navigateTo(context, Routes.announcementRoute),
                   ),
                   InfoMenu(
-                    "자주 묻는 질문",
+                    FortuneTr.faq,
                     icon: Assets.icons.icQuestion.svg(),
                     onTap: () => router.navigateTo(context, Routes.faqRoute),
                   ),
                   SwitchMenu(
-                    "푸시알림",
+                    FortuneTr.pushAlarm,
                     onTap: () {},
                     icon: Assets.icons.icPushAlarm.svg(),
                   ),
