@@ -26,12 +26,12 @@ class UserRepositoryImpl extends UserRepository {
       final String phoneNumber = currentPhoneNumber.isNotEmpty ? currentPhoneNumber : testAccount;
       final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
       if (user == null) {
-        throw CommonFailure(errorMessage: FortuneCommonMessage.notExistUser);
+        throw CommonFailure(errorMessage: FortuneTr.notExistUser);
       }
       return user;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneCommonMessage.notFoundUser,
+        description: FortuneTr.notFoundUser,
       );
     }
   }
@@ -44,7 +44,7 @@ class UserRepositoryImpl extends UserRepository {
       return user;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneCommonMessage.notFoundUser,
+        description: FortuneTr.notFoundUser,
       );
     }
   }
@@ -63,7 +63,7 @@ class UserRepositoryImpl extends UserRepository {
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneCommonMessage.notUpdateUser,
+        description: FortuneTr.notUpdateUser,
       );
     }
   }
@@ -79,7 +79,7 @@ class UserRepositoryImpl extends UserRepository {
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneCommonMessage.notUpdateUser,
+        description: FortuneTr.notUpdateUser,
       );
     }
   }

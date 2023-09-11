@@ -68,7 +68,7 @@ extension FortuneExceptionX on Exception {
       );
     } else if (this is HttpException || this is SocketException || this is TimeoutException) {
       return NetworkFailure(
-        errorMessage: FortuneCommonMessage.confirmNetworkConnection,
+        errorMessage: FortuneTr.confirmNetworkConnection,
       ); // your own exception for handling network errors
     } else {
       return UnknownFailure(errorMessage: toString());
