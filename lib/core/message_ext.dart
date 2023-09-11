@@ -20,6 +20,7 @@ abstract class FortuneTr {
   static final msgOnboarding1 = tr('msg_onboarding_1');
   static final msgOnboarding2 = tr('msg_onboarding_2');
   static final msgOnboarding3 = tr('msg_onboarding_3');
+  static final fortuneTermsOfUse = tr('fortune_terms_of_use');
 
   // 권한
   static final msgRequirePermissionPhone = tr('msg_require_permission_phone');
