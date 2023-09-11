@@ -19,7 +19,6 @@ class RequestPermissionStart extends RequestPermissionSideEffect {
   List<Object?> get props => [];
 }
 
-
 class RequestPermissionFail extends RequestPermissionSideEffect {
   @override
   List<Object?> get props => [];
