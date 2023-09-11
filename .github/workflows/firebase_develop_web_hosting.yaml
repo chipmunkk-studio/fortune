@@ -3,8 +3,9 @@ name: Firebase Develop Web Hosting
 on:
   push:
     branches: [develop]
-  pull_request:
-    branches: [develop]
+# 깃헙액션 용량 떄문에 주석 처리
+#  pull_request:
+#    branches: [develop]
 
 jobs:
   build:
