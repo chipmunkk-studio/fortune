@@ -9,7 +9,6 @@ import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 

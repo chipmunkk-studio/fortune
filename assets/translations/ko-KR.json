@@ -18,6 +18,7 @@
   "start": "시작하기",
   "next": "다음",
   "move": "이동",
+  "confirm": "확인",
   "msg_onboarding_title_1": "미션 확인하기",
   "msg_onboarding_title_2": "마커 수집하기",
   "msg_onboarding_title_3": "리워드 받기",
@@ -35,5 +36,9 @@
   "msg_require_permission_title": "권한 요청",
   "msg_require_permission_sub_title": "허용하지 않은 필수 권한이 있어요",
   "msg_require_permission": "서비스 이용을 위해\n권한 허용이 필요해요",
-  "msg_require_permission_content": "선택 권한의 경우 허용하지 않으셔도 서비스를 이용하실 수 있으나, 일부 서비스 이용이 제한될 수 있습니다."
+  "msg_require_permission_content": "선택 권한의 경우 허용하지 않으셔도 서비스를 이용하실 수 있으나, 일부 서비스 이용이 제한될 수 있습니다.",
+  "msg_require_verify_code_input": "인증번호를 입력해주세요",
+  "msg_require_verify_code_receive": "인증번호 다시 받기",
+  "msg_require_verify_six_number": "6자리 숫자",
+  "msg_require_verify_six_number_content": "인증번호는 숫자 6자리입니다.",
 }

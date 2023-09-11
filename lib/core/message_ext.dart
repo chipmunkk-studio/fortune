@@ -8,10 +8,12 @@ abstract class FortuneTr {
   static final notUpdateUser = tr('msg_not_update_user');
   static final renewAuthInfo = tr('msg_renew_auth_info');
 
-  // 온보딩
   static final start = tr('start');
   static final next = tr('next');
   static final move = tr('move');
+  static final confirm = tr('confirm');
+
+  // 온보딩
   static final msgOnboardingTitle1 = tr('msg_onboarding_title_1');
   static final msgOnboardingTitle2 = tr('msg_onboarding_title_2');
   static final msgOnboardingTitle3 = tr('msg_onboarding_title_3');
@@ -32,6 +34,12 @@ abstract class FortuneTr {
   static final msgRequirePermissionSubTitle = tr('msg_require_permission_sub_title');
   static final msgRequirePermission = tr('msg_require_permission');
   static final msgRequirePermissionContent = tr('msg_require_permission_content');
+
+  // 인증번호
+  static final msgRequireVerifyCodeInput = tr('msg_require_verify_code_input');
+  static final msgRequireVerifyCodeReceive = tr('msg_require_verify_code_receive');
+  static final msgRequireVerifySixNumber = tr('msg_require_verify_six_number');
+  static final msgRequireVerifySixNumberContent = tr('msg_require_verify_six_number_content');
 
   // 네트워크 에러
   static final confirmNetworkConnection = tr('msg_confirm_network_connection');

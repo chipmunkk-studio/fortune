@@ -2,6 +2,7 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
@@ -76,7 +77,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                     children: [
                       const SizedBox(width: 24),
                       Text(
-                        "인증번호를 입력해주세요",
+                        FortuneTr.msgRequireVerifyCodeInput,
                         style: FortuneTextStyle.headLine2(),
                       ),
                     ],
@@ -100,7 +101,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                         child: FortuneTextButton(
                           onPress:
                               state.isRequestVerifyCodeEnable ? () => _bloc.add(VerifyCodeRequestVerifyCode()) : null,
-                          text: '인증번호 다시 받기',
+                          text: FortuneTr.msgRequireVerifyCodeReceive,
                         ),
                       );
                     },
@@ -121,7 +122,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                           isKeyboardVisible: isKeyboardVisible,
                           isEnabled: state.isConfirmEnable,
                           onPress: () => _bloc.add(VerifyConfirm()),
-                          buttonText: '확인',
+                          buttonText: FortuneTr.confirm,
                         );
                       },
                     ),
