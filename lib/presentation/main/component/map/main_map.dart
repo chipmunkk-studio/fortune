@@ -206,7 +206,7 @@ class MainMap extends StatelessWidget {
           ingredient: data.ingredient,
           rewardAd: _bloc.state.rewardAd,
         );
-        if (markerActionResult) {
+        if (markerActionResult != null && markerActionResult) {
           _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
         }
       },

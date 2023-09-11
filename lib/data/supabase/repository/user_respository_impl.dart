@@ -67,4 +67,20 @@ class UserRepositoryImpl extends UserRepository {
       );
     }
   }
+
+  @override
+  Future<FortuneUserEntity> updateUserProfile(String filePath) async {
+    try {
+      // 테스트 계정 때문에 아이디 찾아야됨.
+      final user = await findUserByPhoneNonNull();
+      return await _userService.updateProfile(
+        user,
+        filePath: filePath,
+      );
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneCommonMessage.notUpdateUser,
+      );
+    }
+  }
 }

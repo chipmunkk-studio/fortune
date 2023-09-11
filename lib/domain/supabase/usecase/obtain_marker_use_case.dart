@@ -53,7 +53,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 티켓 및 획득 카운트 업데이트.
       updatedTicket = prevUser.ticket + ingredient.rewardTicket;
-      markerObtainCount = markerObtainCount + 1;
+      markerObtainCount =
+          param.marker.ingredient.type != IngredientType.ticket ? markerObtainCount + 1 : markerObtainCount;
 
       // 사용자 티켓 정보 업데이트.
       final updateUser = await userRepository.updateUser(

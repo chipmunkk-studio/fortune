@@ -34,9 +34,11 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_ca
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/verify_phone_number_use_case.dart';
 import 'package:foresh_flutter/firebase_options.dart';
 import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dart';
@@ -47,6 +49,7 @@ import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
 import 'package:foresh_flutter/presentation/myingredients/bloc/my_ingredients.dart';
+import 'package:foresh_flutter/presentation/mypage/bloc/my_page.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
@@ -400,6 +403,17 @@ _initUseCase() async {
         rewardRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<MyPageUseCase>(
+      () => MyPageUseCase(
+        userRepository: serviceLocator(),
+        localRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<UpdateUserProfileUseCase>(
+      () => UpdateUserProfileUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -418,7 +432,6 @@ _initBloc() {
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        localRepository: serviceLocator<LocalRepository>(),
         signUpOrInWithTestUseCase: serviceLocator<SignUpOrInWithTestUseCase>(),
         env: serviceLocator<Environment>(),
       ),
@@ -473,6 +486,12 @@ _initBloc() {
     ..registerFactory(
       () => MyIngredientsBloc(
         getMyIngredientsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MyPageBloc(
+        myPageUseCase: serviceLocator(),
+        updateProfileUseCase: serviceLocator(),
       ),
     )
     // ..registerFactory(

@@ -196,6 +196,7 @@ getRemoteConfigArgs() async {
           return describeEnum(EnvKey.devAnonKey);
       }
     }());
+
     return FortuneRemoteConfig(
       baseUrl: baseUrl,
       appMetricaKey: metricaKey,

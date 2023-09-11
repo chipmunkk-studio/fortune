@@ -4,7 +4,6 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
-import 'package:foresh_flutter/domain/local/local_respository.dart';
 import 'package:foresh_flutter/domain/supabase/request/request_sign_up_or_in_test_param.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
@@ -18,7 +17,6 @@ import 'login.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final GetUserUseCase getUserUseCase;
   final SignUpOrInWithTestUseCase signUpOrInWithTestUseCase;
-  final LocalRepository localRepository;
   final Environment env;
 
   static const tag = "[PhoneNumberBloc]";
@@ -26,7 +24,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   LoginBloc({
     required this.getUserUseCase,
     required this.signUpOrInWithTestUseCase,
-    required this.localRepository,
     required this.env,
   }) : super(LoginState.initial()) {
     on<LoginInit>(init);

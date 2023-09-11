@@ -7,6 +7,7 @@ import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entit
 import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
+import 'package:foresh_flutter/presentation/mypage/my_page.dart';
 import 'package:foresh_flutter/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -102,6 +103,12 @@ class FortuneRouter {
     },
   );
 
+  static var myPageHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const MyPage();
+    },
+  );
+
   static var alarmRewardHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as int?;
@@ -183,6 +190,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 마이페이지.
+      ..define(
+        Routes.myPageRoute,
+        handler: myPageHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 약관 상세.
       ..define(
         "${Routes.termsDetailRoute}/:$termsParam",
@@ -211,4 +225,8 @@ class Routes {
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNotices';
   static const String termsDetailRoute = 'termsDetail';
+  static const String announcementRoute = 'announcement';
+  static const String gradeGuideRoute = 'gradeGuide';
+  static const String myPageRoute = 'myPage';
+  static const String faqRoute = 'faq';
 }
