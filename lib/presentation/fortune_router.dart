@@ -8,6 +8,8 @@ import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 import 'package:foresh_flutter/presentation/mypage/my_page.dart';
+import 'package:foresh_flutter/presentation/support/faqs/faqs_page.dart';
+import 'package:foresh_flutter/presentation/support/notices/faqs_page.dart';
 import 'package:foresh_flutter/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -109,6 +111,18 @@ class FortuneRouter {
     },
   );
 
+  static var faqsHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const FaqPage();
+    },
+  );
+
+  static var noticesHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const NoticesPage();
+    },
+  );
+
   static var alarmRewardHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as int?;
@@ -204,6 +218,20 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 자주 묻는 질문.
+      ..define(
+        Routes.faqsRoute,
+        handler: faqsHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 공지사항.
+      ..define(
+        Routes.noticesRoutes,
+        handler: noticesHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
@@ -225,8 +253,8 @@ class Routes {
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNotices';
   static const String termsDetailRoute = 'termsDetail';
-  static const String announcementRoute = 'announcement';
   static const String gradeGuideRoute = 'gradeGuide';
   static const String myPageRoute = 'myPage';
-  static const String faqRoute = 'faq';
+  static const String faqsRoute = 'faqs';
+  static const String noticesRoutes = 'notices';
 }

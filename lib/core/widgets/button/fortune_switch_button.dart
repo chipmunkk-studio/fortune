@@ -5,10 +5,12 @@ import 'package:foresh_flutter/core/gen/colors.gen.dart';
 
 class FortuneSwitchButton extends StatefulWidget {
   final dartz.Function1<bool, void> onToggle;
+  final bool isOn;
 
   const FortuneSwitchButton({
     Key? key,
     required this.onToggle,
+    required this.isOn,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,6 @@ class FortuneSwitchButton extends StatefulWidget {
 }
 
 class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
-  bool _isOn = false;
   late DateTime _lastToggleTime;
 
   @override
@@ -33,10 +34,7 @@ class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
       return;
     }
 
-    setState(() {
-      _isOn = !_isOn;
-      widget.onToggle(_isOn);
-    });
+    widget.onToggle(widget.isOn);
 
     _lastToggleTime = now;
   }
@@ -49,14 +47,14 @@ class _FortuneSwitchButtonState extends State<FortuneSwitchButton> {
         width: 56,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.r),
-          color: _isOn ? ColorName.secondary : Colors.grey,
+          color: widget.isOn ? ColorName.secondary : Colors.grey,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4,horizontal: 4),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
           child: AnimatedAlign(
             duration: const Duration(milliseconds: 150),
             curve: Curves.easeInOut,
-            alignment: _isOn ? Alignment.centerRight : Alignment.centerLeft,
+            alignment: widget.isOn ? Alignment.centerRight : Alignment.centerLeft,
             child: Container(
               width: 24,
               height: 24,

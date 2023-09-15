@@ -3,8 +3,9 @@ name: Firebase Production Web Hosting
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+# 깃헙액션 용량 떄문에 주석 처리
+#  pull_request:
+#    branches: [main]
 
 jobs:
   build:

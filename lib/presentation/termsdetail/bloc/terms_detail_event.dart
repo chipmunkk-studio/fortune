@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 abstract class TermsDetailEvent extends Equatable {}
 
 class TermsDetailInit extends TermsDetailEvent {
-
   final int index;
 
   TermsDetailInit(this.index);

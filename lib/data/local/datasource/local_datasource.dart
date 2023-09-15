@@ -1,4 +1,5 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
+import 'package:single_item_storage/storage.dart';
 
 abstract class LocalDataSource {
   Future<String> getTestAccount();
@@ -7,36 +8,37 @@ abstract class LocalDataSource {
 
   Future<bool> getAllowPushAlarm();
 
-  Future<void> setAllowPushAlarm(bool isAllow);
+  Future<bool> setAllowPushAlarm(bool isAllow);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
-  final SharedPreferences sharedPreferences;
+  final Storage<String> _testAccount = SharedPrefsStorage<String>.primitive(itemKey: testAccountKey);
+  final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
 
-  static const testAccount = "testAccount";
-  static const pushAlarm = "pushAlarm";
+  static const testAccountKey = "testAccount";
+  static const pushAlarmKey = "pushAlarm";
 
-  LocalDataSourceImpl({required this.sharedPreferences});
+  LocalDataSourceImpl();
 
   @override
   Future<String> getTestAccount() async {
-    final account = sharedPreferences.getString(testAccount) ?? '';
+    final account = await _testAccount.get() ?? '';
     return account;
   }
 
   @override
   Future<void> setTestAccount(String account) async {
-    await sharedPreferences.setString(testAccount, account);
+    await _testAccount.save(account);
   }
 
   @override
   Future<bool> getAllowPushAlarm() async {
-    final isAllow = sharedPreferences.getBool(pushAlarm) ?? false;
+    final isAllow = await _pushAlarm.get() ?? false;
     return isAllow;
   }
 
   @override
-  Future<void> setAllowPushAlarm(bool isAllow) async {
-    await sharedPreferences.setBool(pushAlarm, isAllow);
+  Future<bool> setAllowPushAlarm(bool isAllow) async {
+    return await _pushAlarm.save(isAllow);
   }
 }

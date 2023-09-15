@@ -56,6 +56,8 @@ abstract class FortuneCustomAppBar {
     BuildContext context, {
     String title = "",
     Function0? onPressed,
+    bool centerTitle = false,
+    bool leftAlignTitle = false,
   }) =>
       AppBar(
         leading: IconButton(
@@ -69,5 +71,7 @@ abstract class FortuneCustomAppBar {
           title,
           style: FortuneTextStyle.subTitle2SemiBold(),
         ),
+        centerTitle: centerTitle,
+        titleSpacing: leftAlignTitle ? 0.0 : NavigationToolbar.kMiddleSpacing,
       );
 }

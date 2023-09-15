@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
+import 'package:foresh_flutter/domain/local/local_respository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -11,20 +13,23 @@ class MyPageBloc extends Bloc<MyPageEvent, MyPageState>
     with SideEffectBlocMixin<MyPageEvent, MyPageState, MyPageSideEffect> {
   final MyPageUseCase myPageUseCase;
   final UpdateUserProfileUseCase updateProfileUseCase;
+  final LocalRepository localRepository;
 
   MyPageBloc({
     required this.myPageUseCase,
     required this.updateProfileUseCase,
+    required this.localRepository,
   }) : super(MyPageState.initial()) {
     on<MyPageInit>(init);
     on<MyPageUpdateProfile>(updateProfile);
+    on<MyPageUpdatePushAlarm>(updatePushAlarm);
   }
 
   FutureOr<void> init(MyPageInit event, Emitter<MyPageState> emit) async {
     await myPageUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(MyPageError(l)),
-        (r) {
+        (r) async {
           emit(
             state.copyWith(
               user: r.user,
@@ -48,5 +53,10 @@ class MyPageBloc extends Bloc<MyPageEvent, MyPageState>
         },
       ),
     );
+  }
+
+  FutureOr<void> updatePushAlarm(MyPageUpdatePushAlarm event, Emitter<MyPageState> emit) async {
+    final result = await localRepository.setAllowPushAlarm(!event.isOn);
+    emit(state.copyWith(isAllowPushAlarm: result));
   }
 }

@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
 import 'package:single_item_storage/storage.dart';
 
@@ -12,6 +11,7 @@ import 'notification_ext.dart';
 
 const String apnsDeviceTokenKey = 'apns-device-token';
 const String fcmDeviceTokenKey = 'firebase-device-token';
+const String pushAlarmPrefsKey = 'push-alarm-prefs-key';
 
 class FortuneNotificationsManager {
   late final FirebaseMessaging _fcm;
@@ -20,6 +20,7 @@ class FortuneNotificationsManager {
 
   final Storage<String> _fcmTokenStorage;
   final Storage<String> _apnsTokenStorage;
+  final LocalDataSource localDataSource;
 
   bool _setupStarted = false;
 
@@ -27,6 +28,7 @@ class FortuneNotificationsManager {
     InitializationSettings initializationSettings, {
     Storage<String>? fcmTokenStorage,
     Storage<String>? apnsTokenStorage,
+    required this.localDataSource,
   })  : _fcmTokenStorage = fcmTokenStorage ?? SharedPrefsStorage<String>.primitive(itemKey: fcmDeviceTokenKey),
         _apnsTokenStorage = apnsTokenStorage ?? SharedPrefsStorage<String>.primitive(itemKey: apnsDeviceTokenKey) {
     if (shouldConfigureFirebase()) {
@@ -166,15 +168,16 @@ class FortuneNotificationsManager {
   /// ios에서는 기본적으로 시스템이 보여줌.
   /// ios동작을 바꿀려면 우측 참조 > setForegroundNotificationPresentationOptions in setupPushNotifications
   _onMessage(RemoteMessage message) async {
-    FortuneLogger.info(tag: _TAG, "_onMessage > ${message.data.toString()}");
-    final temp1 = jsonEncode(message.data);
-    final temp2 = jsonDecode(temp1);
-    await flNotification.show(
-      notificationId,
-      message.notification?.title,
-      message.notification?.body,
-      platformChannelSpecifics(androidNotificationDetails),
-    );
+    final isAllow = await localDataSource.getAllowPushAlarm();
+    FortuneLogger.info(tag: _TAG, "_onMessage > ${message.data.toString()}, isAllow: $isAllow");
+    if (isAllow) {
+      await flNotification.show(
+        notificationId,
+        message.notification?.title,
+        message.notification?.body,
+        platformChannelSpecifics(androidNotificationDetails),
+      );
+    }
   }
 
   _onAppOpenedFromMessage(RemoteMessage message) {

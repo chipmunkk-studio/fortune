@@ -54,6 +54,9 @@ class Assets {
   static const String iconsIcUser = 'assets/icons/ic_user.svg';
   static const String imagesIcLauncher = 'assets/images/ic_launcher.png';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
+  static const String onboarding1 = 'assets/images/onboarding/guide1.png';
+  static const String onboarding2 = 'assets/images/onboarding/guide2.png';
+  static const String onboarding3 = 'assets/images/onboarding/guide3.png';
   static const String splashAndroid12splash = 'assets/images/splash/android12splash.png';
   static const String splashSplashDefault = 'assets/images/splash/splash_default.png';
   static const String translationsEnUS = 'assets/translations/en-US.json';

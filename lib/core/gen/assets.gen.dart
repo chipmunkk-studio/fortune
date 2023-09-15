@@ -259,6 +259,9 @@ class $AssetsImagesGen {
   SvgGenImage get ivDefaultProfile =>
       const SvgGenImage('assets/images/iv_default_profile.svg');
 
+  $AssetsImagesOnboardingGen get onboarding =>
+      const $AssetsImagesOnboardingGen();
+
   /// List of all assets
   List<dynamic> get values => [icLauncher, ivDefaultProfile];
 }
@@ -274,6 +277,25 @@ class $AssetsTranslationsGen {
 
   /// List of all assets
   List<String> get values => [enUS, koKR];
+}
+
+class $AssetsImagesOnboardingGen {
+  const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/guide1.png
+  AssetGenImage get guide1 =>
+      const AssetGenImage('assets/images/onboarding/guide1.png');
+
+  /// File path: assets/images/onboarding/guide2.png
+  AssetGenImage get guide2 =>
+      const AssetGenImage('assets/images/onboarding/guide2.png');
+
+  /// File path: assets/images/onboarding/guide3.png
+  AssetGenImage get guide3 =>
+      const AssetGenImage('assets/images/onboarding/guide3.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [guide1, guide2, guide3];
 }
 
 class Assets {

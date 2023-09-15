@@ -19,3 +19,12 @@ class MyPageUpdateProfile extends MyPageEvent {
   @override
   List<Object?> get props => [];
 }
+
+class MyPageUpdatePushAlarm extends MyPageEvent {
+  final bool isOn;
+
+  MyPageUpdatePushAlarm(this.isOn);
+
+  @override
+  List<Object?> get props => [];
+}

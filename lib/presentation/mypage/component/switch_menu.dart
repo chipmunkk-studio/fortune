@@ -7,13 +7,15 @@ import 'package:foresh_flutter/core/widgets/button/fortune_switch_button.dart';
 
 class SwitchMenu extends StatelessWidget {
   final String title;
-  final Function0 onTap;
+  final Function1<bool, void> onTap;
   final SvgPicture icon;
+  final bool isOn;
 
   const SwitchMenu(
     this.title, {
     required this.onTap,
     required this.icon,
+    required this.isOn,
     super.key,
   });
 
@@ -29,9 +31,8 @@ class SwitchMenu extends StatelessWidget {
             Text(title, style: FortuneTextStyle.body1Light()),
             const Spacer(),
             FortuneSwitchButton(
-              onToggle: (isOn) {
-                context.showSnackBar("$isOn");
-              },
+              isOn: isOn,
+              onToggle: onTap,
             )
           ],
         ),
