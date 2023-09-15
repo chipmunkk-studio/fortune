@@ -1,5 +1,4 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
 import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';

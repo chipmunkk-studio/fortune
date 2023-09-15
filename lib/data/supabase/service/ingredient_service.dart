@@ -1,6 +1,7 @@
 import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
 import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
 import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IngredientService {
@@ -14,7 +15,7 @@ class IngredientService {
   );
 
   // 모든 재료 가져오기.
-  Future<List<IngredientResponse>> findAllIngredients() async {
+  Future<List<IngredientEntity>> findAllIngredients() async {
     try {
       final List<dynamic> response = await _client.from(_ingredientTableName).select("*").toSelect();
       if (response.isEmpty) {

@@ -81,17 +81,23 @@ class _MyPageState extends State<_MyPage> {
                   InfoMenu(
                     FortuneTr.notice,
                     icon: Assets.icons.icMegaphone.svg(),
-                    onTap: () => router.navigateTo(context, Routes.announcementRoute),
+                    onTap: () => router.navigateTo(context, Routes.noticesRoutes),
                   ),
                   InfoMenu(
                     FortuneTr.faq,
                     icon: Assets.icons.icQuestion.svg(),
-                    onTap: () => router.navigateTo(context, Routes.faqRoute),
+                    onTap: () => router.navigateTo(context, Routes.faqsRoute),
                   ),
-                  SwitchMenu(
-                    FortuneTr.pushAlarm,
-                    onTap: () {},
-                    icon: Assets.icons.icPushAlarm.svg(),
+                  BlocBuilder<MyPageBloc, MyPageState>(
+                    buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,
+                    builder: (context, state) {
+                      return SwitchMenu(
+                        FortuneTr.pushAlarm,
+                        isOn: state.isAllowPushAlarm,
+                        onTap: (isOn) => _bloc.add(MyPageUpdatePushAlarm(isOn)),
+                        icon: Assets.icons.icPushAlarm.svg(),
+                      );
+                    },
                   ),
                 ],
               ),

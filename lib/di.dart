@@ -13,22 +13,26 @@ import 'package:foresh_flutter/data/supabase/repository/auth_repository_impl.dar
 import 'package:foresh_flutter/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/marker_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/obtain_history_respository_impl.dart';
+import 'package:foresh_flutter/data/supabase/repository/support_repository_impl.dart';
 import 'package:foresh_flutter/data/supabase/repository/user_respository_impl.dart';
 import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
-import 'package:foresh_flutter/data/supabase/service/board_service.dart';
 import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
 import 'package:foresh_flutter/data/supabase/service/marker_service.dart';
 import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
+import 'package:foresh_flutter/data/supabase/service/support_service.dart';
 import 'package:foresh_flutter/data/supabase/service/user_service.dart';
 import 'package:foresh_flutter/domain/local/local_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:foresh_flutter/domain/supabase/repository/support_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
@@ -52,6 +56,8 @@ import 'package:foresh_flutter/presentation/myingredients/bloc/my_ingredients.da
 import 'package:foresh_flutter/presentation/mypage/bloc/my_page.dart';
 import 'package:foresh_flutter/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:foresh_flutter/presentation/permission/bloc/request_permission_bloc.dart';
+import 'package:foresh_flutter/presentation/support/faqs/bloc/faqs.dart';
+import 'package:foresh_flutter/presentation/support/notices/bloc/notices.dart';
 import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
@@ -94,6 +100,14 @@ Future<void> init() async {
   /// 앱로거
   await initAppLogger();
 
+  /// 로컬 데이터 - Preference.
+  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  serviceLocator
+    ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
+    ..registerLazySingleton<LocalDataSource>(
+      () => LocalDataSourceImpl(),
+    );
+
   /// 개발 환경 설정.
   await initEnvironment();
 
@@ -113,17 +127,11 @@ Future<void> init() async {
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
 
-  /// 로컬 데이터 - Preference.
-  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
   /// 파이어베이스 애널리틱스.
   serviceLocator.registerLazySingleton<FortuneAnalytics>(() => fortuneAnalytics);
 
   /// Router.
   serviceLocator.registerLazySingleton<FortuneRouter>(() => FortuneRouter()..init());
-
-  /// SharedPreferences
-  serviceLocator.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   await initSupabase();
 }
@@ -151,8 +159,12 @@ initEnvironment() async {
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
 
+/// FCM
 initFCM() async {
-  final FortuneNotificationsManager notificationsManager = FortuneNotificationsManager(initializeSettings);
+  final FortuneNotificationsManager notificationsManager = FortuneNotificationsManager(
+    initializeSettings,
+    localDataSource: serviceLocator<LocalDataSource>(),
+  );
   notificationsManager.setupPushNotifications();
   serviceLocator.registerLazySingleton<FortuneNotificationsManager>(() => notificationsManager);
 }
@@ -187,19 +199,13 @@ _initService() {
     ..registerLazySingleton<UserService>(
       () => UserService(),
     )
-    ..registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl(
-        sharedPreferences: serviceLocator<SharedPreferences>(),
-      ),
-    )
-    ..registerLazySingleton<BoardService>(
-      () => BoardService(
-        Supabase.instance.client,
-        serviceLocator<UserService>(),
-      ),
-    )
     ..registerLazySingleton<IngredientService>(
       () => IngredientService(
+        Supabase.instance.client,
+      ),
+    )
+    ..registerLazySingleton<SupportService>(
+      () => SupportService(
         Supabase.instance.client,
       ),
     )
@@ -278,6 +284,11 @@ _initRepository() {
         alarmFeedsService: serviceLocator<AlarmFeedsService>(),
       ),
     )
+    ..registerLazySingleton<SupportRepository>(
+      () => SupportRepositoryImpl(
+        supportService: serviceLocator<SupportService>(),
+      ),
+    )
     ..registerLazySingleton<AlarmRewardRepository>(
       () => AlarmRewardRepositoryImpl(
         rewardsService: serviceLocator<AlarmRewardHistoryService>(),
@@ -343,6 +354,16 @@ _initUseCase() async {
     ..registerLazySingleton<GetTermsUseCase>(
       () => GetTermsUseCase(
         authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetNoticesUseCase>(
+      () => GetNoticesUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetFaqsUseCase>(
+      () => GetFaqsUseCase(
+        repository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetMissionsUseCase>(
@@ -489,9 +510,20 @@ _initBloc() {
       ),
     )
     ..registerFactory(
+      () => FaqsBloc(
+        getFaqsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => NoticesBloc(
+        getNoticesUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => MyPageBloc(
         myPageUseCase: serviceLocator(),
         updateProfileUseCase: serviceLocator(),
+        localRepository: serviceLocator(),
       ),
     )
     // ..registerFactory(
