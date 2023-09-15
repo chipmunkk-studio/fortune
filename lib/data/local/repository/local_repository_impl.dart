@@ -46,7 +46,7 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<void> setAllowPushAlarm(bool isAllow)  async {
+  Future<bool> setAllowPushAlarm(bool isAllow) async {
     try {
       final result = await localDataSource.setAllowPushAlarm(isAllow);
       return result;

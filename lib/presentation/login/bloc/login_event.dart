@@ -35,4 +35,3 @@ class LoginRequestVerifyCode extends LoginEvent {
   @override
   List<Object?> get props => [];
 }
-

@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 

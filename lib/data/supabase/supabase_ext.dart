@@ -11,6 +11,8 @@ abstract class TableName {
   static const alarmRewardInfo = 'alarm_reward_info';
   static const ingredients = 'ingredients';
   static const markers = "markers";
+  static const notices = "notices";
+  static const faqs = "faqs";
   static const users = "users";
 }
 

@@ -1,10 +1,10 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
@@ -58,23 +58,23 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
   final _permissionItems = [
     _RequestPermissionEntity(
       icon: Assets.icons.icPhone.svg(),
-      title: "전화/SMS(필수)",
-      subTitle: "휴대폰 번호 본인 인증",
+      title: FortuneTr.msgRequirePermissionPhone,
+      subTitle: FortuneTr.msgRequirePermissionPhoneContent,
     ),
     _RequestPermissionEntity(
       icon: Assets.icons.icMappin.svg(),
-      title: "위치(필수)",
-      subTitle: "현재 위치 확인 및 메인서비스 이용",
+      title: FortuneTr.msgRequirePermissionLocation,
+      subTitle: FortuneTr.msgRequirePermissionLocationContent,
     ),
     _RequestPermissionEntity(
       icon: Assets.icons.icImage.svg(),
-      title: "사진(선택)",
-      subTitle: "프로필 이미지 설정",
+      title: FortuneTr.msgRequirePermissionPhoto,
+      subTitle: FortuneTr.msgRequirePermissionPhotoContent,
     ),
     _RequestPermissionEntity(
       icon: Assets.icons.icBell.svg(),
-      title: "알림(선택)",
-      subTitle: "알림 수신",
+      title: FortuneTr.msgRequirePermissionNotice,
+      subTitle: FortuneTr.msgRequirePermissionNoticeContent,
     ),
   ];
 
@@ -101,9 +101,9 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
         } else if (sideEffect is RequestPermissionFail) {
           AppMetrica.reportEvent('권한 요청 팝업');
           context.showFortuneDialog(
-            title: '권한 요청',
-            subTitle: '허용하지 않은 필수 권한이 있어요.',
-            btnOkText: '이동',
+            title: FortuneTr.msgRequirePermissionTitle,
+            subTitle: FortuneTr.msgRequirePermissionSubTitle,
+            btnOkText: FortuneTr.move,
             btnOkPressed: () {
               openAppSettings();
             },
@@ -120,7 +120,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "서비스 이용을 위해\n권한 허용이 필요해요",
+            FortuneTr.msgRequirePermission,
             style: FortuneTextStyle.headLine1(),
             textAlign: TextAlign.start,
           ),
@@ -134,13 +134,12 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           ),
           const SizedBox(height: 40),
           Text(
-            "선택 권한의 경우 허용하지 않으셔도 서비스를 이용하실 수 있으나, "
-            "일부 서비스 이용이 제한될 수 있습니다.",
+            FortuneTr.msgRequirePermissionContent,
             style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
           ),
           const Spacer(),
           FortuneScaleButton(
-            text: 'next'.tr(),
+            text: FortuneTr.next,
             press: () => _bloc.add(RequestPermissionNext()),
           )
         ],

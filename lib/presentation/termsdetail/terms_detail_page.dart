@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
@@ -20,7 +21,7 @@ class TermsDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<TermsDetailBloc>()..add(TermsDetailInit(index)),
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: '포춘 이용 약관'),
+        appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.fortuneTermsOfUse),
         child: const _TermsDetailPage(),
       ),
     );

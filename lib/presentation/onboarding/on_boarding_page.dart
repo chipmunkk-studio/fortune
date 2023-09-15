@@ -1,17 +1,15 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
-
   OnBoardingPage({Key? key}) : super(key: key);
 
   @override
@@ -19,6 +17,24 @@ class OnBoardingPage extends StatefulWidget {
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
+  int _currentIndex = 0;
+  final List<String> _titles = [
+    FortuneTr.msgOnboardingTitle1,
+    FortuneTr.msgOnboardingTitle2,
+    FortuneTr.msgOnboardingTitle3,
+  ];
+  final List<String> _descriptions = [
+    FortuneTr.msgOnboarding1,
+    FortuneTr.msgOnboarding2,
+    FortuneTr.msgOnboarding3,
+  ];
+
+  final List<String> _onboardingImage = [
+    Assets.images.onboarding.guide1.path,
+    Assets.images.onboarding.guide2.path,
+    Assets.images.onboarding.guide3.path,
+  ];
+
   final router = serviceLocator<FortuneRouter>().router;
 
   @override
@@ -30,32 +46,69 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   Widget build(BuildContext context) {
     return FortuneScaffold(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          const Spacer(),
-          Text(
-            tr("onboarding_greeting_title"),
-            style: FortuneTextStyle.headLine2(),
-            textAlign: TextAlign.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(3, (index) {
+              bool isActive = _currentIndex == index;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                margin: const EdgeInsets.all(4.0),
+                width: isActive ? 8 : 8,
+                height: isActive ? 8 : 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isActive ? ColorName.primary : ColorName.grey600,
+                ),
+              );
+            }),
           ),
-          const SizedBox(height: 16),
-          Text(
-            tr("onboarding_greeting_sub_title"),
-            style: FortuneTextStyle.subTitle2SemiBold(
-              fontColor: ColorName.grey200,
+          Expanded(
+            child: CarouselSlider.builder(
+              itemCount: _titles.length,
+              itemBuilder: (context, index, realIdx) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _titles[index],
+                      style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      _descriptions[index],
+                      textAlign: TextAlign.center,
+                      style: FortuneTextStyle.headLine1(),
+                    ),
+                    const SizedBox(height: 12),
+                    Image.asset(_onboardingImage[index]),
+                  ],
+                );
+              },
+              options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+                height: MediaQuery.of(context).size.height,
+                enableInfiniteScroll: false,
+                autoPlay: false,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+                aspectRatio: 2.0,
+                initialPage: 0,
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
-          Assets.icons.icOnboarding.svg(),
-          const Spacer(),
           FortuneScaleButton(
-            text: 'next'.tr(),
+            text: FortuneTr.start,
             press: () => router.navigateTo(
               context,
               Routes.requestPermissionRoute,
             ),
-          )
+          ),
         ],
       ),
     );

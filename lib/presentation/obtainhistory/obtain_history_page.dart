@@ -2,6 +2,7 @@ import 'package:animation_search_bar/animation_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
 import 'package:foresh_flutter/di.dart';
@@ -75,13 +76,14 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
               alignment: Alignment.center,
               child: AnimationSearchBar(
                 backIconColor: Colors.white,
-                centerTitle: '포춘 스팟',
+                centerTitle: FortuneTr.historyFortuneSpot,
                 searchIconColor: Colors.white,
+                searchBarHeight: 56,
                 textStyle: FortuneTextStyle.body2Light(),
                 hintStyle: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                 closeIconColor: Colors.white,
                 cursorColor: Colors.white,
-                hintText: "검색어를 입력하세요",
+                hintText: FortuneTr.historyFortuneSpotSearchInput,
                 centerTitleStyle: FortuneTextStyle.subTitle2SemiBold(),
                 onChanged: (text) => _bloc.add(ObtainHistorySearchText(text)),
                 searchTextEditingController: _controller,
@@ -120,7 +122,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                     )
                   : Center(
                       child: Text(
-                        "히스토리가 없습니다",
+                        FortuneTr.noHistory,
                         style: FortuneTextStyle.subTitle2SemiBold(),
                       ),
                     ),

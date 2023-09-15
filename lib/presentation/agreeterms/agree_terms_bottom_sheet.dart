@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:foresh_flutter/core/gen/assets.gen.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
 import 'package:foresh_flutter/core/widgets/checkbox/fortune_check_box.dart';
@@ -75,7 +76,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                 children: [
                   const SizedBox(width: 24),
                   Text(
-                    "서비스 이용을 위해\n약관에 동의해주세요",
+                    FortuneTr.msgRequireTermsUse,
                     style: FortuneTextStyle.headLine2(),
                   ),
                 ],
@@ -124,7 +125,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                   bottom: 20,
                 ),
                 child: FortuneScaleButton(
-                  text: "모두 동의하기",
+                  text: FortuneTr.msgRequireTermsApprove,
                   isEnabled: true,
                   press: () => _bloc.add(AgreeTermsAllClick()),
                 ),

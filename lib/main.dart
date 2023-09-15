@@ -10,6 +10,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_ca
 import '../di.dart';
 import '../fortune_app.dart';
 import 'env.dart';
+import 'presentation/fortune_router.dart';
 
 main() {
   runZonedGuarded(

@@ -9,5 +9,5 @@ abstract class LocalRepository {
   Future<bool> getAllowPushAlarm();
 
   // 푸시알람 허용 여부 수정.
-  Future<void> setAllowPushAlarm(bool isAllow);
+  Future<bool> setAllowPushAlarm(bool isAllow);
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:foresh_flutter/core/message_ext.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/util/validators.dart';
 import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
@@ -61,13 +62,13 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                     onChanged: widget.onTextChanged,
                     decoration: InputDecoration(
                       isDense: false,
-                      hintText: "6자리 숫자 ",
+                      hintText: FortuneTr.msgRequireVerifySixNumber,
                       contentPadding: const EdgeInsets.all(16),
                       counterText: "",
                       hintStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey700),
                       errorText: FortuneValidator.isValidVerifyCode(widget._verifyCode) || widget._verifyCode.isEmpty
                           ? null
-                          : "인증번호는 숫자 6자리입니다.",
+                          : FortuneTr.msgRequireVerifySixNumberContent,
                       errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
                     ),
                   );
