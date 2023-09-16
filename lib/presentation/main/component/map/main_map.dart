@@ -197,7 +197,6 @@ class MainMap extends StatelessWidget {
   _showTicketDialog(MainLocationData data, GlobalKey globalKey) {
     context.showFortuneDialog(
       title: '광고를 보면 티켓을 수령할 수 있어요!',
-      subTitle: '서브 타이틀입니다',
       btnOkText: '확인',
       dismissOnBackKeyPress: true,
       dismissOnTouchOutside: true,

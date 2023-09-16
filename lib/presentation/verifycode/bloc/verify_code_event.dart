@@ -20,9 +20,11 @@ class VerifyCodeCountdown extends VerifyCodeEvent {
 
 class VerifyCodeInput extends VerifyCodeEvent {
   final String verifyCode;
+  final bool isFromListening;
 
   VerifyCodeInput({
     required this.verifyCode,
+    this.isFromListening = false,
   });
 
   @override

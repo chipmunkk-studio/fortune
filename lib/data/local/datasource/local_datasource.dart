@@ -9,14 +9,20 @@ abstract class LocalDataSource {
   Future<bool> getAllowPushAlarm();
 
   Future<bool> setAllowPushAlarm(bool isAllow);
+
+  Future<int> setVerifySmsTime(int time);
+
+  Future<int> getVerifySmsTime();
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<String> _testAccount = SharedPrefsStorage<String>.primitive(itemKey: testAccountKey);
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
+  final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
 
   static const testAccountKey = "testAccount";
   static const pushAlarmKey = "pushAlarm";
+  static const verifySmsTimeKey = "verifySmsTimeKey";
 
   LocalDataSourceImpl();
 
@@ -40,5 +46,16 @@ class LocalDataSourceImpl extends LocalDataSource {
   @override
   Future<bool> setAllowPushAlarm(bool isAllow) async {
     return await _pushAlarm.save(isAllow);
+  }
+
+  @override
+  Future<int> setVerifySmsTime(int time) async {
+    return await _verifySmsTime.save(time);
+  }
+
+  @override
+  Future<int> getVerifySmsTime() async {
+    final time = await _verifySmsTime.get() ?? 0;
+    return time;
   }
 }

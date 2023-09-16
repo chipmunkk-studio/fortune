@@ -63,7 +63,7 @@ class _MyPageState extends State<_MyPage> {
               child: Column(
                 children: [
                   BlocBuilder<MyPageBloc, MyPageState>(
-                    buildWhen: (previous, current) => previous.user != current.user,
+                    buildWhen : (previous, current) => previous.user != current.user,
                     builder: (context, state) {
                       return ProfileInfo(
                         entity: state.user,

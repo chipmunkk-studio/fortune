@@ -29,6 +29,7 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/support_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_case.dart';
@@ -37,6 +38,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -49,6 +51,8 @@ import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dar
 import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:foresh_flutter/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/gradeguide/bloc/grade_guide.dart';
+import 'package:foresh_flutter/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
@@ -348,6 +352,7 @@ _initUseCase() async {
     ..registerLazySingleton<SignUpOrInUseCase>(
       () => SignUpOrInUseCase(
         authRepository: serviceLocator(),
+        localRepository: serviceLocator(),
         userRepository: serviceLocator(),
       ),
     )
@@ -412,6 +417,11 @@ _initUseCase() async {
         alarmFeedsRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<CheckVerifySmsTimeUseCase>(
+      () => CheckVerifySmsTimeUseCase(
+        localRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetAlarmRewardUseCase>(
       () => GetAlarmRewardUseCase(
         alarmRewardRepository: serviceLocator(),
@@ -432,6 +442,11 @@ _initUseCase() async {
     )
     ..registerLazySingleton<UpdateUserProfileUseCase>(
       () => UpdateUserProfileUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GradeGuideUseCase>(
+      () => GradeGuideUseCase(
         userRepository: serviceLocator(),
       ),
     )
@@ -501,6 +516,7 @@ _initBloc() {
     ..registerFactory(
       () => VerifyCodeBloc(
         verifyPhoneNumberUseCase: serviceLocator(),
+        checkVerifySmsTimeUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
       ),
     )
@@ -515,8 +531,16 @@ _initBloc() {
       ),
     )
     ..registerFactory(
+      () => IngredientActionBloc(),
+    )
+    ..registerFactory(
       () => NoticesBloc(
         getNoticesUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => GradeGuideBloc(
+        gradeGuideUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
