@@ -51,12 +51,12 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 ),
                 const SizedBox(height: 24),
                 MiddlePercentage(
-                  percent: state.user.nextLevelInfo.percentage,
+                  percent: state.user.nextLevelInfo.progressToNextLevelPercentage,
                 ),
                 const SizedBox(height: 12),
                 BottomGradeArea(
                   target: getNextGrade(state.user.grade).name,
-                  remainCount: state.user.nextLevelInfo.markerCount.toString(),
+                  remainCount: state.user.nextLevelInfo.nextLevelMarkerCount.toString(),
                 ),
                 const SizedBox(height: 40),
                 ItemGrade(getUserGradeIconInfo(1)),

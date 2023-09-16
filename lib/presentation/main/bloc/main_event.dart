@@ -47,13 +47,6 @@ class MainMarkerClick extends MainEvent {
   List<Object?> get props => [data];
 }
 
-class MainTimeOver extends MainEvent {
-  MainTimeOver();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class MainMarkerObtain extends MainEvent {
   final MainLocationData data;
   final GlobalKey key;

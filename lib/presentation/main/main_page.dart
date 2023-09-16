@@ -25,7 +25,6 @@ import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_state.dart';
-import 'package:foresh_flutter/presentation/main/component/notice/top_refresh_time.dart';
 import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
 import 'package:foresh_flutter/presentation/myingredients/my_ingredients_page.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -273,11 +272,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ),
               ),
             ),
-            Positioned(
-              left: 16,
-              bottom: 16,
-              child: TopRefreshTime(_bloc),
-            ),
             // 하단 그라데이션.
             Positioned(
               bottom: 0,
@@ -368,7 +362,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   // 광고 로드
-  void _loadRewardedAd() {
+  void _loadRewardedAd() async {
     RewardedAd.load(
       adUnitId: AdHelper.rewardedAdUnitId,
       request: const AdRequest(),
@@ -378,13 +372,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
               _loadRewardedAd();
-              _bloc.add(MainSetRewardAd(null));
             },
           );
           _bloc.add(MainSetRewardAd(ad));
         },
         onAdFailedToLoad: (err) {
-          FortuneLogger.error(message: "보상형 광고 로딩 실패: ${err.message}");
+          _loadRewardedAd();
+          _bloc.add(MainSetRewardAd(null));
         },
       ),
     );

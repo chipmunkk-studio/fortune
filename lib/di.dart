@@ -52,6 +52,7 @@ import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed_bloc.dart'
 import 'package:foresh_flutter/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
 import 'package:foresh_flutter/presentation/gradeguide/bloc/grade_guide.dart';
+import 'package:foresh_flutter/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
@@ -528,6 +529,9 @@ _initBloc() {
       () => FaqsBloc(
         getFaqsUseCase: serviceLocator(),
       ),
+    )
+    ..registerFactory(
+      () => IngredientActionBloc(),
     )
     ..registerFactory(
       () => NoticesBloc(

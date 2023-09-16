@@ -39,7 +39,7 @@ class TopInformationArea extends StatelessWidget {
               Flexible(
                 child: BlocBuilder<MainBloc, MainState>(
                   buildWhen: (previous, current) =>
-                      previous.user?.nextLevelInfo.markerCount != current.user?.nextLevelInfo.markerCount,
+                      previous.user?.nextLevelInfo.nextLevelMarkerCount != current.user?.nextLevelInfo.nextLevelMarkerCount,
                   builder: (context, state) {
                     final user = state.user;
                     return user != null
@@ -47,7 +47,7 @@ class TopInformationArea extends StatelessWidget {
                             onTap: onGradeAreaTap,
                             child: _UserLevel(
                               user.grade,
-                              user.nextLevelInfo.percentage,
+                              user.nextLevelInfo.progressToNextLevelPercentage,
                               user.level,
                             ),
                           )
