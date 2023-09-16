@@ -55,5 +55,6 @@
   "msgInputPhoneNumber": "Please enter your phone number.",
   "msgInputPhoneNumberNotValid": "That doesn't look like a valid phone number.",
   "msgRequireTermsUse": "Please agree to our\nterms and conditions to continue.",
-  "msgRequireTermsApprove": "Agree to All"
+  "msgRequireTermsApprove": "Agree to All",
+  "msgRequestSmsVerifyCode": "Please try again in {} minutes and {} seconds."
 }

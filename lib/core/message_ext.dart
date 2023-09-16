@@ -5,6 +5,13 @@ abstract class FortuneTr {
     return tr('msgRequireMarkerObtainDistance', args: [args]);
   }
 
+  static String msgRequestSmsVerifyCode(
+    String minute,
+    String second,
+  ) {
+    return tr('msgRequestSmsVerifyCode', args: [minute, second]);
+  }
+
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
   static final notExistTerms = tr('msgNotExistTerms');

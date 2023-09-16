@@ -56,4 +56,29 @@ class LocalRepositoryImpl extends LocalRepository {
       );
     }
   }
+
+  @override
+  Future<int> setVerifySmsTime() async {
+    try {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      final result = await localDataSource.setVerifySmsTime(currentTime);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<int> getVerifySmsTime() async {
+    try {
+      final result = await localDataSource.getVerifySmsTime();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
 }

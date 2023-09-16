@@ -29,6 +29,7 @@ import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dar
 import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/support_repository.dart';
 import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_my_ingredients_use_case.dart';
@@ -348,6 +349,7 @@ _initUseCase() async {
     ..registerLazySingleton<SignUpOrInUseCase>(
       () => SignUpOrInUseCase(
         authRepository: serviceLocator(),
+        localRepository: serviceLocator(),
         userRepository: serviceLocator(),
       ),
     )
@@ -410,6 +412,11 @@ _initUseCase() async {
       () => GetAlarmFeedUseCase(
         userRepository: serviceLocator(),
         alarmFeedsRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<CheckVerifySmsTimeUseCase>(
+      () => CheckVerifySmsTimeUseCase(
+        localRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetAlarmRewardUseCase>(
@@ -501,6 +508,7 @@ _initBloc() {
     ..registerFactory(
       () => VerifyCodeBloc(
         verifyPhoneNumberUseCase: serviceLocator(),
+        checkVerifySmsTimeUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
       ),
     )
