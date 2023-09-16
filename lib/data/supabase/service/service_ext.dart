@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_next_level_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
@@ -121,15 +122,23 @@ assignLevel(int markerCount) {
   return level;
 }
 
-// 다음 레벨 까지 경험치 퍼센트.
-calculateLevelProgress(int markerCount) {
+// 다음 레벨 까지 정보.
+calculateLevelInfo(int markerCount) {
   int level = 1;
 
   while (markerCount >= level * 3) {
     markerCount -= level * 3;
     level++;
   }
-  return (markerCount / (level * 3));
+
+  int nextLevelRequired = level * 3;
+  int remainingForNextLevel = nextLevelRequired - markerCount;
+
+  return FortuneUserNextLevelEntity(
+    percentage: (markerCount / nextLevelRequired),
+    markerCount: remainingForNextLevel,
+    currentLevel: level,
+  );
 }
 
 // 등급 할당.

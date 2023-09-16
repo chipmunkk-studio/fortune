@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.13.0"
+  animation_list:
+    dependency: "direct main"
+    description:
+      name: animation_list
+      sha256: "48aae726edd0853f8cacc4f39e8aac728179af95e5b048dfef9fb78b9121117a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   animation_search_bar:
     dependency: "direct main"
     description:

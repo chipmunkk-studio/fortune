@@ -38,6 +38,7 @@ import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
+import 'package:foresh_flutter/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
@@ -50,6 +51,7 @@ import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms_bloc.dar
 import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:foresh_flutter/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:foresh_flutter/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login_bloc.dart';
 import 'package:foresh_flutter/presentation/main/bloc/main.dart';
 import 'package:foresh_flutter/presentation/missions/bloc/missions.dart';
@@ -442,6 +444,11 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GradeGuideUseCase>(
+      () => GradeGuideUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -525,6 +532,11 @@ _initBloc() {
     ..registerFactory(
       () => NoticesBloc(
         getNoticesUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => GradeGuideBloc(
+        gradeGuideUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

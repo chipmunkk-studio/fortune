@@ -6,6 +6,7 @@ import 'package:foresh_flutter/core/notification/notification_response.dart';
 import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
+import 'package:foresh_flutter/presentation/gradeguide/grade_guide_page.dart';
 import 'package:foresh_flutter/presentation/login/bloc/login.dart';
 import 'package:foresh_flutter/presentation/mypage/my_page.dart';
 import 'package:foresh_flutter/presentation/support/faqs/faqs_page.dart';
@@ -123,6 +124,12 @@ class FortuneRouter {
     },
   );
 
+  static var gradeGuideHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const GradeGuidePage();
+    },
+  );
+
   static var alarmRewardHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as int?;
@@ -232,7 +239,15 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 마커 히스토리.
+      /// 등급가이드.
+      ..define(
+        Routes.gradeGuideRoute,
+        handler: gradeGuideHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+
+    /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
         handler: obtainHistoryHandler,

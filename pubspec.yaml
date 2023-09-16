@@ -58,6 +58,7 @@ dependencies:
   flutter_bounceable: ^1.1.0
   animation_search_bar: ^0.0.10
   carousel_slider: ^4.2.1
+  animation_list: ^2.2.1
 
   # map
   flutter_map: ^5.0.0

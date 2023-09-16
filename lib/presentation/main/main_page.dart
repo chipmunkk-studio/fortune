@@ -20,6 +20,7 @@ import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
 import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
 import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
+import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
 import 'package:foresh_flutter/di.dart';
 import 'package:foresh_flutter/env.dart';
 import 'package:foresh_flutter/presentation/fortune_router.dart';
@@ -141,9 +142,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainMarkerClickSideEffect) {
           () async {
-            await startAnimation(
-              sideEffect.key,
-            );
+            final ingredientType = sideEffect.data.ingredient.type;
+            if (ingredientType != IngredientType.ticket) {
+              await startAnimation(sideEffect.key);
+            }
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
           FortuneLogger.debug("Permission Denied :$sideEffect");
@@ -264,6 +266,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         isDismissible: true,
                         content: (context) => const MyIngredientsPage(),
                       ),
+                      onGradeAreaTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
                     ),
                     if (!kReleaseMode) _buildDebugLogout(context),
                   ],
