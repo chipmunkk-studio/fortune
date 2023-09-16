@@ -55,5 +55,6 @@
   "msgInputPhoneNumber": "휴대폰 번호를 입력하세요",
   "msgInputPhoneNumberNotValid": "올바른 휴대폰 번호가 아닙니다",
   "msgRequireTermsUse": "서비스 이용을 위해\n약관에 동의해주세요",
-  "msgRequireTermsApprove": "모두 동의하기"
+  "msgRequireTermsApprove": "모두 동의하기",
+  "msgRequestSmsVerifyCode": "{}분 {}초 후에 다시 요청해주세요"
 }

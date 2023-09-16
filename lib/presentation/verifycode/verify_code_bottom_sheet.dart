@@ -1,8 +1,10 @@
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:foresh_flutter/core/message_ext.dart';
+import 'package:foresh_flutter/core/util/permission.dart';
 import 'package:foresh_flutter/core/util/textstyle.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
 import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
@@ -52,6 +54,12 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    AltSmsAutofill().unregisterListener();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<VerifyCodeBloc, VerifyCodeSideEffect>(
       listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {
@@ -63,6 +71,18 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
             sideEffect.landingRoute,
             clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
           );
+        } else if (sideEffect is VerifyCodeSmsListening) {
+          FortunePermissionUtil.startSmsListening(
+            (code) => _bloc.add(
+              VerifyCodeInput(
+                verifyCode: code,
+                isFromListening: true,
+              ),
+            ),
+          );
+        } else if (sideEffect is VerifyCodeInputFromSmsListening) {
+          _verifyCodeController.text = sideEffect.code;
+          _bloc.add(VerifyConfirm());
         }
       },
       child: BlocBuilder<VerifyCodeBloc, VerifyCodeState>(

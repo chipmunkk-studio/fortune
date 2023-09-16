@@ -36,7 +36,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<Main>(main);
     on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
-    on<MainTimeOver>(timerOver);
     on<MainSetRewardAd>(setRewardAd);
     on<MainMarkerObtain>(
       _markerObtain,
@@ -132,10 +131,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                refreshTime: remoteConfig.refreshTime,
-                // refreshTime: 10,
                 notices: entity.notices,
-                refreshCount: state.refreshCount + 1,
                 haveCount: entity.haveCount,
                 histories: entity.histories,
                 isLoading: false,
@@ -185,10 +181,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         ),
       );
     }
-  }
-
-  FutureOr<void> timerOver(MainTimeOver event, Emitter<MainState> emit) async {
-    await getMain(emit);
   }
 
   FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {
@@ -242,12 +234,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           //     ),
           //   );
           // }
+          await getMain(emit);
         },
       ),
     );
   }
 
   FutureOr<void> setRewardAd(MainSetRewardAd event, Emitter<MainState> emit) async {
-    emit(state.copyWith(rewardAd: event.ad));
+    emit(
+      state.copyWith(
+        isObtainProcessing: false,
+        rewardAd: event.ad,
+      ),
+    );
   }
 }

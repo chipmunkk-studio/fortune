@@ -15,11 +15,13 @@ import 'package:skeletons/skeletons.dart';
 class TopInformationArea extends StatelessWidget {
   final GlobalKey<CartIconKey> _cartKey;
   final Function0 onInventoryTap;
+  final Function0 onGradeAreaTap;
 
   const TopInformationArea(
     this._cartKey, {
     super.key,
     required this.onInventoryTap,
+    required this.onGradeAreaTap,
   });
 
   @override
@@ -37,14 +39,17 @@ class TopInformationArea extends StatelessWidget {
               Flexible(
                 child: BlocBuilder<MainBloc, MainState>(
                   buildWhen: (previous, current) =>
-                      previous.user?.percentageNextLevel != current.user?.percentageNextLevel,
+                      previous.user?.nextLevelInfo.nextLevelMarkerCount != current.user?.nextLevelInfo.nextLevelMarkerCount,
                   builder: (context, state) {
                     final user = state.user;
                     return user != null
-                        ? _UserLevel(
-                            user.grade,
-                            user.percentageNextLevel,
-                            user.level,
+                        ? Bounceable(
+                            onTap: onGradeAreaTap,
+                            child: _UserLevel(
+                              user.grade,
+                              user.nextLevelInfo.progressToNextLevelPercentage,
+                              user.level,
+                            ),
                           )
                         : const SizedBox.shrink();
                   },

@@ -106,7 +106,7 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                               String displayTime =
                                   "${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}";
                               return Text(
-                                displayTime,
+                                state.verifyTime != 180 ? displayTime : '',
                                 style: FortuneTextStyle.body2Light(
                                   fontColor: ColorName.grey200,
                                 ),

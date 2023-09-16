@@ -45,19 +45,19 @@ abstract class FortunePermissionUtil {
     return isAnyPermissionDenied;
   }
 
-  startSmsListening(Function1 onReceive) async {
+  static startSmsListening(Function1 onReceive) async {
     FortuneLogger.debug("_startSmsListening()");
     String? comingSms = await AltSmsAutofill().listenForSms;
     if (comingSms != null) {
       String verifyCode = _getVerifyCode(comingSms);
       FortuneLogger.debug("인증번호: $verifyCode");
-      if (verifyCode.length >= 4) {
+      if (verifyCode.length >= 6) {
         onReceive(verifyCode);
       }
     }
   }
 
-  _getVerifyCode(String? sms) {
+  static _getVerifyCode(String? sms) {
     final intRegex = RegExp(r'\d+', multiLine: true);
     if (sms != null) {
       return intRegex.allMatches(sms).first.group(0);

@@ -107,5 +107,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
   }
 
-  _getConvertedPhoneNumber(String phoneNumber) => '+82$phoneNumber';
+  _getConvertedPhoneNumber(String phoneNumber) => '82$phoneNumber';
 }

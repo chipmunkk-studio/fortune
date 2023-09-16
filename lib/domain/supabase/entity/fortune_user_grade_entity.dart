@@ -109,3 +109,14 @@ FortuneUserGradeEntity getUserGradeIconInfo(int grade) {
       return GradeBronze();
   }
 }
+
+FortuneUserGradeEntity getNextGrade(FortuneUserGradeEntity currentGrade) {
+  Map<int, FortuneUserGradeEntity> gradeMap = {
+    1: GradeSilver(),
+    2: GradeGold(),
+    3: GradePlatinum(),
+    4: GradeDiamond(),
+    5: GradeDiamond(),
+  };
+  return gradeMap[currentGrade.grade]!;
+}

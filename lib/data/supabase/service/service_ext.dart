@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
+import 'package:foresh_flutter/domain/supabase/entity/fortune_user_next_level_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
@@ -121,15 +122,48 @@ assignLevel(int markerCount) {
   return level;
 }
 
-// 다음 레벨 까지 경험치 퍼센트.
-calculateLevelProgress(int markerCount) {
+calculateLevelInfo(int markerCount) {
   int level = 1;
 
   while (markerCount >= level * 3) {
     markerCount -= level * 3;
     level++;
   }
-  return (markerCount / (level * 3));
+
+  int nextLevelRequired = level * 3;
+  double progressToNextLevelPercentage = (markerCount / nextLevelRequired);
+  int remainingForNextLevel = nextLevelRequired - markerCount;
+
+  // 다음 등급까지 필요한 마커 계산
+  int nextGradeLevel;
+  if (level < 30) {
+    nextGradeLevel = 30;
+  } else if (level < 60) {
+    nextGradeLevel = 60;
+  } else if (level < 90) {
+    nextGradeLevel = 90;
+  } else if (level < 120) {
+    nextGradeLevel = 120;
+  } else {
+    nextGradeLevel = level;
+  }
+
+  int totalMarkersForNextGrade = 0;
+  for (int i = level + 1; i <= nextGradeLevel; i++) {
+    totalMarkersForNextGrade += i * 3;
+  }
+  int remainingForNextGrade = totalMarkersForNextGrade - markerCount;
+
+  // 다음 등급까지 퍼센트 계산
+  double progressToNextGradePercentage = 1.0 - (remainingForNextGrade / totalMarkersForNextGrade);
+
+  return FortuneUserNextLevelEntity(
+    progressToNextLevelPercentage: progressToNextLevelPercentage,
+    progressToNextGradePercentage: progressToNextGradePercentage, // 추가된 부분
+    nextLevelMarkerCount: remainingForNextLevel,
+    nextGradeMarkerCount: remainingForNextGrade,
+    currentLevel: level,
+  );
 }
 
 // 등급 할당.

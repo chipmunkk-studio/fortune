@@ -44,7 +44,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
-      if (prevUser.ticket <= 0 && marker.ingredient.rewardTicket < 0) {
+
+      if (prevUser.ticket < marker.ingredient.rewardTicket.abs()) {
         throw CommonFailure(errorMessage: '보유한 티켓이 없습니다');
       }
 
