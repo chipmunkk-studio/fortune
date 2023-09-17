@@ -65,14 +65,19 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
           final ad = sideEffect.param.ad;
           switch (ingredient.type) {
             case IngredientType.ticket:
-              if (ad != null) {
-                ad.show(
-                  onUserEarnedReward: (_, reward) {
-                    FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
-                    _router.pop(context, true);
-                  },
-                );
-              } else {
+              try{
+                if (ad != null) {
+                  ad.show(
+                    onUserEarnedReward: (_, reward) {
+                      FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
+                      _router.pop(context, true);
+                    },
+                  );
+                } else {
+                  _router.pop(context, true);
+                }
+              } catch (e){
+                FortuneLogger.info("#2 광고 없음: $e");
                 _router.pop(context, true);
               }
               break;
@@ -92,7 +97,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
   _buildProcessWidgetOnType(IngredientActionParam entity) {
     switch (entity.ingredient.type) {
       case IngredientType.ticket:
-        return Container();
+        return Container(color: ColorName.grey700);
       default:
         return Container();
     }

@@ -50,7 +50,6 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
     await postMissionClearUseCase(
       RequestPostNormalMissionClear(
         missionId: state.entity.mission.id,
-        email: "melow2@naver.com",
       ),
     ).then(
       (value) => value.fold(
