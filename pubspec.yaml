@@ -1,5 +1,5 @@
-name: foresh_flutter
-description: Foresh Flutter
+name: fortune
+description: fortune flutter
 
 # apk > flutter build apk —release --flavor dev -t lib/main/dev.dart, flutter build apk —release -t lib/main.dart
 # 빌드 > flutter packages pub run build_runner build --delete-conflicting-outputs

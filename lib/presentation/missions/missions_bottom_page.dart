@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main.dart';
-import 'package:foresh_flutter/presentation/missions/component/mission_card_list.dart';
-import 'package:foresh_flutter/presentation/missions/component/missions_skeleton.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/main/bloc/main.dart';
+import 'package:fortune/presentation/missions/component/mission_card_list.dart';
+import 'package:fortune/presentation/missions/component/missions_skeleton.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 

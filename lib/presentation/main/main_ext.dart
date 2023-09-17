@@ -4,9 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/widgets/animation/linear_bounce_animation.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/widgets/animation/linear_bounce_animation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 

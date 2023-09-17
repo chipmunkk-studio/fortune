@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class MiddlePercentage extends StatelessWidget {

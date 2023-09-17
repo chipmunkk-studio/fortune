@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 
 abstract class FortuneUserGradeEntity {
   final int grade;

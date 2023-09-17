@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_post_mission_clear.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_mission_detail_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/post_mission_clear_use_case.dart';
+import 'package:fortune/domain/supabase/request/request_post_mission_clear.dart';
+import 'package:fortune/domain/supabase/usecase/get_mission_detail_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'package:http/http.dart' as http;
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 

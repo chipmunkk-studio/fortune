@@ -2,15 +2,15 @@ import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
-import 'package:foresh_flutter/core/widgets/checkbox/fortune_check_box.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/agreeterms/bloc/agree_terms.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
+import 'package:fortune/core/widgets/checkbox/fortune_check_box.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/agreeterms/bloc/agree_terms.dart';
+import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class AgreeTermsBottomSheet extends StatelessWidget {

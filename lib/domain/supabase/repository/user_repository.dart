@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 
 abstract class UserRepository {
   // 사용자 찾기.(null을 허용하지 않음) > 사용자가 없을 경우 무조건 에러가 필요한 경우

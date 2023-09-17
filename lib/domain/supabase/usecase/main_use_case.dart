@@ -1,17 +1,17 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/main_view_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/marker_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
-import 'package:foresh_flutter/env.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
+import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
+import 'package:fortune/domain/supabase/repository/marker_respository.dart';
+import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/domain/supabase/request/request_main_param.dart';
+import 'package:fortune/env.dart';
 
 class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   final IngredientRepository ingredientRepository;

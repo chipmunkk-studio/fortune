@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class FortunePermissionUtil {

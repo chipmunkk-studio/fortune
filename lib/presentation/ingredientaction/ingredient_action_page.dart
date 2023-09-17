@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/ingredientaction/bloc/ingredient_action.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -65,7 +65,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
           final ad = sideEffect.param.ad;
           switch (ingredient.type) {
             case IngredientType.ticket:
-              try{
+              try {
                 if (ad != null) {
                   ad.show(
                     onUserEarnedReward: (_, reward) {
@@ -76,7 +76,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 } else {
                   _router.pop(context, true);
                 }
-              } catch (e){
+              } catch (e) {
                 FortuneLogger.info("#2 광고 없음: $e");
                 _router.pop(context, true);
               }
@@ -97,9 +97,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
   _buildProcessWidgetOnType(IngredientActionParam entity) {
     switch (entity.ingredient.type) {
       case IngredientType.ticket:
-        return Container(color: ColorName.grey700);
+        return Container(color: Colors.black.withOpacity(0.5));
       default:
-        return Container();
+        return Container(color: Colors.black.withOpacity(0.5));
     }
   }
 }

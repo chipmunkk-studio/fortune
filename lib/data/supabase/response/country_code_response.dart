@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/country_code_entity.dart';
+import 'package:fortune/domain/supabase/entity/country_code_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'country_code_response.g.dart';

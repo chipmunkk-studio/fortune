@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
 class ProfileInfo extends StatelessWidget {
   final FortuneUserEntity entity;

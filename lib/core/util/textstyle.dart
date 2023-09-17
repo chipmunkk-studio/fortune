@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/gen/fonts.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/gen/fonts.gen.dart';
 
 abstract class FortuneTextStyle {
   static TextStyle headLine1({Color? fontColor,}) {

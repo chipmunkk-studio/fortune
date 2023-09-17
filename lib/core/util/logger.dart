@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/di.dart';
+import 'package:fortune/di.dart';
 import 'package:logger/logger.dart';
 
 abstract class FortuneLogger {

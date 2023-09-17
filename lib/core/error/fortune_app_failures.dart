@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'failure/auth_failure.dart';

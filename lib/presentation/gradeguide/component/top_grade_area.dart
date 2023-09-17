@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
 class TopGradeArea extends StatelessWidget {
   final String grade;

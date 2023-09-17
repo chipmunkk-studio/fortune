@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_detail_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'mission_detail_state.freezed.dart';

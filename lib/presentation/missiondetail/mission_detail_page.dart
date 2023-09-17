@@ -1,13 +1,13 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/missiondetail/component/normal_mission.dart';
+import 'package:fortune/core/widgets/dialog/default_dialog.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/missiondetail/component/normal_mission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/mission_detail.dart';

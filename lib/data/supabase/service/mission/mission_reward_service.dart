@@ -1,9 +1,9 @@
-import 'package:foresh_flutter/core/error/failure/common_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
-import 'package:foresh_flutter/data/supabase/response/mission/mission_reward_response.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
+import 'package:fortune/core/error/failure/common_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
+import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionRewardService {

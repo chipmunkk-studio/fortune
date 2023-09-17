@@ -65,14 +65,14 @@
   import 'package:flutter/rendering.dart';
   import 'package:flutter_bloc/flutter_bloc.dart';
   import 'package:flutter_screenutil/flutter_screenutil.dart';
-  import 'package:foresh_flutter/core/error/fortune_error_dialog.dart';
-  import 'package:foresh_flutter/core/util/date.dart';
-  import 'package:foresh_flutter/core/util/logger.dart';
-  import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-  import 'package:foresh_flutter/di.dart';
-  import 'package:foresh_flutter/domain/entities/common/faq_entity.dart';
-  import 'package:foresh_flutter/presentation/fortune_router.dart';
-  import 'package:foresh_flutter/presentation/support/faq/bloc/faq.dart';
+  import 'package:fortune/core/error/fortune_error_dialog.dart';
+  import 'package:fortune/core/util/date.dart';
+  import 'package:fortune/core/util/logger.dart';
+  import 'package:fortune/core/widgets/fortune_scaffold.dart';
+  import 'package:fortune/di.dart';
+  import 'package:fortune/domain/entities/common/faq_entity.dart';
+  import 'package:fortune/presentation/fortune_router.dart';
+  import 'package:fortune/presentation/support/faq/bloc/faq.dart';
   import 'package:side_effect_bloc/side_effect_bloc.dart';
 
   import '../component/support_card.dart';
@@ -191,9 +191,9 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/domain/entities/common/faq_entity.dart';
-import 'package:foresh_flutter/domain/usecases/obtain_faq_usecaase.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/domain/entities/common/faq_entity.dart';
+import 'package:fortune/domain/usecases/obtain_faq_usecaase.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'faq.dart';

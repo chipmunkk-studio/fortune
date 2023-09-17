@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_next_level_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_next_level_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -119,7 +119,7 @@ getLocationName(
     }
   } catch (e) {
     FortuneLogger.error(message: e.toString());
-    return unknownLocation;
+    return null;
   }
 }
 

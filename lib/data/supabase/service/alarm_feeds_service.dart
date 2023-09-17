@@ -1,10 +1,10 @@
-import 'package:foresh_flutter/core/error/failure/common_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
-import 'package:foresh_flutter/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:fortune/core/error/failure/common_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/supabase_ext.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'alarm_reward_history_service.dart';

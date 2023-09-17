@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'fortune_user_response.g.dart';

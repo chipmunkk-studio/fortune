@@ -1,13 +1,13 @@
-// import 'package:foresh_flutter/core/util/logger.dart';
-// import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
-// import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
-// import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-// import 'package:foresh_flutter/di.dart';
-// import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
-// import 'package:foresh_flutter/domain/supabase/repository/event_rewards_repository.dart';
-// import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
-// import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-// import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+// import 'package:fortune/core/util/logger.dart';
+// import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
+// import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+// import 'package:fortune/data/supabase/service/service_ext.dart';
+// import 'package:fortune/di.dart';
+// import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
+// import 'package:fortune/domain/supabase/repository/event_rewards_repository.dart';
+// import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
+// import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
+// import 'package:fortune/domain/supabase/repository/user_repository.dart';
 //
 // void main() async {
 //   final rewardRepository = serviceLocator<AlarmRewardsRepository>();

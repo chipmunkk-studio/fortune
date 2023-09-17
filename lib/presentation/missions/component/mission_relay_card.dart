@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:transparent_image/transparent_image.dart';
 

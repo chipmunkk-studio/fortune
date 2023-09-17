@@ -1,7 +1,7 @@
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../fortune_user_response.dart';

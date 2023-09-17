@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_detail_entity.dart';
-import 'package:foresh_flutter/presentation/missiondetail/bloc/mission_detail_state.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
+import 'package:fortune/presentation/missiondetail/bloc/mission_detail_state.dart';
 
 import '../../../core/util/textstyle.dart';
 import 'exchange_bottom.dart';
