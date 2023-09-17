@@ -176,10 +176,10 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    // if (distance > 0) {
-    //   context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
-    //   return;
-    // }
+    if (distance > 0) {
+      context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
+      return;
+    }
 
     if (data.ingredient.type == IngredientType.ticket) {
       _showTicketDialog(data, globalKey);

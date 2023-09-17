@@ -1,3 +1,4 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
@@ -23,11 +24,7 @@ class MissionDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => serviceLocator<MissionDetailBloc>()..add(MissionDetailInit(mission)),
-      child: FortuneScaffold(
-        padding: const EdgeInsets.all(0),
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-        child: const _MissionDetailPage(),
-      ),
+      child: const _MissionDetailPage(),
     );
   }
 }
@@ -42,6 +39,11 @@ class _MissionDetailPage extends StatefulWidget {
 class _MissionDetailPageState extends State<_MissionDetailPage> {
   late final MissionDetailBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
+  final ConfettiController _controller = ConfettiController(
+    duration: const Duration(
+      seconds: 2,
+    ),
+  );
 
   @override
   void initState() {
@@ -70,23 +72,57 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
           );
         } else if (sideEffect is MissionDetailError) {
           dialogService.showErrorDialog(context, sideEffect.error);
+        } else if (sideEffect is MissionDetailTest) {
+          _controller.play();
         }
       },
-      child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
-        builder: (context, state) {
-          switch (state.entity.mission.missionType) {
-            case MissionType.normal:
-              return NormalMission(
-                state,
-                onExchangeClick: () {
-                  router.pop(context);
-                  _bloc.add(MissionDetailExchange());
+      child: ConfettiWidget(
+        confettiController: _controller,
+        blastDirection: 0,
+        maxBlastForce: 5,
+        minBlastForce: 2,
+        emissionFrequency: 0.05,
+        numberOfParticles: 20,
+        shouldLoop: true,
+        colors: const [
+          Colors.red,
+          Colors.green,
+          Colors.yellow,
+          Colors.blue,
+          Colors.purpleAccent,
+        ],
+        createParticlePath: (size) {
+          final path = Path();
+          path.addOval(
+            Rect.fromCircle(center: Offset.zero, radius: 10),
+          );
+          return path;
+        },
+        child: FortuneScaffold(
+          padding: const EdgeInsets.all(0),
+          appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
+          child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+            buildWhen: (previous, current) => previous.isRequestObtaining != current.isRequestObtaining,
+            builder: (context, state) {
+              return BlocBuilder<MissionDetailBloc, MissionDetailState>(
+                builder: (context, state) {
+                  switch (state.entity.mission.missionType) {
+                    case MissionType.normal:
+                      return NormalMission(
+                        state,
+                        onExchangeClick: () {
+                          router.pop(context);
+                          _bloc.add(MissionDetailExchange());
+                        },
+                      );
+                    default:
+                      return Container();
+                  }
                 },
               );
-            default:
-              return Container();
-          }
-        },
+            },
+          ),
+        ),
       ),
     );
   }

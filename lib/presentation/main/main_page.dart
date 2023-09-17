@@ -114,6 +114,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
             _detectPermission = false;
           }
+        } else {
+          _bloc.add(Main());
         }
         break;
       case AppLifecycleState.paused:
@@ -334,31 +336,35 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   // 카메라 이동 애니메이션.
   void _animatedMapMove(LatLng destLocation, double destZoom) {
-    final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
-    final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
-    final zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+    try {
+      final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
+      final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
+      final zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
 
-    final controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-    final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      final controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+      final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
-    controller.addListener(() {
-      _mapController.move(
-        LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
-        zoomTween.evaluate(animation),
+      controller.addListener(() {
+        _mapController.move(
+          LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+          zoomTween.evaluate(animation),
+        );
+      });
+
+      // 애니메이션 후 바로 해제.
+      animation.addStatusListener(
+        (status) {
+          if (status == AnimationStatus.completed) {
+            controller.dispose();
+          } else if (status == AnimationStatus.dismissed) {
+            controller.dispose();
+          }
+        },
       );
-    });
-
-    // 애니메이션 후 바로 해제.
-    animation.addStatusListener(
-      (status) {
-        if (status == AnimationStatus.completed) {
-          controller.dispose();
-        } else if (status == AnimationStatus.dismissed) {
-          controller.dispose();
-        }
-      },
-    );
-    controller.forward();
+      controller.forward();
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+    }
   }
 
   // 광고 로드

@@ -79,7 +79,7 @@ class FortuneRemoteConfig {
         "refreshTime: $oneSignalApiKey\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
-        "randomDistance: $oneSignalApiKey\n"
+        "randomDistance: $randomDistance\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }

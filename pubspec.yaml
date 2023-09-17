@@ -59,6 +59,7 @@ dependencies:
   animation_search_bar: ^0.0.10
   carousel_slider: ^4.2.1
   animation_list: ^2.2.1
+  confetti: ^0.7.0
 
   # map
   flutter_map: ^5.0.0

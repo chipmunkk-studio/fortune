@@ -20,3 +20,10 @@ class MissionDetailClearSuccess extends MissionDetailSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+class MissionDetailTest extends MissionDetailSideEffect {
+  MissionDetailTest();
+
+  @override
+  List<Object?> get props => [];
+}

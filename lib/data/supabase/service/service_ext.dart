@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:foresh_flutter/core/util/logger.dart';
 import 'package:foresh_flutter/data/supabase/request/request_marker_random_insert.dart';
 import 'package:foresh_flutter/domain/supabase/entity/fortune_user_next_level_entity.dart';
 import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
@@ -91,24 +92,34 @@ getLocationName(
   String? localeIdentifier,
   bool isDetailStreet = true,
 }) async {
-  // 영어
-  List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude, localeIdentifier: localeIdentifier);
+  const unknownLocation = '알 수 없는 위치';
+  try {
+    // 영어
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      latitude,
+      longitude,
+      localeIdentifier: localeIdentifier,
+    );
 
-  if (placemarks.isNotEmpty) {
-    final Placemark pos1 = placemarks[0];
-    String? name = pos1.name;
-    String? subLocality = pos1.subLocality;
-    String? locality = pos1.locality;
-    String? administrativeArea = pos1.administrativeArea;
-    String? postalCode = pos1.postalCode;
-    String? country = pos1.country;
-    if (isDetailStreet) {
-      return pos1.street; // 서울특별시 성동구
+    if (placemarks.isNotEmpty) {
+      final Placemark pos1 = placemarks[0];
+      String? name = pos1.name;
+      String? subLocality = pos1.subLocality;
+      String? locality = pos1.locality;
+      String? administrativeArea = pos1.administrativeArea;
+      String? postalCode = pos1.postalCode;
+      String? country = pos1.country;
+      if (isDetailStreet) {
+        return pos1.street; // 서울특별시 성동구
+      } else {
+        return "$administrativeArea $subLocality";
+      }
     } else {
-      return "$administrativeArea $subLocality";
+      return unknownLocation;
     }
-  } else {
-    return "알 수 없는 위치";
+  } catch (e) {
+    FortuneLogger.error(message: e.toString());
+    return unknownLocation;
   }
 }
 
@@ -159,7 +170,8 @@ calculateLevelInfo(int markerCount) {
 
   return FortuneUserNextLevelEntity(
     progressToNextLevelPercentage: progressToNextLevelPercentage,
-    progressToNextGradePercentage: progressToNextGradePercentage, // 추가된 부분
+    progressToNextGradePercentage: progressToNextGradePercentage,
+    // 추가된 부분
     nextLevelMarkerCount: remainingForNextLevel,
     nextGradeMarkerCount: remainingForNextGrade,
     currentLevel: level,

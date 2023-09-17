@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foresh_flutter/core/util/permission.dart';
@@ -33,7 +34,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
-    on<Main>(main);
+    on<Main>(
+      main,
+      transformer: throttle(const Duration(seconds: 3)),
+    );
     on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
     on<MainSetRewardAd>(setRewardAd);
