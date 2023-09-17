@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_ext.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main.dart';
-import 'package:foresh_flutter/presentation/main/component/notice/top_notice_auto_slider.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/fortune_ext.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/main/bloc/main.dart';
+import 'package:fortune/presentation/main/component/notice/top_notice_auto_slider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class TopNotice extends StatefulWidget {

@@ -33,7 +33,6 @@ class _FortuneAnimatedButton extends StatefulWidget {
   final ButtonStyle? style;
 
   const _FortuneAnimatedButton({
-    super.key,
     required this.onPressed,
     required this.child,
     this.style,

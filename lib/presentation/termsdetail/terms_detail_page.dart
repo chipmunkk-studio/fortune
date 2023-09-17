@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/termsdetail/bloc/terms_detail.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class TermsDetailPage extends StatelessWidget {

@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_user_entity.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'missions_response.dart';

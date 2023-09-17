@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'common_failure.g.dart';

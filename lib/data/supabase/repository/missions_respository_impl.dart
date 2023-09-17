@@ -1,15 +1,15 @@
-import 'package:foresh_flutter/core/error/failure/custom_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_mission_clear_user.dart';
-import 'package:foresh_flutter/data/supabase/request/request_mission_reward_update.dart';
-import 'package:foresh_flutter/data/supabase/service/mission/mission_clear_conditions_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission/mission_clear_user_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission/mission_reward_service.dart';
-import 'package:foresh_flutter/data/supabase/service/mission/missions_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/mission_respository.dart';
+import 'package:fortune/core/error/failure/custom_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
+import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
+import 'package:fortune/data/supabase/service/mission/mission_clear_conditions_service.dart';
+import 'package:fortune/data/supabase/service/mission/mission_clear_user_service.dart';
+import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
+import 'package:fortune/data/supabase/service/mission/missions_service.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
+import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 
 class MissionsRepositoryImpl extends MissionsRepository {
   final MissionsService missionNormalService;

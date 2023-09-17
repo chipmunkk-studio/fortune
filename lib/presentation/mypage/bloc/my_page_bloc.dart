@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
-import 'package:foresh_flutter/domain/local/local_respository.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/my_page_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/update_user_profile_use_case.dart';
+import 'package:fortune/data/local/datasource/local_datasource.dart';
+import 'package:fortune/domain/local/local_respository.dart';
+import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'my_page.dart';

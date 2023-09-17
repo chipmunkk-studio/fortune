@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
+import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:location/location.dart';
 
 import '../../../../core/error/fortune_app_failures.dart';

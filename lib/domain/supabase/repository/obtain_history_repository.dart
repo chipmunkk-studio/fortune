@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 
 abstract class ObtainHistoryRepository {
   // 히스토리 목록 불러오기

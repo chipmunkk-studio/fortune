@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 
 extension FortuneBottomSheet on BuildContext {
   /// 기본 바텀시트.

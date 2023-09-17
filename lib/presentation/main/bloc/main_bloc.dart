@@ -1,17 +1,18 @@
 import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/permission.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_main_param.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_obtain_marker_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/main_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/obtain_marker_use_case.dart';
-import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
+import 'package:fortune/core/util/permission.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/request/request_main_param.dart';
+import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
+import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/env.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -33,7 +34,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
-    on<Main>(main);
+    on<Main>(
+      main,
+      transformer: throttle(const Duration(seconds: 3)),
+    );
     on<MainMarkerClick>(onMarkerClicked);
     on<MainMyLocationChange>(locationChange);
     on<MainSetRewardAd>(setRewardAd);
@@ -60,7 +64,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           final longitude = locationData.longitude;
 
           if (latitude != null && longitude != null) {
-            final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
+            final locationName = await getLocationName(
+                  latitude,
+                  longitude,
+                  isDetailStreet: false,
+                ) ??
+                state.locationName;
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: locationName));
           }
 
@@ -114,7 +123,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         ),
       ).then(
         (value) => value.fold(
-          (l) => produceSideEffect(MainError(l)),
+          (l) {
+            emit(state.copyWith(isLoading: false));
+            produceSideEffect(MainError(l));
+          },
           (entity) async {
             // 마커들.
             final markerList = entity.markers

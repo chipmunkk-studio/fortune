@@ -1,6 +1,6 @@
-import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
-import 'package:foresh_flutter/data/supabase/response/ingredient_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/ingredient_response.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'obtain_history_response.g.dart';

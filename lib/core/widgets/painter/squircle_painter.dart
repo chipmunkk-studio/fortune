@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 
 class SquirclePainter extends CustomPainter {
   final Color color;

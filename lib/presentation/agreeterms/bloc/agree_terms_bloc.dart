@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_terms_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'agree_terms.dart';

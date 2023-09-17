@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
-import 'package:foresh_flutter/presentation/main/bloc/main.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:skeletons/skeletons.dart';
 

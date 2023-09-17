@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/notification/notification_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
-import 'package:foresh_flutter/presentation/alarmfeed/alarm_feed_page.dart';
-import 'package:foresh_flutter/presentation/alarmreward/alarm_reward_page.dart';
-import 'package:foresh_flutter/presentation/gradeguide/grade_guide_page.dart';
-import 'package:foresh_flutter/presentation/login/bloc/login.dart';
-import 'package:foresh_flutter/presentation/mypage/my_page.dart';
-import 'package:foresh_flutter/presentation/support/faqs/faqs_page.dart';
-import 'package:foresh_flutter/presentation/support/notices/faqs_page.dart';
-import 'package:foresh_flutter/presentation/termsdetail/terms_detail_page.dart';
+import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
+import 'package:fortune/presentation/alarmreward/alarm_reward_page.dart';
+import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
+import 'package:fortune/presentation/login/bloc/login.dart';
+import 'package:fortune/presentation/mypage/my_page.dart';
+import 'package:fortune/presentation/support/faqs/faqs_page.dart';
+import 'package:fortune/presentation/support/notices/faqs_page.dart';
+import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
 import 'login/login_page.dart';

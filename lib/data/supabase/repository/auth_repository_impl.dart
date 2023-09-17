@@ -1,9 +1,9 @@
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/service/auth_service.dart';
-import 'package:foresh_flutter/data/supabase/service/user_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/service/auth_service.dart';
+import 'package:fortune/data/supabase/service/user_service.dart';
+import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:fortune/domain/supabase/repository/auth_repository.dart';
+import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:supabase/supabase.dart';
 
 class AuthRepositoryImpl extends AuthRepository {

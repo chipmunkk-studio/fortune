@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:fortune/core/util/textstyle.dart';
 
 import 'fortune_bottom_button.dart';
 

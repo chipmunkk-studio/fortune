@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/validators.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_sign_up_or_in_test_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_user_use_case.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
-import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/domain/supabase/request/request_sign_up_or_in_test_param.dart';
+import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
+import 'package:fortune/env.dart';
+import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

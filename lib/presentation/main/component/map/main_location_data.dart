@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:latlong2/latlong.dart';
 
 class MainLocationData extends Equatable {

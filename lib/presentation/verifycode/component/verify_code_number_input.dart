@@ -4,11 +4,11 @@ import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/util/validators.dart';
-import 'package:foresh_flutter/presentation/verifycode/bloc/verify_code.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
 
 class VerifyCodeNumberInput extends StatefulWidget {
   const VerifyCodeNumberInput({

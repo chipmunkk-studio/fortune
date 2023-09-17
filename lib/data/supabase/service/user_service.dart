@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:foresh_flutter/core/error/failure/common_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/data/supabase/request/request_fortune_user.dart';
-import 'package:foresh_flutter/data/supabase/response/fortune_user_response.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/data/supabase/supabase_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/core/error/failure/common_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/data/supabase/request/request_fortune_user.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/supabase_ext.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {

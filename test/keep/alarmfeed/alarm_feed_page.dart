@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/alarmfeed/bloc/alarm_feed.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
+import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class AlarmFeedPage extends StatelessWidget {

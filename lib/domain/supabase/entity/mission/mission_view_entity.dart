@@ -1,5 +1,5 @@
 
-import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 
 import 'missions_entity.dart';
 

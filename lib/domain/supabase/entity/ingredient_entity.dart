@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
 
 class IngredientEntity {
   final int id;

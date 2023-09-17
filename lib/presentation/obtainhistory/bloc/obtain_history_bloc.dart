@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_obtain_histories_param.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/get_obtain_histories_use_case.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/domain/supabase/request/request_obtain_histories_param.dart';
+import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'obtain_history.dart';
