@@ -4,9 +4,9 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/adhelper.dart';
-import 'package:foresh_flutter/core/util/strings.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/adhelper.dart';
+import 'package:fortune/core/util/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/util/logger.dart';
@@ -79,7 +79,7 @@ class FortuneRemoteConfig {
         "refreshTime: $oneSignalApiKey\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
-        "randomDistance: $oneSignalApiKey\n"
+        "randomDistance: $randomDistance\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }

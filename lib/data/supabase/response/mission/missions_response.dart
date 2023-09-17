@@ -1,7 +1,7 @@
-import 'package:foresh_flutter/data/supabase/response/mission/mission_ext.dart';
-import 'package:foresh_flutter/data/supabase/response/mission/mission_reward_response.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
+import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
+import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'missions_response.g.dart';

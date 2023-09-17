@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/common/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'notices_response.g.dart';

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/suffixicon/default_prefix_icon.dart';
-import 'package:foresh_flutter/core/widgets/suffixicon/default_suffix_icon.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/suffixicon/default_prefix_icon.dart';
+import 'package:fortune/core/widgets/suffixicon/default_suffix_icon.dart';
 
 class FortuneTextForm extends StatefulWidget {
   final dartz.Function1<String, void> onTextChanged;

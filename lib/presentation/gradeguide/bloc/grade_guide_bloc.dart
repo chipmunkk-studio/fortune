@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/domain/supabase/usecase/grade_guide_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'grade_guide.dart';

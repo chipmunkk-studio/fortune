@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'fortune_user_next_level_entity.dart';

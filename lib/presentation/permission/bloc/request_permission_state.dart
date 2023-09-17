@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:foresh_flutter/core/util/permission.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:fortune/core/util/permission.dart';
+import 'package:fortune/presentation/fortune_router.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:permission_handler/permission_handler.dart';
 

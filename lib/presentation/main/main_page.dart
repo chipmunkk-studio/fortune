@@ -7,26 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/error/failure/network_failure.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/notification/notification_response.dart';
-import 'package:foresh_flutter/core/util/adhelper.dart';
-import 'package:foresh_flutter/core/util/logger.dart';
-import 'package:foresh_flutter/core/util/snackbar.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/bottomsheet/bottom_sheet_ext.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_text_button.dart';
-import 'package:foresh_flutter/core/widgets/dialog/default_dialog.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/env.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/login/bloc/login_state.dart';
-import 'package:foresh_flutter/presentation/missions/missions_bottom_page.dart';
-import 'package:foresh_flutter/presentation/myingredients/my_ingredients_page.dart';
+import 'package:fortune/core/error/failure/network_failure.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/core/util/adhelper.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/snackbar.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:fortune/core/widgets/button/fortune_text_button.dart';
+import 'package:fortune/core/widgets/dialog/default_dialog.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/env.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/login/bloc/login_state.dart';
+import 'package:fortune/presentation/missions/missions_bottom_page.dart';
+import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart' show Location, LocationData;
@@ -114,6 +114,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
             _detectPermission = false;
           }
+        } else {
+          _bloc.add(Main());
         }
         break;
       case AppLifecycleState.paused:
@@ -334,31 +336,35 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   // 카메라 이동 애니메이션.
   void _animatedMapMove(LatLng destLocation, double destZoom) {
-    final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
-    final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
-    final zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+    try {
+      final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
+      final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
+      final zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
 
-    final controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-    final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
+      final controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+      final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
-    controller.addListener(() {
-      _mapController.move(
-        LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
-        zoomTween.evaluate(animation),
+      controller.addListener(() {
+        _mapController.move(
+          LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+          zoomTween.evaluate(animation),
+        );
+      });
+
+      // 애니메이션 후 바로 해제.
+      animation.addStatusListener(
+        (status) {
+          if (status == AnimationStatus.completed) {
+            controller.dispose();
+          } else if (status == AnimationStatus.dismissed) {
+            controller.dispose();
+          }
+        },
       );
-    });
-
-    // 애니메이션 후 바로 해제.
-    animation.addStatusListener(
-      (status) {
-        if (status == AnimationStatus.completed) {
-          controller.dispose();
-        } else if (status == AnimationStatus.dismissed) {
-          controller.dispose();
-        }
-      },
-    );
-    controller.forward();
+      controller.forward();
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+    }
   }
 
   // 광고 로드

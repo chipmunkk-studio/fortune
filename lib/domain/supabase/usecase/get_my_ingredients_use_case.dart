@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/my_ingredients_view_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
+import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
+import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:fortune/domain/supabase/repository/user_repository.dart';
 
 class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
   final ObtainHistoryRepository obtainHistoryRepository;

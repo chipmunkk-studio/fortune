@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'alarm_feed_state.freezed.dart';

@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/fortune_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   OnBoardingPage({Key? key}) : super(key: key);

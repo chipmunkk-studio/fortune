@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/failure/common_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/message_ext.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/local/local_respository.dart';
-import 'package:foresh_flutter/domain/supabase/entity/sms_verify_remain_time_entity.dart';
+import 'package:fortune/core/error/failure/common_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/local/local_respository.dart';
+import 'package:fortune/domain/supabase/entity/sms_verify_remain_time_entity.dart';
 
 class CheckVerifySmsTimeUseCase implements UseCase0<SmsVerifyRemainTimeEntity> {
   final LocalRepository localRepository;

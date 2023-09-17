@@ -1,8 +1,8 @@
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_alarm_feeds.dart';
-import 'package:foresh_flutter/data/supabase/service/alarm_feeds_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/alarm_feeds_repository.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
+import 'package:fortune/data/supabase/service/alarm_feeds_service.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 
 class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
   final AlarmFeedsService alarmFeedsService;

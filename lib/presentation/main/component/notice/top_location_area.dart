@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
 
 import '../../bloc/main.dart';
 

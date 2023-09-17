@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'mission_reward_response.g.dart';

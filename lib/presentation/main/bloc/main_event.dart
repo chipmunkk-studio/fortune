@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/notification/notification_response.dart';
+import 'package:fortune/core/notification/notification_response.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:location/location.dart';
 

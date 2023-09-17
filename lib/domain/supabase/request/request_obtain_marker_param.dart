@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
+import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 
 class RequestObtainMarkerParam {
   final MainLocationData marker;

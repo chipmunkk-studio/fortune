@@ -1,8 +1,8 @@
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/request/request_obtain_history.dart';
-import 'package:foresh_flutter/data/supabase/service/obtain_history_service.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/service/obtain_history_service.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 
 class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
   final ObtainHistoryService _obtainHistoryService;

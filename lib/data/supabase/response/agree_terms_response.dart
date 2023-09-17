@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'agree_terms_response.g.dart';

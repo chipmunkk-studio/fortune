@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_verify_phone_number_param.dart';
+import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {

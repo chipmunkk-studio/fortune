@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
 
 
 typedef FortuneResult<T> = Either<FortuneFailure, T>;

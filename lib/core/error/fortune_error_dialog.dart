@@ -2,11 +2,11 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/presentation/fortune_router.dart';
-import 'package:foresh_flutter/presentation/login/bloc/login.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'failure/auth_failure.dart';

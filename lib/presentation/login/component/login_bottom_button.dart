@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_bottom_button.dart';
+import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 
 class LoginBottomButton extends StatelessWidget {
   final bool isKeyboardVisible;

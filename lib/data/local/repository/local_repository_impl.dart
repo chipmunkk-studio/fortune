@@ -1,6 +1,6 @@
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/local/datasource/local_datasource.dart';
-import 'package:foresh_flutter/domain/local/local_respository.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/local/datasource/local_datasource.dart';
+import 'package:fortune/domain/local/local_respository.dart';
 
 class LocalRepositoryImpl extends LocalRepository {
   final LocalDataSource localDataSource;

@@ -1,6 +1,6 @@
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:location/location.dart';

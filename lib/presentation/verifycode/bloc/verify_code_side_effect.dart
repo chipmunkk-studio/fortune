@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/domain/supabase/entity/sms_verify_remain_time_entity.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/domain/supabase/entity/sms_verify_remain_time_entity.dart';
 
 @immutable
 abstract class VerifyCodeSideEffect extends Equatable {}

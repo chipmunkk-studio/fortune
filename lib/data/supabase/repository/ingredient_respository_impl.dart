@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:foresh_flutter/core/error/failure/custom_failure.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/data/supabase/service/ingredient_service.dart';
-import 'package:foresh_flutter/data/supabase/service/service_ext.dart';
-import 'package:foresh_flutter/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/ingredient_respository.dart';
+import 'package:fortune/core/error/failure/custom_failure.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/data/supabase/service/ingredient_service.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 
 class IngredientRepositoryImpl extends IngredientRepository {
   final IngredientService _ingredientService;

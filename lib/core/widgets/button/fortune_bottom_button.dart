@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foresh_flutter/core/widgets/button/fortune_scale_button.dart';
+import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 
 
 class FortuneBottomButton extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/presentation/main/component/map/main_location_data.dart';
+import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class MainMarkerView extends StatefulWidget {

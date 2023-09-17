@@ -1,7 +1,7 @@
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/marker_entity.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 
 abstract class MarkerRepository {
   // 마커 목록 불러오기.

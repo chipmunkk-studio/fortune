@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'missions_state.freezed.dart';

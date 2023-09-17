@@ -1,16 +1,16 @@
 import 'package:animation_list/animation_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/util/textstyle.dart';
-import 'package:foresh_flutter/core/widgets/fortune_scaffold.dart';
-import 'package:foresh_flutter/di.dart';
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_grade_entity.dart';
-import 'package:foresh_flutter/presentation/gradeguide/bloc/grade_guide.dart';
-import 'package:foresh_flutter/presentation/gradeguide/component/bottom_grade_area.dart';
-import 'package:foresh_flutter/presentation/gradeguide/component/item_grade.dart';
-import 'package:foresh_flutter/presentation/gradeguide/component/middle_percentage.dart';
-import 'package:foresh_flutter/presentation/gradeguide/component/top_grade_area.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
+import 'package:fortune/presentation/gradeguide/component/bottom_grade_area.dart';
+import 'package:fortune/presentation/gradeguide/component/item_grade.dart';
+import 'package:fortune/presentation/gradeguide/component/middle_percentage.dart';
+import 'package:fortune/presentation/gradeguide/component/top_grade_area.dart';
 
 class GradeGuidePage extends StatelessWidget {
   const GradeGuidePage({Key? key}) : super(key: key);

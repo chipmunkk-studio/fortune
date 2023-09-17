@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foresh_flutter/core/gen/assets.gen.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/widgets/painter/squircle_image_view.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 
 class CenterProfile extends StatelessWidget {
   final String imageUrl;

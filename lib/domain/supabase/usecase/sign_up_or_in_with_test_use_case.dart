@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/local/local_respository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/auth_repository.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_sign_up_or_in_test_param.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/local/local_respository.dart';
+import 'package:fortune/domain/supabase/repository/auth_repository.dart';
+import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/domain/supabase/request/request_sign_up_or_in_test_param.dart';
 
 class SignUpOrInWithTestUseCase implements UseCase1<void, RequestSignUpOrInTestParam> {
   final AuthRepository authRepository;

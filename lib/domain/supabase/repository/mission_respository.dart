@@ -1,6 +1,6 @@
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/mission_reward_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/mission/missions_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 
 abstract class MissionsRepository {
   // 미션 목록 불러오기.

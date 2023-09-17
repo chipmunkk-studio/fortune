@@ -1,5 +1,5 @@
-import 'package:foresh_flutter/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 
 class ObtainHistoryEntity {
   final int id;

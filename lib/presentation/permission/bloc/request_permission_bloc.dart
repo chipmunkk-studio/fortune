@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foresh_flutter/core/util/permission.dart';
+import 'package:fortune/core/util/permission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'request_permission.dart';

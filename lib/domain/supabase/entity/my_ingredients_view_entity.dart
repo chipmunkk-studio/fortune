@@ -1,4 +1,4 @@
-import 'package:foresh_flutter/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 
 import 'obtain_history_entity.dart';
 

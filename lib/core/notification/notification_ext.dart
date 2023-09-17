@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:foresh_flutter/core/gen/colors.gen.dart';
-import 'package:foresh_flutter/core/notification/notification_response.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/notification/notification_response.dart';
 
 import 'notification_manager.dart';
 

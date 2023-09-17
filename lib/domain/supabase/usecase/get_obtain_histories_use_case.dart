@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/obtain_history_repository.dart';
-import 'package:foresh_flutter/domain/supabase/request/request_obtain_histories_param.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
+import 'package:fortune/domain/supabase/request/request_obtain_histories_param.dart';
 
 class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingViewItem>, RequestObtainHistoriesParam> {
   final ObtainHistoryRepository obtainHistoryRepository;

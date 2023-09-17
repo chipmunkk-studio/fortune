@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/util/usecase.dart';
-import 'package:foresh_flutter/domain/supabase/entity/grade_guide_view_entity.dart';
-import 'package:foresh_flutter/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/domain/supabase/entity/grade_guide_view_entity.dart';
+import 'package:fortune/domain/supabase/repository/user_repository.dart';
 
 class GradeGuideUseCase implements UseCase0<GradeGuideViewEntity> {
   final UserRepository userRepository;
