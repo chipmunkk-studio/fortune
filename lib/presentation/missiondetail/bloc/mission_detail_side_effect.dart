@@ -21,8 +21,8 @@ class MissionDetailClearSuccess extends MissionDetailSideEffect {
   List<Object?> get props => [];
 }
 
-class MissionDetailTest extends MissionDetailSideEffect {
-  MissionDetailTest();
+class MissionDetailParticleBurst extends MissionDetailSideEffect {
+  MissionDetailParticleBurst();
 
   @override
   List<Object?> get props => [];

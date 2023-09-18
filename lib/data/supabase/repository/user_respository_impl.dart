@@ -44,7 +44,7 @@ class UserRepositoryImpl extends UserRepository {
       return user;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneTr.notFoundUser,
+        description: e.description,
       );
     }
   }

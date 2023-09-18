@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/domain/supabase/request/request_post_mission_clear.dart';
 import 'package:fortune/domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/post_mission_clear_use_case.dart';
-import 'package:http/http.dart' as http;
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'mission_detail.dart';
@@ -33,16 +31,13 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
       (value) => value.fold(
         (l) => produceSideEffect(MissionDetailError(l)),
         (r) async {
-          final particleImage = await _downloadImage(r.mission.missionReward.rewardImage);
           emit(
             state.copyWith(
               entity: r,
               isLoading: false,
-              confettiImage: particleImage,
               isEnableButton: r.isEnableMissionClear,
             ),
           );
-          produceSideEffect(MissionDetailTest());
         },
       ),
     );
@@ -65,18 +60,10 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
         },
         (r) {
           emit(state.copyWith(isRequestObtaining: false));
+          produceSideEffect(MissionDetailParticleBurst());
           produceSideEffect(MissionDetailClearSuccess());
         },
       ),
     );
-  }
-
-  Future<Uint8List?> _downloadImage(String url) async {
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    } else {
-      return null;
-    }
   }
 }
