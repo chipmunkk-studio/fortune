@@ -28,7 +28,7 @@ class NormalMission extends StatelessWidget {
           child: Stack(
             children: [
               ListView(
-                physics: const BouncingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -70,7 +70,7 @@ class NormalMission extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 50,
+                  height: 20,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,
@@ -89,7 +89,7 @@ class NormalMission extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
           child: FortuneScaleButton(
-            isEnabled: true,
+            isEnabled: state.isEnableButton,
             text: "교환하기",
             press: () => _showExchangeBottomSheet(context, state.entity),
           ),

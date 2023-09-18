@@ -25,7 +25,6 @@ enum EnvKey {
   mapStyleId,
   mapUrlTemplate,
   appMetrica,
-  oneSignalApiKey,
   randomDistance,
   twilioTestAccountEmail,
   twilioTestPassword,
@@ -42,7 +41,6 @@ class FortuneRemoteConfig {
   final String mapStyleId;
   final String mapUrlTemplate;
   final String appMetricaKey;
-  final String oneSignalApiKey;
   final String twilioTestAccountEmail;
   final String twilioTestPassword;
   final String twilioTestPhoneNumber;
@@ -58,7 +56,6 @@ class FortuneRemoteConfig {
     required this.mapUrlTemplate,
     required this.appMetricaKey,
     required this.anonKey,
-    required this.oneSignalApiKey,
     required this.randomDistance,
     required this.markerCount,
     required this.ticketCount,
@@ -75,8 +72,7 @@ class FortuneRemoteConfig {
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
         "appMetricaKey: $appMetricaKey\n"
-        "oneSignalApiKey: $oneSignalApiKey\n"
-        "refreshTime: $oneSignalApiKey\n"
+        "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
         "randomDistance: $randomDistance\n"
@@ -166,7 +162,6 @@ getRemoteConfigArgs() async {
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
-    final oneSignalApiKey = remoteConfig.getString(describeEnum(EnvKey.oneSignalApiKey));
     final randomDistance = remoteConfig.getDouble(describeEnum(EnvKey.randomDistance));
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
@@ -204,7 +199,6 @@ getRemoteConfigArgs() async {
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,
       anonKey: anonKey,
-      oneSignalApiKey: oneSignalApiKey,
       randomDistance: randomDistance,
       refreshTime: refreshTime,
       markerCount: markerCount,

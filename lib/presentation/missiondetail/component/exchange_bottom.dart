@@ -65,6 +65,7 @@ class ExchangeBottom extends StatelessWidget {
             press: onExchangeClick,
             text: "교환",
           ),
+          const SizedBox(height: 48),
         ],
       ),
     );

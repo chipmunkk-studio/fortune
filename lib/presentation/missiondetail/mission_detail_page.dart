@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/widgets/dialog/default_dialog.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
@@ -9,6 +12,7 @@ import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart'
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/missiondetail/component/normal_mission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'bloc/mission_detail.dart';
 
@@ -72,58 +76,88 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
           );
         } else if (sideEffect is MissionDetailError) {
           dialogService.showErrorDialog(context, sideEffect.error);
-        } else if (sideEffect is MissionDetailTest) {
+        } else if (sideEffect is MissionDetailParticleBurst) {
           _controller.play();
         }
       },
-      child: ConfettiWidget(
-        confettiController: _controller,
-        blastDirection: 0,
-        maxBlastForce: 5,
-        minBlastForce: 2,
-        emissionFrequency: 0.05,
-        numberOfParticles: 20,
-        shouldLoop: true,
-        colors: const [
-          Colors.red,
-          Colors.green,
-          Colors.yellow,
-          Colors.blue,
-          Colors.purpleAccent,
-        ],
-        createParticlePath: (size) {
-          final path = Path();
-          path.addOval(
-            Rect.fromCircle(center: Offset.zero, radius: 10),
-          );
-          return path;
-        },
-        child: FortuneScaffold(
-          padding: const EdgeInsets.all(0),
-          appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-          child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
-            buildWhen: (previous, current) => previous.isRequestObtaining != current.isRequestObtaining,
-            builder: (context, state) {
-              return BlocBuilder<MissionDetailBloc, MissionDetailState>(
-                builder: (context, state) {
-                  switch (state.entity.mission.missionType) {
-                    case MissionType.normal:
-                      return NormalMission(
-                        state,
-                        onExchangeClick: () {
-                          router.pop(context);
-                          _bloc.add(MissionDetailExchange());
-                        },
-                      );
-                    default:
-                      return Container();
-                  }
-                },
-              );
-            },
+      child: Stack(
+        children: [
+          FortuneScaffold(
+            padding: const EdgeInsets.all(0),
+            appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
+            child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+              buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+              builder: (context, state) {
+                return Skeleton(
+                  isLoading: state.isLoading,
+                  skeleton: Container(),
+                  child: () {
+                    switch (state.entity.mission.missionType) {
+                      case MissionType.normal:
+                        return NormalMission(
+                          state,
+                          onExchangeClick: () {
+                            router.pop(context);
+                            _bloc.add(MissionDetailExchange());
+                          },
+                        );
+                      default:
+                        return Container();
+                    }
+                  }(),
+                );
+              },
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _controller,
+              shouldLoop: true,
+              blastDirectionality: BlastDirectionality.explosive,
+              colors: const [
+                ColorName.primary,
+                ColorName.grey100,
+                ColorName.secondary,
+              ],
+              gravity: 0.3,
+              numberOfParticles: 30,
+              minimumSize: const Size(25, 25),
+              maximumSize: const Size(50, 50),
+              createParticlePath: drawHeart,
+              emissionFrequency: 0.001,
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Path drawHeart(Size size) {
+    final width = size.width;
+    final height = size.height;
+
+    final offsetX = width / 2; // X축 중심점
+    final offsetY = height * 3 / 5; // Y축 중심점 조정
+    final scale = min(width, height) / 4; // 하트의 크기를 조절하는 스케일 값
+
+    final path = Path()
+      ..moveTo(offsetX, offsetY) // 시작점
+      ..cubicTo(
+        // 첫 번째 베지어 곡선 포인트
+        offsetX + (1.5 * scale), offsetY - (2.5 * scale),
+        offsetX + (3 * scale), offsetY + (1 * scale),
+        offsetX, offsetY + (2.5 * scale),
+      )
+      ..moveTo(offsetX, offsetY) // 시작점
+      ..cubicTo(
+        // 두 번째 베지어 곡선 포인트
+        offsetX - (1.5 * scale), offsetY - (2.5 * scale),
+        offsetX - (3 * scale), offsetY + (1 * scale),
+        offsetX, offsetY + (2.5 * scale),
+      )
+      ..close();
+
+    return path;
   }
 }

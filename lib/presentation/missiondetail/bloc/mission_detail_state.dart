@@ -1,14 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
+import 'dart:ui' as ui;
 part 'mission_detail_state.freezed.dart';
 
 @freezed
 class MissionDetailState with _$MissionDetailState {
   factory MissionDetailState({
     required MissionDetailEntity entity,
-    required Uint8List? confettiImage,
     required bool isLoading,
     required bool isEnableButton,
     required bool isRequestObtaining,
@@ -18,7 +17,6 @@ class MissionDetailState with _$MissionDetailState {
         entity: MissionDetailEntity.initial(),
         isEnableButton: false,
         isRequestObtaining: false,
-        confettiImage: null,
         isLoading: true,
       );
 }

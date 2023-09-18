@@ -208,6 +208,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   ),
                   _bloc.state.zoomThreshold,
                 );
+                _bloc.add(Main());
               },
             ),
             // 카트.
