@@ -29,6 +29,7 @@ enum EnvKey {
   twilioTestAccountEmail,
   twilioTestPassword,
   twilioTestPhoneNumber,
+  forceDevelopServer,
   refreshTime,
   ticketCount,
   markerCount,
@@ -45,6 +46,7 @@ class FortuneRemoteConfig {
   final String twilioTestPassword;
   final String twilioTestPhoneNumber;
   final double randomDistance;
+  final bool forceDevelopServer;
   final int refreshTime;
   final int markerCount;
   final int ticketCount;
@@ -61,6 +63,7 @@ class FortuneRemoteConfig {
     required this.ticketCount,
     required this.refreshTime,
     required this.twilioTestAccountEmail,
+    required this.forceDevelopServer,
     required this.twilioTestPassword,
     required this.twilioTestPhoneNumber,
   });
@@ -71,6 +74,7 @@ class FortuneRemoteConfig {
         "mapAccessToken: ${mapAccessToken.shortenForPrint()},\n"
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
+        "forceDevelopServer: $forceDevelopServer,\n"
         "appMetricaKey: $appMetricaKey\n"
         "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
@@ -169,11 +173,12 @@ getRemoteConfigArgs() async {
     final twilioTestAccountEmail = remoteConfig.getString(describeEnum(EnvKey.twilioTestAccountEmail));
     final twilioTestPassword = remoteConfig.getString(describeEnum(EnvKey.twilioTestPassword));
     final twilioTestPhoneNumber = remoteConfig.getString(describeEnum(EnvKey.twilioTestPhoneNumber));
+    final forceDevelopServer = remoteConfig.getBool(describeEnum(EnvKey.forceDevelopServer));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.productUrl);
+          return !forceDevelopServer ? describeEnum(EnvKey.productUrl) : describeEnum(EnvKey.devUrl);
         case false:
           return describeEnum(EnvKey.devUrl);
         default:
@@ -184,7 +189,7 @@ getRemoteConfigArgs() async {
     final anonKey = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.productAnonKey);
+          return !forceDevelopServer ? describeEnum(EnvKey.productAnonKey) : describeEnum(EnvKey.devAnonKey);
         case false:
           return describeEnum(EnvKey.devAnonKey);
         default:
@@ -203,6 +208,7 @@ getRemoteConfigArgs() async {
       refreshTime: refreshTime,
       markerCount: markerCount,
       ticketCount: ticketCount,
+      forceDevelopServer: forceDevelopServer,
       twilioTestAccountEmail: twilioTestAccountEmail,
       twilioTestPassword: twilioTestPassword,
       twilioTestPhoneNumber: twilioTestPhoneNumber,

@@ -1,7 +1,7 @@
-import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
+import 'package:latlong2/latlong.dart';
 
 abstract class MarkerRepository {
   // 마커 목록 불러오기.
@@ -14,6 +14,7 @@ abstract class MarkerRepository {
   Future<void> reLocateMarker({
     required MarkerEntity marker,
     required FortuneUserEntity user,
+    required LatLng location,
   });
 
   // 마커 생성.
@@ -27,4 +28,10 @@ abstract class MarkerRepository {
 
   // 아이디로 찾기.
   Future<MarkerEntity> findMarkerById(int markerId);
+
+  // 마커 위치로 찾기.
+  Future<MarkerEntity?> findMarkerByLocation({
+    required double latitude,
+    required double longitude,
+  });
 }

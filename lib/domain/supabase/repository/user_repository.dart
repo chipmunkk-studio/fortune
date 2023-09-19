@@ -1,4 +1,5 @@
 import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 
 abstract class UserRepository {
@@ -9,7 +10,7 @@ abstract class UserRepository {
   Future<FortuneUserEntity?> findUserByPhone(phoneNumber);
 
   // 사용자 업데이트.
-  Future<FortuneUserEntity> updateUser(FortuneUserEntity user);
+  Future<FortuneUserEntity> updateUser(RequestFortuneUser request);
 
   // 사용자 프로필 업데이트.
   Future<FortuneUserEntity> updateUserProfile(String filePath);

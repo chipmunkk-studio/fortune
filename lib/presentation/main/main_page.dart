@@ -370,25 +370,29 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   // 광고 로드
   void _loadRewardedAd() async {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              ad.dispose();
-              _loadRewardedAd();
-            },
-          );
-          _bloc.add(MainSetRewardAd(ad));
-        },
-        onAdFailedToLoad: (err) {
-          _loadRewardedAd();
-          _bloc.add(MainSetRewardAd(null));
-        },
-      ),
-    );
+    try {
+      RewardedAd.load(
+        adUnitId: AdHelper.rewardedAdUnitId,
+        request: const AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+                ad.dispose();
+                _loadRewardedAd();
+              },
+            );
+            _bloc.add(MainSetRewardAd(ad));
+          },
+          onAdFailedToLoad: (err) {
+            _loadRewardedAd();
+            _bloc.add(MainSetRewardAd(null));
+          },
+        ),
+      );
+    } catch (e) {
+      _bloc.add(MainSetRewardAd(null));
+    }
   }
 
   // 마커 트랜지션.

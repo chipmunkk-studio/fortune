@@ -29,7 +29,7 @@ class RequestFortuneUser {
   RequestFortuneUser.insert({
     required this.phone,
     required this.nickname,
-    this.ticket = 0,
+    this.ticket = 3,
     this.markerObtainCount = 0,
     this.level = 1,
     this.profileImage = '',
