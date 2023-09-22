@@ -24,6 +24,7 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/login/bloc/login_state.dart';
 import 'package:fortune/presentation/missions/missions_bottom_page.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
@@ -36,6 +37,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
+import 'component/map/main_location_data.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_location_area.dart';
@@ -141,7 +143,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               myLocation = sideEffect.myLocationData;
             });
           }
-        } else if (sideEffect is MainMarkerClickSideEffect) {
+        } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
           () async {
             final ingredientType = sideEffect.data.ingredient.type;
             if (ingredientType != IngredientType.ticket) {
@@ -164,7 +166,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar(
-            FortuneTr.msgRequireMarkerObtainDistance(sideEffect.meters.toStringAsFixed(1)),
+            FortuneTr.msgRequireMarkerObtainDistance(
+              sideEffect.meters.toStringAsFixed(1),
+            ),
+          );
+        } else if (sideEffect is MainShowObtainDialog) {
+          _showObtainIngredientDialog(
+            sideEffect.data,
+            sideEffect.key,
           );
         } else if (sideEffect is MainSchemeLandingPage) {
           router.navigateTo(
@@ -383,6 +392,42 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     } catch (e) {
       _bloc.add(MainSetRewardAd(null));
     }
+  }
+
+  _showObtainIngredientDialog(
+    MainLocationData data,
+    GlobalKey globalKey,
+  ) {
+    String dialogSubtitle = (data.ingredient.type == IngredientType.ticket)
+        ? FortuneTr.msgWatchAd
+        : FortuneTr.msgConsumeCoinToGetMarker(
+            data.ingredient.rewardTicket.abs().toString(),
+          );
+
+    context.showFortuneDialog(
+      subTitle: dialogSubtitle,
+      btnOkText: FortuneTr.confirm,
+      btnCancelText: FortuneTr.cancel,
+      dismissOnBackKeyPress: true,
+      dismissOnTouchOutside: true,
+      onDismissCallback: (type) => _bloc.add(MainScreenFreeze(flag: false, data: data)),
+      btnCancelPressed: () => _bloc.add(MainScreenFreeze(flag: false, data: data)),
+      btnOkPressed: () async {
+        final markerActionResult = await router.navigateTo(
+          context,
+          Routes.ingredientActionRoute,
+          routeSettings: RouteSettings(
+            arguments: IngredientActionParam(
+              ingredient: data.ingredient,
+              ad: _bloc.state.rewardAd,
+            ),
+          ),
+        );
+        if (markerActionResult) {
+          _bloc.add(MainMarkerObtain(data: data, key: globalKey));
+        }
+      },
+    );
   }
 
   // 마커 트랜지션.

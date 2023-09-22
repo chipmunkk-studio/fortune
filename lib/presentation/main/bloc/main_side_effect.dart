@@ -30,11 +30,11 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
   List<Object?> get props => [];
 }
 
-class MainMarkerClickSideEffect extends MainSideEffect {
+class MainMarkerObtainSuccessSideEffect extends MainSideEffect {
   final GlobalKey key;
   final MainLocationData data;
 
-  MainMarkerClickSideEffect({
+  MainMarkerObtainSuccessSideEffect({
     required this.key,
     required this.data,
   });
@@ -54,6 +54,19 @@ class MainRequireInCircleMeters extends MainSideEffect {
   final double meters;
 
   MainRequireInCircleMeters(this.meters);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainShowObtainDialog extends MainSideEffect {
+  final MainLocationData data;
+  final GlobalKey key;
+
+  MainShowObtainDialog(
+    this.data,
+    this.key,
+  );
 
   @override
   List<Object?> get props => [];

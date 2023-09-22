@@ -61,6 +61,5 @@
   "msgWatchAd": "Watch a Quick Ad\nand Earn Free Gold Coins!",
   "callMyLocation": "Hang tight! We're finding your location.",
   "requireMoreTicket": "You need {} more tickets.",
-  "msgConsumeCoinToGetMarker": "Would you like to consume {} coins to collect a marker?",
-  "msgNeedDistance": "Short by {} meters."
+  "msgConsumeCoinToGetMarker": "Would you like to consume {} coins to collect a marker?"
 }

@@ -44,6 +44,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       transformer: debounce(const Duration(seconds: 2)),
     );
     on<MainSetRewardAd>(setRewardAd);
+    on<MainScreenFreeze>(
+      _screenFreeze,
+      transformer: sequential(),
+    );
     on<MainMarkerObtain>(
       _markerObtain,
       transformer: sequential(),
@@ -164,12 +168,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final longitude = event.newLoc.longitude;
 
     if (latitude != null && longitude != null) {
-      final locationName = await getLocationName(
-            latitude,
-            longitude,
-            isDetailStreet: false,
-          ) ??
-          state.locationName;
+      final locationName = await getLocationName(latitude, longitude, isDetailStreet: false) ?? state.locationName;
       emit(
         state.copyWith(
           myLocation: event.newLoc,
@@ -182,16 +181,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 마커 클릭 시.
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
-    // 화면 프리징.
-    if (!state.isObtainProcessing) {
-      emit(
-        state.copyWith(
-          isObtainProcessing: true,
-          processingMarker: data,
-        ),
-      );
-      add(MainMarkerObtain(data, event.globalKey));
+    final distance = event.distance;
+
+    // 거리가 모자랄 경우
+    if (event.distance > 0) {
+      produceSideEffect(MainRequireInCircleMeters(distance));
+      return;
     }
+
+    // 다이얼로그 노출.
+    produceSideEffect(MainShowObtainDialog(data, event.globalKey));
   }
 
   FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {
@@ -202,6 +201,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final krLocationName = await getLocationName(latitude, longitude);
     final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
+    add(MainScreenFreeze(flag: true, data: event.data));
+
     await obtainMarkerUseCase(
       RequestObtainMarkerParam(
         marker: marker,
@@ -211,7 +212,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     ).then(
       (value) => value.fold(
         (l) {
-          emit(state.copyWith(isObtainProcessing: false));
+          add(MainScreenFreeze(flag: false, data: event.data));
           produceSideEffect(MainError(l));
         },
         (result) async {
@@ -220,7 +221,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           newList.remove(loc);
 
           produceSideEffect(
-            MainMarkerClickSideEffect(
+            MainMarkerObtainSuccessSideEffect(
               key: event.key,
               data: event.data,
             ),
@@ -245,6 +246,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           //     ),
           //   );
           // }
+          add(MainScreenFreeze(flag: false, data: event.data));
           await getMain(emit);
         },
       ),
@@ -254,8 +256,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   FutureOr<void> setRewardAd(MainSetRewardAd event, Emitter<MainState> emit) async {
     emit(
       state.copyWith(
-        isObtainProcessing: false,
         rewardAd: event.ad,
+      ),
+    );
+  }
+
+  FutureOr<void> _screenFreeze(MainScreenFreeze event, Emitter<MainState> emit) async {
+    emit(
+      state.copyWith(
+        isObtainProcessing: event.flag,
+        processingMarker: event.data,
       ),
     );
   }

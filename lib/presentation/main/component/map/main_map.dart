@@ -176,56 +176,11 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    if (distance > 0) {
-      context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
-      return;
-    }
-
-    await _showGetIngredientDialog(data, globalKey);
-  }
-
-  _showGetIngredientDialog(
-    MainLocationData data,
-    GlobalKey globalKey,
-  ) {
-    String dialogSubtitle = (data.ingredient.type == IngredientType.ticket)
-        ? FortuneTr.msgWatchAd
-        : FortuneTr.msgConsumeCoinToGetMarker(
-            data.ingredient.rewardTicket.abs().toString(),
-          );
-
-    context.showFortuneDialog(
-      subTitle: dialogSubtitle,
-      btnOkText: FortuneTr.confirm,
-      btnCancelText: FortuneTr.cancel,
-      dismissOnBackKeyPress: true,
-      dismissOnTouchOutside: true,
-      onDismissCallback: (type) => _bloc.add(Main()),
-      btnCancelPressed: () => null,
-      btnOkPressed: () async {
-        final markerActionResult = await _processMarkerAction(
-          ingredient: data.ingredient,
-          rewardAd: _bloc.state.rewardAd,
-        );
-        if (markerActionResult) {
-          _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
-        }
-      },
-    );
-  }
-
-  Future<bool> _processMarkerAction({
-    required IngredientEntity ingredient,
-    required RewardedAd? rewardAd,
-  }) async {
-    return await router.navigateTo(
-      context,
-      Routes.ingredientActionRoute,
-      routeSettings: RouteSettings(
-        arguments: IngredientActionParam(
-          ingredient: ingredient,
-          ad: rewardAd,
-        ),
+    _bloc.add(
+      MainMarkerClick(
+        data: data,
+        globalKey: globalKey,
+        distance: distance,
       ),
     );
   }

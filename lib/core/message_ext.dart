@@ -24,12 +24,6 @@ abstract class FortuneTr {
     return tr('msgConsumeCoinToGetMarker', args: [ticket]);
   }
 
-  static String msgNeedDistance(
-    String distance,
-  ) {
-    return tr('msgNeedDistance', args: [distance]);
-  }
-
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
   static final notExistTerms = tr('msgNotExistTerms');
