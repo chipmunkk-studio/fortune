@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -24,8 +25,8 @@ class _MainMarkerViewState extends State<MainMarkerView> {
   Widget build(BuildContext context) {
     return RepaintBoundary(
       key: _uniqueKey,
-      child: GestureDetector(
-        onDoubleTap: () async {
+      child: Bounceable(
+        onTap: () async {
           widget.onMarkerClick(
             widget.marker,
             widget.marker.globalKey,

@@ -1,7 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
@@ -49,7 +49,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final requiredTicket = marker.ingredient.rewardTicket.abs();
 
       if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.ticket) {
-        throw CommonFailure(errorMessage: "티켓이 ${requiredTicket - currentTicket}개 부족합니다");
+        throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));
       }
 
       // 마커 재배치.

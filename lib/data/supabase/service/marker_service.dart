@@ -118,13 +118,14 @@ class MarkerService {
   }) async {
     try {
       final List<dynamic> response = await _client
-          .from(TableName.markers)
-          .select(
-            fullSelectQuery,
+          .from(
+            TableName.markers,
           )
-          .eq('latitude', latitude)
-          .eq('longitude', longitude)
-          .toSelect();
+          .select(fullSelectQuery)
+          .match({
+        'latitude': latitude,
+        'longitude': longitude,
+      }).toSelect();
       if (response.isEmpty) {
         return null;
       } else {

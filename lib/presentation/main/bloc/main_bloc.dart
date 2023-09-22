@@ -39,7 +39,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       transformer: throttle(const Duration(seconds: 3)),
     );
     on<MainMarkerClick>(onMarkerClicked);
-    on<MainMyLocationChange>(locationChange);
+    on<MainMyLocationChange>(
+      locationChange,
+      transformer: debounce(const Duration(seconds: 2)),
+    );
     on<MainSetRewardAd>(setRewardAd);
     on<MainMarkerObtain>(
       _markerObtain,
@@ -162,10 +165,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
     if (latitude != null && longitude != null) {
       final locationName = await getLocationName(
-        latitude,
-        longitude,
-        isDetailStreet: false,
-      );
+            latitude,
+            longitude,
+            isDetailStreet: false,
+          ) ??
+          state.locationName;
       emit(
         state.copyWith(
           myLocation: event.newLoc,
@@ -186,12 +190,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           processingMarker: data,
         ),
       );
-      add(
-        MainMarkerObtain(
-          data,
-          event.globalKey,
-        ),
-      );
+      add(MainMarkerObtain(data, event.globalKey));
     }
   }
 

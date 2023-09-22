@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
 import 'package:fortune/core/widgets/dialog/default_dialog.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -176,36 +176,38 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    // if (distance > 0) {
-    //   context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
-    //   return;
-    // }
-
-    if (data.ingredient.type == IngredientType.ticket) {
-      _showTicketDialog(data, globalKey);
-    } else {
-      final markerActionResult = await _processMarkerAction(
-        ingredient: data.ingredient,
-        rewardAd: _bloc.state.rewardAd,
-      );
-      if (markerActionResult) {
-        _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
-      }
+    if (distance > 0) {
+      context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
+      return;
     }
+
+    await _showGetIngredientDialog(data, globalKey);
   }
 
-  _showTicketDialog(MainLocationData data, GlobalKey globalKey) {
+  _showGetIngredientDialog(
+    MainLocationData data,
+    GlobalKey globalKey,
+  ) {
+    String dialogSubtitle = (data.ingredient.type == IngredientType.ticket)
+        ? FortuneTr.msgWatchAd
+        : FortuneTr.msgConsumeCoinToGetMarker(
+            data.ingredient.rewardTicket.abs().toString(),
+          );
+
     context.showFortuneDialog(
-      title: '광고를 보면 티켓을 수령할 수 있어요!',
-      btnOkText: '확인',
+      subTitle: dialogSubtitle,
+      btnOkText: FortuneTr.confirm,
+      btnCancelText: FortuneTr.cancel,
       dismissOnBackKeyPress: true,
       dismissOnTouchOutside: true,
+      onDismissCallback: (type) => _bloc.add(Main()),
+      btnCancelPressed: () => null,
       btnOkPressed: () async {
         final markerActionResult = await _processMarkerAction(
           ingredient: data.ingredient,
           rewardAd: _bloc.state.rewardAd,
         );
-        if (markerActionResult != null && markerActionResult) {
+        if (markerActionResult) {
           _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
         }
       },

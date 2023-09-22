@@ -20,6 +20,7 @@
   "move": "Navigate",
   "modify": "Edit",
   "confirm": "Confirm",
+  "cancel": "Cancel",
   "noHistory": "No history available.",
   "myInfo": "My Profile",
   "faq": "FAQs",
@@ -56,5 +57,10 @@
   "msgInputPhoneNumberNotValid": "That doesn't look like a valid phone number.",
   "msgRequireTermsUse": "Please agree to our\nterms and conditions to continue.",
   "msgRequireTermsApprove": "Agree to All",
-  "msgRequestSmsVerifyCode": "Please try again in {} minutes and {} seconds."
+  "msgRequestSmsVerifyCode": "Please try again in {} minutes and {} seconds.",
+  "msgWatchAd": "Watch a Quick Ad\nand Earn Free Gold Coins!",
+  "callMyLocation": "Hang tight! We're finding your location.",
+  "requireMoreTicket": "You need {} more tickets.",
+  "msgConsumeCoinToGetMarker": "Would you like to consume {} coins to collect a marker?",
+  "msgNeedDistance": "Short by {} meters."
 }

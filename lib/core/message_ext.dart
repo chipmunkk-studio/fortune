@@ -12,6 +12,24 @@ abstract class FortuneTr {
     return tr('msgRequestSmsVerifyCode', args: [minute, second]);
   }
 
+  static String requireMoreTicket(
+    String ticket,
+  ) {
+    return tr('requireMoreTicket', args: [ticket]);
+  }
+
+  static String msgConsumeCoinToGetMarker(
+    String ticket,
+  ) {
+    return tr('msgConsumeCoinToGetMarker', args: [ticket]);
+  }
+
+  static String msgNeedDistance(
+    String distance,
+  ) {
+    return tr('msgNeedDistance', args: [distance]);
+  }
+
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
   static final notExistTerms = tr('msgNotExistTerms');
@@ -24,6 +42,7 @@ abstract class FortuneTr {
   static final move = tr('move');
   static final modify = tr('modify');
   static final confirm = tr('confirm');
+  static final cancel = tr('cancel');
   static final noHistory = tr('noHistory');
   static final myInfo = tr('myInfo');
   static final faq = tr('faq');
@@ -70,4 +89,8 @@ abstract class FortuneTr {
 
   // 네트워크 에러
   static final confirmNetworkConnection = tr('msgConfirmNetworkConnection');
+
+  // 메인
+  static final msgWatchAd = tr('msgWatchAd');
+  static final callMyLocation = tr('callMyLocation');
 }

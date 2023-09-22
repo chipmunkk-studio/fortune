@@ -149,7 +149,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             }
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
-          FortuneLogger.debug("Permission Denied :$sideEffect");
           context.showFortuneDialog(
             title: FortuneTr.msgRequirePermissionLocation,
             subTitle: FortuneTr.msgRequirePermissionLocationContent,
@@ -166,15 +165,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         } else if (sideEffect is MainRequireInCircleMeters) {
           context.showSnackBar(
             FortuneTr.msgRequireMarkerObtainDistance(sideEffect.meters.toStringAsFixed(1)),
-          );
-        } else if (sideEffect is MainShowDialog) {
-          context.showFortuneDialog(
-            title: sideEffect.title,
-            subTitle: sideEffect.subTitle,
-            btnOkText: FortuneTr.confirm,
-            dismissOnBackKeyPress: true,
-            dismissOnTouchOutside: true,
-            btnOkPressed: () {},
           );
         } else if (sideEffect is MainSchemeLandingPage) {
           router.navigateTo(
