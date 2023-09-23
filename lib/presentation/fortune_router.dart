@@ -10,7 +10,7 @@ import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
 import 'package:fortune/presentation/support/faqs/faqs_page.dart';
-import 'package:fortune/presentation/support/notices/faqs_page.dart';
+import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -246,8 +246,7 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
-
-    /// 마커 히스토리.
+      /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
         handler: obtainHistoryHandler,

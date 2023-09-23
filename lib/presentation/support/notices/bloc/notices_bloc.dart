@@ -20,7 +20,8 @@ class NoticesBloc extends Bloc<NoticesEvent, NoticesState>
     await getNoticesUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(NoticesError(l)),
-        (r) {
+        (r) async {
+          await Future.delayed(const Duration(microseconds: 200));
           emit(
             state.copyWith(
               items: r,

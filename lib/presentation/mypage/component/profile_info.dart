@@ -109,12 +109,15 @@ class _Nickname extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Flexible(
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              nickName,
-              style: FortuneTextStyle.subTitle2SemiBold(),
+        GestureDetector(
+          onTap: onNicknameModifyTap,
+          child: Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                nickName,
+                style: FortuneTextStyle.subTitle2SemiBold(),
+              ),
             ),
           ),
         ),

@@ -67,7 +67,9 @@ class _MyPageState extends State<_MyPage> {
                     builder: (context, state) {
                       return ProfileInfo(
                         entity: state.user,
-                        onNicknameModifyTap: () {},
+                        onNicknameModifyTap: () {
+
+                        },
                         onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
                         onProfileTap: () {
                           FortuneImagePicker().loadImagePicker(
