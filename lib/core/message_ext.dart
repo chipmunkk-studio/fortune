@@ -18,6 +18,12 @@ abstract class FortuneTr {
     return tr('requireMoreTicket', args: [ticket]);
   }
 
+  static String msgObtainMarkerSuccess(
+    String marker,
+  ) {
+    return tr('msgObtainMarkerSuccess', args: [marker]);
+  }
+
   static String msgConsumeCoinToGetMarker(
     String ticket,
   ) {

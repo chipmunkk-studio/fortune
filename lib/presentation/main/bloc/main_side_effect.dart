@@ -33,10 +33,12 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
 class MainMarkerObtainSuccessSideEffect extends MainSideEffect {
   final GlobalKey key;
   final MainLocationData data;
+  final bool isAnimation;
 
   MainMarkerObtainSuccessSideEffect({
     required this.key,
     required this.data,
+    required this.isAnimation,
   });
 
   @override

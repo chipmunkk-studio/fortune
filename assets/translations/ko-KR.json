@@ -61,5 +61,6 @@
   "msgWatchAd": "광고 시청 후\n금화를 획득할 수 있어요",
   "callMyLocation": "내 위치 정보를 불러오는 중..",
   "requireMoreTicket": "티켓이 {}개 더 필요합니다",
+  "msgObtainMarkerSuccess": "{} 수집 성공!",
   "msgConsumeCoinToGetMarker": "금화 {}개를 소모하여\n마커를 수집하시겠어요?"
 }

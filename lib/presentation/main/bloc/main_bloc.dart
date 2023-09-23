@@ -224,6 +224,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             MainMarkerObtainSuccessSideEffect(
               key: event.key,
               data: event.data,
+              isAnimation: event.data.ingredient.type != IngredientType.ticket,
             ),
           );
 

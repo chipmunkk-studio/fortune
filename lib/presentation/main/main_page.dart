@@ -17,6 +17,7 @@ import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/dialog/default_dialog.dart';
@@ -148,10 +149,22 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
           () async {
-            final ingredientType = sideEffect.data.ingredient.type;
-            if (ingredientType != IngredientType.ticket) {
+            if (sideEffect.isAnimation) {
               await _startAnimation(sideEffect.key);
             }
+            fToast.showToast(
+              child: fortuneToastContent(
+                icon: Assets.icons.icCheckCircleFill24.svg(),
+                content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.name),
+              ),
+              positionedToastBuilder: (context, child) => Positioned(
+                bottom: 96,
+                left: 0,
+                right: 0,
+                child: child,
+              ),
+              toastDuration: const Duration(seconds: 2),
+            );
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
           context.showFortuneDialog(
@@ -169,7 +182,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
           fToast.showToast(
-            child: _requireMoreDistanceToast(sideEffect.meters),
+            child: fortuneToastContent(
+              icon: Assets.icons.icWarningCircle24.svg(),
+              content: FortuneTr.msgRequireMarkerObtainDistance(
+                sideEffect.meters.toStringAsFixed(1),
+              ),
+            ),
             positionedToastBuilder: (context, child) => Positioned(
               bottom: 96,
               left: 0,
@@ -453,26 +471,4 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       content: (context) => MissionsBottomPage(_bloc),
     );
   }
-
-  // 거리가 부족할 때.
-  _requireMoreDistanceToast(double meters) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 13.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100.r),
-          color: ColorName.white,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Assets.icons.icWarningCircle24.svg(),
-            const SizedBox(width: 12.0),
-            Text(
-              FortuneTr.msgRequireMarkerObtainDistance(
-                meters.toStringAsFixed(1),
-              ),
-              style: FortuneTextStyle.body3Light(color: ColorName.grey900),
-            ),
-          ],
-        ),
-      );
 }
