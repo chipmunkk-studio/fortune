@@ -115,7 +115,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                                             const SizedBox(height: 8),
                                             Text(
                                               item.content,
-                                              style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
+                                              style: FortuneTextStyle.body3Light(color: ColorName.grey200),
                                             ),
                                           ],
                                         ),
@@ -123,7 +123,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                                       const SizedBox(width: 12),
                                       Text(
                                         FortuneDateExtension.convertTimeAgo(item.createdAt),
-                                        style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
+                                        style: FortuneTextStyle.body3Light(color: ColorName.grey200),
                                       ),
                                       const SizedBox(width: 20),
                                     ],

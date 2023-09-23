@@ -49,12 +49,20 @@ class FortuneNotificationsManager {
     if (Platform.isIOS) {
       await requestPermissions();
 
-      final apnsToken = await _fcm.getAPNSToken();
-      _onAPNSTokenReceived(apnsToken);
+      try {
+        final apnsToken = await _fcm.getAPNSToken();
+        _onAPNSTokenReceived(apnsToken);
+      } catch (e) {
+        FortuneLogger.error(message: e.toString());
+      }
     }
 
-    final fcmToken = await _fcm.getToken();
-    _onFCMTokenReceived(fcmToken);
+    try {
+      final fcmToken = await _fcm.getToken();
+      _onFCMTokenReceived(fcmToken);
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+    }
 
     _fcm.subscribeToTopic('all');
     _fcm.onTokenRefresh.listen((token) {

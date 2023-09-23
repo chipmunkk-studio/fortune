@@ -111,6 +111,32 @@ class MarkerService {
     }
   }
 
+  // 마커 위치로 찾음.
+  Future<MarkerEntity?> findMarkerByLocation({
+    required double latitude,
+    required double longitude,
+  }) async {
+    try {
+      final List<dynamic> response = await _client
+          .from(
+            TableName.markers,
+          )
+          .select(fullSelectQuery)
+          .match({
+        'latitude': latitude,
+        'longitude': longitude,
+      }).toSelect();
+      if (response.isEmpty) {
+        return null;
+      } else {
+        final marker = response.map((e) => MarkerResponse.fromJson(e)).toList();
+        return marker.single;
+      }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
   // 마커 업데이트.
   Future<MarkerResponse> update(
     int id, {

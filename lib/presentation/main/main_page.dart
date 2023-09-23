@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/error/failure/network_failure.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
@@ -16,6 +17,7 @@ import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/dialog/default_dialog.dart';
@@ -24,6 +26,7 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/login/bloc/login_state.dart';
 import 'package:fortune/presentation/missions/missions_bottom_page.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
@@ -36,6 +39,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
+import 'component/map/main_location_data.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_location_area.dart';
@@ -83,10 +87,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   late Function(GlobalKey) runAddToCartAnimation;
   LocationData? myLocation;
   bool _detectPermission = false;
+  FToast fToast = FToast();
 
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
     WidgetsBinding.instance.addObserver(this);
     appmetrica.AppMetrica.reportEvent('메인 화면');
     _bloc = BlocProvider.of<MainBloc>(context);
@@ -141,15 +147,26 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               myLocation = sideEffect.myLocationData;
             });
           }
-        } else if (sideEffect is MainMarkerClickSideEffect) {
+        } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
           () async {
-            final ingredientType = sideEffect.data.ingredient.type;
-            if (ingredientType != IngredientType.ticket) {
-              await startAnimation(sideEffect.key);
+            if (sideEffect.isAnimation) {
+              await _startAnimation(sideEffect.key);
             }
+            fToast.showToast(
+              child: fortuneToastContent(
+                icon: Assets.icons.icCheckCircleFill24.svg(),
+                content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.name),
+              ),
+              positionedToastBuilder: (context, child) => Positioned(
+                bottom: 96,
+                left: 0,
+                right: 0,
+                child: child,
+              ),
+              toastDuration: const Duration(seconds: 2),
+            );
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
-          FortuneLogger.debug("Permission Denied :$sideEffect");
           context.showFortuneDialog(
             title: FortuneTr.msgRequirePermissionLocation,
             subTitle: FortuneTr.msgRequirePermissionLocationContent,
@@ -164,17 +181,25 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
-          context.showSnackBar(
-            FortuneTr.msgRequireMarkerObtainDistance(sideEffect.meters.toStringAsFixed(1)),
+          fToast.showToast(
+            child: fortuneToastContent(
+              icon: Assets.icons.icWarningCircle24.svg(),
+              content: FortuneTr.msgRequireMarkerObtainDistance(
+                sideEffect.meters.toStringAsFixed(1),
+              ),
+            ),
+            positionedToastBuilder: (context, child) => Positioned(
+              bottom: 96,
+              left: 0,
+              right: 0,
+              child: child,
+            ),
+            toastDuration: const Duration(seconds: 2),
           );
-        } else if (sideEffect is MainShowDialog) {
-          context.showFortuneDialog(
-            title: sideEffect.title,
-            subTitle: sideEffect.subTitle,
-            btnOkText: FortuneTr.confirm,
-            dismissOnBackKeyPress: true,
-            dismissOnTouchOutside: true,
-            btnOkPressed: () {},
+        } else if (sideEffect is MainShowObtainDialog) {
+          _showObtainIngredientDialog(
+            sideEffect.data,
+            sideEffect.key,
           );
         } else if (sideEffect is MainSchemeLandingPage) {
           router.navigateTo(
@@ -357,11 +382,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         (status) {
           if (status == AnimationStatus.completed) {
             controller.dispose();
-          } else if (status == AnimationStatus.dismissed) {
-            controller.dispose();
           }
         },
       );
+
       controller.forward();
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -370,29 +394,69 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   // 광고 로드
   void _loadRewardedAd() async {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: const AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              ad.dispose();
-              _loadRewardedAd();
-            },
+    try {
+      RewardedAd.load(
+        adUnitId: AdHelper.rewardedAdUnitId,
+        request: const AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+                ad.dispose();
+                _loadRewardedAd();
+              },
+            );
+            _bloc.add(MainSetRewardAd(ad));
+          },
+          onAdFailedToLoad: (err) {
+            _loadRewardedAd();
+            _bloc.add(MainSetRewardAd(null));
+          },
+        ),
+      );
+    } catch (e) {
+      _bloc.add(MainSetRewardAd(null));
+    }
+  }
+
+  _showObtainIngredientDialog(
+    MainLocationData data,
+    GlobalKey globalKey,
+  ) {
+    String dialogSubtitle = (data.ingredient.type == IngredientType.ticket)
+        ? FortuneTr.msgWatchAd
+        : FortuneTr.msgConsumeCoinToGetMarker(
+            data.ingredient.rewardTicket.abs().toString(),
           );
-          _bloc.add(MainSetRewardAd(ad));
-        },
-        onAdFailedToLoad: (err) {
-          _loadRewardedAd();
-          _bloc.add(MainSetRewardAd(null));
-        },
-      ),
+
+    context.showFortuneDialog(
+      subTitle: dialogSubtitle,
+      btnOkText: FortuneTr.confirm,
+      btnCancelText: FortuneTr.cancel,
+      dismissOnBackKeyPress: true,
+      dismissOnTouchOutside: true,
+      onDismissCallback: (type) => _bloc.add(MainScreenFreeze(flag: false, data: data)),
+      btnCancelPressed: () => _bloc.add(MainScreenFreeze(flag: false, data: data)),
+      btnOkPressed: () async {
+        final markerActionResult = await router.navigateTo(
+          context,
+          Routes.ingredientActionRoute,
+          routeSettings: RouteSettings(
+            arguments: IngredientActionParam(
+              ingredient: data.ingredient,
+              ad: _bloc.state.rewardAd,
+            ),
+          ),
+        );
+        if (markerActionResult) {
+          _bloc.add(MainMarkerObtain(data: data, key: globalKey));
+        }
+      },
     );
   }
 
   // 마커 트랜지션.
-  startAnimation(GlobalKey key) async {
+  _startAnimation(GlobalKey key) async {
     try {
       await runAddToCartAnimation(key);
       await cartKey.currentState!.runCartAnimation();
@@ -401,6 +465,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     }
   }
 
+  // 가방 클릭
   _onMyBagClick() {
     context.showFortuneBottomSheet(
       content: (context) => MissionsBottomPage(_bloc),

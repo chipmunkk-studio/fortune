@@ -128,6 +128,14 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
               emissionFrequency: 0.001,
             ),
           ),
+          BlocBuilder<MissionDetailBloc, MissionDetailState>(
+            buildWhen: (previous, current) => previous.isRequestObtaining != current.isRequestObtaining,
+            builder: (context, state) {
+              return state.isRequestObtaining
+                  ? Container(color: Colors.black.withOpacity(0.5))
+                  : const SizedBox.shrink();
+            },
+          )
         ],
       ),
     );
@@ -144,17 +152,21 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
     final path = Path()
       ..moveTo(offsetX, offsetY) // 시작점
       ..cubicTo(
-        // 첫 번째 베지어 곡선 포인트
-        offsetX + (1.5 * scale), offsetY - (2.5 * scale),
-        offsetX + (3 * scale), offsetY + (1 * scale),
-        offsetX, offsetY + (2.5 * scale),
+        offsetX + (1.5 * scale),
+        offsetY - (2.5 * scale),
+        offsetX + (3 * scale),
+        offsetY + (1 * scale),
+        offsetX,
+        offsetY + (2.5 * scale),
       )
       ..moveTo(offsetX, offsetY) // 시작점
       ..cubicTo(
-        // 두 번째 베지어 곡선 포인트
-        offsetX - (1.5 * scale), offsetY - (2.5 * scale),
-        offsetX - (3 * scale), offsetY + (1 * scale),
-        offsetX, offsetY + (2.5 * scale),
+        offsetX - (1.5 * scale),
+        offsetY - (2.5 * scale),
+        offsetX - (3 * scale),
+        offsetY + (1 * scale),
+        offsetX,
+        offsetY + (2.5 * scale),
       )
       ..close();
 

@@ -41,7 +41,7 @@ class LoginPhoneNumber extends StatelessWidget {
         errorText: FortuneValidator.isValidPhoneNumber(_phoneNumber) || _phoneNumber.isEmpty
             ? null
             : FortuneTr.msgInputPhoneNumberNotValid,
-        errorStyle: FortuneTextStyle.body3Light(fontColor: ColorName.negative),
+        errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
       ),
     );
   }

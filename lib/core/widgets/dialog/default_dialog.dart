@@ -11,12 +11,13 @@ import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 extension FortuneDialogEx on BuildContext {
   void showFortuneDialog({
-    required String title,
+    String? title,
     String? subTitle,
     String? btnOkText,
     Function0? btnOkPressed,
-    String? btnCancelText,
     Function0? btnCancelPressed,
+    Function1<DismissType, void>? onDismissCallback,
+    String? btnCancelText,
     dismissOnTouchOutside = false,
     dismissOnBackKeyPress = false,
   }) {
@@ -25,7 +26,7 @@ extension FortuneDialogEx on BuildContext {
       animType: AnimType.scale,
       dialogType: DialogType.noHeader,
       dialogBackgroundColor: ColorName.grey800,
-      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey800),
+      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey900),
       dismissOnTouchOutside: dismissOnTouchOutside,
       dismissOnBackKeyPress: dismissOnBackKeyPress,
       body: Wrap(
@@ -38,11 +39,12 @@ extension FortuneDialogEx on BuildContext {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 20),
-                Text(
-                  title,
-                  style: FortuneTextStyle.headLine2(),
-                  textAlign: TextAlign.center,
-                ),
+                if (title != null)
+                  Text(
+                    title,
+                    style: FortuneTextStyle.headLine2(),
+                    textAlign: TextAlign.center,
+                  ),
                 if (subTitle != null) const SizedBox(height: 12),
                 if (subTitle != null)
                   Text(
@@ -57,15 +59,14 @@ extension FortuneDialogEx on BuildContext {
         ],
       ),
       padding: const EdgeInsets.only(bottom: 10),
-      dialogBorderRadius: BorderRadius.circular(
-        32.r,
-      ),
+      dialogBorderRadius: BorderRadius.circular(32.r),
       btnOkColor: ColorName.primary,
-      btnCancelColor: ColorName.grey700,
-      btnCancelText: btnCancelText,
-      btnCancelOnPress: btnCancelPressed,
       btnOkText: btnOkText,
       btnOkOnPress: btnOkPressed,
+      btnCancelOnPress: btnCancelPressed,
+      btnCancelColor: ColorName.grey500,
+      btnCancelText: btnCancelText,
+      onDismissCallback: onDismissCallback,
     ).show();
   }
 

@@ -69,9 +69,9 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 const SizedBox(height: 12),
                 ItemGrade(getUserGradeIconInfo(5)),
                 const SizedBox(height: 12),
-                Text("* 현재 보상 정보를 준비 중입니다.", style: FortuneTextStyle.body3Light(fontColor: ColorName.grey400)),
+                Text("* 현재 보상 정보를 준비 중입니다.", style: FortuneTextStyle.body3Light(color: ColorName.grey400)),
                 const SizedBox(height: 6),
-                Text("* 등급별 혜택 및 선정 기준은 변경될 수 있습니다.", style: FortuneTextStyle.body3Light(fontColor: ColorName.grey400)),
+                Text("* 등급별 혜택 및 선정 기준은 변경될 수 있습니다.", style: FortuneTextStyle.body3Light(color: ColorName.grey400)),
               ],
             ),
             Positioned(

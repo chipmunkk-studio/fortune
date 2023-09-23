@@ -34,7 +34,7 @@ class ItemObtainHistory extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   item.locationName,
-                  style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
+                  style: FortuneTextStyle.body3Light(color: ColorName.grey200),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
