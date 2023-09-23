@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/error/failure/network_failure.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
@@ -85,10 +86,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   late Function(GlobalKey) runAddToCartAnimation;
   LocationData? myLocation;
   bool _detectPermission = false;
+  FToast fToast = FToast();
 
   @override
   void initState() {
     super.initState();
+    fToast.init(context);
     WidgetsBinding.instance.addObserver(this);
     appmetrica.AppMetrica.reportEvent('메인 화면');
     _bloc = BlocProvider.of<MainBloc>(context);
@@ -147,7 +150,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           () async {
             final ingredientType = sideEffect.data.ingredient.type;
             if (ingredientType != IngredientType.ticket) {
-              await startAnimation(sideEffect.key);
+              await _startAnimation(sideEffect.key);
             }
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
@@ -165,10 +168,15 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
-          context.showSnackBar(
-            FortuneTr.msgRequireMarkerObtainDistance(
-              sideEffect.meters.toStringAsFixed(1),
+          fToast.showToast(
+            child: _requireMoreDistanceToast(sideEffect.meters),
+            positionedToastBuilder: (context, child) => Positioned(
+              bottom: 96,
+              left: 0,
+              right: 0,
+              child: child,
             ),
+            toastDuration: const Duration(seconds: 2),
           );
         } else if (sideEffect is MainShowObtainDialog) {
           _showObtainIngredientDialog(
@@ -356,11 +364,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         (status) {
           if (status == AnimationStatus.completed) {
             controller.dispose();
-          } else if (status == AnimationStatus.dismissed) {
-            controller.dispose();
           }
         },
       );
+
       controller.forward();
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -431,7 +438,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   // 마커 트랜지션.
-  startAnimation(GlobalKey key) async {
+  _startAnimation(GlobalKey key) async {
     try {
       await runAddToCartAnimation(key);
       await cartKey.currentState!.runCartAnimation();
@@ -440,9 +447,32 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     }
   }
 
+  // 가방 클릭
   _onMyBagClick() {
     context.showFortuneBottomSheet(
       content: (context) => MissionsBottomPage(_bloc),
     );
   }
+
+  // 거리가 부족할 때.
+  _requireMoreDistanceToast(double meters) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 13.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.r),
+          color: ColorName.white,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Assets.icons.icWarningCircle24.svg(),
+            const SizedBox(width: 12.0),
+            Text(
+              FortuneTr.msgRequireMarkerObtainDistance(
+                meters.toStringAsFixed(1),
+              ),
+              style: FortuneTextStyle.body3Light(color: ColorName.grey900),
+            ),
+          ],
+        ),
+      );
 }

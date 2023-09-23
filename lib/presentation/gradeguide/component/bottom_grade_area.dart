@@ -20,10 +20,10 @@ class BottomGradeArea extends StatelessWidget {
         RichText(
           text: TextSpan(
             children: [
-              TextSpan(text: "다음레벨 까지", style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200)),
+              TextSpan(text: "다음레벨 까지", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
               const TextSpan(text: "\u00A0"),
               TextSpan(text: "$remainCount번", style: FortuneTextStyle.body3Semibold()),
-              TextSpan(text: "의 마커 획득이 필요해요", style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200)),
+              TextSpan(text: "의 마커 획득이 필요해요", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
             ],
           ),
         ),

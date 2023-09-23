@@ -72,7 +72,7 @@ class MissionNormalCard extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: "/${item.mission.missionReward.totalCount}",
-                                style: FortuneTextStyle.body3Light(fontColor: ColorName.grey400),
+                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                               ),
                             ],
                           ),

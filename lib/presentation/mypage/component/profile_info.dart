@@ -176,7 +176,7 @@ class _Grade extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             FortuneTr.gradeGuide,
-            style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
+            style: FortuneTextStyle.body3Light(color: ColorName.grey200),
           ),
           const SizedBox(width: 4),
           Assets.icons.icArrowRight12.svg(width: 12, height: 12),

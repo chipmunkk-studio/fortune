@@ -52,7 +52,7 @@
   "msgRequireVerifySixNumberContent": "인증번호는 숫자 6자리입니다.",
   "historyFortuneSpot": "포춘 스팟",
   "historyFortuneSpotSearchInput": "검색어를 입력하세요",
-  "msgRequireMarkerObtainDistance": "거리가 {} 미터 만큼 부족합니다.",
+  "msgRequireMarkerObtainDistance": "현재 위치에서 {}m 더 가야해요",
   "msgInputPhoneNumber": "휴대폰 번호를 입력하세요",
   "msgInputPhoneNumberNotValid": "올바른 휴대폰 번호가 아닙니다",
   "msgRequireTermsUse": "서비스 이용을 위해\n약관에 동의해주세요",
