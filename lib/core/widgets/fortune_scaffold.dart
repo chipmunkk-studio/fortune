@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/util/textstyle.dart';
 
@@ -9,6 +8,7 @@ class FortuneScaffold extends StatelessWidget {
   final bool? bottom;
   final bool? top;
   final PreferredSizeWidget? appBar;
+  final bool resizeToAvoidBottomInset;
   final Widget? bottomSheet;
   final EdgeInsets? padding;
 
@@ -18,6 +18,7 @@ class FortuneScaffold extends StatelessWidget {
     this.bottom,
     this.top,
     this.appBar,
+    this.resizeToAvoidBottomInset = false,
     this.bottomSheet,
     this.padding,
   }) : super(key: key);
@@ -27,6 +28,8 @@ class FortuneScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar ?? const FortuneEmptyAppBar(),
       bottomSheet: bottomSheet,
+      // 텍스트 인풋위로 올라오는 버튼 일 경우 true.
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: SafeArea(
         bottom: bottom ?? true,
         top: top ?? true,
@@ -57,7 +60,7 @@ abstract class FortuneCustomAppBar {
     String title = "",
     Function0? onPressed,
     bool centerTitle = false,
-    bool leftAlignTitle = false,
+    bool leftAlignTitle = true,
   }) =>
       AppBar(
         leading: IconButton(

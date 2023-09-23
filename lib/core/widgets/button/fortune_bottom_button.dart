@@ -9,7 +9,7 @@ import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 class FortuneBottomButton extends StatelessWidget {
   final bool isEnabled;
   final Function0 onPress;
-  final String buttonText;
+  final String text;
   final bool isKeyboardVisible;
   final _deBouncer = FortuneButtonDeBouncer(milliseconds: 3000);
 
@@ -17,21 +17,21 @@ class FortuneBottomButton extends StatelessWidget {
     Key? key,
     required this.isEnabled,
     required this.onPress,
-    required this.buttonText,
+    required this.text,
     required this.isKeyboardVisible,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FortuneScaleButton(
-      text: buttonText,
+      text: text,
       isEnabled: isEnabled,
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: isKeyboardVisible ? BorderRadius.circular(0.r) : BorderRadius.circular(50.r),
         ),
       ),
-      press: () => _deBouncer.run(onPress),
+      onPress: () => _deBouncer.run(onPress),
     );
   }
 }

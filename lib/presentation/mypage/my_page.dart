@@ -53,55 +53,60 @@ class _MyPageState extends State<_MyPage> {
         }
       },
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.myInfo),
+        appBar: FortuneCustomAppBar.leadingAppBar(
+          context,
+          title: FortuneTr.myInfo,
+        ),
         child: BlocBuilder<MyPageBloc, MyPageState>(
           buildWhen: (previous, current) => previous.isLoading != current.isLoading,
           builder: (context, state) {
             return Skeleton(
               isLoading: state.isLoading,
               skeleton: const MyPageSkeleton(),
-              child: Column(
-                children: [
-                  BlocBuilder<MyPageBloc, MyPageState>(
-                    buildWhen : (previous, current) => previous.user != current.user,
-                    builder: (context, state) {
-                      return ProfileInfo(
-                        entity: state.user,
-                        onNicknameModifyTap: () {
-
-                        },
-                        onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
-                        onProfileTap: () {
-                          FortuneImagePicker().loadImagePicker(
-                            (path) => _bloc.add(MyPageUpdateProfile(path)),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  InfoMenu(
-                    FortuneTr.notice,
-                    icon: Assets.icons.icMegaphone.svg(),
-                    onTap: () => router.navigateTo(context, Routes.noticesRoutes),
-                  ),
-                  InfoMenu(
-                    FortuneTr.faq,
-                    icon: Assets.icons.icQuestion.svg(),
-                    onTap: () => router.navigateTo(context, Routes.faqsRoute),
-                  ),
-                  BlocBuilder<MyPageBloc, MyPageState>(
-                    buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,
-                    builder: (context, state) {
-                      return SwitchMenu(
-                        FortuneTr.pushAlarm,
-                        isOn: state.isAllowPushAlarm,
-                        onTap: (isOn) => _bloc.add(MyPageUpdatePushAlarm(isOn)),
-                        icon: Assets.icons.icPushAlarm.svg(),
-                      );
-                    },
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    BlocBuilder<MyPageBloc, MyPageState>(
+                      buildWhen: (previous, current) => previous.user != current.user,
+                      builder: (context, state) {
+                        return ProfileInfo(
+                          entity: state.user,
+                          onNicknameModifyTap: () => router.navigateTo(context, Routes.nickNameRoute),
+                          onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+                          onProfileTap: () {
+                            FortuneImagePicker().loadImagePicker(
+                              (path) => _bloc.add(MyPageUpdateProfile(path)),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    InfoMenu(
+                      FortuneTr.notice,
+                      icon: Assets.icons.icMegaphone.svg(),
+                      onTap: () => router.navigateTo(context, Routes.noticesRoutes),
+                    ),
+                    InfoMenu(
+                      FortuneTr.faq,
+                      icon: Assets.icons.icQuestion.svg(),
+                      onTap: () => router.navigateTo(context, Routes.faqsRoute),
+                    ),
+                    BlocBuilder<MyPageBloc, MyPageState>(
+                      buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,
+                      builder: (context, state) {
+                        return SwitchMenu(
+                          FortuneTr.pushAlarm,
+                          isOn: state.isAllowPushAlarm,
+                          onTap: (isOn) => _bloc.add(MyPageUpdatePushAlarm(isOn)),
+                          icon: Assets.icons.icPushAlarm.svg(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             );
           },

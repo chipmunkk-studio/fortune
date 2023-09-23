@@ -142,7 +142,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                           isKeyboardVisible: isKeyboardVisible,
                           isEnabled: state.isConfirmEnable,
                           onPress: () => _bloc.add(VerifyConfirm()),
-                          buttonText: FortuneTr.confirm,
+                          text: FortuneTr.confirm,
                         );
                       },
                     ),

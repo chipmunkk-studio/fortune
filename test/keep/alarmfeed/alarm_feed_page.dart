@@ -12,7 +12,7 @@ class AlarmFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmRewardInit()),
+      create: (context) => serviceLocator<NickNameBloc>()..add(NickNameInit()),
       child: FortuneScaffold(
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
         child: const _AlarmFeedPage(),
@@ -31,12 +31,12 @@ class _AlarmFeedPage extends StatefulWidget {
 class _AlarmFeedPageState extends State<_AlarmFeedPage> {
 
   final _router = serviceLocator<FortuneRouter>().router;
-  late AlarmFeedBloc _bloc;
+  late NickNameBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<AlarmFeedBloc>(context);
+    _bloc = BlocProvider.of<NickNameBloc>(context);
   }
 
   @override
@@ -47,7 +47,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<AlarmFeedBloc, AlarmFeedSideEffect>(
+    return BlocSideEffectListener<NickNameBloc, AlarmFeedSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is AlarmFeedError) {
           dialogService.showErrorDialog(context, sideEffect.error);

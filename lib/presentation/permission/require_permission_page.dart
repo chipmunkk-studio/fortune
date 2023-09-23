@@ -140,7 +140,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           const Spacer(),
           FortuneScaleButton(
             text: FortuneTr.next,
-            press: () => _bloc.add(RequestPermissionNext()),
+            onPress: () => _bloc.add(RequestPermissionNext()),
           )
         ],
       ),

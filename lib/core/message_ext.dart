@@ -45,6 +45,12 @@ abstract class FortuneTr {
   static final cancel = tr('cancel');
   static final noHistory = tr('noHistory');
   static final myInfo = tr('myInfo');
+  static final save = tr('save');
+  static final phoneNumber = tr('phoneNumber');
+  static final logout = tr('logout');
+  static final withdrawal = tr('withdrawal');
+  static final myInfoModify = tr('myInfoModify');
+  static final nickname = tr('nickname');
   static final faq = tr('faq');
   static final notice = tr('notice');
   static final pushAlarm = tr('pushAlarm');

@@ -91,7 +91,7 @@ class NormalMission extends StatelessWidget {
           child: FortuneScaleButton(
             isEnabled: state.isEnableButton,
             text: "교환하기",
-            press: () => _showExchangeBottomSheet(context, state.entity),
+            onPress: () => _showExchangeBottomSheet(context, state.entity),
           ),
         ),
       ],

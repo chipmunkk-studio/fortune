@@ -58,6 +58,7 @@ import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/bloc/missions.dart';
 import 'package:fortune/presentation/myingredients/bloc/my_ingredients.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
+import 'package:fortune/presentation/nickname/bloc/nick_name.dart';
 import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
@@ -85,6 +86,7 @@ import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
+import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
@@ -440,6 +442,12 @@ _initUseCase() async {
         localRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<NickNameUseCase>(
+      () => NickNameUseCase(
+        userRepository: serviceLocator(),
+        localRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<UpdateUserProfileUseCase>(
       () => UpdateUserProfileUseCase(
         userRepository: serviceLocator(),
@@ -478,6 +486,12 @@ _initBloc() {
     ..registerFactory(
       () => AlarmFeedBloc(
         getAlarmFeedUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => NickNameBloc(
+        nickNameUseCase: serviceLocator<NickNameUseCase>(),
+        updateProfileUseCase: serviceLocator<UpdateUserProfileUseCase>(),
       ),
     )
     ..registerFactory(

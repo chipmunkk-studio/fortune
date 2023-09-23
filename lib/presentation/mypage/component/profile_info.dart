@@ -27,6 +27,7 @@ class ProfileInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _ProfileImage(
@@ -107,11 +108,11 @@ class _Nickname extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: onNicknameModifyTap,
-          child: Flexible(
+    return GestureDetector(
+      onTap: onNicknameModifyTap,
+      child: Row(
+        children: [
+          Flexible(
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
@@ -120,11 +121,8 @@ class _Nickname extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 8),
-        Bounceable(
-          onTap: onNicknameModifyTap,
-          child: Container(
+          const SizedBox(width: 8),
+          Container(
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.r),
@@ -135,8 +133,8 @@ class _Nickname extends StatelessWidget {
               style: FortuneTextStyle.caption3Semibold(),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
