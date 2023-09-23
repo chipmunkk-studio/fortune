@@ -1,9 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
+import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
@@ -44,10 +45,19 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
+      final currentTicket = prevUser.ticket;
+      final requiredTicket = marker.ingredient.rewardTicket.abs();
 
-      if (prevUser.ticket < marker.ingredient.rewardTicket.abs()) {
-        throw CommonFailure(errorMessage: '보유한 티켓이 없습니다');
+      if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.ticket) {
+        throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));
       }
+
+      // 마커 재배치.
+      await markerRepository.reLocateMarker(
+        marker: marker,
+        user: prevUser,
+        location: param.marker.location,
+      );
 
       int updatedTicket = prevUser.ticket;
       int markerObtainCount = prevUser.markerObtainCount;
@@ -59,8 +69,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 사용자 티켓 정보 업데이트.
       final updateUser = await userRepository.updateUser(
-        prevUser.copyWith(
-          // 타이밍 이슈 때문에 1개 더 먹을 수 있음.
+        RequestFortuneUser(
           ticket: updatedTicket < 0 ? 0 : updatedTicket,
           markerObtainCount: markerObtainCount,
         ),
@@ -92,12 +101,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       if (prevUser.level != updateUser.level) {
         await _generateRewardHistory(prevUser);
       }
-
-      // 마커 재배치.
-      markerRepository.reLocateMarker(
-        marker: marker,
-        user: prevUser,
-      );
 
       // 히스토리 추가.
       if (marker.ingredient.type != IngredientType.ticket) {

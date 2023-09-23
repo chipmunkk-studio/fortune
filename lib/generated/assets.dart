@@ -23,6 +23,7 @@ class Assets {
   static const String iconsIcCamera32 = 'assets/icons/ic_camera_32.svg';
   static const String iconsIcCancel = 'assets/icons/ic_cancel.svg';
   static const String iconsIcCancelCircle = 'assets/icons/ic_cancel_circle.svg';
+  static const String iconsIcCheckCircleFill24 = 'assets/icons/ic_check_circle_fill_24.svg';
   static const String iconsIcClock = 'assets/icons/ic_clock.svg';
   static const String iconsIcFortuneCookie = 'assets/icons/ic_fortune_cookie.svg';
   static const String iconsIcFortuneDiamond = 'assets/icons/ic_fortune_diamond.svg';
@@ -52,11 +53,12 @@ class Assets {
   static const String iconsIcRecycle = 'assets/icons/ic_recycle.svg';
   static const String iconsIcTimer = 'assets/icons/ic_timer.svg';
   static const String iconsIcUser = 'assets/icons/ic_user.svg';
+  static const String iconsIcWarningCircle24 = 'assets/icons/ic_warning_circle_24.svg';
   static const String imagesIcLauncher = 'assets/images/ic_launcher.png';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
-  static const String onboarding1 = 'assets/images/onboarding/guide1.png';
-  static const String onboarding2 = 'assets/images/onboarding/guide2.png';
-  static const String onboarding3 = 'assets/images/onboarding/guide3.png';
+  static const String onboardingGuide1 = 'assets/images/onboarding/guide1.png';
+  static const String onboardingGuide2 = 'assets/images/onboarding/guide2.png';
+  static const String onboardingGuide3 = 'assets/images/onboarding/guide3.png';
   static const String splashAndroid12splash = 'assets/images/splash/android12splash.png';
   static const String splashSplashDefault = 'assets/images/splash/splash_default.png';
   static const String translationsEnUS = 'assets/translations/en-US.json';

@@ -25,7 +25,7 @@ class UserService {
     try {
       await _client.from(_tableName).insert(
             RequestFortuneUser.insert(
-              phone: phone.replaceFirst('+', ''),
+              phone: phone,
               nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
             ).toJson(),
           );
@@ -67,42 +67,32 @@ class UserService {
     }
   }
 
-  // 프로필 업데이트
-  Future<FortuneUserEntity> updateProfile(
-    FortuneUserEntity user, {
+  // 프로필 사진 업데이트 후 url 가져 오기.
+  Future<String> getUpdateProfileFileUrl({
     required String filePath,
   }) async {
-    try {
-      final storage = _client.storage;
-      final uploadFile = File(filePath);
-      final now = DateTime.now();
-      final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
-      final fullName = "${_client.auth.currentUser?.phone}/$timestamp.jpg";
+    final storage = _client.storage;
+    final uploadFile = File(filePath);
+    final now = DateTime.now();
+    final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
+    final fullName = "${_client.auth.currentUser?.phone}/$timestamp.jpg";
 
-      final String path = await storage
-          .from(
-            BucketName.userProfile,
-          )
-          .upload(
-            fullName,
-            uploadFile,
-            fileOptions: const FileOptions(
-              cacheControl: '3600',
-              upsert: false,
-            ),
-          );
+    final String path = await storage
+        .from(
+          BucketName.userProfile,
+        )
+        .upload(
+          fullName,
+          uploadFile,
+          fileOptions: const FileOptions(
+            cacheControl: '3600',
+            upsert: false,
+          ),
+        );
 
-      final String imagePath = storage.from(BucketName.userProfile).getPublicUrl(fullName);
+    final String imagePath = storage.from(BucketName.userProfile).getPublicUrl(fullName);
 
-      return await update(
-        user.phone,
-        request: RequestFortuneUser(
-          profileImage: imagePath,
-        ),
-      );
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
+    return imagePath;
   }
 
   // 휴대폰 번호로 사용자를 찾음.

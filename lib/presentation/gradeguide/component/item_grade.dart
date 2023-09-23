@@ -27,7 +27,7 @@ class ItemGrade extends StatelessWidget {
             children: [
               Text(gradeInfo.name, style: FortuneTextStyle.body1Semibold()),
               SizedBox(height: 6.h),
-              Text("보상 준비 중", style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200)),
+              Text("보상 준비 중", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
             ],
           ),
           const Spacer(),

@@ -58,9 +58,10 @@ class MissionClearUserService {
       MissionClearUserEntity clearUser = await findAllMissionClearUserById(id);
 
       final requestToUpdate = RequestMissionClearUser(
-          mission: request.mission ?? clearUser.mission.id,
-          user: request.user ?? clearUser.user.id,
-          isReceive: request.isReceive ?? clearUser.isReceive);
+        mission: request.mission ?? clearUser.mission.id,
+        user: request.user ?? clearUser.user.id,
+        isReceive: request.isReceive ?? clearUser.isReceive,
+      );
 
       final updateUser = await _client
           .from(_normalMissionClearUserTableName)

@@ -99,6 +99,10 @@ class $AssetsIconsGen {
   SvgGenImage get icCancelCircle =>
       const SvgGenImage('assets/icons/ic_cancel_circle.svg');
 
+  /// File path: assets/icons/ic_check_circle_fill_24.svg
+  SvgGenImage get icCheckCircleFill24 =>
+      const SvgGenImage('assets/icons/ic_check_circle_fill_24.svg');
+
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
 
@@ -203,6 +207,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_user.svg
   SvgGenImage get icUser => const SvgGenImage('assets/icons/ic_user.svg');
 
+  /// File path: assets/icons/ic_warning_circle_24.svg
+  SvgGenImage get icWarningCircle24 =>
+      const SvgGenImage('assets/icons/ic_warning_circle_24.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         icArrowDown,
@@ -216,6 +224,7 @@ class $AssetsIconsGen {
         icCamera32,
         icCancel,
         icCancelCircle,
+        icCheckCircleFill24,
         icClock,
         icFortuneCookie,
         icFortuneDiamond,
@@ -244,7 +253,8 @@ class $AssetsIconsGen {
         icQuestion,
         icRecycle,
         icTimer,
-        icUser
+        icUser,
+        icWarningCircle24
       ];
 }
 

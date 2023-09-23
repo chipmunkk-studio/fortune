@@ -114,13 +114,13 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body3Light({Color? fontColor}) {
+  static TextStyle body3Light({Color? color}) {
     return TextStyle(
       fontSize: 15.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 

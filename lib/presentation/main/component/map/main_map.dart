@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
 import 'package:fortune/core/widgets/dialog/default_dialog.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -176,54 +176,11 @@ class MainMap extends StatelessWidget {
       _bloc.state.clickableRadiusLength,
     );
 
-    if (distance > 0) {
-      context.showSnackBar('거리가 ${distance.toInt()}미터 만큼 모자랍니다.');
-      return;
-    }
-
-    if (data.ingredient.type == IngredientType.ticket) {
-      _showTicketDialog(data, globalKey);
-    } else {
-      final markerActionResult = await _processMarkerAction(
-        ingredient: data.ingredient,
-        rewardAd: _bloc.state.rewardAd,
-      );
-      if (markerActionResult) {
-        _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
-      }
-    }
-  }
-
-  _showTicketDialog(MainLocationData data, GlobalKey globalKey) {
-    context.showFortuneDialog(
-      title: '광고를 보면 티켓을 수령할 수 있어요!',
-      btnOkText: '확인',
-      dismissOnBackKeyPress: true,
-      dismissOnTouchOutside: true,
-      btnOkPressed: () async {
-        final markerActionResult = await _processMarkerAction(
-          ingredient: data.ingredient,
-          rewardAd: _bloc.state.rewardAd,
-        );
-        if (markerActionResult != null && markerActionResult) {
-          _bloc.add(MainMarkerClick(data: data, globalKey: globalKey));
-        }
-      },
-    );
-  }
-
-  Future<bool> _processMarkerAction({
-    required IngredientEntity ingredient,
-    required RewardedAd? rewardAd,
-  }) async {
-    return await router.navigateTo(
-      context,
-      Routes.ingredientActionRoute,
-      routeSettings: RouteSettings(
-        arguments: IngredientActionParam(
-          ingredient: ingredient,
-          ad: rewardAd,
-        ),
+    _bloc.add(
+      MainMarkerClick(
+        data: data,
+        globalKey: globalKey,
+        distance: distance,
       ),
     );
   }

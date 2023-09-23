@@ -57,7 +57,7 @@ class ExchangeBottom extends StatelessWidget {
           Text(
             "가입 시 인증한 핸드폰 번호로\n교환 쿠폰이 전송됩니다.",
             textAlign: TextAlign.center,
-            style: FortuneTextStyle.body3Light(fontColor: ColorName.grey200),
+            style: FortuneTextStyle.body3Light(color: ColorName.grey200),
           ),
           const SizedBox(height: 16),
           FortuneScaleButton(
@@ -65,6 +65,7 @@ class ExchangeBottom extends StatelessWidget {
             press: onExchangeClick,
             text: "교환",
           ),
+          const SizedBox(height: 48),
         ],
       ),
     );

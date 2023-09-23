@@ -30,13 +30,15 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
   List<Object?> get props => [];
 }
 
-class MainMarkerClickSideEffect extends MainSideEffect {
+class MainMarkerObtainSuccessSideEffect extends MainSideEffect {
   final GlobalKey key;
   final MainLocationData data;
+  final bool isAnimation;
 
-  MainMarkerClickSideEffect({
+  MainMarkerObtainSuccessSideEffect({
     required this.key,
     required this.data,
+    required this.isAnimation,
   });
 
   @override
@@ -59,6 +61,19 @@ class MainRequireInCircleMeters extends MainSideEffect {
   List<Object?> get props => [];
 }
 
+class MainShowObtainDialog extends MainSideEffect {
+  final MainLocationData data;
+  final GlobalKey key;
+
+  MainShowObtainDialog(
+    this.data,
+    this.key,
+  );
+
+  @override
+  List<Object?> get props => [];
+}
+
 class MainSchemeLandingPage extends MainSideEffect {
   final String landingRoute;
   final String searchText;
@@ -70,19 +85,4 @@ class MainSchemeLandingPage extends MainSideEffect {
 
   @override
   List<Object?> get props => [landingRoute];
-}
-
-class MainShowDialog extends MainSideEffect {
-  final String landingRoute;
-  final String title;
-  final String subTitle;
-
-  MainShowDialog({
-    required this.landingRoute,
-    required this.title,
-    required this.subTitle,
-  });
-
-  @override
-  List<Object?> get props => [];
 }

@@ -25,11 +25,11 @@ enum EnvKey {
   mapStyleId,
   mapUrlTemplate,
   appMetrica,
-  oneSignalApiKey,
   randomDistance,
   twilioTestAccountEmail,
   twilioTestPassword,
   twilioTestPhoneNumber,
+  forceDevelopServer,
   refreshTime,
   ticketCount,
   markerCount,
@@ -42,11 +42,11 @@ class FortuneRemoteConfig {
   final String mapStyleId;
   final String mapUrlTemplate;
   final String appMetricaKey;
-  final String oneSignalApiKey;
   final String twilioTestAccountEmail;
   final String twilioTestPassword;
   final String twilioTestPhoneNumber;
   final double randomDistance;
+  final bool forceDevelopServer;
   final int refreshTime;
   final int markerCount;
   final int ticketCount;
@@ -58,12 +58,12 @@ class FortuneRemoteConfig {
     required this.mapUrlTemplate,
     required this.appMetricaKey,
     required this.anonKey,
-    required this.oneSignalApiKey,
     required this.randomDistance,
     required this.markerCount,
     required this.ticketCount,
     required this.refreshTime,
     required this.twilioTestAccountEmail,
+    required this.forceDevelopServer,
     required this.twilioTestPassword,
     required this.twilioTestPhoneNumber,
   });
@@ -74,9 +74,9 @@ class FortuneRemoteConfig {
         "mapAccessToken: ${mapAccessToken.shortenForPrint()},\n"
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
+        "forceDevelopServer: $forceDevelopServer,\n"
         "appMetricaKey: $appMetricaKey\n"
-        "oneSignalApiKey: $oneSignalApiKey\n"
-        "refreshTime: $oneSignalApiKey\n"
+        "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
         "randomDistance: $randomDistance\n"
@@ -166,7 +166,6 @@ getRemoteConfigArgs() async {
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
-    final oneSignalApiKey = remoteConfig.getString(describeEnum(EnvKey.oneSignalApiKey));
     final randomDistance = remoteConfig.getDouble(describeEnum(EnvKey.randomDistance));
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
@@ -174,11 +173,12 @@ getRemoteConfigArgs() async {
     final twilioTestAccountEmail = remoteConfig.getString(describeEnum(EnvKey.twilioTestAccountEmail));
     final twilioTestPassword = remoteConfig.getString(describeEnum(EnvKey.twilioTestPassword));
     final twilioTestPhoneNumber = remoteConfig.getString(describeEnum(EnvKey.twilioTestPhoneNumber));
+    final forceDevelopServer = remoteConfig.getBool(describeEnum(EnvKey.forceDevelopServer));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.productUrl);
+          return !forceDevelopServer ? describeEnum(EnvKey.productUrl) : describeEnum(EnvKey.devUrl);
         case false:
           return describeEnum(EnvKey.devUrl);
         default:
@@ -189,7 +189,7 @@ getRemoteConfigArgs() async {
     final anonKey = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return describeEnum(EnvKey.productAnonKey);
+          return !forceDevelopServer ? describeEnum(EnvKey.productAnonKey) : describeEnum(EnvKey.devAnonKey);
         case false:
           return describeEnum(EnvKey.devAnonKey);
         default:
@@ -204,11 +204,11 @@ getRemoteConfigArgs() async {
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,
       anonKey: anonKey,
-      oneSignalApiKey: oneSignalApiKey,
       randomDistance: randomDistance,
       refreshTime: refreshTime,
       markerCount: markerCount,
       ticketCount: ticketCount,
+      forceDevelopServer: forceDevelopServer,
       twilioTestAccountEmail: twilioTestAccountEmail,
       twilioTestPassword: twilioTestPassword,
       twilioTestPhoneNumber: twilioTestPhoneNumber,
