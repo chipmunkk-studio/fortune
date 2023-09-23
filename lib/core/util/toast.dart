@@ -24,6 +24,7 @@ fortuneToastContent({
             content,
             style: FortuneTextStyle.body3Light(color: ColorName.grey900),
           ),
+          const SizedBox(width: 12.0),
         ],
       ),
     );
