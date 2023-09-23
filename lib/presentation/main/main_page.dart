@@ -189,7 +189,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               ),
             ),
             positionedToastBuilder: (context, child) => Positioned(
-              bottom: 96,
+              bottom: 40,
               left: 0,
               right: 0,
               child: child,
