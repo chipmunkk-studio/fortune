@@ -48,7 +48,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       final currentTicket = prevUser.ticket;
       final requiredTicket = marker.ingredient.rewardTicket.abs();
 
-      if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.ticket) {
+      if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.coin) {
         throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));
       }
 
@@ -65,7 +65,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       // 티켓 및 획득 카운트 업데이트.
       updatedTicket = prevUser.ticket + ingredient.rewardTicket;
       markerObtainCount =
-          param.marker.ingredient.type != IngredientType.ticket ? markerObtainCount + 1 : markerObtainCount;
+          param.marker.ingredient.type != IngredientType.coin ? markerObtainCount + 1 : markerObtainCount;
 
       // 사용자 티켓 정보 업데이트.
       final updateUser = await userRepository.updateUser(
@@ -103,7 +103,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       }
 
       // 히스토리 추가.
-      if (marker.ingredient.type != IngredientType.ticket) {
+      if (marker.ingredient.type != IngredientType.coin) {
         await obtainHistoryRepository
             .insertObtainHistory(
           request: RequestObtainHistory.insert(

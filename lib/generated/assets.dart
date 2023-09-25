@@ -3,15 +3,11 @@ class Assets {
   Assets._();
 
   static const String colorColors = 'assets/color/colors.xml';
-  static const String fontsPretendardBlack = 'assets/fonts/Pretendard-Black.ttf';
   static const String fontsPretendardBold = 'assets/fonts/Pretendard-Bold.ttf';
-  static const String fontsPretendardExtraBold = 'assets/fonts/Pretendard-ExtraBold.ttf';
-  static const String fontsPretendardExtraLight = 'assets/fonts/Pretendard-ExtraLight.ttf';
   static const String fontsPretendardLight = 'assets/fonts/Pretendard-Light.ttf';
   static const String fontsPretendardMedium = 'assets/fonts/Pretendard-Medium.ttf';
   static const String fontsPretendardRegular = 'assets/fonts/Pretendard-Regular.ttf';
   static const String fontsPretendardSemiBold = 'assets/fonts/Pretendard-SemiBold.ttf';
-  static const String fontsPretendardThin = 'assets/fonts/Pretendard-Thin.ttf';
   static const String iconsIcArrowDown = 'assets/icons/ic_arrow_down.svg';
   static const String iconsIcArrowLeft = 'assets/icons/ic_arrow_left.svg';
   static const String iconsIcArrowRight12 = 'assets/icons/ic_arrow_right_12.svg';

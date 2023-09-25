@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
@@ -19,7 +20,10 @@ class NoticesPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<NoticesBloc>()..add(NoticesInit()),
       child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: "자주 묻는 질문"),
+        appBar: FortuneCustomAppBar.leadingAppBar(
+          context,
+          title: FortuneTr.notice,
+        ),
         child: const _NoticesPage(),
       ),
     );

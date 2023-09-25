@@ -10,7 +10,7 @@ import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
 import 'package:fortune/presentation/support/faqs/faqs_page.dart';
-import 'package:fortune/presentation/support/notices/faqs_page.dart';
+import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
 import 'ingredientaction/ingredient_action_page.dart';
@@ -18,6 +18,7 @@ import 'login/login_page.dart';
 import 'main/main_ext.dart';
 import 'main/main_page.dart';
 import 'missiondetail/mission_detail_page.dart';
+import 'nickname/nick_name_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
@@ -127,6 +128,12 @@ class FortuneRouter {
   static var gradeGuideHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const GradeGuidePage();
+    },
+  );
+
+  static var nickNameHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const NickNamePage();
     },
   );
 
@@ -246,8 +253,14 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 닉네임.
+      ..define(
+        Routes.nickNameRoute,
+        handler: nickNameHandler,
+        transitionType: TransitionType.cupertino,
+      )
 
-    /// 마커 히스토리.
+      /// 마커 히스토리.
       ..define(
         Routes.obtainHistoryRoute,
         handler: obtainHistoryHandler,
@@ -271,5 +284,6 @@ class Routes {
   static const String gradeGuideRoute = 'gradeGuide';
   static const String myPageRoute = 'myPage';
   static const String faqsRoute = 'faqs';
+  static const String nickNameRoute = 'nickName';
   static const String noticesRoutes = 'notices';
 }

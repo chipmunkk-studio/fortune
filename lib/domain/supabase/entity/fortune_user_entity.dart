@@ -1,30 +1,21 @@
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'fortune_user_next_level_entity.dart';
 
-part 'fortune_user_entity.g.dart';
-
-@JsonSerializable(ignoreUnannotated: false)
 class FortuneUserEntity {
-  @JsonKey(name: 'id')
   final int id;
-  @JsonKey(name: 'phone')
   final String phone;
-  @JsonKey(name: 'nickname')
   final String nickname;
-  @JsonKey(name: 'profileImage')
   final String profileImage;
-  @JsonKey(name: 'ticket')
   final int ticket;
-  @JsonKey(name: 'markerObtainCount')
   final int markerObtainCount;
-  @JsonKey(name: 'level')
   final int level;
-  @JsonKey(name: 'grade')
   final FortuneUserGradeEntity grade;
-  @JsonKey(name: 'nextLevelInfo')
+  final bool isWithdrawal;
+  final String withdrawalAt;
+  final String createdAt;
+  final bool isEnableReSignIn;
   final FortuneUserNextLevelEntity nextLevelInfo;
 
   FortuneUserEntity({
@@ -35,7 +26,11 @@ class FortuneUserEntity {
     required this.ticket,
     required this.markerObtainCount,
     required this.level,
+    required this.isWithdrawal,
+    required this.withdrawalAt,
+    required this.createdAt,
   })  : nextLevelInfo = calculateLevelInfo(markerObtainCount),
+        isEnableReSignIn = calculateWithdrawalDays(withdrawalAt),
         grade = getUserGradeIconInfo(assignGrade(level));
 
   FortuneUserEntity copyWith({
@@ -47,6 +42,9 @@ class FortuneUserEntity {
     int? ticket,
     int? markerObtainCount,
     int? level,
+    bool? isWithdrawal,
+    String? withdrawalAt,
+    String? createdAt,
   }) {
     return FortuneUserEntity(
       id: id ?? this.id,
@@ -56,6 +54,9 @@ class FortuneUserEntity {
       ticket: ticket ?? this.ticket,
       markerObtainCount: markerObtainCount ?? this.markerObtainCount,
       level: level ?? this.level,
+      isWithdrawal: isWithdrawal ?? this.isWithdrawal,
+      createdAt: createdAt ?? this.createdAt,
+      withdrawalAt: withdrawalAt ?? this.withdrawalAt,
     );
   }
 
@@ -65,13 +66,12 @@ class FortuneUserEntity {
       phone: '',
       nickname: '',
       profileImage: '',
+      isWithdrawal: false,
+      createdAt: '',
+      withdrawalAt: '',
       ticket: 0,
       markerObtainCount: 0,
       level: 0,
     );
   }
-
-  factory FortuneUserEntity.fromJson(Map<String, dynamic> json) => _$FortuneUserEntityFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FortuneUserEntityToJson(this);
 }

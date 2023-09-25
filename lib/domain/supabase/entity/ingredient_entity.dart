@@ -23,7 +23,7 @@ class IngredientEntity {
       name: '',
       imageUrl: '',
       rewardTicket: 0,
-      type: IngredientType.ticket,
+      type: IngredientType.coin,
       // assuming 'undefined' is a valid enum value for IngredientType
       distance: 0,
     );

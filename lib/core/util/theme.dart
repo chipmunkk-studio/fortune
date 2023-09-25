@@ -107,23 +107,23 @@ inputDecorationTheme() {
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     // contentPadding: const EdgeInsets.fromLTRB(20, 16, 0, 16),
     disabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(16.r),
       borderSide: const BorderSide(color: ColorName.grey700),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(16.r),
       borderSide: const BorderSide(color: ColorName.grey700),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(16.r),
       borderSide: const BorderSide(color: ColorName.primary),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(16.r),
       borderSide: const BorderSide(color: ColorName.negative),
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(16.r),
       borderSide: const BorderSide(color: ColorName.grey700),
     ),
     counterStyle: const TextStyle(color: ColorName.primary),

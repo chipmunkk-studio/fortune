@@ -7,6 +7,7 @@ import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_or_in_test_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -17,12 +18,14 @@ import 'login.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final GetUserUseCase getUserUseCase;
   final SignUpOrInWithTestUseCase signUpOrInWithTestUseCase;
+  final WithdrawalUseCase withdrawalUseCase;
   final Environment env;
 
-  static const tag = "[PhoneNumberBloc]";
+  _getConvertedPhoneNumber(String phoneNumber) => '82$phoneNumber';
 
   LoginBloc({
     required this.getUserUseCase,
+    required this.withdrawalUseCase,
     required this.signUpOrInWithTestUseCase,
     required this.env,
   }) : super(LoginState.initial()) {
@@ -35,6 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     );
     on<LoginBottomButtonClick>(clickNextButton);
     on<LoginRequestVerifyCode>(requestVerifyCode);
+    on<LoginRequestCancelWithdrawal>(cancelWithdrawal);
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
@@ -52,7 +56,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> clickNextButton(LoginBottomButtonClick event, Emitter<LoginState> emit) async {
-    // #0 문자 전송 때문에 앞에 +82 추가
+    final remoteConfig = env.remoteConfig;
+    final client = Supabase.instance.client;
+    // 사용자의 전화번호가 테스트 계정에 포함되어 있는지 확인.
+    bool isTestAccount = remoteConfig.twilioTestPhoneNumber.contains(state.phoneNumber);
+
+    // #1 테스트 계정 일 경우 인증번호 전송없이 회원가입/로그인 일괄 처리.
+    if (isTestAccount) {
+      await _processTestSignInOrUp(remoteConfig);
+    } else {
+      await _processSignInOrUp(emit);
+    }
+  }
+
+  Future<void> _processSignInOrUp(
+    Emitter<LoginState> emit, {
+    bool cancelWithdrawal = false,
+  }) async {
     final convertedPhoneNumber = _getConvertedPhoneNumber(state.phoneNumber);
 
     await getUserUseCase(
@@ -61,26 +81,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
         (r) async {
-          final remoteConfig = env.remoteConfig;
-          final client = Supabase.instance.client;
-
-          // 사용자의 전화번호가 테스트 계정에 포함되어 있는지 확인.
-          bool isTestAccount = remoteConfig.twilioTestPhoneNumber.contains(state.phoneNumber);
-
-          // #1 테스트 계정 일 경우 인증번호 전송없이 회원가입/로그인 일괄 처리.
-          if (isTestAccount) {
-            await _handleTestAccountSignIn(remoteConfig, client);
-            produceSideEffect(LoginLandingRoute(Routes.mainRoute));
+          // 회원 탈퇴 여부.
+          if (r != null && r.isWithdrawal && !cancelWithdrawal) {
+            produceSideEffect(LoginWithdrawalUser(r.isEnableReSignIn));
             return;
           }
 
-          // #2 가입된 사용자 인 경우 > 인증번호 전송 요구.
+          // 사용자가 가입되어 있으면 인증번호 전송 로직을 처리
           if (r != null) {
-            // 테스트 계정이 아닌 경우.
+            // 인증번호 전송
             emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
             produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
           } else {
-            // #4 약관 바텀 시트를 보여줌.
+            // 약관 바텀 시트 표시
             produceSideEffect(LoginShowTermsBottomSheet(convertedPhoneNumber));
           }
         },
@@ -88,15 +101,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     );
   }
 
-  Future<void> _handleTestAccountSignIn(
+  Future<void> _processTestSignInOrUp(
     FortuneRemoteConfig config,
-    SupabaseClient client,
   ) async {
     await signUpOrInWithTestUseCase(
       RequestSignUpOrInTestParam(
         testEmail: config.twilioTestAccountEmail,
         testPassword: config.twilioTestPassword,
         testPhoneNumber: config.twilioTestPhoneNumber,
+      ),
+    ).then(
+      (value) => value.fold(
+        (l) => produceSideEffect(LoginError(l)),
+        (r) {
+          produceSideEffect(LoginLandingRoute(Routes.mainRoute));
+        },
       ),
     );
   }
@@ -107,5 +126,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     produceSideEffect(LoginShowVerifyCodeBottomSheet(convertedPhoneNumber));
   }
 
-  _getConvertedPhoneNumber(String phoneNumber) => '82$phoneNumber';
+  FutureOr<void> cancelWithdrawal(LoginRequestCancelWithdrawal event, Emitter<LoginState> emit) async {
+    await _processSignInOrUp(
+      emit,
+      cancelWithdrawal: true,
+    );
+  }
 }

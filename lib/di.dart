@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fortune/core/error/fortune_error_dialog.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/analytics.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/local/repository/local_repository_impl.dart';
 import 'package:fortune/data/supabase/repository/auth_repository_impl.dart';
@@ -29,6 +29,7 @@ import 'package:fortune/domain/supabase/repository/marker_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
@@ -44,8 +45,10 @@ import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_phone_number_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
@@ -58,6 +61,7 @@ import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/bloc/missions.dart';
 import 'package:fortune/presentation/myingredients/bloc/my_ingredients.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
+import 'package:fortune/presentation/nickname/bloc/nick_name.dart';
 import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
@@ -85,6 +89,7 @@ import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
+import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
@@ -342,6 +347,7 @@ _initUseCase() async {
     ..registerLazySingleton<VerifyPhoneNumberUseCase>(
       () => VerifyPhoneNumberUseCase(
         authRepository: serviceLocator(),
+        userRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetTermsByIndexUseCase>(
@@ -440,6 +446,12 @@ _initUseCase() async {
         localRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<NickNameUseCase>(
+      () => NickNameUseCase(
+        userRepository: serviceLocator(),
+        localRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<UpdateUserProfileUseCase>(
       () => UpdateUserProfileUseCase(
         userRepository: serviceLocator(),
@@ -447,6 +459,21 @@ _initUseCase() async {
     )
     ..registerLazySingleton<GradeGuideUseCase>(
       () => GradeGuideUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<UpdateUserNickNameUseCase>(
+      () => UpdateUserNickNameUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<CancelWithdrawalUseCase>(
+      () => CancelWithdrawalUseCase(
+        userRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<WithdrawalUseCase>(
+      () => WithdrawalUseCase(
         userRepository: serviceLocator(),
       ),
     )
@@ -468,6 +495,7 @@ _initBloc() {
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
+        withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
         signUpOrInWithTestUseCase: serviceLocator<SignUpOrInWithTestUseCase>(),
         env: serviceLocator<Environment>(),
       ),
@@ -478,6 +506,14 @@ _initBloc() {
     ..registerFactory(
       () => AlarmFeedBloc(
         getAlarmFeedUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => NickNameBloc(
+        nickNameUseCase: serviceLocator<NickNameUseCase>(),
+        updateProfileUseCase: serviceLocator<UpdateUserProfileUseCase>(),
+        updateUserNickNameUseCase: serviceLocator<UpdateUserNickNameUseCase>(),
+        withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
       ),
     )
     ..registerFactory(
@@ -518,6 +554,7 @@ _initBloc() {
         verifyPhoneNumberUseCase: serviceLocator(),
         checkVerifySmsTimeUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
+        cancelWithdrawalUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

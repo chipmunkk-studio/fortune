@@ -42,5 +42,5 @@ jobs:
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: release-app-bundle
-          path: build/app/outputs/flutter-apk/fortune-app-bundle.apk
+          name: release-app-apk
+          path: build/app/outputs/flutter-apk/app-release.apk

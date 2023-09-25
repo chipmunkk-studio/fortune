@@ -62,7 +62,7 @@ class ExchangeBottom extends StatelessWidget {
           const SizedBox(height: 16),
           FortuneScaleButton(
             isEnabled: true,
-            press: onExchangeClick,
+            onPress: onExchangeClick,
             text: "교환",
           ),
           const SizedBox(height: 48),

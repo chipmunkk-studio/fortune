@@ -22,7 +22,7 @@ class LoginBottomButton extends StatelessWidget {
       isKeyboardVisible: isKeyboardVisible,
       isEnabled: isEnabled,
       onPress: onPressed,
-      buttonText: text,
+      text: text,
     );
   }
 }

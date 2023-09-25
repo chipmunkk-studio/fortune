@@ -48,7 +48,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 내 주변 마커 리스트.(티켓 X)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
-            (element) => element.ingredient.type != IngredientType.ticket,
+            (element) => element.ingredient.type != IngredientType.coin,
           )
           .toList();
 
@@ -80,7 +80,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
 
       final isTicketEmpty = markersNearByMe
           .where(
-            (element) => element.ingredient.type == IngredientType.ticket,
+            (element) => element.ingredient.type == IngredientType.coin,
           )
           .toList();
 

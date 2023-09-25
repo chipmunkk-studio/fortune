@@ -64,7 +64,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
           final ingredient = sideEffect.param.ingredient;
           final ad = sideEffect.param.ad;
           switch (ingredient.type) {
-            case IngredientType.ticket:
+            case IngredientType.coin:
               try {
                 if (ad != null) {
                   ad.show(
@@ -96,7 +96,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
 
   _buildProcessWidgetOnType(IngredientActionParam entity) {
     switch (entity.ingredient.type) {
-      case IngredientType.ticket:
+      case IngredientType.coin:
         return Container(color: Colors.black.withOpacity(0.5));
       default:
         return Container(color: Colors.black.withOpacity(0.5));
