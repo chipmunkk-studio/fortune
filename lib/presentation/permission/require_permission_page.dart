@@ -8,7 +8,6 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
-import 'package:fortune/core/widgets/dialog/default_dialog.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';
@@ -100,7 +99,8 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           FortunePermissionUtil.requestPermission(_bloc.state.permissions);
         } else if (sideEffect is RequestPermissionFail) {
           AppMetrica.reportEvent('권한 요청 팝업');
-          context.showFortuneDialog(
+          dialogService.showFortuneDialog(
+            context,
             title: FortuneTr.msgRequirePermissionTitle,
             subTitle: FortuneTr.msgRequirePermissionSubTitle,
             btnOkText: FortuneTr.move,
@@ -140,7 +140,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           const Spacer(),
           FortuneScaleButton(
             text: FortuneTr.next,
-            press: () => _bloc.add(RequestPermissionNext()),
+            onPress: () => _bloc.add(RequestPermissionNext()),
           )
         ],
       ),
@@ -152,19 +152,21 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
       children: [
         permissionItem.icon,
         const SizedBox(width: 28),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              permissionItem.title,
-              style: FortuneTextStyle.body1Semibold(),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              permissionItem.subTitle,
-              style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
-            ),
-          ],
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                permissionItem.title,
+                style: FortuneTextStyle.body1Semibold(),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                permissionItem.subTitle,
+                style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
+              ),
+            ],
+          ),
         )
       ],
     );

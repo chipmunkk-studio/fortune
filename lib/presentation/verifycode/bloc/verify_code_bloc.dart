@@ -7,9 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
+import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_phone_number_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -20,6 +22,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   final VerifyPhoneNumberUseCase verifyPhoneNumberUseCase;
   final CheckVerifySmsTimeUseCase checkVerifySmsTimeUseCase;
   final SignUpOrInUseCase signUpOrInUseCase;
+  final CancelWithdrawalUseCase cancelWithdrawalUseCase;
 
   static const tag = "[PhoneNumberBloc]";
   static const verifyTime = 180;
@@ -28,6 +31,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     required this.verifyPhoneNumberUseCase,
     required this.checkVerifySmsTimeUseCase,
     required this.signUpOrInUseCase,
+    required this.cancelWithdrawalUseCase,
   }) : super(VerifyCodeState.initial()) {
     on<VerifyCodeInit>(init);
     on<VerifyCodeCountdown>(verifyCodeCountdown);
@@ -83,7 +87,11 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       (value) => value.fold((l) {
         AppMetrica.reportEventWithJson('인증 실패', jsonEncode(l.toJsonMap()));
         produceSideEffect(VerifyCodeError(l));
-      }, (r) {
+      }, (r) async {
+        // 탈퇴 처리 된 회원인 경우 철회 함.
+        if (r.userEntity.isWithdrawal) {
+          await cancelWithdrawalUseCase();
+        }
         produceSideEffect(VerifyCodeLandingRoute(Routes.mainRoute));
       }),
     );

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class FortuneScaleButton extends StatelessWidget {
   final String text;
-  final dartz.Function0 press;
+  final dartz.Function0 onPress;
   final bool? isEnabled;
   final ButtonStyle? style;
 
   const FortuneScaleButton({
     Key? key,
     required this.text,
-    required this.press,
+    required this.onPress,
     this.isEnabled,
     this.style,
   }) : super(key: key);
@@ -18,7 +18,7 @@ class FortuneScaleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _FortuneAnimatedButton(
-      onPressed: isEnabled == false ? null : press,
+      onPressed: isEnabled == false ? null : onPress,
       style: style,
       child: Text(
         text,

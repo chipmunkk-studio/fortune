@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
+import 'package:fortune/di.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/util/logger.dart';

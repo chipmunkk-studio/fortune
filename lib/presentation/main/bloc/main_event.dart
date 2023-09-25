@@ -92,3 +92,12 @@ class MainSetRewardAd extends MainEvent {
   @override
   List<Object?> get props => [ad];
 }
+
+class MainRequireInCircleMetersEvent extends MainEvent {
+  final double distance;
+
+  MainRequireInCircleMetersEvent(this.distance);
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}

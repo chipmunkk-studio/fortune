@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
@@ -27,7 +28,7 @@ class ItemGrade extends StatelessWidget {
             children: [
               Text(gradeInfo.name, style: FortuneTextStyle.body1Semibold()),
               SizedBox(height: 6.h),
-              Text("보상 준비 중", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
+              Text(FortuneTr.msgRewardPreparation, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
             ],
           ),
           const Spacer(),

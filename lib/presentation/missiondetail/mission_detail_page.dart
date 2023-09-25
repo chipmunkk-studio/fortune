@@ -4,7 +4,7 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/core/widgets/dialog/default_dialog.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/di.dart';
@@ -66,10 +66,11 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
     return BlocSideEffectListener<MissionDetailBloc, MissionDetailSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MissionDetailClearSuccess) {
-          context.showFortuneDialog(
-            title: '교환신청 완료',
-            subTitle: '축하해요!',
-            btnOkText: '확인',
+          dialogService.showFortuneDialog(
+            context,
+            title: FortuneTr.msgMissionCompleted,
+            subTitle: FortuneTr.msgPaymentDelay,
+            btnOkText: FortuneTr.confirm,
             btnOkPressed: () {
               router.pop(context, true);
             },

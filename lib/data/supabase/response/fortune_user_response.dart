@@ -19,6 +19,12 @@ class FortuneUserResponse extends FortuneUserEntity {
   final int markerObtainCount_;
   @JsonKey(name: 'level')
   final int level_;
+  @JsonKey(name: 'is_withdrawal')
+  final bool? isWithdrawal_;
+  @JsonKey(name: 'withdrawal_at')
+  final String? withdrawalAt_;
+  @JsonKey(name: 'created_at')
+  final String createdAt_;
 
   FortuneUserResponse({
     required this.id_,
@@ -28,6 +34,9 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.ticket_,
     required this.markerObtainCount_,
     required this.level_,
+    required this.isWithdrawal_,
+    required this.withdrawalAt_,
+    required this.createdAt_,
   }) : super(
           id: id_.toInt(),
           nickname: nickname_,
@@ -36,6 +45,9 @@ class FortuneUserResponse extends FortuneUserEntity {
           profileImage: profileImage_ ?? "",
           markerObtainCount: markerObtainCount_,
           level: level_,
+          isWithdrawal: isWithdrawal_ ?? false,
+          withdrawalAt: withdrawalAt_ ?? '',
+          createdAt: createdAt_,
         );
 
   factory FortuneUserResponse.fromJson(Map<String, dynamic> json) => _$FortuneUserResponseFromJson(json);

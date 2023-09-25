@@ -19,7 +19,8 @@ class FaqsBloc extends Bloc<FaqsEvent, FaqsState> with SideEffectBlocMixin<FaqsE
     await getFaqsUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(FaqError(l)),
-        (r) {
+        (r) async {
+          await Future.delayed(const Duration(microseconds: 200));
           emit(
             state.copyWith(
               items: r,

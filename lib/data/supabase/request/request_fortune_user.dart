@@ -16,6 +16,10 @@ class RequestFortuneUser {
   final int? markerObtainCount;
   @JsonKey(name: 'level')
   final int? level;
+  @JsonKey(name: 'is_withdrawal')
+  final bool? isWithdrawal;
+  @JsonKey(name: 'withdrawal_at')
+  final String? withdrawalAt;
 
   RequestFortuneUser({
     this.phone,
@@ -24,8 +28,11 @@ class RequestFortuneUser {
     this.ticket,
     this.markerObtainCount,
     this.level,
+    this.isWithdrawal,
+    this.withdrawalAt,
   });
 
+  // 회원가입.
   RequestFortuneUser.insert({
     required this.phone,
     required this.nickname,
@@ -33,6 +40,8 @@ class RequestFortuneUser {
     this.markerObtainCount = 0,
     this.level = 1,
     this.profileImage = '',
+    this.isWithdrawal = false,
+    this.withdrawalAt,
   });
 
   factory RequestFortuneUser.fromJson(Map<String, dynamic> json) => _$RequestFortuneUserFromJson(json);

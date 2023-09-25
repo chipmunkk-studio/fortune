@@ -127,7 +127,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                 child: FortuneScaleButton(
                   text: FortuneTr.msgRequireTermsApprove,
                   isEnabled: true,
-                  press: () => _bloc.add(AgreeTermsAllClick()),
+                  onPress: () => _bloc.add(AgreeTermsAllClick()),
                 ),
               )
             ],

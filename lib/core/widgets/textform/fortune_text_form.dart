@@ -13,8 +13,10 @@ class FortuneTextForm extends StatefulWidget {
   final dartz.Function0? onSuffixIconClicked;
   final dartz.Function0? onPrefixIconClicked;
   final TextInputType? keyboardType;
+  final bool autoFocus;
   final String? hint;
   final Color? textColor;
+  final bool readOnly;
   final String? errorMessage;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? textEditingController;
@@ -29,11 +31,13 @@ class FortuneTextForm extends StatefulWidget {
     this.hint,
     this.maxLength,
     this.textColor,
+    this.readOnly = false,
     this.suffixIcon,
     this.prefixIcon,
     this.onSuffixIconClicked,
     this.onPrefixIconClicked,
     this.inputFormatters,
+    this.autoFocus = false,
   }) : super(key: key);
 
   @override
@@ -41,10 +45,13 @@ class FortuneTextForm extends StatefulWidget {
 }
 
 class _FortuneTextFormState extends State<FortuneTextForm> {
+  final focusNode = FocusNode();
+
   @override
   void dispose() {
-    widget.textEditingController?.dispose();
     super.dispose();
+    widget.textEditingController?.dispose();
+    focusNode.dispose();
   }
 
   @override
@@ -62,7 +69,9 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
           )
         : null;
     return TextFormField(
-      autofocus: true,
+      autofocus: widget.autoFocus,
+      focusNode: focusNode,
+      readOnly: widget.readOnly,
       maxLength: widget.maxLength,
       style: FortuneTextStyle.button1Medium(fontColor: widget.textColor),
       controller: widget.textEditingController,
@@ -77,7 +86,7 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
         hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
         errorText: widget.errorMessage,
         errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
-        suffixIcon: suffixIcon,
+        suffixIcon: focusNode.hasFocus ? suffixIcon : null,
         prefixIcon: prefixIcon,
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 
 class BottomGradeArea extends StatelessWidget {
@@ -17,14 +18,21 @@ class BottomGradeArea extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(text: "다음레벨 까지", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
-              const TextSpan(text: "\u00A0"),
-              TextSpan(text: "$remainCount번", style: FortuneTextStyle.body3Semibold()),
-              TextSpan(text: "의 마커 획득이 필요해요", style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
-            ],
+        Flexible(
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: FortuneTr.msgUntilNextLevel, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
+                const TextSpan(text: "\u00A0"),
+                TextSpan(text: "$remainCount${FortuneTr.msgNumberPrefix}", style: FortuneTextStyle.body3Semibold()),
+                TextSpan(
+                  text: FortuneTr.msgMarkerRequirement,
+                  style: FortuneTextStyle.body3Light(
+                    color: ColorName.grey200,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

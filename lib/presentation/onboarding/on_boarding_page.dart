@@ -104,7 +104,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
           ),
           FortuneScaleButton(
             text: FortuneTr.start,
-            press: () => router.navigateTo(
+            onPress: () => router.navigateTo(
               context,
               Routes.requestPermissionRoute,
             ),

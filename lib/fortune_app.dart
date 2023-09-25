@@ -25,7 +25,7 @@ class FortuneApp extends StatelessWidget {
         builder: (BuildContext context, Widget? child) {
           /// 강제로 언어를 한글로 설정. 배포 시 삭제해야 함.
           // EasyLocalization.of(context)?.setLocale(const Locale('en', 'US'));
-          EasyLocalization.of(context)?.setLocale(const Locale('ko', 'KR'));
+          // EasyLocalization.of(context)?.setLocale(const Locale('ko', 'KR'));
           return MediaQuery(
             // 화면 비율 일정 하도록 함.
             data: MediaQueryData.fromView(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),

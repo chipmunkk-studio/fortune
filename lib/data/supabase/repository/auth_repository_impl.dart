@@ -1,4 +1,5 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/service/auth_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
@@ -36,7 +37,6 @@ class AuthRepositoryImpl extends AuthRepository {
     required String phoneNumber,
   }) async {
     try {
-      // 회원이 없을 경우 추가.
       await _userService.insert(phone: phoneNumber);
       final response = await _authService.signUp(
         phoneNumber: phoneNumber,
@@ -129,7 +129,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '테스트 계정 회원가입 실패',
+        description: FortuneTr.msgUseNextTime,
       );
     }
   }
