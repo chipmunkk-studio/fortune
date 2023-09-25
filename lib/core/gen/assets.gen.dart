@@ -14,17 +14,8 @@ import 'package:flutter/services.dart';
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/Pretendard-Black.ttf
-  String get pretendardBlack => 'assets/fonts/Pretendard-Black.ttf';
-
   /// File path: assets/fonts/Pretendard-Bold.ttf
   String get pretendardBold => 'assets/fonts/Pretendard-Bold.ttf';
-
-  /// File path: assets/fonts/Pretendard-ExtraBold.ttf
-  String get pretendardExtraBold => 'assets/fonts/Pretendard-ExtraBold.ttf';
-
-  /// File path: assets/fonts/Pretendard-ExtraLight.ttf
-  String get pretendardExtraLight => 'assets/fonts/Pretendard-ExtraLight.ttf';
 
   /// File path: assets/fonts/Pretendard-Light.ttf
   String get pretendardLight => 'assets/fonts/Pretendard-Light.ttf';
@@ -38,20 +29,13 @@ class $AssetsFontsGen {
   /// File path: assets/fonts/Pretendard-SemiBold.ttf
   String get pretendardSemiBold => 'assets/fonts/Pretendard-SemiBold.ttf';
 
-  /// File path: assets/fonts/Pretendard-Thin.ttf
-  String get pretendardThin => 'assets/fonts/Pretendard-Thin.ttf';
-
   /// List of all assets
   List<String> get values => [
-        pretendardBlack,
         pretendardBold,
-        pretendardExtraBold,
-        pretendardExtraLight,
         pretendardLight,
         pretendardMedium,
         pretendardRegular,
-        pretendardSemiBold,
-        pretendardThin
+        pretendardSemiBold
       ];
 }
 

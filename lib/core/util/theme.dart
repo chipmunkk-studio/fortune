@@ -13,7 +13,7 @@ theme() {
     checkboxTheme: _checkboxThemeData(),
     unselectedWidgetColor: ColorName.grey800,
     scaffoldBackgroundColor: ColorName.grey900,
-    fontFamily: FontFamily.pretendard,
+    fontFamily: FontFamily.pretendardRegular,
     appBarTheme: appBarTheme(),
     elevatedButtonTheme: elevatedButtonTheme(),
     textButtonTheme: textButtonTheme(),
