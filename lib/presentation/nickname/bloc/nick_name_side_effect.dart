@@ -15,11 +15,23 @@ class NickNameError extends NickNameSideEffect {
   List<Object?> get props => [];
 }
 
-
 class NickNameUserInfoInit extends NickNameSideEffect {
   final FortuneUserEntity user;
 
   NickNameUserInfoInit(this.user);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NickNameRoutingPage extends NickNameSideEffect {
+  final String route;
+  final bool isWithdrawal;
+
+  NickNameRoutingPage({
+    required this.route,
+    this.isWithdrawal = false,
+  });
 
   @override
   List<Object?> get props => [];

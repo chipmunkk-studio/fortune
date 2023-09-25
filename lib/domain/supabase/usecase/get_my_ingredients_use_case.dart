@@ -26,7 +26,7 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
 
       final sortedIngredients = ingredients
           .where(
-            (element) => element.type != IngredientType.ticket,
+            (element) => element.type != IngredientType.coin,
           )
           .toList()
         ..sort((a, b) {

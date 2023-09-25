@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
@@ -91,6 +92,23 @@ class _LoginPageState extends State<_LoginPage> {
             sideEffect.route,
             clearStack: true,
           );
+        } else if (sideEffect is LoginWithdrawalUser) {
+          final isReSignIn = sideEffect.isReSignIn;
+          if (isReSignIn) {
+            dialogService.showFortuneDialog(
+              context,
+              subTitle: FortuneTr.msgRevokeWithdrawal,
+              dismissOnBackKeyPress: true,
+              btnOkPressed: () => _bloc.add(LoginRequestCancelWithdrawal()),
+            );
+          } else {
+            dialogService.showFortuneDialog(
+              context,
+              subTitle: FortuneTr.msgAlreadyWithdrawn,
+              dismissOnBackKeyPress: true,
+              btnOkPressed: () {},
+            );
+          }
         }
       },
       child: KeyboardVisibilityBuilder(
@@ -140,7 +158,7 @@ class _LoginPageState extends State<_LoginPage> {
                   buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
                   builder: (context, state) {
                     return LoginBottomButton(
-                      text: '본인 인증하기',
+                      text: FortuneTr.msgVerifyYourself,
                       isKeyboardVisible: isKeyboardVisible,
                       isEnabled: state.isButtonEnabled,
                       onPressed: () {

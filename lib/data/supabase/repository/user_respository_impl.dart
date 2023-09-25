@@ -11,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class UserRepositoryImpl extends UserRepository {
   final UserService _userService;
   final LocalDataSource _localDataSource;
+  final supabaseClient = Supabase.instance.client;
 
   UserRepositoryImpl(
     this._userService,
@@ -55,7 +56,7 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final user = await findUserByPhoneNonNull();
       return await _userService.update(
-        user.phone,
+        user,
         request: request,
       );
     } on FortuneFailure catch (e) {
@@ -68,9 +69,48 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity> updateUserProfile(String filePath) async {
     try {
-      // 테스트 계정 때문에 아이디 찾아야됨.
+      // 테스트 계정 때문에 아이디 찾아야 됨.
       final imagePath = await _userService.getUpdateProfileFileUrl(filePath: filePath);
       return await updateUser(RequestFortuneUser(profileImage: imagePath));
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneTr.notUpdateUser,
+      );
+    }
+  }
+
+  @override
+  Future<void> withdrawal() async {
+    try {
+      final user = await findUserByPhoneNonNull();
+      await _userService.update(
+        user,
+        request: RequestFortuneUser(
+          withdrawalAt: DateTime.now().toUtc().toIso8601String(),
+          isWithdrawal: true,
+        ),
+      );
+      await supabaseClient.auth.signOut();
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneTr.notUpdateUser,
+      );
+    }
+  }
+
+  // signOut() 처리되었기 때문에 로그인 후에 수행해야 함.
+  @override
+  Future<void> cancelWithdrawal() async {
+    try {
+      final user = await findUserByPhoneNonNull();
+      await _userService.update(
+        user,
+        request: RequestFortuneUser(
+          withdrawalAt: '',
+          isWithdrawal: false,
+        ),
+        isCancelWithdrawal: true,
+      );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,

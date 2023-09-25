@@ -9,11 +9,15 @@ class NickNameState with _$NickNameState {
     required FortuneUserEntity userEntity,
     required String nickName,
     required bool isButtonEnabled,
+    required bool isLoading,
+    required bool isUpdating,
   }) = _NickNameState;
 
   factory NickNameState.initial() => NickNameState(
         userEntity: FortuneUserEntity.empty(),
         nickName: '',
+        isLoading: true,
+        isUpdating: false,
         isButtonEnabled: true,
       );
 }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
@@ -44,7 +45,7 @@ class _MyGradeInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "나의 현재 등급은",
+                    FortuneTr.msgCurrentGradePrefix,
                     style: FortuneTextStyle.subTitle1Medium(),
                   ),
                   const SizedBox(height: 4),
@@ -55,7 +56,9 @@ class _MyGradeInfo extends StatelessWidget {
                           text: grade.tr(),
                           style: FortuneTextStyle.subTitle1Bold(),
                         ),
-                        TextSpan(text: "\u00A0입니다", style: FortuneTextStyle.subTitle1Medium()),
+                        TextSpan(
+                            text: "\u00A0${FortuneTr.msgCurrentGradeSuffix}",
+                            style: FortuneTextStyle.subTitle1Medium()),
                       ],
                     ),
                   ),

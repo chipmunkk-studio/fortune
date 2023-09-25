@@ -39,15 +39,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       transformer: throttle(const Duration(seconds: 3)),
     );
     on<MainMarkerClick>(onMarkerClicked);
+    on<MainRequireInCircleMetersEvent>(
+      _toastRequireMeters,
+      transformer: throttle(const Duration(seconds: 2)),
+    );
     on<MainMyLocationChange>(
       locationChange,
       transformer: debounce(const Duration(seconds: 2)),
     );
     on<MainSetRewardAd>(setRewardAd);
-    on<MainScreenFreeze>(
-      _screenFreeze,
-      transformer: sequential(),
-    );
+    on<MainScreenFreeze>(_screenFreeze);
     on<MainMarkerObtain>(
       _markerObtain,
       transformer: sequential(),
@@ -185,7 +186,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
     // 거리가 모자랄 경우
     if (event.distance > 0) {
-      produceSideEffect(MainRequireInCircleMeters(distance));
+      add(MainRequireInCircleMetersEvent(distance));
       return;
     }
 
@@ -194,20 +195,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {
-    final marker = event.data;
+    add(MainScreenFreeze(flag: true, data: event.data));
 
+    final marker = event.data;
     final latitude = marker.location.latitude;
     final longitude = marker.location.longitude;
-    final krLocationName = await getLocationName(latitude, longitude);
-    final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
+    final krLocationName = state.locationName;
 
-    add(MainScreenFreeze(flag: true, data: event.data));
+    // todo 영어 위치.
+    // final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
     await obtainMarkerUseCase(
       RequestObtainMarkerParam(
         marker: marker,
         kLocation: krLocationName,
-        eLocation: enLocationName,
       ),
     ).then(
       (value) => value.fold(
@@ -224,7 +225,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             MainMarkerObtainSuccessSideEffect(
               key: event.key,
               data: event.data,
-              isAnimation: event.data.ingredient.type != IngredientType.ticket,
+              isAnimation: event.data.ingredient.type != IngredientType.coin,
             ),
           );
 
@@ -269,5 +270,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         processingMarker: event.data,
       ),
     );
+  }
+
+  FutureOr<void> _toastRequireMeters(MainRequireInCircleMetersEvent event, Emitter<MainState> emit) {
+    produceSideEffect(MainRequireInCircleMeters(event.distance));
   }
 }

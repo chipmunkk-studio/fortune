@@ -35,3 +35,9 @@ class LoginRequestVerifyCode extends LoginEvent {
   @override
   List<Object?> get props => [];
 }
+
+class LoginRequestCancelWithdrawal extends LoginEvent {
+  @override
+  List<Object?> get props => [];
+}
+

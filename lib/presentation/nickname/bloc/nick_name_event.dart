@@ -28,3 +28,24 @@ class NickNameTextInput extends NickNameEvent {
   @override
   List<Object?> get props => [];
 }
+
+class NickNameSignOut extends NickNameEvent {
+  NickNameSignOut();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NickNameWithdrawal extends NickNameEvent {
+  NickNameWithdrawal();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class NickNameUpdateNickName extends NickNameEvent {
+  NickNameUpdateNickName();
+
+  @override
+  List<Object?> get props => [];
+}

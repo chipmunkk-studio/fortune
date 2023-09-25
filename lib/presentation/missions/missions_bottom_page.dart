@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';
@@ -65,13 +66,13 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text('수행 가능한 미션', style: FortuneTextStyle.headLine2()),
+                  child: Text(FortuneTr.msgAvailableMissions, style: FortuneTextStyle.headLine2()),
                 ),
                 const SizedBox(height: 8),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    '미션을 완료하시면 리워드를 드려요!',
+                    FortuneTr.msgMissionReward,
                     style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
                   ),
                 ),

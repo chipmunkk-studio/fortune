@@ -14,8 +14,6 @@ class UserService {
   final SupabaseClient _client = Supabase.instance.client;
   final _tableName = TableName.users;
 
-  String? get phoneNumber => _client.auth.currentUser?.phone;
-
   UserService();
 
   // 회원가입.
@@ -36,11 +34,11 @@ class UserService {
 
   // 사용자 업데이트.
   Future<FortuneUserEntity> update(
-    String phoneNumber, {
+    FortuneUserEntity user, {
     required RequestFortuneUser request,
+    bool isCancelWithdrawal = false,
   }) async {
     try {
-      FortuneUserEntity? user = await findUserByPhoneNonNull(phoneNumber);
       // 다음 레벨.
       final level = assignLevel(request.markerObtainCount ?? user.markerObtainCount);
 
@@ -51,6 +49,8 @@ class UserService {
         ticket: request.ticket ?? user.ticket,
         markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
         level: level,
+        isWithdrawal: request.isWithdrawal ?? user.isWithdrawal,
+        withdrawalAt: isCancelWithdrawal ? null : request.withdrawalAt,
       );
 
       final updateUser = await _client
@@ -58,7 +58,7 @@ class UserService {
           .update(
             requestToUpdate.toJson(),
           )
-          .eq('phone', phoneNumber)
+          .eq('phone', user.phone)
           .select();
 
       return updateUser.map((e) => FortuneUserResponse.fromJson(e)).toList().single;

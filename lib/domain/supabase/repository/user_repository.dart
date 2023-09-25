@@ -14,4 +14,10 @@ abstract class UserRepository {
 
   // 사용자 프로필 업데이트.
   Future<FortuneUserEntity> updateUserProfile(String filePath);
+
+  // 회원 탈퇴.
+  Future<void> withdrawal();
+
+  // 회원 탈퇴 철회.
+  Future<void> cancelWithdrawal();
 }

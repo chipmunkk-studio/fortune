@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';
@@ -73,7 +74,10 @@ class _MyPageState extends State<_MyPage> {
                       builder: (context, state) {
                         return ProfileInfo(
                           entity: state.user,
-                          onNicknameModifyTap: () => router.navigateTo(context, Routes.nickNameRoute),
+                          onNicknameModifyTap: () async {
+                            await router.navigateTo(context, Routes.nickNameRoute);
+                            _bloc.add(MyPageInit());
+                          },
                           onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
                           onProfileTap: () {
                             FortuneImagePicker().loadImagePicker(

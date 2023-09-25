@@ -42,7 +42,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required LatLng location,
   }) async {
     try {
-      if (marker.ingredient.type != IngredientType.ticket) {
+      if (marker.ingredient.type != IngredientType.coin) {
         final locationMarker = await findMarkerByLocation(
           latitude: location.latitude,
           longitude: location.longitude,
@@ -71,12 +71,12 @@ class MarkerRepositoryImpl extends MarkerRepository {
       // 티켓/유니크 가 아닌 리스트 들만 뽑음.
       final nonTicketAndUniqueIngredients = ingredients
           .where(
-            (ingredient) => ingredient.type != IngredientType.ticket && ingredient.type != IngredientType.unique,
+            (ingredient) => ingredient.type != IngredientType.coin && ingredient.type != IngredientType.unique,
           )
           .toList();
 
       // 티켓들.
-      final ticketIngredients = ingredients.where((element) => element.type == IngredientType.ticket).toList();
+      final ticketIngredients = ingredients.where((element) => element.type == IngredientType.coin).toList();
 
       // 티켓/마커 섞음.
       nonTicketAndUniqueIngredients.shuffle(Random());

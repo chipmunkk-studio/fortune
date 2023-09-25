@@ -7,6 +7,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_ext.dart';
@@ -81,9 +82,14 @@ class _TopNoticeState extends State<TopNotice> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "${e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname}님이",
-                                            style: FortuneTextStyle.body3Semibold(),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname,
+                                                style: FortuneTextStyle.body3Semibold(),
+                                              ),
+                                              Text(FortuneTr.msgHelpedBy, style: FortuneTextStyle.body3Light())
+                                            ],
                                           ),
                                           Flexible(
                                             child: Row(
@@ -98,7 +104,7 @@ class _TopNoticeState extends State<TopNotice> {
                                                   ),
                                                 ),
                                                 Text(
-                                                  "를 획득했어요!",
+                                                  FortuneTr.msgAcquired,
                                                   style: FortuneTextStyle.body3Light(),
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
@@ -160,5 +166,4 @@ class _TopNoticeState extends State<TopNotice> {
       },
     );
   }
-
 }

@@ -2,6 +2,7 @@ import 'package:animation_list/animation_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
@@ -18,7 +19,7 @@ class GradeGuidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FortuneScaffold(
-      appBar: FortuneCustomAppBar.leadingAppBar(context, title: "등급 안내"),
+      appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.msgGradeInfo),
       child: BlocProvider(
         create: (_) => serviceLocator<GradeGuideBloc>()..add(GradeGuideInit()),
         child: const _GradeGuidePage(),
@@ -69,9 +70,15 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 const SizedBox(height: 12),
                 ItemGrade(getUserGradeIconInfo(5)),
                 const SizedBox(height: 12),
-                Text("* 현재 보상 정보를 준비 중입니다.", style: FortuneTextStyle.body3Light(color: ColorName.grey400)),
+                Text(
+                  "* ${FortuneTr.msgRewardInProgress}",
+                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                ),
                 const SizedBox(height: 6),
-                Text("* 등급별 혜택 및 선정 기준은 변경될 수 있습니다.", style: FortuneTextStyle.body3Light(color: ColorName.grey400)),
+                Text(
+                  "* ${FortuneTr.msgGradeChangeNotice}",
+                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                ),
               ],
             ),
             Positioned(

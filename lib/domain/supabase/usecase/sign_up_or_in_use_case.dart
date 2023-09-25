@@ -20,7 +20,7 @@ class SignUpOrInUseCase implements UseCase1<void, String> {
   @override
   Future<FortuneResult<void>> call(String phoneNumber) async {
     try {
-      final user = await userRepository.findUserByPhone(phoneNumber.replaceFirst('+', ''));
+      final user = await userRepository.findUserByPhone(phoneNumber);
       if (user != null) {
         AppMetrica.reportEvent('가입된 사용자');
         authRepository.signInWithOtp(phoneNumber: phoneNumber);

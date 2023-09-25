@@ -15,12 +15,10 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
-import 'package:fortune/core/widgets/dialog/default_dialog.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
@@ -158,7 +156,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.name),
               ),
               positionedToastBuilder: (context, child) => Positioned(
-                bottom: 96,
+                bottom: 40,
                 left: 0,
                 right: 0,
                 child: child,
@@ -167,7 +165,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             );
           }();
         } else if (sideEffect is MainRequireLocationPermission) {
-          context.showFortuneDialog(
+          dialogService.showFortuneDialog(
+            context,
             title: FortuneTr.msgRequirePermissionLocation,
             subTitle: FortuneTr.msgRequirePermissionLocationContent,
             btnOkText: FortuneTr.move,
@@ -423,13 +422,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     MainLocationData data,
     GlobalKey globalKey,
   ) {
-    String dialogSubtitle = (data.ingredient.type == IngredientType.ticket)
+    String dialogSubtitle = (data.ingredient.type == IngredientType.coin)
         ? FortuneTr.msgWatchAd
         : FortuneTr.msgConsumeCoinToGetMarker(
             data.ingredient.rewardTicket.abs().toString(),
           );
 
-    context.showFortuneDialog(
+    dialogService.showFortuneDialog(
+      context,
       subTitle: dialogSubtitle,
       btnOkText: FortuneTr.confirm,
       btnCancelText: FortuneTr.cancel,

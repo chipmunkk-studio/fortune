@@ -10,7 +10,7 @@ import 'package:latlong2/latlong.dart';
 
 enum IngredientType {
   normal,
-  ticket,
+  coin,
   unique,
 }
 
@@ -35,8 +35,8 @@ extension SupabaseExt on Future<dynamic> {
 }
 
 getIngredientType(String type) {
-  if (IngredientType.ticket.name == type) {
-    return IngredientType.ticket;
+  if (IngredientType.coin.name == type) {
+    return IngredientType.coin;
   } else if (IngredientType.normal.name == type) {
     return IngredientType.normal;
   } else if (IngredientType.unique.name == type) {
@@ -131,6 +131,14 @@ assignLevel(int markerCount) {
     level++;
   }
   return level;
+}
+
+calculateWithdrawalDays(String withdrawalAt) {
+  if (withdrawalAt.isEmpty) {
+    return true;
+  } else {
+    return DateTime.now().difference(DateTime.parse(withdrawalAt)).inDays < 30;
+  }
 }
 
 calculateLevelInfo(int markerCount) {

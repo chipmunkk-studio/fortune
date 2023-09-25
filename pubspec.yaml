@@ -17,14 +17,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.15.1
-  firebase_remote_config: ^4.2.5
-  firebase_analytics: ^10.4.5
-  firebase_crashlytics: ^3.3.5
-  firebase_messaging: ^14.6.7
-  supabase: ^1.11.3
-  supabase_flutter: ^1.10.16
-  app_settings: ^5.0.0
+  firebase_core: ^2.16.0
+  firebase_remote_config: ^4.2.6
+  firebase_analytics: ^10.5.0
+  firebase_crashlytics: ^3.3.6
+  firebase_messaging: ^14.6.8
+  supabase: ^1.11.5
+  supabase_flutter: ^1.10.18
+  app_settings: ^5.1.1
   appmetrica_plugin: ^1.4.0
   package_info_plus: ^4.1.0
   flutter_local_notifications: ^15.1.1
@@ -65,7 +65,7 @@ dependencies:
   # map
   flutter_map: ^5.0.0
   latlong2: ^0.9.0
-  geolocator: ^10.0.1
+  geolocator: ^10.1.0
 
   # state and dependency mgmt
   bloc_concurrency: ^0.2.2
@@ -81,7 +81,7 @@ dependencies:
   dartz: ^0.10.1
   json_annotation: ^4.8.1
   synchronized: ^3.1.0
-  logger: ^2.0.2
+  logger: ^2.0.2+1
   easy_localization: ^3.0.3
   collection: ^1.17.2
   geocoding: ^2.1.0
@@ -175,14 +175,6 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: Pretendard
-      fonts:
-        - asset: assets/fonts/Pretendard-Thin.ttf
-          weight: 100
-    - family: Pretendard-ExtraLight
-      fonts:
-        - asset: assets/fonts/Pretendard-ExtraLight.ttf
-          weight: 200
     - family: Pretendard-Light
       fonts:
         - asset: assets/fonts/Pretendard-Light.ttf
@@ -203,11 +195,3 @@ flutter:
       fonts:
         - asset: assets/fonts/Pretendard-Bold.ttf
           weight: 700
-    - family: Pretendard-ExtraBold
-      fonts:
-        - asset: assets/fonts/Pretendard-ExtraBold.ttf
-          weight: 800
-    - family: Pretendard-Black
-      fonts:
-        - asset: assets/fonts/Pretendard-Black.ttf
-          weight: 900

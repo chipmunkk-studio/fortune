@@ -55,6 +55,32 @@ abstract class FortuneTr {
   static final notice = tr('notice');
   static final pushAlarm = tr('pushAlarm');
   static final gradeGuide = tr('gradeGuide');
+  static final myBag = tr('myBag');
+  static final msgNumberItems = tr('msgNumberItems');
+  static final msgUseNextTime = tr('msgUseNextTime');
+  static final msgRevokeWithdrawal = tr('msgRevokeWithdrawal');
+  static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
+  static final msgMissionCompleted = tr('msgMissionCompleted');
+  static final msgPaymentDelay = tr('msgPaymentDelay');
+  static final msgConfirmWithdrawal = tr('msgConfirmWithdrawal');
+  static final msgWithdrawalWarning = tr('msgWithdrawalWarning');
+  static final msgWithdrawal = tr('msgWithdrawal');
+  static final msgConfirmLogout = tr('msgConfirmLogout');
+  static final msgVerifyYourself = tr('msgVerifyYourself');
+  static final msgLoadingLocation = tr('msgLoadingLocation');
+  static final msgAcquired = tr('msgAcquired');
+  static final msgHelpedBy = tr('msgHelpedBy');
+  static final msgAvailableMissions = tr('msgAvailableMissions');
+  static final msgMissionReward = tr('msgMissionReward');
+  static final msgGradeInfo = tr('msgGradeInfo');
+  static final msgRewardInProgress = tr('msgRewardInProgress');
+  static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
+  static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
+  static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');
+  static final msgRewardPreparation = tr('msgRewardPreparation');
+  static final msgUntilNextLevel = tr('msgUntilNextLevel');
+  static final msgNumberPrefix = tr('msgNumberPrefix');
+  static final msgMarkerRequirement = tr('msgMarkerRequirement');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

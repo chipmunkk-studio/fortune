@@ -1,3 +1,4 @@
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
@@ -31,7 +32,7 @@ class MainState with _$MainState {
   factory MainState.initial() => MainState(
         markers: List.empty(),
         histories: List.empty(),
-        locationName: '내 위치 정보를 불러오는 중..',
+        locationName: FortuneTr.callMyLocation,
         user: null,
         myLocation: null,
         processingMarker: null,

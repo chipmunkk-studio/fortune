@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 
 class TopArea extends StatelessWidget {
@@ -14,10 +15,12 @@ class TopArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const SizedBox(width: 24),
         Text(
-          "내 가방",
+          FortuneTr.myBag,
           style: FortuneTextStyle.headLine2(),
         ),
         const SizedBox(width: 8),
@@ -28,7 +31,7 @@ class TopArea extends StatelessWidget {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           child: Text(
-            '$count개',
+            '$count ${FortuneTr.msgNumberItems}',
             style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
           ),
         )

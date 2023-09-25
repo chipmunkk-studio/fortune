@@ -13,6 +13,7 @@ import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/nickname/component/profile_image.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'bloc/nick_name.dart';
 
@@ -24,6 +25,7 @@ class NickNamePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<NickNameBloc>()..add(NickNameInit()),
       child: FortuneScaffold(
+        padding: EdgeInsets.zero,
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.myInfoModify),
         child: const _NickNamePage(),
       ),
@@ -65,104 +67,153 @@ class _NickNamePageState extends State<_NickNamePage> {
         } else if (sideEffect is NickNameUserInfoInit) {
           _nickNameController.text = sideEffect.user.nickname;
           _phoneNumberController.text = sideEffect.user.phone;
+        } else if (sideEffect is NickNameRoutingPage) {
+          final route = sideEffect.route;
+          switch (route) {
+            case Routes.loginRoute:
+              _router.navigateTo(
+                context,
+                sideEffect.route,
+                clearStack: true,
+              );
+              break;
+            case Routes.myPageRoute:
+              _router.pop(context);
+              break;
+            default:
+          }
         }
       },
       child: BlocBuilder<NickNameBloc, NickNameState>(
         builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Center(
-                child: ProfileImage(
-                  onProfileTap: () => FortuneImagePicker().loadImagePicker(
-                    (path) => _bloc.add(NickNameUpdateProfile(path)),
+          return Skeleton(
+            skeleton: Container(),
+            isLoading: state.isLoading,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ProfileImage(
+                          onProfileTap: () => FortuneImagePicker().loadImagePicker(
+                            (path) => _bloc.add(NickNameUpdateProfile(path)),
+                          ),
+                          profileUrl: state.userEntity.profileImage,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Text(
+                          FortuneTr.nickname,
+                          style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      FortuneTextForm(
+                        suffixIcon: Assets.icons.icCancelCircle.path,
+                        textEditingController: _nickNameController,
+                        maxLength: 12,
+                        onTextChanged: (text) => _bloc.add(NickNameTextInput(text)),
+                        onSuffixIconClicked: () {
+                          _bloc.add(NickNameTextInput(''));
+                          _nickNameController.clear();
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Text(
+                          FortuneTr.phoneNumber,
+                          style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      FortuneTextForm(
+                        readOnly: true,
+                        textEditingController: _phoneNumberController,
+                        maxLength: 12,
+                        onTextChanged: (String a) {},
+                      ),
+                      const Spacer(),
+                      IntrinsicHeight(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Bounceable(
+                              onTap: () {
+                                dialogService.showFortuneDialog(
+                                  context,
+                                  subTitle: FortuneTr.msgConfirmLogout,
+                                  btnCancelColor: ColorName.grey500,
+                                  btnOkPressed: () => _bloc.add(NickNameSignOut()),
+                                  btnCancelPressed: () {},
+                                  dismissOnTouchOutside: true,
+                                  dismissOnBackKeyPress: true,
+                                );
+                              },
+                              child: Text(
+                                FortuneTr.logout,
+                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            const VerticalDivider(
+                              thickness: 1,
+                              width: 1,
+                              color: ColorName.grey500,
+                            ),
+                            const SizedBox(width: 12),
+                            Bounceable(
+                              onTap: () {
+                                dialogService.showFortuneDialog(
+                                  context,
+                                  title: FortuneTr.msgConfirmWithdrawal,
+                                  subTitle: FortuneTr.msgWithdrawalWarning,
+                                  btnOkText: FortuneTr.msgWithdrawal,
+                                  btnOkColor: ColorName.negative,
+                                  btnCancelColor: ColorName.grey500,
+                                  btnOkPressed: () => _bloc.add(NickNameWithdrawal()),
+                                  btnCancelPressed: () {},
+                                  dismissOnTouchOutside: true,
+                                  dismissOnBackKeyPress: true,
+                                );
+                              },
+                              child: Text(
+                                FortuneTr.withdrawal,
+                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      BlocBuilder<NickNameBloc, NickNameState>(
+                        buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+                        builder: (context, state) {
+                          return FortuneScaleButton(
+                            isEnabled: state.isButtonEnabled,
+                            text: FortuneTr.save,
+                            onPress: () => _bloc.add(NickNameUpdateNickName()),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  profileUrl: state.userEntity.profileImage,
                 ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(
-                  FortuneTr.nickname,
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                ),
-              ),
-              const SizedBox(height: 8),
-              FortuneTextForm(
-                suffixIcon: Assets.icons.icCancelCircle.path,
-                textEditingController: _nickNameController,
-                maxLength: 12,
-                onTextChanged: (text) => _bloc.add(NickNameTextInput(text)),
-                onSuffixIconClicked: () {
-                  _bloc.add(NickNameTextInput(''));
-                  _nickNameController.clear();
-                },
-              ),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Text(
-                  FortuneTr.phoneNumber,
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                ),
-              ),
-              const SizedBox(height: 8),
-              FortuneTextForm(
-                readOnly: true,
-                suffixIcon: Assets.icons.icCancelCircle.path,
-                textEditingController: _phoneNumberController,
-                maxLength: 12,
-                onTextChanged: (String a) {},
-              ),
-              const Spacer(),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Bounceable(
-                      onTap: () {
-                        // todo
-                      },
-                      child: Text(
-                        FortuneTr.logout,
-                        style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                      ),
+                if (state.isUpdating)
+                  Container(
+                    color: Colors.black.withOpacity(state.isUpdating ? 0.5 : 0),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    const SizedBox(width: 12),
-                    const VerticalDivider(
-                      thickness: 1,
-                      width: 1,
-                      color: ColorName.grey500,
-                    ),
-                    const SizedBox(width: 12),
-                    Bounceable(
-                      onTap: () {
-                        // todo
-                      },
-                      child: Text(
-                        FortuneTr.withdrawal,
-                        style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              BlocBuilder<NickNameBloc, NickNameState>(
-                buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                builder: (context, state) {
-                  return FortuneScaleButton(
-                    isEnabled: state.isButtonEnabled,
-                    text: FortuneTr.save,
-                    onPress: () {
-                      // todo
-                    },
-                  );
-                },
-              ),
-            ],
+                  )
+              ],
+            ),
           );
         },
       ),
