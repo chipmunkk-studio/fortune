@@ -33,7 +33,7 @@ jobs:
 
       # KEYSTORE_PASSWORD, KEY_PASSWORD, KEY_ALIAS를 환경변수로 제공해야 app에서 사용할 수 있음.
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --target-platform=android-arm
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
