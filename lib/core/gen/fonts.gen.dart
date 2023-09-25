@@ -10,20 +10,8 @@
 class FontFamily {
   FontFamily._();
 
-  /// Font family: Pretendard
-  static const String pretendard = 'Pretendard';
-
-  /// Font family: Pretendard-Black
-  static const String pretendardBlack = 'Pretendard-Black';
-
   /// Font family: Pretendard-Bold
   static const String pretendardBold = 'Pretendard-Bold';
-
-  /// Font family: Pretendard-ExtraBold
-  static const String pretendardExtraBold = 'Pretendard-ExtraBold';
-
-  /// Font family: Pretendard-ExtraLight
-  static const String pretendardExtraLight = 'Pretendard-ExtraLight';
 
   /// Font family: Pretendard-Light
   static const String pretendardLight = 'Pretendard-Light';
