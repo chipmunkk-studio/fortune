@@ -11,7 +11,6 @@ import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'login.dart';
 
@@ -57,7 +56,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   FutureOr<void> clickNextButton(LoginBottomButtonClick event, Emitter<LoginState> emit) async {
     final remoteConfig = env.remoteConfig;
-    final client = Supabase.instance.client;
     // 사용자의 전화번호가 테스트 계정에 포함되어 있는지 확인.
     bool isTestAccount = remoteConfig.twilioTestPhoneNumber.contains(state.phoneNumber);
 

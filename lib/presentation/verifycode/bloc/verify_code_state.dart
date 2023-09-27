@@ -12,6 +12,7 @@ class VerifyCodeState with _$VerifyCodeState {
     required String verifyCode,
     required int verifyTime,
     required bool isRequestVerifyCodeEnable,
+    required bool isLoginProcessing,
     required bool isConfirmEnable,
   }) = _VerifyCodeState;
 
@@ -25,6 +26,7 @@ class VerifyCodeState with _$VerifyCodeState {
         verifyCode: "",
         verifyTime: VerifyCodeBloc.verifyTime,
         isRequestVerifyCodeEnable: true,
+        isLoginProcessing: false,
         isConfirmEnable: false,
       );
 }

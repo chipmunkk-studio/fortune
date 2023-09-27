@@ -93,5 +93,7 @@
   "msgNumberPrefix": " times",
   "msgMarkerRequirement": " of marker acquisition is required.",
   "msgNumberItems": "items",
-  "myBag": "My Bag"
+  "myBag": "My Bag",
+  "msgTicketUpdateFailed": "Failed to update user ticket information.",
+  "msgNicknameExists": "The nickname already exists."
 }

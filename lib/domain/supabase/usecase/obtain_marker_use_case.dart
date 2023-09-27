@@ -68,11 +68,9 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           param.marker.ingredient.type != IngredientType.coin ? markerObtainCount + 1 : markerObtainCount;
 
       // 사용자 티켓 정보 업데이트.
-      final updateUser = await userRepository.updateUser(
-        RequestFortuneUser(
-          ticket: updatedTicket < 0 ? 0 : updatedTicket,
-          markerObtainCount: markerObtainCount,
-        ),
+      final updateUser = await userRepository.updateUserTicket(
+        ticket: updatedTicket < 0 ? 0 : updatedTicket,
+        markerObtainCount: markerObtainCount,
       );
 
       // 다이얼로그 타이틀.
@@ -157,6 +155,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.relay);
         final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
 
+        // 마커 획득 히스토리 추가.
         await obtainHistoryRepository.insertObtainHistory(
           request: RequestObtainHistory.insert(
             ingredientId: ingredient.id,
@@ -167,6 +166,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           ),
         );
 
+        // 알람 히스토리 추가.
         final response = await rewardRepository.insertRewardHistory(
           user: user,
           alarmRewardInfo: rewardType,

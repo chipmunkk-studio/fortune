@@ -52,16 +52,40 @@ class UserRepositoryImpl extends UserRepository {
 
   // 사용자 업데이트.
   @override
-  Future<FortuneUserEntity> updateUser(RequestFortuneUser request) async {
+  Future<FortuneUserEntity> updateUserTicket({
+    required int ticket,
+    required int markerObtainCount,
+  }) async {
     try {
       final user = await findUserByPhoneNonNull();
       return await _userService.update(
         user,
-        request: request,
+        request: RequestFortuneUser(
+          ticket: ticket,
+          markerObtainCount: markerObtainCount,
+        ),
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneTr.notUpdateUser,
+        description: FortuneTr.msgTicketUpdateFailed,
+      );
+    }
+  }
+
+  // 사용자 업데이트.
+  @override
+  Future<FortuneUserEntity> updateUserNickName({required String nickname}) async {
+    try {
+      final user = await findUserByPhoneNonNull();
+      return await _userService.update(
+        user,
+        request: RequestFortuneUser(
+          nickname: nickname,
+        ),
+      );
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneTr.msgNicknameExists,
       );
     }
   }
@@ -71,7 +95,9 @@ class UserRepositoryImpl extends UserRepository {
     try {
       // 테스트 계정 때문에 아이디 찾아야 됨.
       final imagePath = await _userService.getUpdateProfileFileUrl(filePath: filePath);
-      return await updateUser(RequestFortuneUser(profileImage: imagePath));
+      final user = await findUserByPhoneNonNull();
+      final result = await _userService.update(user, request: RequestFortuneUser(profileImage: imagePath));
+      return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,

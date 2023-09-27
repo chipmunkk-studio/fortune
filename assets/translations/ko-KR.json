@@ -93,5 +93,7 @@
   "msgNumberPrefix": "번",
   "msgMarkerRequirement": "의 마커 획득이 필요해요",
   "msgNumberItems": "개",
-  "myBag": "내 가방"
+  "myBag": "내 가방",
+  "msgTicketUpdateFailed": "사용자 티켓 정보를 업데이트 하지 못했습니다",
+  "msgNicknameExists": "이미 존재하는 닉네임입니다"
 }

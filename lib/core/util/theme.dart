@@ -77,6 +77,13 @@ elevatedButtonTheme() {
       // Disabled text color
       disabledForegroundColor: ColorName.grey400,
       textStyle: FortuneTextStyle.button1Medium(),
+    ).copyWith(
+      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) return Colors.transparent;
+          return null;
+        },
+      ),
     ),
   );
 }

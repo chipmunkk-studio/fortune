@@ -140,7 +140,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
                       builder: (context, state) {
                         return FortuneBottomButton(
                           isKeyboardVisible: isKeyboardVisible,
-                          isEnabled: state.isConfirmEnable,
+                          isEnabled: state.isConfirmEnable && !state.isLoginProcessing,
                           onPress: () => _bloc.add(VerifyConfirm()),
                           text: FortuneTr.confirm,
                         );
