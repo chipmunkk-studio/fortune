@@ -55,6 +55,7 @@ import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
+import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
@@ -582,6 +583,11 @@ _initBloc() {
     ..registerFactory(
       () => GradeGuideBloc(
         gradeGuideUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => CountryCodeBloc(
+        getCountryInfoUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -130,6 +130,7 @@ class _LoginPageState extends State<_LoginPage> {
                         },
                       ),
                       const SizedBox(height: 20),
+
                       // 로그인 상태.
                       BlocBuilder<LoginBloc, LoginState>(
                         buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
