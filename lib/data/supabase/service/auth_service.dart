@@ -22,13 +22,10 @@ class AuthService {
   static const _termsTableName = "terms";
   static const supabaseSessionKey = 'supabase_session';
 
-  final GoTrueClient authClient;
   final SharedPreferences preferences;
-  final SupabaseClient client;
+  final SupabaseClient client = Supabase.instance.client;
 
   AuthService({
-    required this.client,
-    required this.authClient,
     required this.preferences,
   });
 
@@ -37,7 +34,7 @@ class AuthService {
     required String phoneNumber,
   }) async {
     try {
-      return await authClient.signInWithOtp(phone: phoneNumber);
+      return await client.auth.signInWithOtp(phone: phoneNumber);
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
@@ -64,7 +61,7 @@ class AuthService {
     }();
 
     try {
-      final response = await authClient.signUp(
+      final response = await client.auth.signUp(
         phone: phoneNumber,
         password: generatePassword,
       );
@@ -80,7 +77,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final response = await authClient.signUp(
+      final response = await client.auth.signUp(
         email: email,
         password: password,
       );
@@ -96,7 +93,7 @@ class AuthService {
     required String password,
   }) async {
     try {
-      final response = await authClient.signInWithPassword(
+      final response = await client.auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -112,7 +109,7 @@ class AuthService {
     required String phoneNumber,
   }) async {
     try {
-      final response = await authClient.verifyOTP(
+      final response = await client.auth.verifyOTP(
         token: otpCode,
         phone: phoneNumber,
         type: OtpType.sms,
@@ -126,7 +123,7 @@ class AuthService {
   // 로그아웃.
   Future<void> signOut() async {
     try {
-      await authClient.signOut();
+      await client.auth.signOut();
     } on AuthException catch (e) {
       throw AuthFailure(
         errorCode: e.statusCode,
@@ -212,14 +209,13 @@ class AuthService {
 
   Future<LoginUserState> refreshSession() async {
     try {
-      final authClient = Supabase.instance.client.auth;
-      final session = authClient.currentSession;
+      final session = client.auth.currentSession;
       if (session == null || JwtDecoder.isExpired(session.accessToken)) {
         FortuneLogger.info('RecoverSession:: 세션 만료. ${session?.accessToken}');
         return LoginUserState.needToLogin;
       } else {
         final jsonStr = preferences.getString(supabaseSessionKey)!;
-        final response = await authClient.recoverSession(jsonStr);
+        final response = await client.auth.recoverSession(jsonStr);
         FortuneLogger.info('RecoverSession:: 계정 복구 성공. ${response.user?.phone}');
         await persistSession(response.session!);
         return LoginUserState.none;

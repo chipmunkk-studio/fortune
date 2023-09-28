@@ -8,11 +8,9 @@ class ObtainHistoryService {
   static const _obtainHistoryTableName = "obtain_histories";
   static const _fullSelectQuery = '*,ingredient(*),user(*)';
 
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
 
-  ObtainHistoryService(
-    this._client,
-  );
+  ObtainHistoryService();
 
   Future<List<ObtainHistoryResponse>> findObtainHistories({
     required int start,

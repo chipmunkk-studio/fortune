@@ -16,6 +16,7 @@ import 'package:fortune/data/supabase/repository/obtain_history_respository_impl
 import 'package:fortune/data/supabase/repository/support_repository_impl.dart';
 import 'package:fortune/data/supabase/repository/user_respository_impl.dart';
 import 'package:fortune/data/supabase/service/auth_service.dart';
+import 'package:fortune/data/supabase/service/country_info_service.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
@@ -24,6 +25,7 @@ import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/local/local_respository.dart';
 import 'package:fortune/domain/supabase/repository/auth_repository.dart';
+import 'package:fortune/domain/supabase/repository/country_info_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -75,6 +77,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
+import 'data/supabase/repository/country_info_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
 import 'data/supabase/service/alarm_feeds_service.dart';
 import 'data/supabase/service/alarm_reward_history_service.dart';
@@ -86,6 +89,7 @@ import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
+import 'domain/supabase/usecase/get_country_info_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
@@ -209,25 +213,16 @@ _initService() {
       () => UserService(),
     )
     ..registerLazySingleton<IngredientService>(
-      () => IngredientService(
-        Supabase.instance.client,
-      ),
+      () => IngredientService(),
     )
     ..registerLazySingleton<SupportService>(
-      () => SupportService(
-        Supabase.instance.client,
-      ),
+      () => SupportService(),
     )
     ..registerLazySingleton<ObtainHistoryService>(
-      () => ObtainHistoryService(
-        Supabase.instance.client,
-      ),
+      () => ObtainHistoryService(),
     )
     ..registerLazySingleton<MarkerService>(
-      () => MarkerService(
-        Supabase.instance.client,
-        env: serviceLocator(),
-      ),
+      () => MarkerService(env: serviceLocator()),
     )
     ..registerLazySingleton<MissionsService>(
       () => MissionsService(),
@@ -239,9 +234,7 @@ _initService() {
       () => AlarmRewardHistoryService(),
     )
     ..registerLazySingleton<MissionClearUserService>(
-      () => MissionClearUserService(
-        Supabase.instance.client,
-      ),
+      () => MissionClearUserService(),
     )
     ..registerLazySingleton<AlarmFeedsService>(
       () => AlarmFeedsService(),
@@ -249,13 +242,14 @@ _initService() {
     ..registerLazySingleton<AlarmRewardInfoService>(
       () => AlarmRewardInfoService(),
     )
+    ..registerLazySingleton<CountryInfoService>(
+      () => CountryInfoService(),
+    )
     ..registerLazySingleton<MissionsClearConditionsService>(
       () => MissionsClearConditionsService(),
     )
     ..registerLazySingleton<AuthService>(
       () => AuthService(
-        client: Supabase.instance.client,
-        authClient: Supabase.instance.client.auth,
         preferences: serviceLocator<SharedPreferences>(),
       ),
     );
@@ -296,6 +290,11 @@ _initRepository() {
     ..registerLazySingleton<SupportRepository>(
       () => SupportRepositoryImpl(
         supportService: serviceLocator<SupportService>(),
+      ),
+    )
+    ..registerLazySingleton<CountryInfoRepository>(
+      () => CountryInfoRepositoryImpl(
+        countryInfoService: serviceLocator<CountryInfoService>(),
       ),
     )
     ..registerLazySingleton<AlarmRewardRepository>(
@@ -374,6 +373,11 @@ _initUseCase() async {
     )
     ..registerLazySingleton<GetFaqsUseCase>(
       () => GetFaqsUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetCountryInfoUseCase>(
+      () => GetCountryInfoUseCase(
         repository: serviceLocator(),
       ),
     )

@@ -12,11 +12,9 @@ class SupportService {
 
   static const fullSelectQuery = '*';
 
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
 
-  SupportService(
-    this._client,
-  );
+  SupportService();
 
   // 자주 묻는 질문.
   Future<List<FaqsEntity>> findAllFaqs() async {

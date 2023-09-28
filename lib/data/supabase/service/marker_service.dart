@@ -17,11 +17,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class MarkerService {
   static const fullSelectQuery = '*,'
       '${TableName.ingredients}(${IngredientService.fullSelectQuery})';
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
   final Environment env;
 
-  MarkerService(
-    this._client, {
+  MarkerService({
     required this.env,
   });
 

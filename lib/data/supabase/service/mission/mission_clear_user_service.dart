@@ -11,12 +11,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class MissionClearUserService {
   static const _normalMissionClearUserTableName = "mission_clear_user";
 
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
   static const _fullSelectQuery = '*,'
       '${TableName.users}(*),'
       '${TableName.missions}(${MissionsService.fullSelectQuery})';
 
-  MissionClearUserService(this._client);
+  MissionClearUserService();
 
   // 미션을 클리어한 유저들 모두 조회.
   Future<List<MissionClearUserEntity>> findAllMissionClearUsers() async {

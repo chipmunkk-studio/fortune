@@ -14,6 +14,7 @@ abstract class TableName {
   static const notices = "notices";
   static const faqs = "faqs";
   static const users = "users";
+  static const countryInfo = "country_info";
 }
 
 abstract class BucketName {

@@ -12,7 +12,10 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {
   final SupabaseClient _client = Supabase.instance.client;
-  final _tableName = TableName.users;
+  final _userTableName = TableName.users;
+
+  static const fullSelectQuery = '*,'
+      '${TableName.countryInfo}(*)';
 
   UserService();
 
@@ -21,10 +24,10 @@ class UserService {
     required String phone,
   }) async {
     try {
-      await _client.from(_tableName).insert(
+      await _client.from(_userTableName).insert(
             RequestFortuneUser.insert(
               phone: phone,
-              nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
+              nickname: 'fortune${DateTime.now().millisecondsSinceEpoch}',
             ).toJson(),
           );
     } catch (e) {
@@ -54,7 +57,7 @@ class UserService {
       );
 
       final updateUser = await _client
-          .from(_tableName)
+          .from(_userTableName)
           .update(
             requestToUpdate.toJson(),
           )
@@ -100,9 +103,9 @@ class UserService {
     try {
       final List<dynamic> response = await _client
           .from(
-            _tableName,
+            _userTableName,
           )
-          .select("*")
+          .select(fullSelectQuery)
           .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {
@@ -121,9 +124,9 @@ class UserService {
     try {
       final List<dynamic> response = await _client
           .from(
-            _tableName,
+            _userTableName,
           )
-          .select("*")
+          .select(fullSelectQuery)
           .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {
