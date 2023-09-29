@@ -64,11 +64,13 @@ class MainRequireInCircleMeters extends MainSideEffect {
 class MainShowObtainDialog extends MainSideEffect {
   final MainLocationData data;
   final GlobalKey key;
+  final bool isShowAd;
 
-  MainShowObtainDialog(
-    this.data,
-    this.key,
-  );
+  MainShowObtainDialog({
+    required this.data,
+    required this.key,
+    required this.isShowAd,
+  });
 
   @override
   List<Object?> get props => [];

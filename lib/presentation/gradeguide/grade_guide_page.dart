@@ -79,6 +79,7 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                   "* ${FortuneTr.msgGradeChangeNotice}",
                   style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                 ),
+                const SizedBox(height: 40),
               ],
             ),
             Positioned(

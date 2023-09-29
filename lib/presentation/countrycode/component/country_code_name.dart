@@ -1,20 +1,17 @@
-import 'dart:ui';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class CountryCodeName extends StatelessWidget {
   final List<CountryInfoEntity> countries;
-  final CountryCode selected;
+  final CountryInfoEntity selected;
   final Axis scrollDirection;
   final AutoScrollController controller;
-  final Function2 onTap;
+  final Function1<CountryInfoEntity, void> onTap;
 
   const CountryCodeName({
     Key? key,
@@ -33,46 +30,31 @@ class CountryCodeName extends StatelessWidget {
       children: List.generate(
         countries.length,
         (index) {
+          final country = countries[index];
+          final isSelected = country.name == selected.name;
           return Padding(
             padding: const EdgeInsets.only(bottom: 28),
-            child: buildListItem(
-              code: countries[index].phoneCode,
-              name: getCurrentCountryCode() == 'KR' ? countries[index].krName : countries[index].enName,
-              isSelected: countries[index].phoneCode == selected.code,
+            child: AutoScrollTag(
+              key: ValueKey(index),
+              controller: controller,
               index: index,
+              highlightColor: ColorName.grey800,
+              child: Bounceable(
+                onTap: () => onTap(country),
+                child: Text(
+                  "${country.name} (+${country.phoneCode})",
+                  style: isSelected
+                      ? FortuneTextStyle.body1Semibold(
+                          fontColor: ColorName.white,
+                        )
+                      : FortuneTextStyle.body1Light(
+                          fontColor: ColorName.grey600,
+                        ),
+                ),
+              ),
             ),
           );
         },
-      ),
-    );
-  }
-
-  /// 국가코드
-  buildListItem({
-    required int code,
-    required String name,
-    required bool isSelected,
-    required int index,
-  }) {
-    return AutoScrollTag(
-      key: ValueKey(index),
-      controller: controller,
-      index: index,
-      highlightColor: ColorName.grey400,
-      child: GestureDetector(
-        onTap: () {
-          onTap(code, name);
-        },
-        child: Text(
-          "$name ($code)",
-          style: isSelected
-              ? FortuneTextStyle.body1Semibold(
-                  fontColor: ColorName.grey500,
-                )
-              : FortuneTextStyle.body1Light(
-                  fontColor: ColorName.grey900,
-                ),
-        ),
       ),
     );
   }

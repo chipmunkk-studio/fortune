@@ -15,12 +15,18 @@ class IngredientActionError extends IngredientActionSideEffect {
   List<Object?> get props => [];
 }
 
-class IngredientProcesAction extends IngredientActionSideEffect {
+class IngredientProcessAction extends IngredientActionSideEffect {
   final IngredientActionParam param;
 
-  IngredientProcesAction(this.param);
+  IngredientProcessAction(this.param);
 
   @override
   List<Object?> get props => [];
 }
 
+class IngredientAdShowComplete extends IngredientActionSideEffect {
+  IngredientAdShowComplete();
+
+  @override
+  List<Object?> get props => [];
+}

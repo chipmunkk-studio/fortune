@@ -6,6 +6,7 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
@@ -45,7 +46,12 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   }
 
   FutureOr<void> init(VerifyCodeInit event, Emitter<VerifyCodeState> emit) async {
-    emit(state.copyWith(phoneNumber: event.phoneNumber));
+    emit(
+      state.copyWith(
+        phoneNumber: event.phoneNumber,
+        countryInfoEntity: event.countryInfoEntity,
+      ),
+    );
     produceSideEffect(VerifyCodeSmsListening());
     await _requestSignUpOrIn(emit);
   }
@@ -105,7 +111,12 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       (value) => value.fold(
         (l) => produceSideEffect(VerifyCodeError(l)),
         (r) async {
-          await signUpOrInUseCase(state.phoneNumber).then(
+          await signUpOrInUseCase(
+            RequestSignUpParam(
+              phoneNumber: state.phoneNumber,
+              countryInfoId: state.countryInfoEntity.id,
+            ),
+          ).then(
             (value) => value.fold(
               (l) => produceSideEffect(VerifyCodeError(l)),
               (r) {

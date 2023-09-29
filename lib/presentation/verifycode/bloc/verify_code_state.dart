@@ -1,4 +1,5 @@
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,6 +11,7 @@ class VerifyCodeState with _$VerifyCodeState {
     required String phoneNumber,
     required List<AgreeTermsEntity> agreeTerms,
     required String verifyCode,
+    required CountryInfoEntity countryInfoEntity,
     required int verifyTime,
     required bool isRequestVerifyCodeEnable,
     required bool isLoginProcessing,
@@ -23,6 +25,7 @@ class VerifyCodeState with _$VerifyCodeState {
       VerifyCodeState(
         phoneNumber: phoneNumber ?? "",
         agreeTerms: agreeTerms ?? List.empty(),
+        countryInfoEntity: CountryInfoEntity.empty(),
         verifyCode: "",
         verifyTime: VerifyCodeBloc.verifyTime,
         isRequestVerifyCodeEnable: true,

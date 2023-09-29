@@ -52,8 +52,12 @@ class AuthService {
       // 보안이 강화된 랜덤 숫자 생성기 생성
       final random = Random.secure();
       // allowedCharacters 문자열에서 랜덤한 문자를 선택하여 비밀번호를 생성
-      final charCodes =
-          List<int>.generate(length, (i) => allowedCharacters.codeUnits[random.nextInt(allowedCharacters.length)]);
+      final charCodes = List<int>.generate(
+        length,
+        (i) => allowedCharacters.codeUnits[random.nextInt(
+          allowedCharacters.length,
+        )],
+      );
       // 랜덤으로 생성된 문자 코드들을 문자열로 변환하여 비밀번호를 생성
       final password = String.fromCharCodes(charCodes);
       // 생성된 비밀번호 반환

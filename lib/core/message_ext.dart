@@ -45,6 +45,7 @@ abstract class FortuneTr {
   static final cancel = tr('cancel');
   static final noHistory = tr('noHistory');
   static final myInfo = tr('myInfo');
+  static final countryCode = tr('countryCode');
   static final save = tr('save');
   static final phoneNumber = tr('phoneNumber');
   static final logout = tr('logout');
@@ -83,6 +84,9 @@ abstract class FortuneTr {
   static final msgMarkerRequirement = tr('msgMarkerRequirement');
   static final msgTicketUpdateFailed = tr('msgTicketUpdateFailed');
   static final msgNicknameExists = tr('msgNicknameExists');
+  static final msgVerifyCode = tr('msgVerifyCode');
+  static final msgAcquireCoin = tr('msgAcquireCoin');
+
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

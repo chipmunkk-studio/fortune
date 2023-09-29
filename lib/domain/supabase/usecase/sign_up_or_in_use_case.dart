@@ -5,8 +5,9 @@ import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/domain/local/local_respository.dart';
 import 'package:fortune/domain/supabase/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 
-class SignUpOrInUseCase implements UseCase1<void, String> {
+class SignUpOrInUseCase implements UseCase1<void, RequestSignUpParam> {
   final AuthRepository authRepository;
   final UserRepository userRepository;
   final LocalRepository localRepository;
@@ -18,15 +19,18 @@ class SignUpOrInUseCase implements UseCase1<void, String> {
   });
 
   @override
-  Future<FortuneResult<void>> call(String phoneNumber) async {
+  Future<FortuneResult<void>> call(RequestSignUpParam param) async {
     try {
-      final user = await userRepository.findUserByPhone(phoneNumber);
+      final user = await userRepository.findUserByPhone(param.phoneNumber);
       if (user != null) {
         AppMetrica.reportEvent('가입된 사용자');
-        authRepository.signInWithOtp(phoneNumber: phoneNumber);
+        await authRepository.signInWithOtp(phoneNumber: param.phoneNumber);
       } else {
         AppMetrica.reportEvent('미가입 사용자');
-        authRepository.signUp(phoneNumber: phoneNumber);
+        await authRepository.signUp(
+          phoneNumber: param.phoneNumber,
+          countryInfoId: param.countryInfoId,
+        );
       }
       await localRepository.setVerifySmsTime();
       return const Right(null);

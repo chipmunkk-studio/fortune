@@ -21,20 +21,27 @@ class CountryCodeBloc extends Bloc<CountryCodeEvent, CountryCodeState>
   FutureOr<void> init(CountryCodeInit event, Emitter<CountryCodeState> emit) async {
     await getCountryInfoUseCase().then(
       (value) => value.fold(
-        (l) => produceSideEffect(CountryCodeError(l)),
-        (r) {
+        (l) {
+          emit(state.copyWith(isLoading: false));
+          produceSideEffect(CountryCodeError(l));
+        },
+        (r) async {
+          final selected = r.firstWhere(
+            (element) => element.phoneCode == event.code,
+          );
           emit(
             state.copyWith(
               countries: r,
-              selected: CountryCode(
-                code: event.code ?? state.selected.code,
-                name: event.name ?? state.selected.name,
-              ),
+              isLoading: false,
+              selected: selected,
             ),
           );
+
           produceSideEffect(
             CountryCodeScrollSelected(
-              state.countries.indexWhere((element) => element.phoneCode == state.selected.code),
+              state.countries.indexWhere(
+                (element) => element.phoneCode == state.selected.phoneCode,
+              ),
             ),
           );
         },

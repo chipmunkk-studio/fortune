@@ -199,6 +199,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           _showObtainIngredientDialog(
             sideEffect.data,
             sideEffect.key,
+            sideEffect.isShowAd,
           );
         } else if (sideEffect is MainSchemeLandingPage) {
           router.navigateTo(
@@ -405,15 +406,18 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 _loadRewardedAd();
               },
             );
+            FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
           onAdFailedToLoad: (err) {
+            FortuneLogger.error(message: "광고 로딩 실패 #1");
             _loadRewardedAd();
             _bloc.add(MainSetRewardAd(null));
           },
         ),
       );
     } catch (e) {
+      FortuneLogger.error(message: "광고 로딩 실패 #2");
       _bloc.add(MainSetRewardAd(null));
     }
   }
@@ -421,12 +425,15 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   _showObtainIngredientDialog(
     MainLocationData data,
     GlobalKey globalKey,
+    bool isShowAd,
   ) {
-    String dialogSubtitle = (data.ingredient.type == IngredientType.coin)
+    String dialogSubtitle = (data.ingredient.type == IngredientType.coin) && isShowAd
         ? FortuneTr.msgWatchAd
-        : FortuneTr.msgConsumeCoinToGetMarker(
-            data.ingredient.rewardTicket.abs().toString(),
-          );
+        : (data.ingredient.type != IngredientType.coin)
+            ? FortuneTr.msgConsumeCoinToGetMarker(
+                data.ingredient.rewardTicket.abs().toString(),
+              )
+            : FortuneTr.msgAcquireCoin;
 
     dialogService.showFortuneDialog(
       context,
@@ -445,6 +452,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             arguments: IngredientActionParam(
               ingredient: data.ingredient,
               ad: _bloc.state.rewardAd,
+              isShowAd: isShowAd,
             ),
           ),
         );

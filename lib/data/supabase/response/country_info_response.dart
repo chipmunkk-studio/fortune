@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -27,8 +28,11 @@ class CountryInfoResponse extends CountryInfoEntity {
     this.krName_,
   }) : super(
           id: id_.toInt(),
-          enName: enName_ ?? '',
-          krName: krName_ ?? '',
+          name: getCountryNameByLocale(
+            enName: enName_,
+            krName: krName_,
+            iso2: iso2_,
+          ),
           iso2: iso2_ ?? '',
           iso3: iso3_ ?? '',
           phoneCode: phoneCode_ ?? -1,

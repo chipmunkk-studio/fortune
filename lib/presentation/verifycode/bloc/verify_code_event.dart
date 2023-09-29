@@ -1,13 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 
 @immutable
 abstract class VerifyCodeEvent extends Equatable {}
 
 class VerifyCodeInit extends VerifyCodeEvent {
   final String phoneNumber;
+  final CountryInfoEntity countryInfoEntity;
 
-  VerifyCodeInit(this.phoneNumber);
+  VerifyCodeInit({
+    required this.phoneNumber,
+    required this.countryInfoEntity,
+  });
 
   @override
   List<Object?> get props => [];

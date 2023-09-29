@@ -38,6 +38,7 @@ import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
@@ -45,6 +46,7 @@ import 'package:fortune/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
@@ -377,6 +379,11 @@ _initUseCase() async {
         repository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetShowAdUseCase>(
+      () => GetShowAdUseCase(
+        repository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetCountryInfoUseCase>(
       () => GetCountryInfoUseCase(
         repository: serviceLocator(),
@@ -482,6 +489,11 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<SetShowAdUseCase>(
+      () => SetShowAdUseCase(
+        repository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -501,6 +513,7 @@ _initBloc() {
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
         withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
+        getCountryInfoUseCase: serviceLocator<GetCountryInfoUseCase>(),
         signUpOrInWithTestUseCase: serviceLocator<SignUpOrInWithTestUseCase>(),
         env: serviceLocator<Environment>(),
       ),
@@ -531,6 +544,7 @@ _initBloc() {
         remoteConfig: serviceLocator<Environment>().remoteConfig,
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
+        getShowAdUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -573,7 +587,9 @@ _initBloc() {
       ),
     )
     ..registerFactory(
-      () => IngredientActionBloc(),
+      () => IngredientActionBloc(
+        setShowAdUseCase: serviceLocator(),
+      ),
     )
     ..registerFactory(
       () => NoticesBloc(

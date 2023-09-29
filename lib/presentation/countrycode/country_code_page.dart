@@ -1,32 +1,24 @@
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'bloc/country_code.dart';
 import 'component/country_code_name.dart';
 
-/// 국가코드 정보.
-class CountryCodeArgs {
-  final int countryCode;
-  final String countryName;
-
-  CountryCodeArgs({
-    required this.countryCode,
-    required this.countryName,
-  });
-}
-
 class CountryCodePage extends StatelessWidget {
-  final CountryCodeArgs args;
+  final CountryInfoEntity args;
 
   const CountryCodePage(
     this.args, {
@@ -39,8 +31,8 @@ class CountryCodePage extends StatelessWidget {
       create: (_) => serviceLocator<CountryCodeBloc>()
         ..add(
           CountryCodeInit(
-            code: args.countryCode,
-            name: args.countryName,
+            code: args.phoneCode,
+            name: args.name,
           ),
         ),
       child: const _CountryCodePage(),
@@ -97,7 +89,10 @@ class _CountryCodePageState extends State<_CountryCodePage> {
             SizedBox(height: 65.h),
             _buildCancelButton(),
             SizedBox(height: 21.h),
-            Text('select_country_code'.tr(), style: FortuneTextStyle.headLine1()),
+            Text(
+              FortuneTr.countryCode,
+              style: FortuneTextStyle.headLine1(),
+            ),
             SizedBox(height: 40.h),
             Expanded(child: _buildCountryCodeList()),
           ],
@@ -109,10 +104,7 @@ class _CountryCodePageState extends State<_CountryCodePage> {
   /// 닫기버튼.
   GestureDetector _buildCancelButton() {
     return GestureDetector(
-      onTap: () {
-        CountryCode countryCode = _bloc.state.selected;
-        _onPop(countryCode.code, countryCode.name);
-      },
+      onTap: () => _onPop(_bloc.state.selected),
       child: Align(
         alignment: Alignment.topRight,
         child: SvgPicture.asset("assets/icons/ic_cancel.svg"),
@@ -123,25 +115,31 @@ class _CountryCodePageState extends State<_CountryCodePage> {
   /// 국가코드 리스트.
   BlocBuilder<CountryCodeBloc, CountryCodeState> _buildCountryCodeList() {
     return BlocBuilder<CountryCodeBloc, CountryCodeState>(
+      buildWhen: (previous, current) => previous.isLoading != current.isLoading,
       builder: (context, state) {
-        return CountryCodeName(
-          countries: state.countries,
-          selected: state.selected,
-          scrollDirection: _scrollDirection,
-          controller: _controller,
-          onTap: (code, name) => _onPop(code, name),
+        return Skeleton(
+          isLoading: state.isLoading,
+          skeleton: const Center(
+            child: CircularProgressIndicator(
+              color: ColorName.primary,
+            ),
+          ),
+          child: CountryCodeName(
+            countries: state.countries,
+            selected: state.selected,
+            scrollDirection: _scrollDirection,
+            controller: _controller,
+            onTap: _onPop,
+          ),
         );
       },
     );
   }
 
-  _onPop(int code, String name) {
+  _onPop(CountryInfoEntity entity) {
     _router.pop(
       context,
-      CountryCodeArgs(
-        countryCode: code,
-        countryName: name,
-      ),
+      entity,
     );
   }
 

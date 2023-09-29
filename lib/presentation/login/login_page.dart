@@ -9,7 +9,9 @@ import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/presentation/login/component/country_code.dart';
 import 'package:fortune/presentation/verifycode/verify_code_bottom_sheet.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -84,7 +86,10 @@ class _LoginPageState extends State<_LoginPage> {
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
           final result = await context.showFortuneBottomSheet(
             isDismissible: false,
-            content: (context) => VerifyCodeBottomSheet(sideEffect.convertedPhoneNumber),
+            content: (context) => VerifyCodeBottomSheet(
+              phoneNumber: sideEffect.convertedPhoneNumber,
+              countryInfoEntity: sideEffect.countryInfoEntity,
+            ),
           );
         } else if (sideEffect is LoginLandingRoute) {
           router.navigateTo(
@@ -111,65 +116,89 @@ class _LoginPageState extends State<_LoginPage> {
           }
         }
       },
-      child: KeyboardVisibilityBuilder(
-        builder: (BuildContext context, bool isKeyboardVisible) {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 28),
-                      // 상단 타이틀.
-                      BlocBuilder<LoginBloc, LoginState>(
-                        buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
-                        builder: (context, state) {
-                          return Text(state.guideTitle, style: FortuneTextStyle.headLine1());
-                        },
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          return KeyboardVisibilityBuilder(
+            builder: (BuildContext context, bool isKeyboardVisible) {
+              return Column(
+                children: <Widget>[
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 28),
+                            // 상단 타이틀.
+                            BlocBuilder<LoginBloc, LoginState>(
+                              buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
+                              builder: (context, state) {
+                                return Text(state.guideTitle, style: FortuneTextStyle.headLine1());
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            BlocBuilder<LoginBloc, LoginState>(
+                              buildWhen: (previous, current) => previous.selectCountry != current.selectCountry,
+                              builder: (context, state) {
+                                return CountryCode(
+                                  onTap: () async {
+                                    final CountryInfoEntity result = await router.navigateTo(
+                                      context,
+                                      Routes.countryCodeRoute,
+                                      routeSettings: RouteSettings(
+                                        arguments: state.selectCountry,
+                                      ),
+                                      replace: false,
+                                    );
+                                    _bloc.add(LoginRequestSelectCountry(result));
+                                  },
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            // 로그인 상태.
+                            BlocBuilder<LoginBloc, LoginState>(
+                              buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+                              builder: (context, state) {
+                                return LoginPhoneNumber(
+                                  phoneNumber: state.phoneNumber,
+                                  phoneNumberController: _phoneNumberController,
+                                  onTextChanged: (text) => _bloc.add(LoginPhoneNumberInput(text)),
+                                );
+                              },
+                            ),
+                            if (!kReleaseMode) buildDebugRow(context)
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 20),
-
-                      // 로그인 상태.
-                      BlocBuilder<LoginBloc, LoginState>(
-                        buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
-                        builder: (context, state) {
-                          return LoginPhoneNumber(
-                            phoneNumber: state.phoneNumber,
-                            phoneNumberController: _phoneNumberController,
-                            onTextChanged: (text) => _bloc.add(LoginPhoneNumberInput(text)),
-                          );
-                        },
-                      ),
-                      if (!kReleaseMode) buildDebugRow(context)
-                    ],
+                    ),
                   ),
-                ),
-              ),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
-                padding: EdgeInsets.only(
-                  left: isKeyboardVisible ? 0 : 20,
-                  right: isKeyboardVisible ? 0 : 20,
-                  bottom: isKeyboardVisible ? 0 : 20,
-                ),
-                curve: Curves.easeInOut,
-                child: BlocBuilder<LoginBloc, LoginState>(
-                  buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                  builder: (context, state) {
-                    return LoginBottomButton(
-                      text: FortuneTr.msgVerifyYourself,
-                      isKeyboardVisible: isKeyboardVisible,
-                      isEnabled: state.isButtonEnabled,
-                      onPressed: () {
-                        _bloc.add(LoginBottomButtonClick());
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    padding: EdgeInsets.only(
+                      left: isKeyboardVisible ? 0 : 20,
+                      right: isKeyboardVisible ? 0 : 20,
+                      bottom: isKeyboardVisible ? 0 : 20,
+                    ),
+                    curve: Curves.easeInOut,
+                    child: BlocBuilder<LoginBloc, LoginState>(
+                      buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+                      builder: (context, state) {
+                        return LoginBottomButton(
+                          text: FortuneTr.msgVerifyYourself,
+                          isKeyboardVisible: isKeyboardVisible,
+                          isEnabled: state.isButtonEnabled,
+                          onPressed: () {
+                            _bloc.add(LoginBottomButtonClick());
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
-              ),
-            ],
+                    ),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
@@ -186,14 +215,17 @@ class _LoginPageState extends State<_LoginPage> {
               content: (context) => const AgreeTermsBottomSheet(''),
             );
           },
-          text: '약관동의 바텀시트',
+          text: '약관 동의 바텀시트',
         ),
         const SizedBox(width: 12),
         FortuneTextButton(
           onPress: () {
             context.showFortuneBottomSheet(
               isDismissible: false,
-              content: (context) => const VerifyCodeBottomSheet(''),
+              content: (context) => VerifyCodeBottomSheet(
+                phoneNumber: '',
+                countryInfoEntity: CountryInfoEntity.empty(),
+              ),
             );
           },
           text: '인증번호 확인 바텀시트',

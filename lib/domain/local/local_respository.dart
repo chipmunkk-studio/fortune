@@ -16,4 +16,10 @@ abstract class LocalRepository {
 
   // 마지막으로 인증번호 보낸 시간.
   Future<int> getVerifySmsTime();
+
+  // 3번당 광고 보여줌.
+  Future<bool> getShowAd();
+
+  // 광고 노출 횟수 카운터
+  Future<void> setShowAdCounter();
 }

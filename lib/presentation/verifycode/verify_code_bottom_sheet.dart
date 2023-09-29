@@ -9,6 +9,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -17,16 +18,24 @@ import 'component/verify_code_number_input.dart';
 
 class VerifyCodeBottomSheet extends StatelessWidget {
   final String phoneNumber;
+  final CountryInfoEntity countryInfoEntity;
 
-  const VerifyCodeBottomSheet(
-    this.phoneNumber, {
+  const VerifyCodeBottomSheet({
+    required this.phoneNumber,
+    required this.countryInfoEntity,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<VerifyCodeBloc>()..add(VerifyCodeInit(phoneNumber)),
+      create: (_) => serviceLocator<VerifyCodeBloc>()
+        ..add(
+          VerifyCodeInit(
+            phoneNumber: phoneNumber,
+            countryInfoEntity: countryInfoEntity,
+          ),
+        ),
       child: const _VerifyCodeBottomSheet(),
     );
   }
@@ -64,7 +73,11 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
     return BlocSideEffectListener<VerifyCodeBloc, VerifyCodeSideEffect>(
       listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {
         if (sideEffect is VerifyCodeError) {
-          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService.showErrorDialog(
+            context,
+            sideEffect.error,
+            needToFinish: false,
+          );
         } else if (sideEffect is VerifyCodeLandingRoute) {
           router.navigateTo(
             context,

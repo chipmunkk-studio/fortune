@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -22,14 +23,16 @@ class UserService {
   // 회원가입.
   Future<void> insert({
     required String phone,
+    required int countryInfoId,
   }) async {
     try {
-      await _client.from(_userTableName).insert(
-            RequestFortuneUser.insert(
-              phone: phone,
-              nickname: 'fortune${DateTime.now().millisecondsSinceEpoch}',
-            ).toJson(),
-          );
+      final requestToJson = RequestFortuneUser.insert(
+        phone: phone,
+        nickname: 'fortune${DateTime.now().millisecondsSinceEpoch}',
+        countryInfo: countryInfoId,
+      ).toJson();
+      FortuneLogger.info('회원가입 정보: $requestToJson');
+      await _client.from(_userTableName).insert(requestToJson);
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

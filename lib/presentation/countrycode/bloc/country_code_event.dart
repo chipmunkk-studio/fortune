@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 abstract class CountryCodeEvent extends Equatable {}
 
 class CountryCodeInit extends CountryCodeEvent {
-  final int? code;
-  final String? name;
+  final int code;
+  final String name;
 
   CountryCodeInit({
     required this.code,

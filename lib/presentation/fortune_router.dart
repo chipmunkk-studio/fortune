@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/alarmreward/alarm_reward_page.dart';
@@ -140,7 +141,7 @@ class FortuneRouter {
 
   static var countryCodeHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as CountryCodeArgs?;
+      final args = context?.settings?.arguments as CountryInfoEntity?;
       return args != null ? CountryCodePage(args) : null;
     },
   );
