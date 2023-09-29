@@ -28,11 +28,7 @@ class CountryInfoResponse extends CountryInfoEntity {
     this.krName_,
   }) : super(
           id: id_.toInt(),
-          name: getCountryNameByLocale(
-            enName: enName_,
-            krName: krName_,
-            iso2: iso2_,
-          ),
+          name: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
           iso2: iso2_ ?? '',
           iso3: iso3_ ?? '',
           phoneCode: phoneCode_ ?? -1,

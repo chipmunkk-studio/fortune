@@ -56,6 +56,7 @@
   "msgRequirePermissionContent": "You can use our service without optional permissions, but some features may be restricted.",
   "msgRequireVerifyCodeInput": "Enter the code we sent.",
   "msgRequireVerifyCodeReceive": "Resend code.",
+  "msgCollectingMarker": "Gathering up some {}...",
   "msgRequireVerifySixNumber": "Enter the 6-digit code.",
   "msgRequireVerifySixNumberContent": "Verification code is 6 characters long.",
   "historyFortuneSpot": "History",

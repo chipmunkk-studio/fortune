@@ -1,34 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 
 abstract class FortuneTr {
-  static String msgRequireMarkerObtainDistance(String args) {
-    return tr('msgRequireMarkerObtainDistance', args: [args]);
-  }
+  static String msgRequireMarkerObtainDistance(String args) => tr('msgRequireMarkerObtainDistance', args: [args]);
 
   static String msgRequestSmsVerifyCode(
     String minute,
     String second,
-  ) {
-    return tr('msgRequestSmsVerifyCode', args: [minute, second]);
-  }
+  ) =>
+      tr('msgRequestSmsVerifyCode', args: [minute, second]);
 
-  static String requireMoreTicket(
-    String ticket,
-  ) {
-    return tr('requireMoreTicket', args: [ticket]);
-  }
+  static String requireMoreTicket(String ticket) => tr('requireMoreTicket', args: [ticket]);
 
-  static String msgObtainMarkerSuccess(
-    String marker,
-  ) {
-    return tr('msgObtainMarkerSuccess', args: [marker]);
-  }
+  static String msgObtainMarkerSuccess(String marker) => tr('msgObtainMarkerSuccess', args: [marker]);
 
-  static String msgConsumeCoinToGetMarker(
-    String ticket,
-  ) {
-    return tr('msgConsumeCoinToGetMarker', args: [ticket]);
-  }
+  static String msgConsumeCoinToGetMarker(String ticket) => tr('msgConsumeCoinToGetMarker', args: [ticket]);
+
+  static String msgCollectingMarker(String marker) => tr('msgCollectingMarker', args: [marker]);
 
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
@@ -86,7 +73,6 @@ abstract class FortuneTr {
   static final msgNicknameExists = tr('msgNicknameExists');
   static final msgVerifyCode = tr('msgVerifyCode');
   static final msgAcquireCoin = tr('msgAcquireCoin');
-
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

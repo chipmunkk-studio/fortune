@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,20 +6,26 @@ part 'notices_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class NoticesResponse extends NoticesEntity {
-  @JsonKey(name: 'title')
-  final String? title_;
-  @JsonKey(name: 'content')
-  final String? content_;
+  @JsonKey(name: 'kr_title')
+  final String? krTitle_;
+  @JsonKey(name: 'kr_content')
+  final String? krContent_;
+  @JsonKey(name: 'en_title')
+  final String? enTitle_;
+  @JsonKey(name: 'en_content')
+  final String? enContent_;
   @JsonKey(name: 'created_at')
   final String? createdAt_;
 
   NoticesResponse({
-    this.title_,
-    this.content_,
+    this.krTitle_,
+    this.krContent_,
+    this.enTitle_,
+    this.enContent_,
     this.createdAt_,
   }) : super(
-          title: title_ ?? '',
-          content: content_ ?? '',
+          title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
+          content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           createdAt: createdAt_ ?? '',
         );
 

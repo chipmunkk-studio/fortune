@@ -22,16 +22,16 @@ class IngredientLayout extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(width: 20.w),
+                const SizedBox(width: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     _buildIngredient(_viewItems[0]),
-                    SizedBox(width: 26.h),
+                    const SizedBox(width: 26),
                     _buildIngredient(_viewItems[1]),
                   ],
                 ),
-                SizedBox(height: 28.h),
+                const SizedBox(height: 28),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -40,7 +40,7 @@ class IngredientLayout extends StatelessWidget {
                     _buildIngredient(_viewItems[4]),
                   ],
                 ),
-                SizedBox(height: 28.h),
+                const SizedBox(height: 28),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -56,16 +56,16 @@ class IngredientLayout extends StatelessWidget {
   }
 
   Widget _buildIngredient(MissionDetailViewItemEntity item) {
-    return Stack(
+    return Column(
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: 148.h,
-            minHeight: 148.h,
+            minHeight: 120.h,
             maxWidth: 100.h,
             minWidth: 100.h,
           ),
-          child: Column(
+          child: Stack(
             children: [
               AspectRatio(
                 aspectRatio: 1.0,
@@ -87,50 +87,53 @@ class IngredientLayout extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Align(
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
-                    color: ColorName.grey800,
-                    border: Border.all(
-                      color: ColorName.grey900,
-                      width: 2.h,
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Align(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: ColorName.grey800,
+                      border: Border.all(
+                        color: ColorName.grey900,
+                        width: 2.h,
+                      ),
                     ),
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "${item.haveCount}",
-                          style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.primary),
-                        ),
-                        TextSpan(
-                          text: "/${item.requireCount}",
-                          style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.grey500),
-                        ),
-                      ],
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "${item.haveCount}",
+                            style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.primary),
+                          ),
+                          TextSpan(
+                            text: "/${item.requireCount}",
+                            style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.grey500),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 8.h),
-                Text(
-                  item.ingredient.name.isEmpty ? '-' : item.ingredient.name,
-                  style: FortuneTextStyle.body3Light(),
-                )
-              ],
-            ),
+              ),
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 8.h),
+              Text(
+                item.ingredient.name.isEmpty ? '-' : item.ingredient.name,
+                textAlign: TextAlign.center,
+                style: FortuneTextStyle.body3Light(),
+              )
+            ],
           ),
         )
       ],

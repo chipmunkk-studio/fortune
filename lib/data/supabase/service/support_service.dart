@@ -1,6 +1,6 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/data/supabase/response/common/faqs_response.dart';
-import 'package:fortune/data/supabase/response/common/notices_response.dart';
+import 'package:fortune/data/supabase/response/support/faqs_response.dart';
+import 'package:fortune/data/supabase/response/support/notices_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/common/faq_entity.dart';
 import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';

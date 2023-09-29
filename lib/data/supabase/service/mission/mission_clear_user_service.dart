@@ -9,9 +9,10 @@ import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_entity
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionClearUserService {
-  static const _normalMissionClearUserTableName = "mission_clear_user";
+  static const _tableName = TableName.missionClearUser;
 
   final SupabaseClient _client = Supabase.instance.client;
+
   static const _fullSelectQuery = '*,'
       '${TableName.users}(*),'
       '${TableName.missions}(${MissionsService.fullSelectQuery})';
@@ -21,7 +22,7 @@ class MissionClearUserService {
   // 미션을 클리어한 유저들 모두 조회.
   Future<List<MissionClearUserEntity>> findAllMissionClearUsers() async {
     try {
-      final response = await _client.from(_normalMissionClearUserTableName).select(_fullSelectQuery).toSelect();
+      final response = await _client.from(_tableName).select(_fullSelectQuery).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -36,8 +37,7 @@ class MissionClearUserService {
   // 아이디로 미션 클리어한 유저 조회.
   Future<MissionClearUserEntity> findAllMissionClearUserById(int id) async {
     try {
-      final response =
-          await _client.from(_normalMissionClearUserTableName).select(_fullSelectQuery).eq('id', id).toSelect();
+      final response = await _client.from(_tableName).select(_fullSelectQuery).eq('id', id).toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션클리어 사용자가 존재하지 않습니다.');
       } else {
@@ -63,11 +63,8 @@ class MissionClearUserService {
         isReceive: request.isReceive ?? clearUser.isReceive,
       );
 
-      final updateUser = await _client
-          .from(_normalMissionClearUserTableName)
-          .update(requestToUpdate.toJson())
-          .eq('id', id)
-          .select(_fullSelectQuery);
+      final updateUser =
+          await _client.from(_tableName).update(requestToUpdate.toJson()).eq('id', id).select(_fullSelectQuery);
 
       return updateUser.map((e) => MissionClearUserResponse.fromJson(e)).toList().single;
     } on Exception catch (e) {
@@ -81,7 +78,7 @@ class MissionClearUserService {
   ) async {
     try {
       final insertUser = await _client
-          .from(_normalMissionClearUserTableName)
+          .from(_tableName)
           .insert(
             request.toJson(),
           )

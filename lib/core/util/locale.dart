@@ -1,23 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-isLocaleKorean() {
-  final Locale currentLocale = PlatformDispatcher.instance.locale;
-  return currentLocale.countryCode == 'KR';
-}
-
-getCountryNameByLocale({
-  String? enName,
-  String? krName,
-  String? iso2,
+getLocaleContent({
+  required String en,
+  required String kr,
 }) {
   final Locale currentLocale = PlatformDispatcher.instance.locale;
   switch (currentLocale.countryCode) {
     case 'KR':
-      return krName;
+      return kr;
     case 'US':
-      return enName;
+      return en;
     default:
-      return enName;
+      return en;
   }
 }

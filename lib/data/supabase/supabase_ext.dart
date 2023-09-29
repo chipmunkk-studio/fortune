@@ -1,6 +1,7 @@
 abstract class TableName {
   static const missions = 'missions';
   static const missionReward = 'mission_reward';
+  static const missionClearUser = 'mission_clear_user';
   static const missionType = 'mission_type';
   static const missionRelay = 'mission_relay';
   static const missionNormal = 'mission_normal';

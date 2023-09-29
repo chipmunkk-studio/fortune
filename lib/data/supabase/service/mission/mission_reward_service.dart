@@ -1,5 +1,6 @@
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
 import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -48,10 +49,11 @@ class MissionRewardService {
   }) async {
     try {
       MissionRewardResponse missionReward = await findMissionRewardNonNullById(id);
+      final rewardName = getLocaleContent(en: missionReward.enRewardName_, kr: missionReward.krRewardName_);
 
       final requestToUpdate = RequestMissionRewardUpdate(
         totalCount: request.totalCount ?? missionReward.totalCount_,
-        rewardName: request.rewardName ?? missionReward.rewardName_,
+        rewardName: request.rewardName ?? rewardName,
         remainCount: request.remainCount ?? missionReward.remainCount_,
         rewardImage: request.rewardImage ?? missionReward.rewardImage_,
       );
