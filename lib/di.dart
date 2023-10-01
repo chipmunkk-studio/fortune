@@ -213,7 +213,7 @@ initAppLogger() {
 _initService() {
   serviceLocator
     ..registerLazySingleton<UserService>(
-      () => UserService(),
+      () => UserService(notificationManager: serviceLocator()),
     )
     ..registerLazySingleton<IngredientService>(
       () => IngredientService(),

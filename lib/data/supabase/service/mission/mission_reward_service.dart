@@ -49,11 +49,9 @@ class MissionRewardService {
   }) async {
     try {
       MissionRewardResponse missionReward = await findMissionRewardNonNullById(id);
-      final rewardName = getLocaleContent(en: missionReward.enRewardName_, kr: missionReward.krRewardName_);
 
       final requestToUpdate = RequestMissionRewardUpdate(
         totalCount: request.totalCount ?? missionReward.totalCount_,
-        rewardName: request.rewardName ?? rewardName,
         remainCount: request.remainCount ?? missionReward.remainCount_,
         rewardImage: request.rewardImage ?? missionReward.rewardImage_,
       );

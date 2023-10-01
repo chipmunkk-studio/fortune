@@ -73,28 +73,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         markerObtainCount: markerObtainCount,
       );
 
-      // 다이얼로그 타이틀.
-      final dialogHeadings = () {
-        if (prevUser.grade.name != updateUser.grade.name) {
-          return "등급 업을 축하합니다!!";
-        } else if (prevUser.level != updateUser.level) {
-          return "레벨 업을 축하합니다";
-        } else {
-          return '';
-        }
-      }();
-
-      // 다이얼로그 내용.
-      final dialogContent = () {
-        if (prevUser.grade.name != updateUser.grade.name) {
-          return "${prevUser.grade.name} > ${updateUser.grade.name}";
-        } else if (prevUser.level != updateUser.level) {
-          return "${prevUser.level} > ${updateUser.level}";
-        } else {
-          return '';
-        }
-      }();
-
       // 레벨업 혹은 등급 업을 했을 경우.
       if (prevUser.level != updateUser.level) {
         await _generateRewardHistory(prevUser);
@@ -129,9 +107,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       return Right(
         MarkerObtainEntity(
           user: updateUser,
-          dialogContent: dialogContent,
-          dialogHeadings: dialogHeadings,
-          isLevelOrGradeUp: dialogContent.isNotEmpty && dialogHeadings.isNotEmpty,
           haveCount: histories.length,
         ),
       );
@@ -175,8 +150,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
         await eventNoticesRepository.insertAlarm(
           RequestAlarmFeeds.insert(
-            headings: '릴레이 미션을 클리어 하셨습니다.',
-            content: '릴레이 미션 클리어!!',
+            headings: FortuneTr.msgRelayMissionHeadings,
+            content: FortuneTr.msgRelayMissionContents,
             type: AlarmFeedType.user.name,
             users: user.id,
             alarmRewardHistory: response.id,
@@ -192,20 +167,20 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   }
 
   _generateRewardHistory(FortuneUserEntity user) async {
-    final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
-    final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
+    final rewardInfo = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
+    final ingredient = await ingredientRepository.getIngredientByRandom(rewardInfo);
 
     final response = await rewardRepository.insertRewardHistory(
       user: user,
-      alarmRewardInfo: rewardType,
+      alarmRewardInfo: rewardInfo,
       ingredient: ingredient,
     );
 
     await eventNoticesRepository.insertAlarm(
       RequestAlarmFeeds.insert(
         type: AlarmFeedType.user.name,
-        headings: '레벨 업을 축하합니다!',
-        content: '레벨업 축하!',
+        headings: FortuneTr.msgLevelUpHeadings,
+        content: FortuneTr.msgLevelUpContents,
         users: user.id,
         alarmRewardHistory: response.id,
       ),

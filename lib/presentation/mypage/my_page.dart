@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';

@@ -1,5 +1,6 @@
 import 'package:fortune/core/error/failure/custom_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
 import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
 import 'package:fortune/data/supabase/service/mission/mission_clear_conditions_service.dart';
@@ -41,7 +42,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
-        throw const CustomFailure(errorDescription: '현재 미션 카드를 불러 올 수 없습니다');
+        throw CustomFailure(errorDescription: FortuneTr.msgUnableToLoadMissionCard);
       }
       return result;
     } on FortuneFailure catch (e) {

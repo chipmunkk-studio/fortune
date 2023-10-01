@@ -1,6 +1,7 @@
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
+import 'package:fortune/data/supabase/request/request_mission_clear_user_histories.dart';
 import 'package:fortune/data/supabase/response/mission/mission_clear_user_response.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -10,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionClearUserService {
   static const _tableName = TableName.missionClearUser;
+  static const _tableHistoriesName = TableName.missionClearUserHistories;
 
   final SupabaseClient _client = Supabase.instance.client;
 
@@ -77,6 +79,17 @@ class MissionClearUserService {
     RequestMissionClearUser request,
   ) async {
     try {
+      // 미션 클리어 히스토리 테이블에 또 한번 저장.
+      // 클리어 유저랑 별도로 히스토리 관리용으로 생성.
+      await _client
+          .from(_tableHistoriesName)
+          .insert(
+            RequestMissionClearUserHistories(
+              mission: request.mission,
+              user: request.user,
+            ),
+          )
+          .select(_fullSelectQuery);
       final insertUser = await _client
           .from(_tableName)
           .insert(

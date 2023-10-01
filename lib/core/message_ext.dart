@@ -43,6 +43,7 @@ abstract class FortuneTr {
   static final notice = tr('notice');
   static final pushAlarm = tr('pushAlarm');
   static final gradeGuide = tr('gradeGuide');
+  static final msgUnableToLoadMissionCard = tr('msgUnableToLoadMissionCard');
   static final myBag = tr('myBag');
   static final msgNumberItems = tr('msgNumberItems');
   static final msgUseNextTime = tr('msgUseNextTime');
@@ -73,6 +74,15 @@ abstract class FortuneTr {
   static final msgNicknameExists = tr('msgNicknameExists');
   static final msgVerifyCode = tr('msgVerifyCode');
   static final msgAcquireCoin = tr('msgAcquireCoin');
+  static final msgRewardExhausted = tr('msgRewardExhausted');
+  static final msgRemainingReward = tr('msgRemainingReward');
+  static final msgExchange = tr('msgExchange');
+  static final msgRewardRedemptionNotice = tr('msgRewardRedemptionNotice');
+  static final msgCongratsMissionCompleted = tr('msgCongratsMissionCompleted');
+  static final msgLevelUpHeadings = tr('msgLevelUpHeadings');
+  static final msgLevelUpContents = tr('msgLevelUpContents');
+  static final msgRelayMissionHeadings = tr('msgRelayMissionHeadings');
+  static final msgRelayMissionContents = tr('msgRelayMissionContents');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

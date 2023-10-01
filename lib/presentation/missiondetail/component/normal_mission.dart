@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
@@ -42,7 +43,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.content,
-                      style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
+                      style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -60,7 +61,7 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.missionReward.note,
-                      style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
+                      style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                     ),
                   ),
                 ],
@@ -90,7 +91,7 @@ class NormalMission extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
           child: FortuneScaleButton(
             isEnabled: state.isEnableButton,
-            text: "교환하기",
+            text: FortuneTr.msgExchange,
             onPress: () => _showExchangeBottomSheet(context, state.entity),
           ),
         ),
@@ -104,6 +105,7 @@ class NormalMission extends StatelessWidget {
         return ExchangeBottom(
           onExchangeClick: onExchangeClick,
           entity: entity.mission.missionReward,
+          user: entity.user,
         );
       },
     );

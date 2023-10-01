@@ -21,6 +21,8 @@ class FortuneUserResponse extends FortuneUserEntity {
   final int level_;
   @JsonKey(name: 'is_withdrawal')
   final bool? isWithdrawal_;
+  @JsonKey(name: 'push_token')
+  final String? pushToken_;
   @JsonKey(name: 'withdrawal_at')
   final String? withdrawalAt_;
   @JsonKey(name: 'created_at')
@@ -33,6 +35,7 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.profileImage_,
     required this.ticket_,
     required this.markerObtainCount_,
+    required this.pushToken_,
     required this.level_,
     required this.isWithdrawal_,
     required this.withdrawalAt_,
@@ -46,6 +49,7 @@ class FortuneUserResponse extends FortuneUserEntity {
           markerObtainCount: markerObtainCount_,
           level: level_,
           isWithdrawal: isWithdrawal_ ?? false,
+          pushToken: pushToken_ ?? '',
           withdrawalAt: withdrawalAt_ ?? '',
           createdAt: createdAt_,
         );

@@ -4,7 +4,9 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/gen/fonts.gen.dart';
 
 abstract class FortuneTextStyle {
-  static TextStyle headLine1({Color? fontColor,}) {
+  static TextStyle headLine1({
+    Color? fontColor,
+  }) {
     return TextStyle(
       fontSize: 28.spMin,
       letterSpacing: -0.06,
@@ -74,13 +76,17 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body1Light({Color? fontColor}) {
+  static TextStyle body1Light({
+    Color? color,
+    double? height,
+  }) {
     return TextStyle(
       fontSize: 18.spMin,
+      height: height ?? 1.0,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 

@@ -18,6 +18,8 @@ class RequestFortuneUser {
   final int? countryInfo;
   @JsonKey(name: 'level')
   final int? level;
+  @JsonKey(name: 'push_token')
+  final String? pushToken;
   @JsonKey(name: 'is_withdrawal')
   final bool? isWithdrawal;
   @JsonKey(name: 'withdrawal_at')
@@ -30,6 +32,7 @@ class RequestFortuneUser {
     this.ticket,
     this.markerObtainCount,
     this.countryInfo,
+    this.pushToken,
     this.level,
     this.isWithdrawal,
     this.withdrawalAt,
@@ -40,6 +43,7 @@ class RequestFortuneUser {
     required this.phone,
     required this.nickname,
     required this.countryInfo,
+    required this.pushToken,
     this.ticket = 3,
     this.markerObtainCount = 0,
     this.level = 1,

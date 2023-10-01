@@ -75,9 +75,11 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
               Row(
                 children: [
                   const SizedBox(width: 24),
-                  Text(
-                    FortuneTr.msgRequireTermsUse,
-                    style: FortuneTextStyle.headLine2(),
+                  Flexible(
+                    child: Text(
+                      FortuneTr.msgRequireTermsUse,
+                      style: FortuneTextStyle.headLine2(),
+                    ),
                   ),
                 ],
               ),
@@ -102,7 +104,14 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                           state: item.isChecked,
                         ),
                         const SizedBox(width: 12),
-                        Text(item.title, style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200)),
+                        Expanded(
+                          child: Text(
+                            item.title,
+                            style: FortuneTextStyle.body1Light(
+                              color: ColorName.grey200,
+                            ),
+                          ),
+                        ),
                         const Spacer(),
                         GestureDetector(
                           onTap: () => router.navigateTo(
