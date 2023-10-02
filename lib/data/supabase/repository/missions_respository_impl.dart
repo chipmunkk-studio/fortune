@@ -1,19 +1,21 @@
 import 'package:fortune/core/error/failure/custom_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
 import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
 import 'package:fortune/data/supabase/service/mission/mission_clear_conditions_service.dart';
-import 'package:fortune/data/supabase/service/mission/mission_clear_user_service.dart';
+import 'package:fortune/data/supabase/service/mission/mission_clear_user_histories_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 
 class MissionsRepositoryImpl extends MissionsRepository {
   final MissionsService missionNormalService;
-  final MissionClearUserService missionClearUserService;
+  final MissionClearUserHistoriesService missionClearUserService;
   final MissionRewardService missionRewardService;
   final MissionsClearConditionsService missionClearConditionsService;
 
@@ -41,7 +43,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionByMissionId(missionId);
       if (result.isEmpty) {
-        throw const CustomFailure(errorDescription: '현재 미션 카드를 불러 올 수 없습니다');
+        throw CustomFailure(errorDescription: FortuneTr.msgUnableToLoadMissionCard);
       }
       return result;
     } on FortuneFailure catch (e) {
@@ -141,7 +143,25 @@ class MissionsRepositoryImpl extends MissionsRepository {
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '미션보상 불러오기 실패',
+        description: e.message,
+      );
+    }
+  }
+
+  @override
+  Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsers({
+    int start = 0,
+    int end = 20,
+  }) async {
+    try {
+      final result = await missionClearUserService.findAllMissionClearUsers(
+        start: start,
+        end: end,
+      );
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: e.message,
       );
     }
   }

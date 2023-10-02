@@ -13,16 +13,22 @@ abstract class LocalDataSource {
   Future<int> setVerifySmsTime(int time);
 
   Future<int> getVerifySmsTime();
+
+  Future<bool> getShowAd();
+
+  Future<void> setShowAdCounter();
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<String> _testAccount = SharedPrefsStorage<String>.primitive(itemKey: testAccountKey);
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
   final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
+  final Storage<int> _adCounter = SharedPrefsStorage<int>.primitive(itemKey: adCounter);
 
   static const testAccountKey = "testAccount";
   static const pushAlarmKey = "pushAlarm";
   static const verifySmsTimeKey = "verifySmsTimeKey";
+  static const adCounter = "adCounter";
 
   LocalDataSourceImpl();
 
@@ -57,5 +63,21 @@ class LocalDataSourceImpl extends LocalDataSource {
   Future<int> getVerifySmsTime() async {
     final time = await _verifySmsTime.get() ?? 0;
     return time;
+  }
+
+  @override
+  Future<bool> getShowAd() async {
+    final time = await _adCounter.get() ?? 0;
+    return time >= 2;
+  }
+
+  @override
+  Future<void> setShowAdCounter() async {
+    final time = await _adCounter.get() ?? 0;
+    if (time >= 2) {
+      _adCounter.save(0);
+    } else {
+      _adCounter.save(time + 1);
+    }
   }
 }

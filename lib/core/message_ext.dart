@@ -1,34 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 
 abstract class FortuneTr {
-  static String msgRequireMarkerObtainDistance(String args) {
-    return tr('msgRequireMarkerObtainDistance', args: [args]);
-  }
+  static String msgRequireMarkerObtainDistance(String args) => tr('msgRequireMarkerObtainDistance', args: [args]);
 
   static String msgRequestSmsVerifyCode(
     String minute,
     String second,
-  ) {
-    return tr('msgRequestSmsVerifyCode', args: [minute, second]);
-  }
+  ) =>
+      tr('msgRequestSmsVerifyCode', args: [minute, second]);
 
-  static String requireMoreTicket(
-    String ticket,
-  ) {
-    return tr('requireMoreTicket', args: [ticket]);
-  }
+  static String requireMoreTicket(String ticket) => tr('requireMoreTicket', args: [ticket]);
 
-  static String msgObtainMarkerSuccess(
-    String marker,
-  ) {
-    return tr('msgObtainMarkerSuccess', args: [marker]);
-  }
+  static String msgObtainMarkerSuccess(String marker) => tr('msgObtainMarkerSuccess', args: [marker]);
 
-  static String msgConsumeCoinToGetMarker(
-    String ticket,
-  ) {
-    return tr('msgConsumeCoinToGetMarker', args: [ticket]);
-  }
+  static String msgConsumeCoinToGetMarker(String ticket) => tr('msgConsumeCoinToGetMarker', args: [ticket]);
+
+  static String msgCollectingMarker(String marker) => tr('msgCollectingMarker', args: [marker]);
 
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
@@ -45,6 +32,7 @@ abstract class FortuneTr {
   static final cancel = tr('cancel');
   static final noHistory = tr('noHistory');
   static final myInfo = tr('myInfo');
+  static final countryCode = tr('countryCode');
   static final save = tr('save');
   static final phoneNumber = tr('phoneNumber');
   static final logout = tr('logout');
@@ -55,6 +43,7 @@ abstract class FortuneTr {
   static final notice = tr('notice');
   static final pushAlarm = tr('pushAlarm');
   static final gradeGuide = tr('gradeGuide');
+  static final msgUnableToLoadMissionCard = tr('msgUnableToLoadMissionCard');
   static final myBag = tr('myBag');
   static final msgNumberItems = tr('msgNumberItems');
   static final msgUseNextTime = tr('msgUseNextTime');
@@ -69,6 +58,7 @@ abstract class FortuneTr {
   static final msgVerifyYourself = tr('msgVerifyYourself');
   static final msgLoadingLocation = tr('msgLoadingLocation');
   static final msgAcquired = tr('msgAcquired');
+  static final msgNoMissionCompletion = tr('msgNoMissionCompletion');
   static final msgHelpedBy = tr('msgHelpedBy');
   static final msgAvailableMissions = tr('msgAvailableMissions');
   static final msgMissionReward = tr('msgMissionReward');
@@ -81,6 +71,19 @@ abstract class FortuneTr {
   static final msgUntilNextLevel = tr('msgUntilNextLevel');
   static final msgNumberPrefix = tr('msgNumberPrefix');
   static final msgMarkerRequirement = tr('msgMarkerRequirement');
+  static final msgTicketUpdateFailed = tr('msgTicketUpdateFailed');
+  static final msgNicknameExists = tr('msgNicknameExists');
+  static final msgVerifyCode = tr('msgVerifyCode');
+  static final msgAcquireCoin = tr('msgAcquireCoin');
+  static final msgRewardExhausted = tr('msgRewardExhausted');
+  static final msgRemainingReward = tr('msgRemainingReward');
+  static final msgExchange = tr('msgExchange');
+  static final msgRewardRedemptionNotice = tr('msgRewardRedemptionNotice');
+  static final msgCongratsMissionCompleted = tr('msgCongratsMissionCompleted');
+  static final msgLevelUpHeadings = tr('msgLevelUpHeadings');
+  static final msgLevelUpContents = tr('msgLevelUpContents');
+  static final msgRelayMissionHeadings = tr('msgRelayMissionHeadings');
+  static final msgRelayMissionContents = tr('msgRelayMissionContents');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

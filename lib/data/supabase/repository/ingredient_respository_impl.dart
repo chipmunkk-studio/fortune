@@ -31,11 +31,11 @@ class IngredientRepositoryImpl extends IngredientRepository {
 
   // 랜덤으로 재료 하나 가져오기.
   @override
-  Future<IngredientEntity> getIngredientByRandom(AlarmRewardInfoEntity rewardType) async {
+  Future<IngredientEntity> getIngredientByRandom(AlarmRewardInfoEntity rewardInfo) async {
     try {
       List<IngredientEntity> ingredients = await findAllIngredients();
 
-      if (!rewardType.hasUniqueMarker) {
+      if (!rewardInfo.hasUniqueMarker) {
         ingredients = ingredients.whereNot((element) => element.type == IngredientType.unique).toList();
       }
 

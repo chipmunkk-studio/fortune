@@ -6,5 +6,5 @@ abstract class IngredientRepository {
   Future<List<IngredientEntity>> findAllIngredients();
 
   // 재료 랜덤으로 하나 가져오기
-  Future<IngredientEntity> getIngredientByRandom(AlarmRewardInfoEntity rewardType);
+  Future<IngredientEntity> getIngredientByRandom(AlarmRewardInfoEntity rewardInfo);
 }

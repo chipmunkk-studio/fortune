@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
@@ -10,12 +11,18 @@ part 'missions_response.g.dart';
 class MissionsResponse extends MissionsEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'title')
-  final String title_;
-  @JsonKey(name: 'content')
-  final String content_;
-  @JsonKey(name: 'note')
-  final String note_;
+  @JsonKey(name: 'kr_title')
+  final String krTitle_;
+  @JsonKey(name: 'kr_content')
+  final String krContent_;
+  @JsonKey(name: 'kr_note')
+  final String krNote_;
+  @JsonKey(name: 'en_title')
+  final String enTitle_;
+  @JsonKey(name: 'en_content')
+  final String enContent_;
+  @JsonKey(name: 'en_note')
+  final String enNote_;
   @JsonKey(name: 'mission_type')
   final String missionType_;
   @JsonKey(name: 'mission_reward')
@@ -25,17 +32,20 @@ class MissionsResponse extends MissionsEntity {
 
   MissionsResponse({
     required this.id_,
-    required this.title_,
-    required this.content_,
+    required this.krTitle_,
+    required this.krContent_,
+    required this.krNote_,
+    required this.enTitle_,
+    required this.enContent_,
+    required this.enNote_,
     required this.missionType_,
     required this.missionReward_,
     required this.isActive_,
-    required this.note_,
   }) : super(
           id: id_.toInt(),
-          title: title_,
-          content: content_,
-          note: note_,
+          title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
+          content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
+          note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
           missionType: getMissionType(missionType_),
           missionReward: missionReward_ ?? MissionRewardEntity.empty(),
           isActive: isActive_,

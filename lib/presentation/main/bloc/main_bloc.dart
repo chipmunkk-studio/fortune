@@ -8,6 +8,7 @@ import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
+import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/env.dart';
@@ -26,11 +27,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final FortuneRemoteConfig remoteConfig;
+  final GetShowAdUseCase getShowAdUseCase;
 
   MainBloc({
     required this.remoteConfig,
     required this.mainUseCase,
     required this.obtainMarkerUseCase,
+    required this.getShowAdUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -153,7 +156,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 user: entity.user,
                 notices: entity.notices,
                 haveCount: entity.haveCount,
-                histories: entity.histories,
+                missionClearUsers: entity.missionClearUsers,
                 isLoading: false,
               ),
             );
@@ -183,15 +186,22 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   FutureOr<void> onMarkerClicked(MainMarkerClick event, Emitter<MainState> emit) async {
     final data = event.data;
     final distance = event.distance;
+    final isShowAd = await getShowAdUseCase().then((value) => value.getOrElse(() => false));
 
     // 거리가 모자랄 경우
-    if (event.distance > 0) {
-      add(MainRequireInCircleMetersEvent(distance));
-      return;
-    }
+    // if (event.distance > 0) {
+    //   add(MainRequireInCircleMetersEvent(distance));
+    //   return;
+    // }
 
     // 다이얼로그 노출.
-    produceSideEffect(MainShowObtainDialog(data, event.globalKey));
+    produceSideEffect(
+      MainShowObtainDialog(
+        data: data,
+        key: event.globalKey,
+        isShowAd: isShowAd,
+      ),
+    );
   }
 
   FutureOr<void> _markerObtain(MainMarkerObtain event, Emitter<MainState> emit) async {

@@ -6,12 +6,12 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_phone_number_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -46,7 +46,12 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   }
 
   FutureOr<void> init(VerifyCodeInit event, Emitter<VerifyCodeState> emit) async {
-    emit(state.copyWith(phoneNumber: event.phoneNumber));
+    emit(
+      state.copyWith(
+        phoneNumber: event.phoneNumber,
+        countryInfoEntity: event.countryInfoEntity,
+      ),
+    );
     produceSideEffect(VerifyCodeSmsListening());
     await _requestSignUpOrIn(emit);
   }
@@ -78,6 +83,8 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   }
 
   FutureOr<void> verifyConfirm(VerifyConfirm event, Emitter<VerifyCodeState> emit) async {
+    emit(state.copyWith(isLoginProcessing: true));
+
     await verifyPhoneNumberUseCase(
       RequestVerifyPhoneNumberParam(
         phoneNumber: state.phoneNumber,
@@ -85,6 +92,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       ),
     ).then(
       (value) => value.fold((l) {
+        emit(state.copyWith(isLoginProcessing: false));
         AppMetrica.reportEventWithJson('인증 실패', jsonEncode(l.toJsonMap()));
         produceSideEffect(VerifyCodeError(l));
       }, (r) async {
@@ -92,6 +100,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         if (r.userEntity.isWithdrawal) {
           await cancelWithdrawalUseCase();
         }
+        emit(state.copyWith(isLoginProcessing: false));
         produceSideEffect(VerifyCodeLandingRoute(Routes.mainRoute));
       }),
     );
@@ -102,7 +111,12 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       (value) => value.fold(
         (l) => produceSideEffect(VerifyCodeError(l)),
         (r) async {
-          await signUpOrInUseCase(state.phoneNumber).then(
+          await signUpOrInUseCase(
+            RequestSignUpParam(
+              phoneNumber: state.phoneNumber,
+              countryInfoId: state.countryInfoEntity.id,
+            ),
+          ).then(
             (value) => value.fold(
               (l) => produceSideEffect(VerifyCodeError(l)),
               (r) {

@@ -51,6 +51,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
 
       return Right(
         MissionDetailEntity(
+          user: user,
           markers: markers,
           mission: mission,
         ),

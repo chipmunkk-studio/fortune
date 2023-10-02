@@ -7,7 +7,10 @@ abstract class AuthRepository {
   Future<void> signInWithOtp({required String phoneNumber});
 
   // 회원가입. > OTP 전송.
-  Future<AuthResponse> signUp({required String phoneNumber});
+  Future<AuthResponse> signUp({
+    required String phoneNumber,
+    required int countryInfoId,
+  });
 
   // 회원가입(테스트 계정용)
   @override

@@ -80,7 +80,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                 searchIconColor: Colors.white,
                 searchBarHeight: 56,
                 textStyle: FortuneTextStyle.body2Light(),
-                hintStyle: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
+                hintStyle: FortuneTextStyle.body1Light(color: ColorName.grey200),
                 closeIconColor: Colors.white,
                 cursorColor: Colors.white,
                 hintText: FortuneTr.historyFortuneSpotSearchInput,

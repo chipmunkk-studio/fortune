@@ -13,3 +13,10 @@ class IngredientActionInit extends IngredientActionEvent {
   @override
   List<Object?> get props => [];
 }
+
+class IngredientActionShowAdCounting extends IngredientActionEvent {
+  IngredientActionShowAdCounting();
+
+  @override
+  List<Object?> get props => [];
+}

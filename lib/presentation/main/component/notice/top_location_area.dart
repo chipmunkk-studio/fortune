@@ -9,10 +9,12 @@ import '../../bloc/main.dart';
 
 class TopLocationArea extends StatelessWidget {
   final Function0 onProfileTap;
+  final Function0 onHistoryTap;
 
   const TopLocationArea({
     Key? key,
     required this.onProfileTap,
+    required this.onHistoryTap,
   }) : super(key: key);
 
   @override
@@ -32,33 +34,10 @@ class TopLocationArea extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 24),
-            // GestureDetector(
-            //   onTap: onTap,
-            //   child: Stack(
-            //     clipBehavior: Clip.none,
-            //     children: [
-            //       todo 알림 리워드.
-            //       Assets.icons.icBell.svg(),
-            //       봐야할 알림이 있으면 나타냄.
-            //       if (state.notices.isNotEmpty)
-            //       Positioned(
-            //         right: state.notices.length < 9 ? -13 : -20,
-            //         top: -10,
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //             color: ColorName.negative,
-            //             borderRadius: BorderRadius.circular(12.r),
-            //           ),
-            //           padding: EdgeInsets.symmetric(vertical: 2, horizontal: state.notices.length < 9 ? 6 : 5),
-            //           child: Text(
-            //             getHistoryCount(state.notices.length),
-            //             style: FortuneTextStyle.caption1SemiBold(),
-            //           ),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
+            Bounceable(
+              onTap: onHistoryTap,
+              child: Assets.icons.icSearch24.svg(),
+            ),
             const SizedBox(width: 20),
             Bounceable(
               onTap: onProfileTap,

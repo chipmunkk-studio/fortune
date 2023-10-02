@@ -83,7 +83,7 @@ class FortuneDialogService {
                 const SizedBox(height: 20),
                 Text(
                   error.description ?? error.message ?? '알 수 없는 에러',
-                  style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
+                  style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -150,7 +150,7 @@ class FortuneDialogService {
                   const SizedBox(height: 12),
                   Text(
                     subTitle,
-                    style: FortuneTextStyle.body1Light(fontColor: ColorName.grey200),
+                    style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                     textAlign: TextAlign.center,
                   ),
                 ],

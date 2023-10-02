@@ -26,7 +26,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '로그인 요청 실패',
+        description: e.message,
       );
     }
   }
@@ -35,16 +35,20 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<AuthResponse> signUp({
     required String phoneNumber,
+    required int countryInfoId,
   }) async {
     try {
-      await _userService.insert(phone: phoneNumber);
+      await _userService.insert(
+        phone: phoneNumber,
+        countryInfoId: countryInfoId,
+      );
       final response = await _authService.signUp(
         phoneNumber: phoneNumber,
       );
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '회원가입 실패',
+        description: '${e.message}',
       );
     }
   }
@@ -63,7 +67,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '인증 번호를 확인해주세요',
+        description: FortuneTr.msgVerifyCode,
       );
     }
   }
@@ -76,7 +80,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return terms;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '약관을 받아 오지 못했습니다',
+        description: e.message,
       );
     }
   }
@@ -88,7 +92,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return terms;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '약관을 받아 오지 못했습니다',
+        description: e.message,
       );
     }
   }
@@ -120,7 +124,10 @@ class AuthRepositoryImpl extends AuthRepository {
   }) async {
     try {
       // 회원이 없을 경우 추가.
-      await _userService.insert(phone: phoneNumber);
+      await _userService.insert(
+        phone: phoneNumber,
+        countryInfoId: 2,
+      );
       final response = await _authService.signUpWithEmail(
         email: email,
         password: password,

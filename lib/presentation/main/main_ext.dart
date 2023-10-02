@@ -61,27 +61,6 @@ extension FortuneMapDataConverter on List<MainLocationData> {
   }
 }
 
-SvgPicture getMarkerIcon(int grade) {
-  const double size = 60;
-  switch (grade) {
-    case 1:
-      return Assets.icons.icFortuneCookie.svg(width: size, height: size);
-    default:
-      return Assets.icons.icFortuneCookie.svg(width: size, height: size);
-  }
-}
-
-SvgPicture getMarkerDisappearedIcon(int grade) {
-  const double size = 60;
-  switch (grade) {
-    case 1:
-      return Assets.icons.icFortuneCookie.svg(width: size, height: size);
-    default:
-      return Assets.icons.icFortuneCookie.svg(width: size, height: size);
-  }
-}
-//  LatLng(latitude:37.553418, longitude:127.068747), distance: -222.17263545827225
-
 // degrees to radians 변환을 위한 함수
 double degreesToRadians(double degrees) {
   return degrees * math.pi / 180;

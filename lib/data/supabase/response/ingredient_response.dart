@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,8 +9,10 @@ part 'ingredient_response.g.dart';
 class IngredientResponse extends IngredientEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'name')
-  final String name_;
+  @JsonKey(name: 'kr_name')
+  final String krName_;
+  @JsonKey(name: 'en_name')
+  final String enName_;
   @JsonKey(name: 'type')
   final String type_;
   @JsonKey(name: 'reward_ticket')
@@ -21,14 +24,15 @@ class IngredientResponse extends IngredientEntity {
 
   IngredientResponse({
     required this.id_,
-    required this.name_,
+    required this.krName_,
+    required this.enName_,
     required this.type_,
     required this.imageUrl_,
     required this.rewardTicket_,
     required this.distance_,
   }) : super(
           id: id_.toInt(),
-          name: name_,
+          name: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
           imageUrl: imageUrl_,
           rewardTicket: rewardTicket_,
           type: getIngredientType(type_),

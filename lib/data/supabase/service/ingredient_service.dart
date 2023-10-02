@@ -8,11 +8,9 @@ class IngredientService {
   static const _ingredientTableName = "ingredients";
   static const fullSelectQuery = '*';
 
-  final SupabaseClient _client;
+  final SupabaseClient _client = Supabase.instance.client;
 
-  IngredientService(
-    this._client,
-  );
+  IngredientService();
 
   // 모든 재료 가져오기.
   Future<List<IngredientEntity>> findAllIngredients() async {

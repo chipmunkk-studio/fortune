@@ -81,4 +81,28 @@ class LocalRepositoryImpl extends LocalRepository {
       );
     }
   }
+
+  @override
+  Future<bool> getShowAd() async {
+    try {
+      final result = await localDataSource.getShowAd();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<void> setShowAdCounter() async {
+    try {
+      final result = await localDataSource.setShowAdCounter();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
 }

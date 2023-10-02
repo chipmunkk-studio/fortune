@@ -8,6 +8,7 @@ import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
+import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
@@ -18,6 +19,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   final ObtainHistoryRepository obtainHistoryRepository;
   final MarkerRepository markerRepository;
   final AlarmFeedsRepository userNoticesRepository;
+  final MissionsRepository missionsRepository;
   final UserRepository userRepository;
   final FortuneRemoteConfig remoteConfig;
 
@@ -27,6 +29,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
     required this.markerRepository,
     required this.userRepository,
     required this.obtainHistoryRepository,
+    required this.missionsRepository,
     required this.userNoticesRepository,
   });
 
@@ -49,24 +52,11 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) => element.ingredient.type != IngredientType.coin,
-          )
+      )
           .toList();
 
-      // 히스토리 목록 가져옴.
-      final histories = (await obtainHistoryRepository.getAllHistories(start: 0, end: 10))
-          .map(
-            (e) => ObtainHistoryContentViewItem(
-              id: e.id,
-              markerId: e.markerId,
-              user: e.user,
-              ingredient: e.ingredient,
-              createdAt: e.createdAt,
-              ingredientName: e.ingredientName,
-              locationName: e.locationName,
-              nickName: e.nickName,
-            ),
-          )
-          .toList();
+      // 미션 클리어 히스토리.
+      final missionClearHistories = await missionsRepository.getMissionClearUsers();
 
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
@@ -81,14 +71,14 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final isTicketEmpty = markersNearByMe
           .where(
             (element) => element.ingredient.type == IngredientType.coin,
-          )
+      )
           .toList();
 
       // 티켓이 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
       final ticketCount = isTicketEmpty.length < keepTicketCount ? keepTicketCount - isTicketEmpty.length : 0;
 
       FortuneLogger.info(
-          "markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");
+          "마커 로드 >> markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");
 
       // 주변에 마커가 없다면, 필요한 개수 만큼 내 위치를 중심으로 랜덤 생성.
       final result = await markerRepository.getRandomMarkers(
@@ -112,8 +102,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
         MainViewEntity(
           user: user,
           markers: markersNearByMe,
-          histories: histories,
           notices: userNotices,
+          missionClearUsers: missionClearHistories,
           haveCount: haveCounts.length,
         ),
       );

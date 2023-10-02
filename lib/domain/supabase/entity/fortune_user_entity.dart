@@ -8,6 +8,7 @@ class FortuneUserEntity {
   final String phone;
   final String nickname;
   final String profileImage;
+  final String pushToken;
   final int ticket;
   final int markerObtainCount;
   final int level;
@@ -25,6 +26,7 @@ class FortuneUserEntity {
     required this.profileImage,
     required this.ticket,
     required this.markerObtainCount,
+    required this.pushToken,
     required this.level,
     required this.isWithdrawal,
     required this.withdrawalAt,
@@ -45,6 +47,8 @@ class FortuneUserEntity {
     bool? isWithdrawal,
     String? withdrawalAt,
     String? createdAt,
+    String? pushToken,
+    String? locale,
   }) {
     return FortuneUserEntity(
       id: id ?? this.id,
@@ -53,6 +57,7 @@ class FortuneUserEntity {
       profileImage: profileImage ?? this.profileImage,
       ticket: ticket ?? this.ticket,
       markerObtainCount: markerObtainCount ?? this.markerObtainCount,
+      pushToken: pushToken ?? this.pushToken,
       level: level ?? this.level,
       isWithdrawal: isWithdrawal ?? this.isWithdrawal,
       createdAt: createdAt ?? this.createdAt,
@@ -67,6 +72,7 @@ class FortuneUserEntity {
       nickname: '',
       profileImage: '',
       isWithdrawal: false,
+      pushToken: '',
       createdAt: '',
       withdrawalAt: '',
       ticket: 0,

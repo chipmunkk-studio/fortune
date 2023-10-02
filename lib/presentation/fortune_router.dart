@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/alarmreward/alarm_reward_page.dart';
+import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
@@ -137,6 +139,13 @@ class FortuneRouter {
     },
   );
 
+  static var countryCodeHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as CountryInfoEntity?;
+      return args != null ? CountryCodePage(args) : null;
+    },
+  );
+
   static var alarmRewardHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as int?;
@@ -239,6 +248,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 국가 코드.
+      ..define(
+        Routes.countryCodeRoute,
+        handler: countryCodeHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 공지사항.
       ..define(
         Routes.noticesRoutes,
@@ -282,6 +298,7 @@ class Routes {
   static const String userNoticesRoute = 'userNotices';
   static const String termsDetailRoute = 'termsDetail';
   static const String gradeGuideRoute = 'gradeGuide';
+  static const String countryCodeRoute = 'countryCode';
   static const String myPageRoute = 'myPage';
   static const String faqsRoute = 'faqs';
   static const String nickNameRoute = 'nickName';

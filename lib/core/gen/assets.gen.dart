@@ -90,14 +90,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
 
-  /// File path: assets/icons/ic_fortune_cookie.svg
-  SvgGenImage get icFortuneCookie =>
-      const SvgGenImage('assets/icons/ic_fortune_cookie.svg');
-
-  /// File path: assets/icons/ic_fortune_diamond.svg
-  SvgGenImage get icFortuneDiamond =>
-      const SvgGenImage('assets/icons/ic_fortune_diamond.svg');
-
   /// File path: assets/icons/ic_fortune_money.svg
   SvgGenImage get icFortuneMoney =>
       const SvgGenImage('assets/icons/ic_fortune_money.svg');
@@ -150,6 +142,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
+  /// File path: assets/icons/ic_logo_20.svg
+  SvgGenImage get icLogo20 => const SvgGenImage('assets/icons/ic_logo_20.svg');
+
   /// File path: assets/icons/ic_mappin.svg
   SvgGenImage get icMappin => const SvgGenImage('assets/icons/ic_mappin.svg');
 
@@ -185,6 +180,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_recycle.svg
   SvgGenImage get icRecycle => const SvgGenImage('assets/icons/ic_recycle.svg');
 
+  /// File path: assets/icons/ic_search_24.svg
+  SvgGenImage get icSearch24 =>
+      const SvgGenImage('assets/icons/ic_search_24.svg');
+
   /// File path: assets/icons/ic_timer.svg
   SvgGenImage get icTimer => const SvgGenImage('assets/icons/ic_timer.svg');
 
@@ -210,8 +209,6 @@ class $AssetsIconsGen {
         icCancelCircle,
         icCheckCircleFill24,
         icClock,
-        icFortuneCookie,
-        icFortuneDiamond,
         icFortuneMoney,
         icFortuneMoneyPlus,
         icFortuneTicket,
@@ -226,6 +223,7 @@ class $AssetsIconsGen {
         icIngredientBag,
         icInventory,
         icLock,
+        icLogo20,
         icMappin,
         icMegaphone,
         icOnboarding,
@@ -236,6 +234,7 @@ class $AssetsIconsGen {
         icPushAlarm,
         icQuestion,
         icRecycle,
+        icSearch24,
         icTimer,
         icUser,
         icWarningCircle24

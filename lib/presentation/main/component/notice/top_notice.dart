@@ -9,12 +9,12 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
+import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/fortune_ext.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/notice/top_notice_auto_slider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class TopNotice extends StatefulWidget {
   final dartz.Function0 onTap;
@@ -37,13 +37,13 @@ class _TopNoticeState extends State<TopNotice> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainBloc, MainState>(
-      listenWhen: (previous, current) => previous.histories != current.histories,
+      listenWhen: (previous, current) => previous.missionClearUsers != current.missionClearUsers,
       listener: (context, state) {
         _initTimer(state);
       },
       builder: (context, state) {
-        return state.histories.isEmpty
-            ? Container()
+        return state.missionClearUsers.isEmpty
+            ? _buildEmptyContainer()
             : Bounceable(
                 onTap: widget.onTap,
                 child: Container(
@@ -53,88 +53,119 @@ class _TopNoticeState extends State<TopNotice> {
                     borderRadius: BorderRadius.circular(16.r),
                     color: ColorName.grey700,
                   ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: TopNoticeAutoSlide(
-                            pageController,
-                            items: state.histories.map(
-                              (e) {
-                                return Row(
-                                  children: [
-                                    const SizedBox(width: 12),
-                                    SizedBox.square(
-                                      dimension: 40,
-                                      child: ClipOval(
-                                        child: FadeInImage.memoryNetwork(
-                                          placeholder: kTransparentImage,
-                                          image: e.ingredient.imageUrl.isEmpty
-                                              ? transparentImageUrl
-                                              : e.ingredient.imageUrl,
+                  child: TopNoticeAutoSlide(
+                    pageController,
+                    items: state.missionClearUsers.map(
+                      (e) {
+                        return Row(
+                          children: [
+                            const SizedBox(width: 12),
+                            SquircleNetworkImageView(
+                              imageUrl: e.user.profileImage,
+                              size: 42,
+                              backgroundColor: ColorName.grey600,
+                              placeHolder: Assets.images.ivDefaultProfile.svg(
+                                fit: BoxFit.none,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname,
+                                        style: FortuneTextStyle.body3Semibold(),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          FortuneTr.msgHelpedBy,
+                                          style: FortuneTextStyle.body3Light(),
                                         ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname,
-                                                style: FortuneTextStyle.body3Semibold(),
-                                              ),
-                                              Text(FortuneTr.msgHelpedBy, style: FortuneTextStyle.body3Light())
-                                            ],
+                                      )
+                                    ],
+                                  ),
+                                  Flexible(
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            e.mission.title + e.mission.title,
+                                            style: FortuneTextStyle.body3Light(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          Flexible(
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Flexible(
-                                                  child: Text(
-                                                    e.ingredient.name,
-                                                    style: FortuneTextStyle.body3Light(),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  FortuneTr.msgAcquired,
-                                                  style: FortuneTextStyle.body3Light(),
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                                const SizedBox(width: 40),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                        Text(
+                                          FortuneTr.msgAcquired,
+                                          style: FortuneTextStyle.body3Light(),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(
+                                          width: 40,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 12),
-                                  ],
-                                );
-                              },
-                            ).toList(),
-                            duration: const Duration(seconds: 3),
-                          ),
-                        ),
-                        Positioned(
-                          right: 20,
-                          bottom: 0,
-                          top: 0,
-                          child: Assets.icons.icArrowRight16.svg(),
-                        )
-                      ],
-                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                          ],
+                        );
+                      },
+                    ).toList(),
+                    duration: const Duration(seconds: 3),
                   ),
                 ),
               );
       },
+    );
+  }
+
+  _buildEmptyContainer() {
+    return Container(
+      height: 64,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: ColorName.grey700,
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 12),
+          CustomPaint(
+            painter: SquirclePainter(color: ColorName.grey600),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox.square(
+                dimension: 20,
+                child: Assets.icons.icLogo20.svg(),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  FortuneTr.msgNoMissionCompletion,
+                  style: FortuneTextStyle.body3Light(height: 1.3),
+                ),
+                const SizedBox(
+                  width: 40,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
+      ),
     );
   }
 
@@ -149,17 +180,17 @@ class _TopNoticeState extends State<TopNotice> {
         if (pageController.hasClients) {
           if (currentPage == 0) {
             pageController.jumpToPage(currentPage);
-          } else if (currentPage < state.histories.length) {
+          } else if (currentPage < state.missionClearUsers.length) {
             pageController.animateToPage(
               currentPage,
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeIn,
             );
-            if (currentPage == state.histories.length - 1) {
+            if (currentPage == state.missionClearUsers.length - 1) {
               // widget._bloc.add(MainRefresh());
             }
           }
-          if (currentPage < state.histories.length - 1) {
+          if (currentPage < state.missionClearUsers.length - 1) {
             currentPage++;
           }
         }

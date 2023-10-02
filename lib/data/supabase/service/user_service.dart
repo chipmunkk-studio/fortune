@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/notification/notification_manager.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -12,21 +16,32 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {
   final SupabaseClient _client = Supabase.instance.client;
-  final _tableName = TableName.users;
+  final _userTableName = TableName.users;
+  final FortuneNotificationsManager notificationManager;
 
-  UserService();
+  static const fullSelectQuery = '*,'
+      '${TableName.countryInfo}(*)';
+
+  UserService({
+    required this.notificationManager,
+  });
 
   // 회원가입.
   Future<void> insert({
     required String phone,
+    required int countryInfoId,
   }) async {
+    final pushToken = await notificationManager.getFcmPushToken();
+    final Locale currentLocale = PlatformDispatcher.instance.locale;
     try {
-      await _client.from(_tableName).insert(
-            RequestFortuneUser.insert(
-              phone: phone,
-              nickname: 'clover${DateTime.now().millisecondsSinceEpoch}',
-            ).toJson(),
-          );
+      final requestToJson = RequestFortuneUser.insert(
+        phone: phone,
+        nickname: 'fortune${DateTime.now().millisecondsSinceEpoch}',
+        countryInfo: countryInfoId,
+        pushToken: pushToken,
+      ).toJson();
+      FortuneLogger.info('회원가입 정보: $requestToJson');
+      await _client.from(_userTableName).insert(requestToJson);
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
@@ -39,22 +54,20 @@ class UserService {
     bool isCancelWithdrawal = false,
   }) async {
     try {
-      // 다음 레벨.
-      final level = assignLevel(request.markerObtainCount ?? user.markerObtainCount);
-
       final requestToUpdate = RequestFortuneUser(
         phone: request.phone ?? user.phone,
         nickname: request.nickname ?? user.nickname,
         profileImage: request.profileImage ?? user.profileImage,
         ticket: request.ticket ?? user.ticket,
         markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
-        level: level,
+        level: assignLevel(request.markerObtainCount ?? user.markerObtainCount),
+        pushToken: request.pushToken ?? user.pushToken,
         isWithdrawal: request.isWithdrawal ?? user.isWithdrawal,
         withdrawalAt: isCancelWithdrawal ? null : request.withdrawalAt,
       );
 
       final updateUser = await _client
-          .from(_tableName)
+          .from(_userTableName)
           .update(
             requestToUpdate.toJson(),
           )
@@ -100,9 +113,9 @@ class UserService {
     try {
       final List<dynamic> response = await _client
           .from(
-            _tableName,
+            _userTableName,
           )
-          .select("*")
+          .select(fullSelectQuery)
           .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {
@@ -121,9 +134,9 @@ class UserService {
     try {
       final List<dynamic> response = await _client
           .from(
-            _tableName,
+            _userTableName,
           )
-          .select("*")
+          .select(fullSelectQuery)
           .eq('phone', phone)
           .toSelect();
       if (response.isEmpty) {

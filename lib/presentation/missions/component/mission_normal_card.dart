@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -56,7 +57,7 @@ class MissionNormalCard extends StatelessWidget {
                             color: ColorName.primary.withOpacity(0.1),
                           ),
                           child: Text(
-                            "남은 리워드",
+                            FortuneTr.msgRemainingReward,
                             style: FortuneTextStyle.caption1SemiBold(
                               fontColor: ColorName.primary,
                             ),

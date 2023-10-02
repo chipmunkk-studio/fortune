@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/presentation/fortune_ext.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -35,7 +36,7 @@ class ObtainLoadingView extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "${processingMarker?.ingredient.name} 줍줍 중..",
+                      FortuneTr.msgCollectingMarker(processingMarker?.ingredient.name ?? ''),
                       style: FortuneTextStyle.body3Light(),
                       textAlign: TextAlign.center,
                     ),
