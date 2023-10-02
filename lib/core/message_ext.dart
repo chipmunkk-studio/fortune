@@ -58,6 +58,7 @@ abstract class FortuneTr {
   static final msgVerifyYourself = tr('msgVerifyYourself');
   static final msgLoadingLocation = tr('msgLoadingLocation');
   static final msgAcquired = tr('msgAcquired');
+  static final msgNoMissionCompletion = tr('msgNoMissionCompletion');
   static final msgHelpedBy = tr('msgHelpedBy');
   static final msgAvailableMissions = tr('msgAvailableMissions');
   static final msgMissionReward = tr('msgMissionReward');

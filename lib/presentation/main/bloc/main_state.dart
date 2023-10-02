@@ -1,6 +1,7 @@
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -14,7 +15,7 @@ part 'main_state.freezed.dart';
 class MainState with _$MainState {
   factory MainState({
     required List<MainLocationData> markers,
-    required List<ObtainHistoryContentViewItem> histories,
+    required List<MissionClearUserHistoriesEntity> missionClearUsers,
     required LocationData? myLocation,
     required FortuneUserEntity? user,
     required MainLocationData? processingMarker,
@@ -31,7 +32,7 @@ class MainState with _$MainState {
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
   factory MainState.initial() => MainState(
         markers: List.empty(),
-        histories: List.empty(),
+        missionClearUsers: List.empty(),
         locationName: FortuneTr.callMyLocation,
         user: null,
         myLocation: null,

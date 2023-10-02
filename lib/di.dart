@@ -19,6 +19,7 @@ import 'package:fortune/data/supabase/service/auth_service.dart';
 import 'package:fortune/data/supabase/service/country_info_service.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
+import 'package:fortune/data/supabase/service/mission/mission_clear_user_histories_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:fortune/data/supabase/service/obtain_history_service.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
@@ -86,7 +87,6 @@ import 'data/supabase/service/alarm_feeds_service.dart';
 import 'data/supabase/service/alarm_reward_history_service.dart';
 import 'data/supabase/service/alarm_reward_info_service.dart';
 import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
-import 'data/supabase/service/mission/mission_clear_user_service.dart';
 import 'data/supabase/service/mission/missions_service.dart';
 import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
@@ -236,8 +236,8 @@ _initService() {
     ..registerLazySingleton<AlarmRewardHistoryService>(
       () => AlarmRewardHistoryService(),
     )
-    ..registerLazySingleton<MissionClearUserService>(
-      () => MissionClearUserService(),
+    ..registerLazySingleton<MissionClearUserHistoriesService>(
+      () => MissionClearUserHistoriesService(),
     )
     ..registerLazySingleton<AlarmFeedsService>(
       () => AlarmFeedsService(),
@@ -310,7 +310,7 @@ _initRepository() {
       () => MissionsRepositoryImpl(
         missionNormalService: serviceLocator<MissionsService>(),
         missionClearConditionsService: serviceLocator<MissionsClearConditionsService>(),
-        missionClearUserService: serviceLocator<MissionClearUserService>(),
+        missionClearUserService: serviceLocator<MissionClearUserHistoriesService>(),
         missionRewardService: serviceLocator<MissionRewardService>(),
       ),
     )
@@ -502,6 +502,7 @@ _initUseCase() async {
         userRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         userNoticesRepository: serviceLocator(),
+        missionsRepository: serviceLocator(),
       ),
     );
 }

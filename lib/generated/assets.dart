@@ -21,8 +21,6 @@ class Assets {
   static const String iconsIcCancelCircle = 'assets/icons/ic_cancel_circle.svg';
   static const String iconsIcCheckCircleFill24 = 'assets/icons/ic_check_circle_fill_24.svg';
   static const String iconsIcClock = 'assets/icons/ic_clock.svg';
-  static const String iconsIcFortuneCookie = 'assets/icons/ic_fortune_cookie.svg';
-  static const String iconsIcFortuneDiamond = 'assets/icons/ic_fortune_diamond.svg';
   static const String iconsIcFortuneMoney = 'assets/icons/ic_fortune_money.svg';
   static const String iconsIcFortuneMoneyPlus = 'assets/icons/ic_fortune_money_plus.svg';
   static const String iconsIcFortuneTicket = 'assets/icons/ic_fortune_ticket.svg';
@@ -37,6 +35,7 @@ class Assets {
   static const String iconsIcIngredientBag = 'assets/icons/ic_ingredient_bag.svg';
   static const String iconsIcInventory = 'assets/icons/ic_inventory.svg';
   static const String iconsIcLock = 'assets/icons/ic_lock.svg';
+  static const String iconsIcLogo20 = 'assets/icons/ic_logo_20.svg';
   static const String iconsIcMappin = 'assets/icons/ic_mappin.svg';
   static const String iconsIcMegaphone = 'assets/icons/ic_megaphone.svg';
   static const String iconsIcOnboarding = 'assets/icons/ic_onboarding.svg';
@@ -47,6 +46,7 @@ class Assets {
   static const String iconsIcPushAlarm = 'assets/icons/ic_push_alarm.svg';
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';
   static const String iconsIcRecycle = 'assets/icons/ic_recycle.svg';
+  static const String iconsIcSearch24 = 'assets/icons/ic_search_24.svg';
   static const String iconsIcTimer = 'assets/icons/ic_timer.svg';
   static const String iconsIcUser = 'assets/icons/ic_user.svg';
   static const String iconsIcWarningCircle24 = 'assets/icons/ic_warning_circle_24.svg';

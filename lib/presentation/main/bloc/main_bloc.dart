@@ -11,7 +11,6 @@ import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -157,7 +156,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 user: entity.user,
                 notices: entity.notices,
                 haveCount: entity.haveCount,
-                histories: entity.histories,
+                missionClearUsers: entity.missionClearUsers,
                 isLoading: false,
               ),
             );

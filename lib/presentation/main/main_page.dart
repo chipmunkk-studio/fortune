@@ -278,13 +278,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         context,
                         Routes.myPageRoute,
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    TopNotice(
-                      onTap: () => router.navigateTo(
+                      onHistoryTap: () => router.navigateTo(
                         context,
                         Routes.obtainHistoryRoute,
                       ),
+                    ),
+                    const SizedBox(height: 16),
+                    TopNotice(
+                      onTap: () {},
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(

@@ -120,9 +120,10 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body3Light({Color? color}) {
+  static TextStyle body3Light({Color? color,double? height}) {
     return TextStyle(
       fontSize: 15.spMin,
+      height: height ?? 1.0,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
