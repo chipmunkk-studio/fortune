@@ -1,5 +1,6 @@
+import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/locale.dart';
-import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/notices_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'notices_response.g.dart';
@@ -26,7 +27,7 @@ class NoticesResponse extends NoticesEntity {
   }) : super(
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
-          createdAt: createdAt_ ?? '',
+          createdAt: FortuneDateExtension.formattedDate(createdAt_),
         );
 
   factory NoticesResponse.fromJson(Map<String, dynamic> json) => _$NoticesResponseFromJson(json);

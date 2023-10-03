@@ -112,7 +112,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                             ),
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () => router.navigateTo(
                             context,
@@ -120,7 +120,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                           ),
                           child: Assets.icons.icArrowRight16.svg(),
                         ),
-                        const SizedBox(width: 24),
+                        const SizedBox(width: 24)
                       ],
                     ),
                   );

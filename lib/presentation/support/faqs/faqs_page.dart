@@ -75,7 +75,7 @@ class _FaqPageState extends State<_FaqPage> {
                 return SupportCard(
                   title: item.title,
                   content: item.content,
-                  date: FortuneDateExtension.formattedDate(item.createdAt),
+                  date: item.createdAt,
                 );
               },
             ),

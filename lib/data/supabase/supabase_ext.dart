@@ -10,6 +10,7 @@ abstract class TableName {
   static const missionRewardS = 'mission_reward_s';
   static const alarmFeeds = 'alarm_feeds';
   static const alarmRewardHistory = 'alarm_reward_history';
+  static const privacyPolicy = 'privacy_policy';
   static const alarmRewardInfo = 'alarm_reward_info';
   static const ingredients = 'ingredients';
   static const markers = "markers";

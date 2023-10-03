@@ -24,6 +24,7 @@ import 'nickname/nick_name_page.dart';
 import 'obtainhistory/obtain_history_page.dart';
 import 'onboarding/on_boarding_page.dart';
 import 'permission/require_permission_page.dart';
+import 'support/personalinfo/privacy_policy_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;
@@ -153,6 +154,12 @@ class FortuneRouter {
     },
   );
 
+  static var privacyPolicyHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const PrivacyPolicyPage();
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -174,6 +181,13 @@ class FortuneRouter {
       ..define(
         Routes.mainRoute,
         handler: mainHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 개인정보처리방침.
+      ..define(
+        Routes.privacyPolicyRoutes,
+        handler: privacyPolicyHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -303,4 +317,5 @@ class Routes {
   static const String faqsRoute = 'faqs';
   static const String nickNameRoute = 'nickName';
   static const String noticesRoutes = 'notices';
+  static const String privacyPolicyRoutes = 'privacyPolicy';
 }

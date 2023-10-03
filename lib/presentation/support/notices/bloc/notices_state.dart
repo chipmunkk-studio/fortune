@@ -1,4 +1,4 @@
-import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/notices_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'notices_state.freezed.dart';

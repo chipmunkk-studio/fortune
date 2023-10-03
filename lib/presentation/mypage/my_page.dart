@@ -97,6 +97,11 @@ class _MyPageState extends State<_MyPage> {
                       icon: Assets.icons.icQuestion.svg(),
                       onTap: () => router.navigateTo(context, Routes.faqsRoute),
                     ),
+                    InfoMenu(
+                      FortuneTr.msgPrivacyPolicy,
+                      icon: Assets.icons.icNote24.svg(),
+                      onTap: () => router.navigateTo(context, Routes.privacyPolicyRoutes),
+                    ),
                     BlocBuilder<MyPageBloc, MyPageState>(
                       buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,
                       builder: (context, state) {

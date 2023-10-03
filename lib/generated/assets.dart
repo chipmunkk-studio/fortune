@@ -38,6 +38,7 @@ class Assets {
   static const String iconsIcLogo20 = 'assets/icons/ic_logo_20.svg';
   static const String iconsIcMappin = 'assets/icons/ic_mappin.svg';
   static const String iconsIcMegaphone = 'assets/icons/ic_megaphone.svg';
+  static const String iconsIcNote24 = 'assets/icons/ic_note_24.svg';
   static const String iconsIcOnboarding = 'assets/icons/ic_onboarding.svg';
   static const String iconsIcPencil = 'assets/icons/ic_pencil.svg';
   static const String iconsIcPhone = 'assets/icons/ic_phone.svg';

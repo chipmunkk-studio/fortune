@@ -1,12 +1,12 @@
 import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/locale.dart';
-import 'package:fortune/domain/supabase/entity/support/faq_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/privacy_policy_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'faqs_response.g.dart';
+part 'privacy_policy_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
-class FaqsResponse extends FaqsEntity {
+class PrivacyPolicyResponse extends PrivacyPolicyEntity {
   @JsonKey(name: 'kr_title')
   final String? krTitle_;
   @JsonKey(name: 'kr_content')
@@ -18,7 +18,7 @@ class FaqsResponse extends FaqsEntity {
   @JsonKey(name: 'created_at')
   final String? createdAt_;
 
-  FaqsResponse({
+  PrivacyPolicyResponse({
     this.krTitle_,
     this.krContent_,
     this.enTitle_,
@@ -30,7 +30,7 @@ class FaqsResponse extends FaqsEntity {
           createdAt: FortuneDateExtension.formattedDate(createdAt_),
         );
 
-  factory FaqsResponse.fromJson(Map<String, dynamic> json) => _$FaqsResponseFromJson(json);
+  factory PrivacyPolicyResponse.fromJson(Map<String, dynamic> json) => _$PrivacyPolicyResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$FaqsResponseToJson(this);
+  Map<String, dynamic> toJson() => _$PrivacyPolicyResponseToJson(this);
 }

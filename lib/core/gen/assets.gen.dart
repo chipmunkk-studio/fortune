@@ -152,6 +152,9 @@ class $AssetsIconsGen {
   SvgGenImage get icMegaphone =>
       const SvgGenImage('assets/icons/ic_megaphone.svg');
 
+  /// File path: assets/icons/ic_note_24.svg
+  SvgGenImage get icNote24 => const SvgGenImage('assets/icons/ic_note_24.svg');
+
   /// File path: assets/icons/ic_onboarding.svg
   SvgGenImage get icOnboarding =>
       const SvgGenImage('assets/icons/ic_onboarding.svg');
@@ -226,6 +229,7 @@ class $AssetsIconsGen {
         icLogo20,
         icMappin,
         icMegaphone,
+        icNote24,
         icOnboarding,
         icPencil,
         icPhone,

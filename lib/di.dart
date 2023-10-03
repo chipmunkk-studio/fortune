@@ -39,6 +39,7 @@ import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_privacy_policy_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
@@ -72,6 +73,7 @@ import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
 import 'package:fortune/presentation/support/notices/bloc/notices.dart';
+import 'package:fortune/presentation/support/personalinfo/bloc/privacy_policy.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
@@ -489,6 +491,11 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetPrivacyPolicyUseCase>(
+      () => GetPrivacyPolicyUseCase(
+        repository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<SetShowAdUseCase>(
       () => SetShowAdUseCase(
         repository: serviceLocator(),
@@ -525,6 +532,11 @@ _initBloc() {
     ..registerFactory(
       () => AlarmFeedBloc(
         getAlarmFeedUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => PrivacyPolicyBloc(
+        getPrivacyPolicyUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
