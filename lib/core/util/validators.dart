@@ -4,7 +4,7 @@ class FortuneValidator {
   static const _email = r'[a-zA-Z0-9\+\.\_\%\-\+]{1,256}\@[a-zA-Z0-9]'
       r'[a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+';
 
-  static const phoneNumber = r'^010[1-9]\d{7}$';
+  static const phoneNumber = r'^[1-9]\d{6,14}$';
   static const verifyCode = r'^[0-9]{6}$';
   static const nickName = r'^[가-힣A-Za-z0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]{1,12}$';
 
