@@ -136,7 +136,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       RequestSignUpOrInTestParam(
         testEmail: config.twilioTestAccountEmail,
         testPassword: config.twilioTestPassword,
-        testPhoneNumber: state.selectCountry.phoneCode.toString() + config.twilioTestPhoneNumber,
+        testPhoneNumber: '82${config.twilioTestPhoneNumber}',
       ),
     ).then(
       (value) => value.fold(
