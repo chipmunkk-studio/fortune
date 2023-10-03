@@ -41,8 +41,6 @@ class _SupportCardState extends State<SupportCard> {
             Text(
               widget.title,
               style: FortuneTextStyle.body1Semibold(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
             Text(

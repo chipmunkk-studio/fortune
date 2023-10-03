@@ -1,7 +1,8 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
-import 'package:fortune/domain/supabase/entity/common/faq_entity.dart';
-import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/faq_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/privacy_policy_entity.dart';
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 
 class SupportRepositoryImpl extends SupportRepository {
@@ -28,6 +29,18 @@ class SupportRepositoryImpl extends SupportRepository {
     try {
       List<NoticesEntity> notices = await supportService.findAllNotices();
       return notices;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<List<PrivacyPolicyEntity>> getPrivacyPolicy() async {
+    try {
+      List<PrivacyPolicyEntity> privacy = await supportService.findPrivacyPolicy();
+      return privacy;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',

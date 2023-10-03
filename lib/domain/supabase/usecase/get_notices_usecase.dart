@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
-import 'package:fortune/domain/supabase/entity/common/notices_entity.dart';
+import 'package:fortune/domain/supabase/entity/support/notices_entity.dart';
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 
 class GetNoticesUseCase implements UseCase0<List<NoticesEntity>> {

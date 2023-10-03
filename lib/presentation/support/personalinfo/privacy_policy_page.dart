@@ -10,41 +10,41 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../component/support_card.dart';
-import 'bloc/notices.dart';
+import 'bloc/privacy_policy.dart';
 
-class NoticesPage extends StatelessWidget {
-  const NoticesPage({Key? key}) : super(key: key);
+class PrivacyPolicyPage extends StatelessWidget {
+  const PrivacyPolicyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<NoticesBloc>()..add(NoticesInit()),
+      create: (context) => serviceLocator<PrivacyPolicyBloc>()..add(PrivacyPolicyInit()),
       child: FortuneScaffold(
         appBar: FortuneCustomAppBar.leadingAppBar(
           context,
-          title: FortuneTr.notice,
+          title: FortuneTr.msgPrivacyPolicy,
         ),
-        child: const _NoticesPage(),
+        child: const _PrivacyPolicyPage(),
       ),
     );
   }
 }
 
-class _NoticesPage extends StatefulWidget {
-  const _NoticesPage({Key? key}) : super(key: key);
+class _PrivacyPolicyPage extends StatefulWidget {
+  const _PrivacyPolicyPage({Key? key}) : super(key: key);
 
   @override
-  State<_NoticesPage> createState() => _NoticesPageState();
+  State<_PrivacyPolicyPage> createState() => _PrivacyPolicyPageState();
 }
 
-class _NoticesPageState extends State<_NoticesPage> {
-  late final NoticesBloc _bloc;
+class _PrivacyPolicyPageState extends State<_PrivacyPolicyPage> {
+  late final PrivacyPolicyBloc _bloc;
   final router = serviceLocator<FortuneRouter>().router;
 
   @override
   void initState() {
     super.initState();
-    _bloc = BlocProvider.of<NoticesBloc>(context);
+    _bloc = BlocProvider.of<PrivacyPolicyBloc>(context);
   }
 
   @override
@@ -55,13 +55,13 @@ class _NoticesPageState extends State<_NoticesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<NoticesBloc, NoticesSideEffect>(
+    return BlocSideEffectListener<PrivacyPolicyBloc, PrivacyPolicySideEffect>(
       listener: (context, sideEffect) {
-        if (sideEffect is NoticesError) {
+        if (sideEffect is PrivacyPolicyError) {
           dialogService.showErrorDialog(context, sideEffect.error);
         }
       },
-      child: BlocBuilder<NoticesBloc, NoticesState>(
+      child: BlocBuilder<PrivacyPolicyBloc, PrivacyPolicyState>(
         builder: (context, state) {
           return Skeleton(
             isLoading: state.isLoading,

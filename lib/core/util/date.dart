@@ -18,10 +18,14 @@ abstract class FortuneDateExtension {
   }
 
   static String formattedDate(
-    String time, {
+    String? time, {
     String format = 'yyyy.MM.dd',
   }) {
-    DateTime parsedDate = DateTime.parse(time);
-    return DateFormat(format).format(parsedDate);
+    if (time != null) {
+      DateTime parsedDate = DateTime.parse(time);
+      return DateFormat(format).format(parsedDate);
+    } else {
+      return '';
+    }
   }
 }

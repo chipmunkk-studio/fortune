@@ -80,7 +80,7 @@ class _LoginPageState extends State<_LoginPage> {
             isDismissible: false,
             content: (context) => AgreeTermsBottomSheet(sideEffect.phoneNumber),
           );
-          if (result) {
+          if (result != null && result) {
             _bloc.add(LoginRequestVerifyCode());
           }
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
