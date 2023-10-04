@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
-import 'package:appmetrica_plugin/appmetrica_plugin.dart' as appmetrica;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,7 +91,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     super.initState();
     fToast.init(context);
     WidgetsBinding.instance.addObserver(this);
-    appmetrica.AppMetrica.reportEvent('메인 화면');
     _bloc = BlocProvider.of<MainBloc>(context);
     _loadRewardedAd();
   }
@@ -453,6 +451,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             arguments: IngredientActionParam(
               ingredient: data.ingredient,
               ad: _bloc.state.rewardAd,
+              user: _bloc.state.user,
               isShowAd: isShowAd,
             ),
           ),

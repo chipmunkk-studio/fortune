@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
-import 'package:fortune/di.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/util/logger.dart';
@@ -25,7 +23,7 @@ enum EnvKey {
   mapAccessToken,
   mapStyleId,
   mapUrlTemplate,
-  appMetrica,
+  mixpanelToken,
   randomDistance,
   twilioTestAccountEmail,
   twilioTestPassword,
@@ -42,7 +40,7 @@ class FortuneRemoteConfig {
   final String mapAccessToken;
   final String mapStyleId;
   final String mapUrlTemplate;
-  final String appMetricaKey;
+  final String mixpanelToken;
   final String twilioTestAccountEmail;
   final String twilioTestPassword;
   final String twilioTestPhoneNumber;
@@ -57,7 +55,7 @@ class FortuneRemoteConfig {
     required this.mapAccessToken,
     required this.mapStyleId,
     required this.mapUrlTemplate,
-    required this.appMetricaKey,
+    required this.mixpanelToken,
     required this.anonKey,
     required this.randomDistance,
     required this.markerCount,
@@ -76,7 +74,7 @@ class FortuneRemoteConfig {
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
         "forceDevelopServer: $forceDevelopServer,\n"
-        "appMetricaKey: $appMetricaKey\n"
+        "mixpanelToken: $mixpanelToken\n"
         "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
@@ -139,9 +137,6 @@ class Environment {
       }
     }
 
-    /// 앱메트리카.
-    AppMetrica.activate(AppMetricaConfig(remoteConfig.appMetricaKey));
-
     FortuneLogger.info(
       "buildType: $buildType,\n"
       "--------------configArgs--------------"
@@ -166,7 +161,7 @@ getRemoteConfigArgs() async {
 
   try {
     await remoteConfig.fetchAndActivate();
-    final metricaKey = remoteConfig.getString(describeEnum(EnvKey.appMetrica));
+    final mixpanelToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelToken));
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
@@ -203,7 +198,7 @@ getRemoteConfigArgs() async {
 
     return FortuneRemoteConfig(
       baseUrl: baseUrl,
-      appMetricaKey: metricaKey,
+      mixpanelToken: mixpanelToken,
       mapAccessToken: mapAccessToken,
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,

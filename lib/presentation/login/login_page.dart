@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +57,6 @@ class _LoginPageState extends State<_LoginPage> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('로그인 화면');
     _bloc = BlocProvider.of<LoginBloc>(context);
   }
 

@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -46,7 +45,6 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('약관 동의 화면');
     _bloc = BlocProvider.of<AgreeTermsBloc>(context);
   }
 

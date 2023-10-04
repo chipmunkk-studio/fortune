@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
@@ -23,10 +22,8 @@ class SignUpOrInUseCase implements UseCase1<void, RequestSignUpParam> {
     try {
       final user = await userRepository.findUserByPhone(param.phoneNumber);
       if (user != null) {
-        AppMetrica.reportEvent('가입된 사용자');
         await authRepository.signInWithOtp(phoneNumber: param.phoneNumber);
       } else {
-        AppMetrica.reportEvent('미가입 사용자');
         await authRepository.signUp(
           phoneNumber: param.phoneNumber,
           countryInfoId: param.countryInfoId,

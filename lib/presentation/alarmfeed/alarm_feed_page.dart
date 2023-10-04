@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -44,7 +43,6 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('알림피드 진입');
     _bloc = BlocProvider.of<AlarmFeedBloc>(context);
   }
 

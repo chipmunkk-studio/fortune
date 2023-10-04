@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -80,7 +79,6 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('권한 요청');
     _bloc = BlocProvider.of<RequestPermissionBloc>(context);
   }
 
@@ -95,10 +93,8 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
     return BlocSideEffectListener<RequestPermissionBloc, RequestPermissionSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is RequestPermissionStart) {
-          AppMetrica.reportEvent('권한 요청 시작');
           FortunePermissionUtil.requestPermission(_bloc.state.permissions);
         } else if (sideEffect is RequestPermissionFail) {
-          AppMetrica.reportEvent('권한 요청 팝업');
           dialogService.showFortuneDialog(
             context,
             title: FortuneTr.msgRequirePermissionTitle,

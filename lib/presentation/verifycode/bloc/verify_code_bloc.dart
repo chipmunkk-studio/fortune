@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
@@ -93,7 +92,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     ).then(
       (value) => value.fold((l) {
         emit(state.copyWith(isLoginProcessing: false));
-        AppMetrica.reportEventWithJson('인증 실패', jsonEncode(l.toJsonMap()));
         produceSideEffect(VerifyCodeError(l));
       }, (r) async {
         // 탈퇴 처리 된 회원인 경우 철회 함.

@@ -78,6 +78,7 @@ import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -174,7 +175,16 @@ initEnvironment() async {
     remoteConfig: await getRemoteConfigArgs(),
   )..init();
 
+  /// 믹스패널 추가.
+  final mixpanel = await Mixpanel.init(
+    environment.remoteConfig.mixpanelToken,
+    trackAutomaticEvents: true,
+  );
+
+  mixpanel.setLoggingEnabled(true);
+
   serviceLocator.registerLazySingleton<Environment>(() => environment);
+  serviceLocator.registerLazySingleton<Mixpanel>(() => mixpanel);
 }
 
 /// FCM
@@ -267,6 +277,7 @@ _initRepository() {
       () => UserRepositoryImpl(
         serviceLocator<UserService>(),
         serviceLocator<LocalDataSource>(),
+        serviceLocator<Mixpanel>(),
       ),
     )
     ..registerLazySingleton<LocalRepository>(
@@ -320,6 +331,7 @@ _initRepository() {
       () => AuthRepositoryImpl(
         serviceLocator<AuthService>(),
         serviceLocator<UserService>(),
+        serviceLocator<Mixpanel>(),
       ),
     );
 }

@@ -22,10 +22,10 @@ dependencies:
   firebase_analytics: ^10.5.0
   firebase_crashlytics: ^3.3.6
   firebase_messaging: ^14.6.8
-  supabase: ^1.11.5
-  supabase_flutter: ^1.10.18
+  supabase: ^1.11.6
+  supabase_flutter: ^1.10.19
   app_settings: ^5.1.1
-  appmetrica_plugin: ^1.4.0
+  mixpanel_flutter: ^2.1.1
   package_info_plus: ^4.1.0
   flutter_local_notifications: ^15.1.1
   flutter_launcher_icons: ^0.13.1
