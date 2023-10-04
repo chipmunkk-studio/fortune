@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class IngredientActionParam {
   final IngredientEntity ingredient;
   final RewardedAd? ad;
   final bool isShowAd;
+  final FortuneUserEntity? user;
 
   IngredientActionParam({
     required this.ingredient,
     required this.ad,
     required this.isShowAd,
+    required this.user,
   });
 
   factory IngredientActionParam.empty() => IngredientActionParam(
         ingredient: IngredientEntity.empty(),
+        user: FortuneUserEntity.empty(),
         ad: null,
         isShowAd: false,
       );
@@ -55,6 +61,7 @@ class _IngredientActionPage extends StatefulWidget {
 
 class _IngredientActionPageState extends State<_IngredientActionPage> {
   final _router = serviceLocator<FortuneRouter>().router;
+  final Mixpanel _mixpanel = serviceLocator<Mixpanel>();
 
   late IngredientActionBloc _bloc;
 
@@ -80,6 +87,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 if (ad != null && sideEffect.param.isShowAd) {
                   ad.show(
                     onUserEarnedReward: (_, reward) {
+                      _mixpanel.trackEvent('광고 보기 완료', properties: {
+                        'phone': sideEffect.param.user?.phone,
+                      });
                       FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
                       _bloc.add(IngredientActionShowAdCounting());
                     },

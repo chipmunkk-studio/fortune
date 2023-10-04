@@ -1,4 +1,3 @@
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +54,6 @@ class _CountryCodePageState extends State<_CountryCodePage> {
 
   @override
   void initState() {
-    AppMetrica.reportEvent('국가코드 입력 화면');
     _bloc = BlocProvider.of<CountryCodeBloc>(context);
     _controller = AutoScrollController(
       viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),

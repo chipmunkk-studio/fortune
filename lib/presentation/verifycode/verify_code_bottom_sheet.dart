@@ -1,5 +1,4 @@
 import 'package:alt_sms_autofill/alt_sms_autofill.dart';
-import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -58,7 +57,6 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   @override
   void initState() {
     super.initState();
-    AppMetrica.reportEvent('인증번호 요청 바텀시트');
     _bloc = BlocProvider.of<VerifyCodeBloc>(context);
   }
 
