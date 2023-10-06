@@ -61,7 +61,7 @@ class _IngredientActionPage extends StatefulWidget {
 
 class _IngredientActionPageState extends State<_IngredientActionPage> {
   final _router = serviceLocator<FortuneRouter>().router;
-  final Mixpanel _mixpanel = serviceLocator<Mixpanel>();
+  final MixpanelTracker _mixpanelTracker = serviceLocator<MixpanelTracker>();
 
   late IngredientActionBloc _bloc;
 
@@ -87,7 +87,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 if (ad != null && sideEffect.param.isShowAd) {
                   ad.show(
                     onUserEarnedReward: (_, reward) {
-                      _mixpanel.trackEvent('광고 보기 완료', properties: {
+                      _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
                         'phone': sideEffect.param.user?.phone,
                       });
                       FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");

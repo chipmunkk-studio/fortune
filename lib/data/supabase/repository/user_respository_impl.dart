@@ -7,19 +7,18 @@ import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
-import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserService _userService;
   final LocalDataSource _localDataSource;
-  final supabaseClient = Supabase.instance.client;
-  final Mixpanel _mixpanel;
+  final MixpanelTracker _mixpanelTracker;
+  final _supabaseClient = Supabase.instance.client;
 
   UserRepositoryImpl(
     this._userService,
     this._localDataSource,
-    this._mixpanel,
+    this._mixpanelTracker,
   );
 
   // 휴대폰 번호로 현재 사용자 찾기.
@@ -120,8 +119,8 @@ class UserRepositoryImpl extends UserRepository {
           isWithdrawal: true,
         ),
       );
-      await supabaseClient.auth.signOut();
-      _mixpanel.trackEvent('회원 탈퇴', properties: {'phone': user.phone});
+      await _supabaseClient.auth.signOut();
+      _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'phone': user.phone});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,
@@ -142,7 +141,7 @@ class UserRepositoryImpl extends UserRepository {
         ),
         isCancelWithdrawal: true,
       );
-      _mixpanel.trackEvent('회원 탈퇴 철회', properties: {'phone': user.phone});
+      _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'phone': user.phone});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,

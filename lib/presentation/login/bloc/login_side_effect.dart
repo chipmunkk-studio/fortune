@@ -56,3 +56,10 @@ class LoginWithdrawalUser extends LoginSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+class LoginNotSupportWeb extends LoginSideEffect {
+  LoginNotSupportWeb();
+
+  @override
+  List<Object?> get props => [];
+}

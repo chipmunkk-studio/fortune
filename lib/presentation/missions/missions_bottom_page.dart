@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
@@ -8,6 +9,7 @@ import 'package:fortune/presentation/fortune_router.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/component/mission_card_list.dart';
 import 'package:fortune/presentation/missions/component/missions_skeleton.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -75,6 +77,27 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                     FortuneTr.msgMissionReward,
                     style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                   ),
+                ),
+                const SizedBox(height: 8),
+                BlocBuilder<MissionsBloc, MissionsState>(
+                  buildWhen: (previous, current) => previous.ad != current.ad,
+                  builder: (context, state) {
+                    final ad = state.ad;
+                    return ad != null
+                        ? Align(
+                            alignment: Alignment.topCenter,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.r),
+                                color: ColorName.grey700,
+                              ),
+                              width: state.ad?.size.width.toDouble(),
+                              height: state.ad?.size.height.toDouble(),
+                              child: AdWidget(ad: state.ad!),
+                            ),
+                          )
+                        : Container();
+                  },
                 ),
                 const SizedBox(height: 20),
                 Padding(
