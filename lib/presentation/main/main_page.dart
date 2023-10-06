@@ -151,7 +151,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             fToast.showToast(
               child: fortuneToastContent(
                 icon: Assets.icons.icCheckCircleFill24.svg(),
-                content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.name),
+                content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.exposureName),
               ),
               positionedToastBuilder: (context, child) => Positioned(
                 bottom: 40,

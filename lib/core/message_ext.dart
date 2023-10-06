@@ -17,6 +17,22 @@ abstract class FortuneTr {
 
   static String msgCollectingMarker(String marker) => tr('msgCollectingMarker', args: [marker]);
 
+  static String msgDaysAgo(String day) => tr('msgDaysAgo', args: [day]);
+
+  static String msgHoursAgo(String hour) => tr('msgHoursAgo', args: [hour]);
+
+  static String msgMinutesAgo(String minute) => tr('msgMinutesAgo', args: [minute]);
+
+  static String msgJustNow() => tr('msgJustNow');
+
+
+  static String msgAcquireMarker(
+    String nickname,
+    String location,
+    String ingredientName,
+  ) =>
+      tr('msgAcquireMarker', args: [nickname, location, ingredientName]);
+
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
   static final notExistTerms = tr('msgNotExistTerms');

@@ -4,7 +4,6 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
-import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
@@ -88,7 +87,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             ingredientId: marker.ingredient.id,
             nickName: prevUser.nickname,
             locationName: param.kLocation,
-            ingredientName: param.marker.ingredient.name,
+            krIngredientName: param.marker.ingredient.krName,
+            enIngredientName: param.marker.ingredient.enName,
           ),
         )
             .then(
@@ -136,7 +136,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             ingredientId: ingredient.id,
             userId: user.id,
             nickName: user.nickname,
-            ingredientName: ingredient.name,
+            enIngredientName: ingredient.enName,
+            krIngredientName: ingredient.krName,
             isReward: true,
           ),
         );

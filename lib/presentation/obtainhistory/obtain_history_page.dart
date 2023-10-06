@@ -69,6 +69,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
         }
       },
       child: FortuneScaffold(
+        padding: EdgeInsets.zero,
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 65),
           child: SafeArea(
@@ -96,14 +97,22 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
           buildWhen: (previous, current) => previous.histories != current.histories,
           builder: (context, state) {
             return Skeleton(
-              skeleton: const ObtainHistorySkeleton(),
+              skeleton: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: ObtainHistorySkeleton(),
+              ),
               isLoading: state.isLoading,
               child: state.histories.isNotEmpty
                   ? ListView.separated(
                       controller: _scrollController,
                       physics: const BouncingScrollPhysics(),
                       itemCount: state.histories.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 20),
+                      padding: const EdgeInsets.only(top: 16),
+                      separatorBuilder: (context, index) => const Divider(
+                        height: 36,
+                        thickness: 0.5,
+                        color: ColorName.grey700,
+                      ),
                       itemBuilder: (context, index) {
                         final item = state.histories[index];
                         if (item is ObtainHistoryContentViewItem) {
