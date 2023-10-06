@@ -151,13 +151,13 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle caption2Regular({Color? fontColor}) {
+  static TextStyle caption2Regular({Color? color}) {
     return TextStyle(
       fontSize: 14.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardRegular,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 

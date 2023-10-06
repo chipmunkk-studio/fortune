@@ -24,7 +24,8 @@ class ObtainHistoryService {
           .select(_fullSelectQuery)
           .or(
             'location_name.ilike.$convertedQuery, '
-            'ingredient_name.ilike.$convertedQuery, '
+            'kr_ingredient_name.ilike.$convertedQuery, '
+            'en_ingredient_name.ilike.$convertedQuery, '
             'marker_id.ilike.$convertedQuery, '
             'nickname.ilike.$convertedQuery',
           )

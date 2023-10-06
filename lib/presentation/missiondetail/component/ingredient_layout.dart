@@ -129,7 +129,7 @@ class IngredientLayout extends StatelessWidget {
             children: [
               SizedBox(height: 8.h),
               Text(
-                item.ingredient.name.isEmpty ? '-' : item.ingredient.name,
+                item.ingredient.exposureName.isEmpty ? '-' : item.ingredient.exposureName,
                 textAlign: TextAlign.center,
                 style: FortuneTextStyle.body3Light(),
               )

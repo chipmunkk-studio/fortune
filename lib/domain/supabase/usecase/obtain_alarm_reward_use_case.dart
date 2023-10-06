@@ -35,7 +35,8 @@ class ObtainAlarmRewardUseCase implements UseCase1<void, int> {
           ingredientId: reward.ingredients.id,
           userId: reward.user.id,
           nickName: reward.user.nickname,
-          ingredientName: reward.ingredients.name,
+          krIngredientName: reward.ingredients.krName,
+          enIngredientName: reward.ingredients.enName,
           isReward: true,
         ),
       );

@@ -12,6 +12,7 @@ class ExchangeBottom extends StatelessWidget {
   const ExchangeBottom({
     super.key,
     required this.user,
+    required this.isButtonEnabled,
     required this.onExchangeClick,
     required this.entity,
   });
@@ -19,6 +20,7 @@ class ExchangeBottom extends StatelessWidget {
   final Function0 onExchangeClick;
   final MissionRewardEntity entity;
   final FortuneUserEntity user;
+  final bool isButtonEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class ExchangeBottom extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           FortuneScaleButton(
-            isEnabled: true,
+            isEnabled: isButtonEnabled,
             onPress: onExchangeClick,
             text: FortuneTr.msgExchange,
           ),

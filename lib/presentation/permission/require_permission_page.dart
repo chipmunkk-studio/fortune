@@ -131,7 +131,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
           const SizedBox(height: 40),
           Text(
             FortuneTr.msgRequirePermissionContent,
-            style: FortuneTextStyle.body3Light(color: ColorName.grey200),
+            style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
           ),
           const Spacer(),
           FortuneScaleButton(

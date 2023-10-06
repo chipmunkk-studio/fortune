@@ -32,7 +32,9 @@ class IngredientResponse extends IngredientEntity {
     required this.distance_,
   }) : super(
           id: id_.toInt(),
-          name: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
+          exposureName: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
+          krName: krName_ ?? '',
+          enName: enName_ ?? '',
           imageUrl: imageUrl_,
           rewardTicket: rewardTicket_,
           type: getIngredientType(type_),

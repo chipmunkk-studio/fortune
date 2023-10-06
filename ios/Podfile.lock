@@ -5,9 +5,6 @@ PODS:
     - Flutter
   - app_settings (5.1.1):
     - Flutter
-  - appmetrica_plugin (1.4.0):
-    - Flutter
-    - YandexMobileMetrica (~> 4.4)
   - device_info_plus (0.0.1):
     - Flutter
   - Firebase/Analytics (10.15.0):
@@ -26,22 +23,22 @@ PODS:
   - Firebase/RemoteConfig (10.15.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.15.0)
-  - firebase_analytics (10.5.0):
+  - firebase_analytics (10.5.1):
     - Firebase/Analytics (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.16.0):
+  - firebase_core (2.17.0):
     - Firebase/CoreOnly (= 10.15.0)
     - Flutter
-  - firebase_crashlytics (3.3.6):
+  - firebase_crashlytics (3.3.7):
     - Firebase/Crashlytics (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.6.8):
+  - firebase_messaging (14.6.9):
     - Firebase/Messaging (= 10.15.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (4.2.6):
+  - firebase_remote_config (4.2.7):
     - Firebase/RemoteConfig (= 10.15.0)
     - firebase_core
     - Flutter
@@ -183,6 +180,12 @@ PODS:
     - Flutter
   - location (0.0.1):
     - Flutter
+  - Mixpanel-swift (4.1.0):
+    - Mixpanel-swift/Complete (= 4.1.0)
+  - Mixpanel-swift/Complete (4.1.0)
+  - mixpanel_flutter (2.1.1):
+    - Flutter
+    - Mixpanel-swift (= 4.1.0)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -211,20 +214,11 @@ PODS:
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
-  - YandexMobileMetrica (4.5.2):
-    - YandexMobileMetrica/Static (= 4.5.2)
-  - YandexMobileMetrica/Static (4.5.2):
-    - YandexMobileMetrica/Static/Core (= 4.5.2)
-    - YandexMobileMetrica/Static/Crashes (= 4.5.2)
-  - YandexMobileMetrica/Static/Core (4.5.2)
-  - YandexMobileMetrica/Static/Crashes (4.5.2):
-    - YandexMobileMetrica/Static/Core
 
 DEPENDENCIES:
   - alt_sms_autofill (from `.symlinks/plugins/alt_sms_autofill/ios`)
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
-  - appmetrica_plugin (from `.symlinks/plugins/appmetrica_plugin/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -243,6 +237,7 @@ DEPENDENCIES:
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - location (from `.symlinks/plugins/location/ios`)
+  - mixpanel_flutter (from `.symlinks/plugins/mixpanel_flutter/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -270,12 +265,12 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUserMessagingPlatform
     - GoogleUtilities
+    - Mixpanel-swift
     - nanopb
     - PromisesObjC
     - PromisesSwift
     - Toast
     - TOCropViewController
-    - YandexMobileMetrica
 
 EXTERNAL SOURCES:
   alt_sms_autofill:
@@ -284,8 +279,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_links/ios"
   app_settings:
     :path: ".symlinks/plugins/app_settings/ios"
-  appmetrica_plugin:
-    :path: ".symlinks/plugins/appmetrica_plugin/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
@@ -322,6 +315,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
+  mixpanel_flutter:
+    :path: ".symlinks/plugins/mixpanel_flutter/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -343,14 +338,13 @@ SPEC CHECKSUMS:
   alt_sms_autofill: 6c623529a8de6a2a9297358bdb7dab3d8ad693e4
   app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
-  appmetrica_plugin: b0478d4c863b48972294e26a2d5d1db8d30a9a2d
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
-  firebase_analytics: 84fbf469b4964adb5410e25f3f45433dac480ccf
-  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
-  firebase_crashlytics: 4365238d33a7a43164f1049f892365de4aee999f
-  firebase_messaging: 6aff54d420b7ce7080c26dd131b08bc632666852
-  firebase_remote_config: 1c6248049dbcb610764f5ccf567674b2ebb20813
+  firebase_analytics: f153c564d6a7675e56e4f171454b9f1b3e7b6601
+  firebase_core: 28e84c2a4fcf6a50ef83f47b145ded8c1fa331e4
+  firebase_crashlytics: 36b8a72e23437dbb69bd97102661ce31b6721be5
+  firebase_messaging: 91ec967913a5d144f951b3c3ac17a57796d38735
+  firebase_remote_config: bcb36b69fdcb50397341c9d1c220a2a35fbd6c21
   FirebaseABTesting: 7fa3bca17f79ac433301d20d5cd33401f7738dca
   FirebaseAnalytics: 47cef43728f81a839cf1306576bdd77ffa2eac7e
   FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
@@ -378,6 +372,8 @@ SPEC CHECKSUMS:
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   location: d5cf8598915965547c3f36761ae9cc4f4e87d22e
+  Mixpanel-swift: 7b46c63259dec8398a7df9f8a1298fd00b6b3cb3
+  mixpanel_flutter: a530f9f27534f3c96a074e483ee425387f524e1c
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
@@ -391,7 +387,6 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
-  YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
 
 PODFILE CHECKSUM: 401775a9764d6403815d974e7bfe2ad493c581e5
 

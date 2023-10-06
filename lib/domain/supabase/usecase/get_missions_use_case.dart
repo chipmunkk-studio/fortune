@@ -57,14 +57,21 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
         },
       );
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
-      // 아이템 정렬.
+
       missionViewItems.sort((a, b) {
+        // 1순위: userHaveCount가 requiredTotalCount보다 크거나 같은 경우
         if (a.userHaveCount >= a.requiredTotalCount && b.userHaveCount < b.requiredTotalCount) {
-          return -1;
+          return -1; // a가 앞으로
         } else if (b.userHaveCount >= b.requiredTotalCount && a.userHaveCount < a.requiredTotalCount) {
-          return 1;
+          return 1; // b가 앞으로
         } else {
-          return 0;
+          // 2순위: userHaveCount 기준으로 내림차순 정렬
+          if (a.userHaveCount != b.userHaveCount) {
+            return b.userHaveCount.compareTo(a.userHaveCount);
+          } else {
+            // 3순위: requiredTotalCount 기준으로 오름차순 정렬
+            return a.requiredTotalCount.compareTo(b.requiredTotalCount);
+          }
         }
       });
       return Right(missionViewItems);
