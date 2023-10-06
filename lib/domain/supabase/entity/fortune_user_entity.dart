@@ -1,3 +1,4 @@
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
@@ -69,7 +70,7 @@ class FortuneUserEntity {
     return FortuneUserEntity(
       id: -1,
       phone: '',
-      nickname: '',
+      nickname: FortuneTr.msgUnknownUser,
       profileImage: '',
       isWithdrawal: false,
       pushToken: '',
