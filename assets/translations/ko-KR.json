@@ -118,6 +118,7 @@
   "msgCurrentGradeSuffix": "입니다",
   "msgRewardPreparation": "보상 준비 중",
   "msgUntilNextLevel": "다음 레벨까지",
+  "msgNoMarkers": "아직 수집한 마커가 없네요!\n맵에서 새로운 마커를 획득해보세요.",
   "msgNumberPrefix": "번",
   "msgMarkerRequirement": "의 마커 획득이 필요해요",
   "msgNumberItems": "개",

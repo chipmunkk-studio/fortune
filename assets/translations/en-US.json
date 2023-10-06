@@ -98,6 +98,7 @@
   "msgUseNextTime": "Try again in a bit.",
   "msgRevokeWithdrawal": "Want to undo the withdrawal?",
   "msgAlreadyWithdrawn": "You've already left our service.",
+  "msgNoMarkers": "You haven't collected any markers yet!\nTry obtaining new markers from the map.",
   "msgMissionCompleted": "Mission accomplished!",
   "msgPaymentDelay": "Rewards processing may take some time. Thank you for your patience.",
   "msgConfirmWithdrawal": "Really want to leave?",
