@@ -112,6 +112,14 @@ class _LoginPageState extends State<_LoginPage> {
               btnOkPressed: () {},
             );
           }
+        } else if (sideEffect is LoginNotSupportWeb) {
+          dialogService.showFortuneDialog(
+            context,
+            subTitle: FortuneTr.msgNoWebSupport,
+            dismissOnBackKeyPress: false,
+            dismissOnTouchOutside: false,
+            btnOkPressed: () => _bloc.add(LoginInit(LoginUserState.web)),
+          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

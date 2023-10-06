@@ -79,6 +79,7 @@
   "msgRequireVerifyCodeReceive": "Resend code.",
   "msgCollectingMarker": "Gathering up some {}...",
   "msgRequireVerifySixNumber": "Enter the 6-digit code.",
+  "msgNoWebSupport": "Fortune does not support web services",
   "msgUnknownUser": "Unknown User",
   "msgRequireVerifySixNumberContent": "Verification code is 6 characters long.",
   "historyFortuneSpot": "History",

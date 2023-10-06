@@ -94,6 +94,7 @@ abstract class FortuneTr {
   static final msgRewardExhausted = tr('msgRewardExhausted');
   static final msgRemainingReward = tr('msgRemainingReward');
   static final msgUnknownUser = tr('msgUnknownUser');
+  static final msgNoWebSupport = tr('msgNoWebSupport');
   static final msgExchange = tr('msgExchange');
   static final msgRewardRedemptionNotice = tr('msgRewardRedemptionNotice');
   static final msgCongratsMissionCompleted = tr('msgCongratsMissionCompleted');

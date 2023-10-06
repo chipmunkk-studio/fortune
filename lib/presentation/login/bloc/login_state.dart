@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -28,6 +29,7 @@ class LoginState with _$LoginState {
 
 enum LoginUserState {
   needToLogin,
+  web,
   none,
 }
 

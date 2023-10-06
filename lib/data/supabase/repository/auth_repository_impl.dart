@@ -6,18 +6,17 @@ import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:fortune/domain/supabase/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
-import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:supabase/supabase.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthService _authService;
   final UserService _userService;
-  final Mixpanel _mixpanel;
+  final MixpanelTracker _mixpanelTracker;
 
   AuthRepositoryImpl(
     this._authService,
     this._userService,
-    this._mixpanel,
+    this._mixpanelTracker,
   );
 
   // 휴대폰 번호로 로그인 요청.
@@ -49,7 +48,7 @@ class AuthRepositoryImpl extends AuthRepository {
       final response = await _authService.signUp(
         phoneNumber: phoneNumber,
       );
-      _mixpanel.trackEvent('회원 가입', properties: {'phone': phoneNumber});
+      _mixpanelTracker.trackEvent('회원 가입', properties: {'phone': phoneNumber});
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
