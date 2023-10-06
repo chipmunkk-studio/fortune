@@ -49,8 +49,8 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
         );
       });
 
-      final histories = await Future.wait(historiesFutures);
-      final totalCount = histories.map((e) => e.histories.length).reduce((a, b) => a + b);
+      final histories = (await Future.wait(historiesFutures)).where((element) => element.histories.isNotEmpty).toList();
+      final totalCount = histories.isNotEmpty ? histories.map((e) => e.histories.length).reduce((a, b) => a + b) : 0;
 
       final entity = MyIngredientsViewEntity(
         histories: histories,

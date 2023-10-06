@@ -108,6 +108,7 @@ abstract class FortuneTr {
   static final msgMissionGuide = tr('msgMissionGuide');
   static final msgRewardGuide = tr('msgRewardGuide');
   static final msgCaution = tr('msgCaution');
+  static final msgNoMarkers = tr('msgNoMarkers');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');
