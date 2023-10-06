@@ -110,9 +110,13 @@ class NormalMission extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
           child: FortuneScaleButton(
-            isEnabled: state.isEnableButton,
+            isEnabled: true,
             text: FortuneTr.msgExchange,
-            onPress: () => _showExchangeBottomSheet(context, state.entity),
+            onPress: () => _showExchangeBottomSheet(
+              context,
+              entity: state.entity,
+              isEnableButton: state.isEnableButton,
+            ),
           ),
         ),
       ],
@@ -139,12 +143,17 @@ class NormalMission extends StatelessWidget {
     );
   }
 
-  _showExchangeBottomSheet(BuildContext context, MissionDetailEntity entity) {
+  _showExchangeBottomSheet(
+    BuildContext context, {
+    required MissionDetailEntity entity,
+    required bool isEnableButton,
+  }) {
     context.showFortuneBottomSheet(
       content: (context) {
         return ExchangeBottom(
           onExchangeClick: onExchangeClick,
           entity: entity.mission.missionReward,
+          isButtonEnabled: isEnableButton,
           user: entity.user,
         );
       },
