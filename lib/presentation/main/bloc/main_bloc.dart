@@ -189,10 +189,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final isShowAd = await getShowAdUseCase().then((value) => value.getOrElse(() => false));
 
     // 거리가 모자랄 경우
-    // if (event.distance > 0) {
-    //   add(MainRequireInCircleMetersEvent(distance));
-    //   return;
-    // }
+    if (event.distance > 0) {
+      add(MainRequireInCircleMetersEvent(distance));
+      return;
+    }
 
     // 다이얼로그 노출.
     produceSideEffect(

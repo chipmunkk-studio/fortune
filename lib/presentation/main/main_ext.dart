@@ -3,10 +3,9 @@ import 'dart:math' as math;
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/linear_bounce_animation.dart';
+import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -41,9 +40,10 @@ extension FortuneMapDataConverter on List<MainLocationData> {
     Function2<MainLocationData, GlobalKey, void> onMarkerClick,
   ) {
     return map((e) {
+      final isCoinMarker = e.ingredient.type == IngredientType.coin;
       return Marker(
-        width: 64,
-        height: 64,
+        width: isCoinMarker ? 52 : 80,
+        height: isCoinMarker ? 52 : 80,
         point: LatLng(
           e.location.latitude,
           e.location.longitude,
