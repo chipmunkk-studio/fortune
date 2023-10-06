@@ -29,7 +29,7 @@ class NormalMission extends StatelessWidget {
           child: Stack(
             children: [
               ListView(
-                physics: const ClampingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -48,22 +48,42 @@ class NormalMission extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   IngredientLayout(state.entity.markers),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 44),
+                  const Divider(height: 16, thickness: 16, color: ColorName.grey800),
+                  const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(FortuneTr.msgMissionGuide, style: FortuneTextStyle.body2Semibold()),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
                       state.entity.mission.note,
-                      style: FortuneTextStyle.body1Semibold(fontColor: ColorName.grey200),
+                      style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(FortuneTr.msgRewardGuide, style: FortuneTextStyle.body2Semibold()),
+                  ),
+                  const SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.missionReward.note,
-                      style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+                      style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(FortuneTr.msgCaution, style: FortuneTextStyle.body2Semibold()),
+                  ),
+                  const SizedBox(height: 12),
+                  _buildCaution(),
+                  const SizedBox(height: 40),
                 ],
               ),
               Positioned(
@@ -96,6 +116,26 @@ class NormalMission extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  // 주의 사항.
+  Padding _buildCaution() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            FortuneTr.msgMissionEarlyEnd,
+            style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+          ),
+          Text(
+            FortuneTr.msgUnfairParticipation,
+            style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+          ),
+        ],
+      ),
     );
   }
 
