@@ -33,6 +33,8 @@ class _SupportCardState extends State<SupportCard> {
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: ExpansionTile(
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        expandedAlignment: Alignment.centerLeft,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +76,8 @@ class _SupportCardState extends State<SupportCard> {
             ),
             child: Text(
               widget.content,
-              style: FortuneTextStyle.body3Semibold(),
+              style: FortuneTextStyle.body3Light(),
+              textAlign: TextAlign.start,
             ),
           ),
           const SizedBox(height: 20),
