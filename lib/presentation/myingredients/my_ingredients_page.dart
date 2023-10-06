@@ -132,7 +132,7 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
                 style: FortuneTextStyle.body3Light(),
               ),
               Text(
-                selectedItem.ingredient.name,
+                selectedItem.ingredient.exposureName,
                 style: FortuneTextStyle.body3Light(),
               ),
               Text(

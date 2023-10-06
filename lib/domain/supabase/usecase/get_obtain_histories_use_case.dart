@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -26,7 +27,7 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingView
               markerId: e.markerId,
               user: e.user,
               ingredient: e.ingredient,
-              createdAt: e.createdAt,
+              createdAt: FortuneDateExtension.convertTimeAgo(e.createdAt),
               ingredientName: e.ingredientName,
               locationName: e.locationName,
               nickName: e.nickName,

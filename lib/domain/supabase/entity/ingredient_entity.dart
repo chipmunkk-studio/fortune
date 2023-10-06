@@ -2,7 +2,9 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 
 class IngredientEntity {
   final int id;
-  final String name;
+  final String exposureName;
+  final String krName;
+  final String enName;
   final String imageUrl;
   final int rewardTicket;
   final IngredientType type;
@@ -10,17 +12,21 @@ class IngredientEntity {
 
   IngredientEntity({
     required this.id,
-    required this.name,
+    required this.exposureName,
     required this.imageUrl,
     required this.type,
     required this.rewardTicket,
     required this.distance,
+    required this.krName,
+    required this.enName,
   });
 
   factory IngredientEntity.empty() {
     return IngredientEntity(
       id: -1,
-      name: '',
+      exposureName: '',
+      krName: '',
+      enName: '',
       imageUrl: '',
       rewardTicket: 0,
       type: IngredientType.coin,

@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/response/ingredient_response.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
@@ -17,8 +18,10 @@ class ObtainHistoryResponse extends ObtainHistoryEntity {
   final String? markerId_;
   @JsonKey(name: 'nickname')
   final String nickName_;
-  @JsonKey(name: 'ingredient_name')
-  final String ingredientName_;
+  @JsonKey(name: 'kr_ingredient_name')
+  final String? krIngredientName_;
+  @JsonKey(name: 'en_ingredient_name')
+  final String? enIngredientName_;
   @JsonKey(name: 'location_name')
   final String? locationName_;
   @JsonKey(name: 'is_reward')
@@ -33,7 +36,8 @@ class ObtainHistoryResponse extends ObtainHistoryEntity {
     required this.ingredient_,
     required this.createdAt_,
     required this.nickName_,
-    required this.ingredientName_,
+    required this.krIngredientName_,
+    required this.enIngredientName_,
     required this.locationName_,
     required this.isReward_,
   }) : super(
@@ -42,7 +46,7 @@ class ObtainHistoryResponse extends ObtainHistoryEntity {
           user: user_,
           ingredient: ingredient_,
           locationName: locationName_ ?? '',
-          ingredientName: ingredientName_,
+          ingredientName: getLocaleContent(en: enIngredientName_ ?? '', kr: krIngredientName_ ?? ''),
           nickName: nickName_,
           isReward: isReward_,
           createdAt: createdAt_,

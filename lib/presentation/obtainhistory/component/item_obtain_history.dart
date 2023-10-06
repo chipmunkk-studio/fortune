@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
-import 'package:fortune/presentation/fortune_ext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ItemObtainHistory extends StatelessWidget {
@@ -19,36 +21,56 @@ class ItemObtainHistory extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
-        color: ColorName.grey800,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 21),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
         children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(item.ingredient.name, style: FortuneTextStyle.body1Semibold()),
-                const SizedBox(height: 6),
-                Text(
-                  item.locationName,
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey200),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomPaint(
+                painter: SquirclePainter(color: ColorName.grey800),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: item.ingredient.imageUrl.isEmpty
+                      ? Assets.icons.icLock.svg(
+                          width: 24,
+                          height: 24,
+                        )
+                      : FadeInImage.memoryNetwork(
+                          width: 24,
+                          height: 24,
+                          placeholder: kTransparentImage,
+                          image: item.ingredient.imageUrl,
+                        ),
                 ),
-              ],
-            ),
-          ),
-          SizedBox.square(
-            dimension: 60,
-            child: ClipOval(
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: item.ingredient.imageUrl.isEmpty ? transparentImageUrl : item.ingredient.imageUrl,
               ),
-            ),
+              const SizedBox(width: 12),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(child: Text(item.ingredientName, style: FortuneTextStyle.body1Semibold())),
+                        const SizedBox(width: 8),
+                        Text(
+                          item.createdAt,
+                          style: FortuneTextStyle.caption2Regular(color: ColorName.grey200),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      FortuneTr.msgAcquireMarker(item.user.nickname, item.locationName, item.ingredientName),
+                      style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ],
       ),

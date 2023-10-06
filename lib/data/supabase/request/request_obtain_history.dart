@@ -12,8 +12,10 @@ class RequestObtainHistory {
   final int? markerId;
   @JsonKey(name: 'nickname')
   final String? nickName;
-  @JsonKey(name: 'ingredient_name')
-  final String? ingredientName;
+  @JsonKey(name: 'kr_ingredient_name')
+  final String? krIngredientName;
+  @JsonKey(name: 'en_ingredient_name')
+  final String? enIngredientName;
   @JsonKey(name: 'location_name')
   final String? locationName;
   @JsonKey(name: 'is_reward')
@@ -23,7 +25,8 @@ class RequestObtainHistory {
     this.ingredientId,
     this.userId,
     this.nickName,
-    this.ingredientName,
+    this.krIngredientName,
+    this.enIngredientName,
     this.markerId,
     this.locationName,
     this.isReward,
@@ -33,7 +36,8 @@ class RequestObtainHistory {
     this.ingredientId,
     required this.userId,
     required this.nickName,
-    required this.ingredientName,
+    required this.krIngredientName,
+    required this.enIngredientName,
     this.markerId,
     this.locationName,
     this.isReward = false,

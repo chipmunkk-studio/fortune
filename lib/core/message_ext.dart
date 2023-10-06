@@ -17,6 +17,22 @@ abstract class FortuneTr {
 
   static String msgCollectingMarker(String marker) => tr('msgCollectingMarker', args: [marker]);
 
+  static String msgDaysAgo(String day) => tr('msgDaysAgo', args: [day]);
+
+  static String msgHoursAgo(String hour) => tr('msgHoursAgo', args: [hour]);
+
+  static String msgMinutesAgo(String minute) => tr('msgMinutesAgo', args: [minute]);
+
+  static String msgJustNow() => tr('msgJustNow');
+
+
+  static String msgAcquireMarker(
+    String nickname,
+    String location,
+    String ingredientName,
+  ) =>
+      tr('msgAcquireMarker', args: [nickname, location, ingredientName]);
+
   // 사용자
   static final notExistUser = tr('msgNotExistUser');
   static final notExistTerms = tr('msgNotExistTerms');
@@ -85,6 +101,11 @@ abstract class FortuneTr {
   static final msgRelayMissionHeadings = tr('msgRelayMissionHeadings');
   static final msgRelayMissionContents = tr('msgRelayMissionContents');
   static final msgPrivacyPolicy = tr('msgPrivacyPolicy');
+  static final msgMissionEarlyEnd = tr('msgMissionEarlyEnd');
+  static final msgUnfairParticipation = tr('msgUnfairParticipation');
+  static final msgMissionGuide = tr('msgMissionGuide');
+  static final msgRewardGuide = tr('msgRewardGuide');
+  static final msgCaution = tr('msgCaution');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');
