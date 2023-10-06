@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/analytics.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/local/repository/local_repository_impl.dart';
@@ -175,16 +177,17 @@ initEnvironment() async {
     remoteConfig: await getRemoteConfigArgs(),
   )..init();
 
-  /// 믹스패널 추가.
-  final mixpanel = await Mixpanel.init(
-    environment.remoteConfig.mixpanelToken,
-    trackAutomaticEvents: true,
-  );
-
-  mixpanel.setLoggingEnabled(true);
-
+  /// 믹스패널 추가 > 웹이 아닐 경우에만 지원.
+  if (!kIsWeb) {
+    final mixpanel = await Mixpanel.init(
+      environment.remoteConfig.mixpanelToken,
+      trackAutomaticEvents: true,
+    );
+    mixpanel.setLoggingEnabled(true);
+    serviceLocator.registerLazySingleton<Mixpanel>(() => mixpanel);
+  }
+  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker());
   serviceLocator.registerLazySingleton<Environment>(() => environment);
-  serviceLocator.registerLazySingleton<Mixpanel>(() => mixpanel);
 }
 
 /// FCM
@@ -277,7 +280,7 @@ _initRepository() {
       () => UserRepositoryImpl(
         serviceLocator<UserService>(),
         serviceLocator<LocalDataSource>(),
-        serviceLocator<Mixpanel>(),
+        serviceLocator<MixpanelTracker>(),
       ),
     )
     ..registerLazySingleton<LocalRepository>(
@@ -331,7 +334,7 @@ _initRepository() {
       () => AuthRepositoryImpl(
         serviceLocator<AuthService>(),
         serviceLocator<UserService>(),
-        serviceLocator<Mixpanel>(),
+        serviceLocator<MixpanelTracker>(),
       ),
     );
 }

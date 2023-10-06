@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
@@ -89,6 +90,8 @@ class FortuneRouter {
       final loginUserState = () {
         if (sessionsState.contains("needToLogin")) {
           return LoginUserState.needToLogin;
+        } else if (kIsWeb) {
+          return LoginUserState.web;
         } else {
           return LoginUserState.none;
         }

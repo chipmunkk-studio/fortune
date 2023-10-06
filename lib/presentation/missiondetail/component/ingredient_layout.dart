@@ -33,11 +33,14 @@ class IngredientLayout extends StatelessWidget {
                 ),
                 const SizedBox(height: 28),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    const Spacer(),
                     _buildIngredient(_viewItems[2]),
+                    const SizedBox(width: 26),
                     _buildIngredient(_viewItems[3]),
+                    const SizedBox(width: 26),
                     _buildIngredient(_viewItems[4]),
+                    const Spacer(),
                   ],
                 ),
                 const SizedBox(height: 28),

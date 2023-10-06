@@ -46,6 +46,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
     FortuneLogger.info('현재 유저 상태: ${event.loginUserState.name}');
+    // 웹은 지원하지 않음.
+    if (event.loginUserState == LoginUserState.web) {
+      produceSideEffect(LoginNotSupportWeb());
+      return;
+    }
+
     await getCountryInfoUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
