@@ -23,6 +23,8 @@ class MissionsResponse extends MissionsEntity {
   final String enContent_;
   @JsonKey(name: 'en_note')
   final String enNote_;
+  @JsonKey(name: 'mission_image')
+  final String missionImage_;
   @JsonKey(name: 'mission_type')
   final String missionType_;
   @JsonKey(name: 'mission_reward')
@@ -40,6 +42,7 @@ class MissionsResponse extends MissionsEntity {
     required this.enNote_,
     required this.missionType_,
     required this.missionReward_,
+    required this.missionImage_,
     required this.isActive_,
   }) : super(
           id: id_.toInt(),
@@ -47,6 +50,7 @@ class MissionsResponse extends MissionsEntity {
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
           missionType: getMissionType(missionType_),
+          missionImage: missionImage_ ?? '',
           missionReward: missionReward_ ?? MissionRewardEntity.empty(),
           isActive: isActive_,
         );
