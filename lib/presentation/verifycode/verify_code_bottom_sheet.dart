@@ -1,9 +1,7 @@
-import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fortune/core/message_ext.dart';
-import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
@@ -63,7 +61,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   @override
   void dispose() {
     super.dispose();
-    AltSmsAutofill().unregisterListener();
+    _bloc.close();
   }
 
   @override
@@ -81,15 +79,6 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
             context,
             sideEffect.landingRoute,
             clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
-          );
-        } else if (sideEffect is VerifyCodeSmsListening) {
-          FortunePermissionUtil.startSmsListening(
-            (code) => _bloc.add(
-              VerifyCodeInput(
-                verifyCode: code,
-                isFromListening: true,
-              ),
-            ),
           );
         } else if (sideEffect is VerifyCodeInputFromSmsListening) {
           _verifyCodeController.text = sideEffect.code;

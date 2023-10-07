@@ -1,8 +1,3 @@
-import 'dart:io';
-
-import 'package:alt_sms_autofill/alt_sms_autofill.dart';
-import 'package:dartz/dartz.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class FortunePermissionUtil {
@@ -43,18 +38,6 @@ abstract class FortunePermissionUtil {
     bool isAnyPermissionDenied = statuses.values.any((status) => status.isDenied);
 
     return isAnyPermissionDenied;
-  }
-
-  static startSmsListening(Function1 onReceive) async {
-    FortuneLogger.debug("_startSmsListening()");
-    String? comingSms = await AltSmsAutofill().listenForSms;
-    if (comingSms != null) {
-      String verifyCode = _getVerifyCode(comingSms);
-      FortuneLogger.debug("인증번호: $verifyCode");
-      if (verifyCode.length >= 6) {
-        onReceive(verifyCode);
-      }
-    }
   }
 
   static _getVerifyCode(String? sms) {

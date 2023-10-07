@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
@@ -51,7 +49,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         countryInfoEntity: event.countryInfoEntity,
       ),
     );
-    produceSideEffect(VerifyCodeSmsListening());
     await _requestSignUpOrIn(emit);
   }
 

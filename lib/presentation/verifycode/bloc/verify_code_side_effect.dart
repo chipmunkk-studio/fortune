@@ -24,13 +24,6 @@ class VerifyCodeLandingRoute extends VerifyCodeSideEffect {
   List<Object?> get props => [];
 }
 
-class VerifyCodeSmsListening extends VerifyCodeSideEffect {
-  VerifyCodeSmsListening();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class VerifyCodeInputFromSmsListening extends VerifyCodeSideEffect {
   final String code;
 

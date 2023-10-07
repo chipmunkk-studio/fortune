@@ -8,7 +8,7 @@ description: fortune flutter
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
-version: 1.0.0+1
+version: 1.0.1+1
 
 # 3.0.0 이상을 지원하면서, 4.0.0미만에 버전도 작동하도록 함
 environment:
@@ -45,7 +45,6 @@ dependencies:
   item_selector: ^0.2.0
   scroll_to_index: ^3.0.1
   awesome_dialog: ^3.1.0
-  alt_sms_autofill: ^1.0.0
   double_back_to_close: ^2.0.0
   avatar_glow: ^2.0.2
   flutter_svg_provider: ^1.0.6
