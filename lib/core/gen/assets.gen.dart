@@ -197,6 +197,10 @@ class $AssetsIconsGen {
   SvgGenImage get icWarningCircle24 =>
       const SvgGenImage('assets/icons/ic_warning_circle_24.svg');
 
+  /// File path: assets/icons/ic_xcircle_fill_24.svg
+  SvgGenImage get icXcircleFill24 =>
+      const SvgGenImage('assets/icons/ic_xcircle_fill_24.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         icArrowDown,
@@ -241,7 +245,8 @@ class $AssetsIconsGen {
         icSearch24,
         icTimer,
         icUser,
-        icWarningCircle24
+        icWarningCircle24,
+        icXcircleFill24
       ];
 }
 

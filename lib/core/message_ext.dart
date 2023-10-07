@@ -21,6 +21,8 @@ abstract class FortuneTr {
 
   static String msgHoursAgo(String hour) => tr('msgHoursAgo', args: [hour]);
 
+  static String msgCenterLevel(String hour) => tr('msgCenterLevel', args: [hour]);
+
   static String msgMinutesAgo(String minute) => tr('msgMinutesAgo', args: [minute]);
 
   static String msgJustNow() => tr('msgJustNow');
@@ -109,6 +111,7 @@ abstract class FortuneTr {
   static final msgRewardGuide = tr('msgRewardGuide');
   static final msgCaution = tr('msgCaution');
   static final msgNoMarkers = tr('msgNoMarkers');
+  static final msgUnknownError = tr('msgUnknownError');
 
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');

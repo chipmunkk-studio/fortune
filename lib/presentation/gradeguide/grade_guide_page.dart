@@ -53,6 +53,7 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 const SizedBox(height: 24),
                 MiddlePercentage(
                   percent: state.user.nextLevelInfo.progressToNextLevelPercentage,
+                  level: state.user.level,
                 ),
                 const SizedBox(height: 12),
                 BottomGradeArea(
@@ -71,12 +72,12 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 ItemGrade(getUserGradeIconInfo(5)),
                 const SizedBox(height: 12),
                 Text(
-                  "* ${FortuneTr.msgRewardInProgress}",
+                  "· ${FortuneTr.msgRewardInProgress}",
                   style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  "* ${FortuneTr.msgGradeChangeNotice}",
+                  "· ${FortuneTr.msgGradeChangeNotice}",
                   style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                 ),
                 const SizedBox(height: 40),

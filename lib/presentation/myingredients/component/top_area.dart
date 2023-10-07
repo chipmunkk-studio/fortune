@@ -32,7 +32,7 @@ class TopArea extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           child: Text(
             '$count ${FortuneTr.msgNumberItems}',
-            style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
+            style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
           ),
         )
       ],

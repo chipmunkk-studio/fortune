@@ -58,7 +58,7 @@ class MissionRelayCard extends StatelessWidget {
                           child: Text(
                             "선착순",
                             style: FortuneTextStyle.caption1SemiBold(
-                              fontColor: Colors.white,
+                              color: Colors.white,
                             ),
                           ),
                         ),

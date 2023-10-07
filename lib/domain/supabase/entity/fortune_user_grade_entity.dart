@@ -6,10 +6,13 @@ abstract class FortuneUserGradeEntity {
   final SvgGenImage icon;
   final String name;
 
+  final String levelScope;
+
   FortuneUserGradeEntity(
     this.grade,
     this.icon,
     this.name,
+    this.levelScope,
   );
 }
 
@@ -23,10 +26,14 @@ class GradeBronze implements FortuneUserGradeEntity {
   @override
   final String name;
 
+  @override
+  final String levelScope;
+
   GradeBronze()
       : grade = 1,
         name = "bronze".tr(),
-        icon = Assets.icons.icGradeBronze;
+        icon = Assets.icons.icGradeBronze,
+        levelScope = "Lv. 1 ~ 29";
 }
 
 class GradeSilver implements FortuneUserGradeEntity {
@@ -39,10 +46,14 @@ class GradeSilver implements FortuneUserGradeEntity {
   @override
   final String name;
 
+  @override
+  final String levelScope;
+
   GradeSilver()
       : grade = 2,
         name = "silver".tr(),
-        icon = Assets.icons.icGradeSilver;
+        icon = Assets.icons.icGradeSilver,
+        levelScope = "Lv. 30 ~ 59";
 }
 
 class GradeGold implements FortuneUserGradeEntity {
@@ -55,10 +66,14 @@ class GradeGold implements FortuneUserGradeEntity {
   @override
   final String name;
 
+  @override
+  final String levelScope;
+
   GradeGold()
       : grade = 3,
         name = "gold".tr(),
-        icon = Assets.icons.icGradeGold;
+        icon = Assets.icons.icGradeGold,
+        levelScope = "Lv. 60 ~ 89";
 }
 
 class GradePlatinum implements FortuneUserGradeEntity {
@@ -71,10 +86,14 @@ class GradePlatinum implements FortuneUserGradeEntity {
   @override
   final String name;
 
+  @override
+  final String levelScope;
+
   GradePlatinum()
       : grade = 4,
         name = "platinum".tr(),
-        icon = Assets.icons.icGradePlatinum;
+        icon = Assets.icons.icGradePlatinum,
+        levelScope = "Lv. 90 ~ 119";
 }
 
 class GradeDiamond implements FortuneUserGradeEntity {
@@ -87,10 +106,14 @@ class GradeDiamond implements FortuneUserGradeEntity {
   @override
   final String name;
 
+  @override
+  final String levelScope;
+
   GradeDiamond()
       : grade = 5,
         name = "diamond".tr(),
-        icon = Assets.icons.icGradeDiamond;
+        icon = Assets.icons.icGradeDiamond,
+        levelScope = "Lv. 120 ~ ";
 }
 
 FortuneUserGradeEntity getUserGradeIconInfo(int grade) {

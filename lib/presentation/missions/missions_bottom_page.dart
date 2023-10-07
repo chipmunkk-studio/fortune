@@ -70,7 +70,7 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(FortuneTr.msgAvailableMissions, style: FortuneTextStyle.headLine2()),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
@@ -78,7 +78,7 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                     style: FortuneTextStyle.body1Light(color: ColorName.grey200),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
                 BlocBuilder<MissionsBloc, MissionsState>(
                   buildWhen: (previous, current) => previous.ad != current.ad,
                   builder: (context, state) {
@@ -103,7 +103,7 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: SizedBox(
-                    height: 420,
+                    height: 400,
                     child: BlocBuilder<MissionsBloc, MissionsState>(
                       buildWhen: (previous, current) => previous.missions != current.missions,
                       builder: (context, state) {

@@ -48,7 +48,7 @@ class ItemObtainHistory extends StatelessWidget {
               const SizedBox(width: 12),
               Flexible(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 8),

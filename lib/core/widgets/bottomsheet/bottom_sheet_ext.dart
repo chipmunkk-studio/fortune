@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
@@ -61,13 +62,11 @@ extension FortuneBottomSheet on BuildContext {
                             mainAxisAlignment: MainAxisAlignment.end,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              InkResponse(
-                                radius: 25,
+                              Bounceable(
                                 onTap: () => Navigator.pop(context),
-                                splashColor: ColorName.grey800,
-                                child: Assets.icons.icCancel.svg(width: 24, height: 24),
+                                child: Assets.icons.icXcircleFill24.svg(width: 28, height: 28),
                               ),
-                              const SizedBox(width: 25),
+                              const SizedBox(width: 20),
                             ],
                           ),
                         ],

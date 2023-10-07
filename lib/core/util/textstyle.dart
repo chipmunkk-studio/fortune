@@ -141,13 +141,13 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle caption1SemiBold({Color? fontColor}) {
+  static TextStyle caption1SemiBold({Color? color}) {
     return TextStyle(
       fontSize: 14.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
