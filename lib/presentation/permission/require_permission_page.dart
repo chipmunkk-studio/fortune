@@ -55,11 +55,6 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
 
   final _permissionItems = [
     _RequestPermissionEntity(
-      icon: Assets.icons.icPhone.svg(),
-      title: FortuneTr.msgRequirePermissionPhone,
-      subTitle: FortuneTr.msgRequirePermissionPhoneContent,
-    ),
-    _RequestPermissionEntity(
       icon: Assets.icons.icMappin.svg(),
       title: FortuneTr.msgRequirePermissionLocation,
       subTitle: FortuneTr.msgRequirePermissionLocationContent,

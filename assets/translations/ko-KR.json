@@ -43,7 +43,6 @@
   "msgNoMissionCompletion": "아직 미션을 완료한 사용자가 없어요.\n첫 주인공이 되어보세요!",
   "msgOnboarding2": "내 근처의\n마커들을 모아요",
   "msgOnboarding3": "미션 완료 시\n리워드를 드려요",
-  "msgRequirePermissionPhone": "전화/SMS(필수)",
   "msgRequirePermissionLocation": "위치(필수)",
   "msgRequirePermissionPhoto": "사진(선택)",
   "msgRequirePermissionNotice": "알림(선택)",

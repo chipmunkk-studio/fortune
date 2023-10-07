@@ -3,7 +3,6 @@ import 'package:permission_handler/permission_handler.dart';
 abstract class FortunePermissionUtil {
   // 안드로이드 요청 권한.
   static final androidPermissions = [
-    Permission.sms,
     // Permission.storage,
     Permission.location,
   ];
