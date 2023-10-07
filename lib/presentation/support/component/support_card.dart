@@ -76,7 +76,10 @@ class _SupportCardState extends State<SupportCard> {
             ),
             child: Text(
               widget.content,
-              style: FortuneTextStyle.body3Light(),
+              style: FortuneTextStyle.body3Light(
+                color: ColorName.grey100,
+                height: 1.5,
+              ),
               textAlign: TextAlign.start,
             ),
           ),

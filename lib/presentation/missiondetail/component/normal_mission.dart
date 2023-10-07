@@ -43,7 +43,10 @@ class NormalMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.content,
-                      style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+                      style: FortuneTextStyle.body1Light(
+                        color: ColorName.grey200,
+                        height: 1.3,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 40),

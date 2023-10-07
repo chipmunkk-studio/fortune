@@ -18,7 +18,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FortuneDialogService {
   bool _isDialogShowing = false;
-  final supabaseClient = Supabase.instance.client;
+  final _sClient = Supabase.instance.client;
 
   Future<void> showErrorDialog(
     BuildContext context,
@@ -38,9 +38,9 @@ class FortuneDialogService {
           () {
             if (error is AuthFailure) {
               _isDialogShowing = false;
-              // 인증에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
+              // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
               if (needToFinish) {
-                supabaseClient.auth.signOut();
+                _sClient.auth.signOut();
                 router.navigateTo(
                   context,
                   "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
@@ -82,8 +82,11 @@ class FortuneDialogService {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  error.description ?? error.message ?? '알 수 없는 에러',
-                  style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+                  error.description ?? error.message ?? FortuneTr.msgUnknownError,
+                  style: FortuneTextStyle.body1Light(
+                    color: ColorName.grey200,
+                    height: 1.3,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -97,7 +100,7 @@ class FortuneDialogService {
         32.r,
       ),
       btnOkColor: ColorName.primary,
-      btnOkText: "확인",
+      btnOkText: FortuneTr.confirm,
       btnOkOnPress: btnOkOnPress,
     );
   }
@@ -150,7 +153,10 @@ class FortuneDialogService {
                   const SizedBox(height: 12),
                   Text(
                     subTitle,
-                    style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+                    style: FortuneTextStyle.body1Light(
+                      color: ColorName.grey200,
+                      height: 1.3,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],

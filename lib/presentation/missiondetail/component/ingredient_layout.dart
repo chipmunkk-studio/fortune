@@ -48,7 +48,7 @@ class IngredientLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     _buildIngredient(_viewItems[5]),
-                    SizedBox(width: 26.h),
+                    const SizedBox(width: 26),
                     _buildIngredient(_viewItems[6]),
                   ],
                 ),
@@ -74,20 +74,23 @@ class IngredientLayout extends StatelessWidget {
                 aspectRatio: 1.0,
                 child: CustomPaint(
                   painter: SquirclePainter(color: ColorName.grey800),
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    child: item.isEmpty
-                        ? Assets.icons.icLock.svg(
-                            width: 68.h,
-                            height: 68.h,
-                          )
-                        : FadeInImage.memoryNetwork(
-                            width: 68.h,
-                            height: 68.h,
+                  child: item.isEmpty
+                      ? Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Assets.icons.icLock.svg(
+                            width: 44,
+                            height: 44,
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(16),
+                          child: FadeInImage.memoryNetwork(
+                            width: 68,
+                            height: 68,
                             placeholder: kTransparentImage,
                             image: item.ingredient.imageUrl,
                           ),
-                  ),
+                        ),
                 ),
               ),
               Positioned(
@@ -96,13 +99,13 @@ class IngredientLayout extends StatelessWidget {
                 bottom: 0,
                 child: Align(
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 10.h),
+                    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.r),
                       color: ColorName.grey800,
                       border: Border.all(
                         color: ColorName.grey900,
-                        width: 2.h,
+                        width: 2,
                       ),
                     ),
                     child: RichText(
@@ -130,7 +133,7 @@ class IngredientLayout extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 8.h),
+              const SizedBox(height: 8),
               Text(
                 item.ingredient.exposureName.isEmpty ? '-' : item.ingredient.exposureName,
                 textAlign: TextAlign.center,

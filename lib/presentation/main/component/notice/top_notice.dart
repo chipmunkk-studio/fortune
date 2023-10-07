@@ -50,7 +50,7 @@ class _TopNoticeState extends State<TopNotice> {
                   height: 64,
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.r),
+                    borderRadius: BorderRadius.circular(16),
                     color: ColorName.grey700,
                   ),
                   child: TopNoticeAutoSlide(
@@ -88,13 +88,14 @@ class _TopNoticeState extends State<TopNotice> {
                                       )
                                     ],
                                   ),
+                                  const SizedBox(height: 3),
                                   Flexible(
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            e.mission.title + e.mission.title,
+                                            e.mission.title,
                                             style: FortuneTextStyle.body3Light(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,

@@ -26,7 +26,18 @@ class ItemGrade extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(gradeInfo.name, style: FortuneTextStyle.body1Semibold()),
+              Row(
+                children: [
+                  Text(gradeInfo.name, style: FortuneTextStyle.body1Semibold()),
+                  const SizedBox(width: 12),
+                  Text(
+                    gradeInfo.levelScope,
+                    style: FortuneTextStyle.caption1SemiBold(
+                      color: ColorName.grey500,
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: 6.h),
               Text(FortuneTr.msgRewardPreparation, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
             ],

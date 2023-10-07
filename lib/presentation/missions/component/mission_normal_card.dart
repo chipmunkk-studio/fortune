@@ -34,17 +34,12 @@ class MissionNormalCard extends StatelessWidget {
                     Text(
                       item.mission.title,
                       style: FortuneTextStyle.subTitle2SemiBold(),
-                      maxLines: 2,
                     ),
                     const SizedBox(height: 4),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        item.mission.content,
-                        style: FortuneTextStyle.body2Light(
-                          fontColor: ColorName.grey200,
-                        ),
-                        maxLines: 2,
+                    Text(
+                      item.mission.content,
+                      style: FortuneTextStyle.body2Light(
+                        fontColor: ColorName.grey200,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -59,7 +54,7 @@ class MissionNormalCard extends StatelessWidget {
                           child: Text(
                             FortuneTr.msgRemainingReward,
                             style: FortuneTextStyle.caption1SemiBold(
-                              fontColor: ColorName.primary,
+                              color: ColorName.primary,
                             ),
                           ),
                         ),
@@ -128,7 +123,7 @@ class MissionNormalCard extends StatelessWidget {
                         : item.userHaveCount / item.requiredTotalCount,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
-                    backgroundColor: ColorName.grey500.withOpacity(0.3),
+                    backgroundColor: ColorName.grey500,
                     progressColor: ColorName.primary,
                   ),
                 ),
@@ -138,7 +133,7 @@ class MissionNormalCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.userHaveCount}",
-                        style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
+                        style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.requiredTotalCount}",

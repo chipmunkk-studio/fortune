@@ -10,7 +10,7 @@ import 'package:fortune/di.dart';
 import 'package:fortune/presentation/fortune_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
-  OnBoardingPage({Key? key}) : super(key: key);
+  const OnBoardingPage({Key? key}) : super(key: key);
 
   @override
   State<OnBoardingPage> createState() => _OnBoardingPageState();
@@ -73,7 +73,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   children: [
                     Text(
                       _titles[index],
-                      style: FortuneTextStyle.caption1SemiBold(fontColor: ColorName.primary),
+                      style: FortuneTextStyle.caption1SemiBold(
+                        color: ColorName.primary,
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Text(
