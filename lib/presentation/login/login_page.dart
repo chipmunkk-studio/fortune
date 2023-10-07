@@ -102,7 +102,6 @@ class _LoginPageState extends State<_LoginPage> {
               context,
               subTitle: FortuneTr.msgRevokeWithdrawal,
               dismissOnBackKeyPress: true,
-              btnOkPressed: () => _bloc.add(LoginRequestCancelWithdrawal()),
             );
           } else {
             dialogService.showFortuneDialog(

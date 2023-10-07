@@ -141,54 +141,27 @@ class _NickNamePageState extends State<_NickNamePage> {
                       ),
                       const Spacer(),
                       IntrinsicHeight(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Bounceable(
-                              onTap: () {
-                                dialogService.showFortuneDialog(
-                                  context,
-                                  subTitle: FortuneTr.msgConfirmLogout,
-                                  btnCancelColor: ColorName.grey500,
-                                  btnOkPressed: () => _bloc.add(NickNameSignOut()),
-                                  btnCancelPressed: () {},
-                                  dismissOnTouchOutside: true,
-                                  dismissOnBackKeyPress: true,
-                                );
-                              },
-                              child: Text(
-                                FortuneTr.logout,
-                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                              ),
+                        child: Center(
+                          child: Bounceable(
+                            onTap: () {
+                              dialogService.showFortuneDialog(
+                                context,
+                                title: FortuneTr.msgConfirmWithdrawal,
+                                subTitle: FortuneTr.msgWithdrawalWarning,
+                                btnOkText: FortuneTr.msgWithdrawal,
+                                btnOkColor: ColorName.negative,
+                                btnCancelColor: ColorName.grey500,
+                                btnOkPressed: () => _bloc.add(NickNameWithdrawal()),
+                                btnCancelPressed: () {},
+                                dismissOnTouchOutside: true,
+                                dismissOnBackKeyPress: true,
+                              );
+                            },
+                            child: Text(
+                              FortuneTr.withdrawal,
+                              style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                             ),
-                            const SizedBox(width: 12),
-                            const VerticalDivider(
-                              thickness: 1,
-                              width: 1,
-                              color: ColorName.grey500,
-                            ),
-                            const SizedBox(width: 12),
-                            Bounceable(
-                              onTap: () {
-                                dialogService.showFortuneDialog(
-                                  context,
-                                  title: FortuneTr.msgConfirmWithdrawal,
-                                  subTitle: FortuneTr.msgWithdrawalWarning,
-                                  btnOkText: FortuneTr.msgWithdrawal,
-                                  btnOkColor: ColorName.negative,
-                                  btnCancelColor: ColorName.grey500,
-                                  btnOkPressed: () => _bloc.add(NickNameWithdrawal()),
-                                  btnCancelPressed: () {},
-                                  dismissOnTouchOutside: true,
-                                  dismissOnBackKeyPress: true,
-                                );
-                              },
-                              child: Text(
-                                FortuneTr.withdrawal,
-                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),

@@ -83,7 +83,7 @@
   "msgCollectingMarker": "{} 줍줍 중..",
   "msgConsumeCoinToGetMarker": "코인 {}개를 소모하여\n마커를 수집하시겠어요?",
   "msgUseNextTime": "잠시 후에 다시 이용해 주세요.",
-  "msgRevokeWithdrawal": "탈퇴를 철회 하시겠습니까?",
+  "msgRevokeWithdrawal": "탈퇴 처리 중입니다.",
   "msgAlreadyWithdrawn": "이미 탈퇴 처리 된 회원입니다.",
   "msgUnableToLoadMissionCard": "현재 미션 카드를 불러 올 수 없습니다",
   "msgMissionCompleted": "미션 달성을 축하드려요!",
