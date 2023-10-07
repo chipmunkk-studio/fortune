@@ -84,7 +84,7 @@ class MissionNormalCard extends StatelessWidget {
                 child: ClipOval(
                   child: FadeInImage.memoryNetwork(
                     placeholder: kTransparentImage,
-                    image: item.mission.missionReward.rewardImage,
+                    image: item.mission.missionImage,
                   ),
                 ),
               ),
