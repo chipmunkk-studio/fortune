@@ -155,7 +155,7 @@ getRemoteConfigArgs() async {
   await remoteConfig.setConfigSettings(
     RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: Duration.zero,
+      minimumFetchInterval: const Duration(seconds: 1),
     ),
   );
 
