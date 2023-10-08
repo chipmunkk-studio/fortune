@@ -85,7 +85,7 @@ class UserService {
     required String filePath,
   }) async {
     final storage = _client.storage;
-    final uploadFile = File(filePath);
+    final dynamic uploadFile = File(filePath);
     final now = DateTime.now();
     final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
     final fullName = "${_client.auth.currentUser?.phone}/$timestamp.jpg";
