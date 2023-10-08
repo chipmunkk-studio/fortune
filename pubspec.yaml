@@ -18,12 +18,12 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_core: ^2.17.0
-  firebase_remote_config: ^4.2.7
+  firebase_remote_config: ^4.2.6
   firebase_analytics: ^10.5.1
   firebase_crashlytics: ^3.3.7
   firebase_messaging: ^14.6.9
-  supabase: ^1.11.6
-  supabase_flutter: ^1.10.19
+  supabase: ^1.11.8
+  supabase_flutter: ^1.10.21
   app_settings: ^5.1.1
   mixpanel_flutter: ^2.1.1
   package_info_plus: ^4.1.0
