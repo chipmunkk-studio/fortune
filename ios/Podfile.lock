@@ -1,6 +1,4 @@
 PODS:
-  - alt_sms_autofill (0.0.1):
-    - Flutter
   - app_links (0.0.1):
     - Flutter
   - app_settings (5.1.1):
@@ -216,7 +214,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - alt_sms_autofill (from `.symlinks/plugins/alt_sms_autofill/ios`)
   - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
@@ -273,8 +270,6 @@ SPEC REPOS:
     - TOCropViewController
 
 EXTERNAL SOURCES:
-  alt_sms_autofill:
-    :path: ".symlinks/plugins/alt_sms_autofill/ios"
   app_links:
     :path: ".symlinks/plugins/app_links/ios"
   app_settings:
@@ -335,7 +330,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  alt_sms_autofill: 6c623529a8de6a2a9297358bdb7dab3d8ad693e4
   app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
   app_settings: 017320c6a680cdc94c799949d95b84cb69389ebc
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
