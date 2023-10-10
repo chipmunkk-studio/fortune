@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
-import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
@@ -20,8 +19,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   final VerifyEmailUseCase verifyEmailUseCase;
   final CheckVerifySmsTimeUseCase checkVerifySmsTimeUseCase;
   final SignUpOrInUseCase signUpOrInUseCase;
-  final CancelWithdrawalUseCase cancelWithdrawalUseCase;
-
   static const tag = "[PhoneNumberBloc]";
   static const verifyTime = 180;
 
@@ -29,7 +26,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     required this.verifyEmailUseCase,
     required this.checkVerifySmsTimeUseCase,
     required this.signUpOrInUseCase,
-    required this.cancelWithdrawalUseCase,
   }) : super(VerifyCodeState.initial()) {
     on<VerifyCodeInit>(init);
     on<VerifyCodeCountdown>(verifyCodeCountdown);
@@ -105,10 +101,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
           produceSideEffect(VerifyCodeError(l));
         },
         (r) async {
-          // 탈퇴 처리 된 회원인 경우 철회 함.
-          if (r.userEntity.isWithdrawal) {
-            await cancelWithdrawalUseCase();
-          }
           emit(state.copyWith(isLoginProcessing: false));
           produceSideEffect(
             VerifyCodeLandingRoute(

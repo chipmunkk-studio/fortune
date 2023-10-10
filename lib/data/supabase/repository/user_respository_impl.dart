@@ -23,9 +23,9 @@ class UserRepositoryImpl extends UserRepository {
 
   // 휴대폰 번호로 현재 사용자 찾기.
   @override
-  Future<FortuneUserEntity> findUserByEmailNonNull() async {
+  Future<FortuneUserEntity> findUserByEmailNonNull({String? emailParam}) async {
     try {
-      final String currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
+      final String currentEmail = emailParam ?? Supabase.instance.client.auth.currentUser?.email ?? '';
       final FortuneUserEntity? user = await _userService.findUserByEmail(currentEmail);
       if (user == null) {
         throw CommonFailure(errorMessage: FortuneTr.notExistUser);
@@ -128,9 +128,9 @@ class UserRepositoryImpl extends UserRepository {
 
   // signOut() 처리되었기 때문에 로그인 후에 수행해야 함.
   @override
-  Future<void> cancelWithdrawal() async {
+  Future<void> cancelWithdrawal(String email) async {
     try {
-      final user = await findUserByEmailNonNull();
+      final user = await findUserByEmailNonNull(emailParam: email);
       await _userService.update(
         user,
         request: RequestFortuneUser(

@@ -6,10 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_country_info_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -19,12 +19,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   final GetUserUseCase getUserUseCase;
   final SignInWithEmailUseCase signInWithEmailUseCase;
   final GetCountryInfoUseCase getCountryInfoUseCase;
-  final WithdrawalUseCase withdrawalUseCase;
+  final CancelWithdrawalUseCase cancelWithdrawalUseCase;
   final Environment env;
 
   LoginBloc({
     required this.getUserUseCase,
-    required this.withdrawalUseCase,
+    required this.cancelWithdrawalUseCase,
     required this.signInWithEmailUseCase,
     required this.getCountryInfoUseCase,
     required this.env,
@@ -78,10 +78,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     await _processSignInOrUp(emit);
   }
 
-  Future<void> _processSignInOrUp(
-    Emitter<LoginState> emit, {
-    bool cancelWithdrawal = false,
-  }) async {
+  Future<void> _processSignInOrUp(Emitter<LoginState> emit) async {
     await getUserUseCase(
       state.email,
     ).then(
@@ -89,7 +86,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
         (l) => produceSideEffect(LoginError(l)),
         (r) async {
           // 회원 탈퇴 여부.
-          if (r != null && r.isWithdrawal && !cancelWithdrawal) {
+          if (r != null && r.isWithdrawal) {
             produceSideEffect(LoginWithdrawalUser(r.isEnableReSignIn));
             return;
           }
@@ -129,9 +126,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> cancelWithdrawal(LoginRequestCancelWithdrawal event, Emitter<LoginState> emit) async {
-    await _processSignInOrUp(
-      emit,
-      cancelWithdrawal: true,
+    await cancelWithdrawalUseCase(state.email).then(
+      (value) => value.fold(
+        (l) => produceSideEffect(LoginError(l)),
+        (r) async {
+          await _processSignInOrUp(emit);
+        },
+      ),
     );
   }
 

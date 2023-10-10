@@ -533,7 +533,7 @@ _initBloc() {
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
+        cancelWithdrawalUseCase: serviceLocator<CancelWithdrawalUseCase>(),
         getCountryInfoUseCase: serviceLocator<GetCountryInfoUseCase>(),
         signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
         env: serviceLocator<Environment>(),
@@ -599,7 +599,6 @@ _initBloc() {
         verifyEmailUseCase: serviceLocator(),
         checkVerifySmsTimeUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
-        cancelWithdrawalUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
