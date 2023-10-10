@@ -9,15 +9,14 @@ import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/presentation/fortune_router.dart';
-import 'package:fortune/presentation/login/component/country_code.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/verifycode/verify_code_bottom_sheet.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import '../agreeterms/agree_terms_bottom_sheet.dart';
 import 'bloc/login.dart';
 import 'component/login_bottom_button.dart';
-import 'component/login_phone_number.dart';
+import 'component/login_email_input_field.dart';
 
 class LoginPage extends StatelessWidget {
   final LoginUserState loginState;
@@ -85,7 +84,8 @@ class _LoginPageState extends State<_LoginPage> {
           final result = await context.showFortuneBottomSheet(
             isDismissible: false,
             content: (context) => VerifyCodeBottomSheet(
-              phoneNumber: sideEffect.convertedPhoneNumber,
+              loginUserState: sideEffect.loginUserState,
+              email: sideEffect.email,
               countryInfoEntity: sideEffect.countryInfoEntity,
             ),
           );
@@ -102,6 +102,7 @@ class _LoginPageState extends State<_LoginPage> {
               context,
               subTitle: FortuneTr.msgRevokeWithdrawal,
               dismissOnBackKeyPress: true,
+              btnOkPressed: () => _bloc.add(LoginRequestCancelWithdrawal()),
             );
           } else {
             dialogService.showFortuneDialog(
@@ -111,14 +112,6 @@ class _LoginPageState extends State<_LoginPage> {
               btnOkPressed: () {},
             );
           }
-        } else if (sideEffect is LoginNotSupportWeb) {
-          dialogService.showFortuneDialog(
-            context,
-            subTitle: FortuneTr.msgNoWebSupport,
-            dismissOnBackKeyPress: false,
-            dismissOnTouchOutside: false,
-            btnOkPressed: () => _bloc.add(LoginInit(LoginUserState.web)),
-          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -143,33 +136,14 @@ class _LoginPageState extends State<_LoginPage> {
                               },
                             ),
                             const SizedBox(height: 20),
-                            BlocBuilder<LoginBloc, LoginState>(
-                              buildWhen: (previous, current) => previous.selectCountry != current.selectCountry,
-                              builder: (context, state) {
-                                return CountryCode(
-                                  onTap: () async {
-                                    final CountryInfoEntity result = await router.navigateTo(
-                                      context,
-                                      Routes.countryCodeRoute,
-                                      routeSettings: RouteSettings(
-                                        arguments: state.selectCountry,
-                                      ),
-                                      replace: false,
-                                    );
-                                    _bloc.add(LoginRequestSelectCountry(result));
-                                  },
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 20),
                             // 로그인 상태.
                             BlocBuilder<LoginBloc, LoginState>(
-                              buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+                              buildWhen: (previous, current) => previous.email != current.email,
                               builder: (context, state) {
-                                return LoginPhoneNumber(
-                                  phoneNumber: state.phoneNumber,
-                                  phoneNumberController: _phoneNumberController,
-                                  onTextChanged: (text) => _bloc.add(LoginPhoneNumberInput(text)),
+                                return LoginEmailInputField(
+                                  email: state.email,
+                                  emailController: _phoneNumberController,
+                                  onTextChanged: (text) => _bloc.add(LoginEmailInput(text)),
                                 );
                               },
                             ),
@@ -228,9 +202,7 @@ class _LoginPageState extends State<_LoginPage> {
             context.showFortuneBottomSheet(
               isDismissible: false,
               content: (context) => VerifyCodeBottomSheet(
-                phoneNumber: '',
-                countryInfoEntity: CountryInfoEntity.empty(),
-              ),
+                  email: '', countryInfoEntity: CountryInfoEntity.empty(), loginUserState: LoginUserState.none),
             );
           },
           text: '인증번호 확인 바텀시트',

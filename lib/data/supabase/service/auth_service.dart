@@ -12,7 +12,7 @@ import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,7 +42,7 @@ class AuthService {
 
   // 회원가입.
   Future<AuthResponse> signUp({
-    required String phoneNumber,
+    required String email,
   }) async {
     final generatePassword = () {
       // 비밀번호의 길이
@@ -66,7 +66,7 @@ class AuthService {
 
     try {
       final response = await client.auth.signUp(
-        phone: phoneNumber,
+        email: email,
         password: generatePassword,
       );
       return response;
@@ -75,48 +75,16 @@ class AuthService {
     }
   }
 
-  // 회원가입(테스트 계정용).
-  Future<AuthResponse> signUpWithEmail({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final response = await client.auth.signUp(
-        email: email,
-        password: password,
-      );
-      return response;
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
-  }
-
-  // 로그인(테스트 계정용).
-  Future<AuthResponse> signInWithEmail({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final response = await client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
-      return response;
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
-  }
-
   // 휴대폰 번호 인증.
-  Future<AuthResponse> verifyPhoneNumber({
+  Future<AuthResponse> verifyOTP({
     required String otpCode,
-    required String phoneNumber,
+    required String email,
   }) async {
     try {
       final response = await client.auth.verifyOTP(
         token: otpCode,
-        phone: phoneNumber,
-        type: OtpType.sms,
+        email: email,
+        type: OtpType.email,
       );
       return response;
     } catch (e) {
@@ -144,6 +112,55 @@ class AuthService {
       final List<dynamic> response = await client.from(_termsTableName).select("*").toSelect();
       final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
       return terms;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 회원가입.
+  Future<AuthResponse> signUpWithEmail({
+    required String email,
+  }) async {
+    try {
+      final response = await signUp(email: email);
+      return response;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  // 로그인.
+  Future<void> signInWithEmail({
+    required String email,
+  }) async {
+    try {
+      final response = await client.auth.signInWithOtp(
+        email: email,
+      );
+      return response;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  Future<AuthResponse> signInWithEmailWithTest({
+    required String email,
+    required String password,
+    required bool isRegistered,
+  }) async {
+    try {
+      // 테스트 계정이 있을 경우.
+      if (isRegistered) {
+        return await client.auth.signInWithPassword(
+          email: email,
+          password: password,
+        );
+      }
+      // 테스트 계정이 없을 경우.
+      return await client.auth.signUp(
+        email: email,
+        password: password,
+      );
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

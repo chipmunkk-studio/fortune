@@ -10,30 +10,6 @@ class LocalRepositoryImpl extends LocalRepository {
   });
 
   @override
-  Future<String> getTestAccount() async {
-    try {
-      final result = await localDataSource.getTestAccount();
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '테스트 계정을 찾을 수 없습니다',
-      );
-    }
-  }
-
-  @override
-  Future<void> setTestAccount(String account) async {
-    try {
-      final result = await localDataSource.setTestAccount(account);
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '테스트 계정을 설정 할 수 없습니다',
-      );
-    }
-  }
-
-  @override
   Future<bool> getAllowPushAlarm() async {
     try {
       final result = await localDataSource.getAllowPushAlarm();

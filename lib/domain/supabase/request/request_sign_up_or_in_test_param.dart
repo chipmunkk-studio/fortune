@@ -1,12 +1,7 @@
-
 class RequestSignUpOrInTestParam {
-  final String testEmail;
-  final String testPassword;
-  final String testPhoneNumber;
+  final String email;
 
   RequestSignUpOrInTestParam({
-    required this.testEmail,
-    required this.testPassword,
-    required this.testPhoneNumber,
+    required this.email,
   });
 }

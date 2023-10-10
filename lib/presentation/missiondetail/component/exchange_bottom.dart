@@ -47,7 +47,7 @@ class ExchangeBottom extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            user.phone,
+            user.email,
             textAlign: TextAlign.center,
             style: FortuneTextStyle.body3Light(color: ColorName.grey400),
           ),

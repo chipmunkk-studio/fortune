@@ -6,7 +6,7 @@ import 'package:fortune/di.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'core/util/theme.dart';
-import 'presentation/fortune_router.dart';
+import 'fortune_router.dart';
 
 class FortuneApp extends StatelessWidget {
   final String startRoute;

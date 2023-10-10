@@ -17,7 +17,7 @@ class MyPageUseCase implements UseCase0<MyPageViewEntity> {
   @override
   Future<FortuneResult<MyPageViewEntity>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       final isAllowPushAlarm = await localRepository.getAllowPushAlarm();
       final entity = MyPageViewEntity(
         user: user,

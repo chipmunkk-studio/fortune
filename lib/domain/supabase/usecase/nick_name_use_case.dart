@@ -18,7 +18,7 @@ class NickNameUseCase implements UseCase0<NIckNameViewEntity> {
   @override
   Future<FortuneResult<NIckNameViewEntity>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       final entity = NIckNameViewEntity(user: user);
       return Right(entity);
     } on FortuneFailure catch (e) {

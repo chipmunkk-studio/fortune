@@ -1,9 +1,9 @@
 class RequestSignUpParam {
-  final String phoneNumber;
+  final String email;
   final int countryInfoId;
 
   RequestSignUpParam({
-    required this.phoneNumber,
+    required this.email,
     required this.countryInfoId,
   });
 }

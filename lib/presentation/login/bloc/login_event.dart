@@ -18,10 +18,10 @@ class LoginInit extends LoginEvent {
   List<Object?> get props => [];
 }
 
-class LoginPhoneNumberInput extends LoginEvent {
-  final String phoneNumber;
+class LoginEmailInput extends LoginEvent {
+  final String email;
 
-  LoginPhoneNumberInput(this.phoneNumber);
+  LoginEmailInput(this.email);
 
   @override
   List<Object?> get props => [];
@@ -48,5 +48,13 @@ class LoginRequestSelectCountry extends LoginEvent {
   LoginRequestSelectCountry(this.args);
 
   @override
+  List<Object?> get props => [];
+}
+
+class LoginWithGoogle extends LoginEvent {
+  LoginWithGoogle();
+
+  @override
+  // TODO: implement props
   List<Object?> get props => [];
 }

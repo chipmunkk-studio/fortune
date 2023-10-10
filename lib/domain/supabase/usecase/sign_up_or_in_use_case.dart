@@ -5,32 +5,43 @@ import 'package:fortune/domain/local/local_respository.dart';
 import 'package:fortune/domain/supabase/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
+import 'package:fortune/env.dart';
 
-class SignUpOrInUseCase implements UseCase1<void, RequestSignUpParam> {
+class SignUpOrInUseCase implements UseCase1<bool, RequestSignUpParam> {
   final AuthRepository authRepository;
   final UserRepository userRepository;
-  final LocalRepository localRepository;
+  final Environment env;
 
   SignUpOrInUseCase({
     required this.authRepository,
     required this.userRepository,
-    required this.localRepository,
+    required this.env,
   });
 
   @override
-  Future<FortuneResult<void>> call(RequestSignUpParam param) async {
+  Future<FortuneResult<bool>> call(RequestSignUpParam param) async {
     try {
-      final user = await userRepository.findUserByPhone(param.phoneNumber);
-      if (user != null) {
-        await authRepository.signInWithOtp(phoneNumber: param.phoneNumber);
-      } else {
-        await authRepository.signUp(
-          phoneNumber: param.phoneNumber,
-          countryInfoId: param.countryInfoId,
+      final user = await userRepository.findUserByEmail(param.email);
+      final remoteConfig = env.remoteConfig;
+
+      // 테스트 계정으로 로그인 할 경우.
+      if (remoteConfig.testSignInEmail == param.email) {
+        authRepository.signInWithEmailWithTest(
+          email: remoteConfig.testSignInEmail,
+          password: remoteConfig.testSignInPassword,
+          isRegistered: user != null,
         );
+        // 테스트 게정 일 경우
+        return const Right(true);
       }
-      await localRepository.setVerifySmsTime();
-      return const Right(null);
+
+      if (user != null) {
+        await authRepository.signInWithEmail(email: param.email);
+      } else {
+        await authRepository.signUpWithEmail(email: param.email);
+      }
+      // 테스트 계정이 아닐 경우.
+      return const Right(false);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

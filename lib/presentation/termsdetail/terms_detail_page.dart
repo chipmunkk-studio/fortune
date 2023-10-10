@@ -4,7 +4,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 

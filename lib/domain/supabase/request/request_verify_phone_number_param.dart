@@ -1,10 +1,10 @@
 
-class RequestVerifyPhoneNumberParam {
-  String phoneNumber;
+class RequestVerifyEmailParam {
+  String email;
   String verifyCode;
 
-  RequestVerifyPhoneNumberParam({
-    required this.phoneNumber,
+  RequestVerifyEmailParam({
+    required this.email,
     required this.verifyCode,
   });
 }

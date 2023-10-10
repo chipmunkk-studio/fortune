@@ -4,8 +4,8 @@ part 'request_fortune_user.g.dart';
 
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class RequestFortuneUser {
-  @JsonKey(name: 'phone')
-  final String? phone;
+  @JsonKey(name: 'email')
+  final String? email;
   @JsonKey(name: 'nickname')
   final String? nickname;
   @JsonKey(name: 'profileImage')
@@ -14,8 +14,7 @@ class RequestFortuneUser {
   final int? ticket;
   @JsonKey(name: 'marker_obtain_count')
   final int? markerObtainCount;
-  @JsonKey(name: 'country_info')
-  final int? countryInfo;
+
   @JsonKey(name: 'level')
   final int? level;
   @JsonKey(name: 'push_token')
@@ -26,12 +25,11 @@ class RequestFortuneUser {
   final String? withdrawalAt;
 
   RequestFortuneUser({
-    this.phone,
+    this.email,
     this.nickname,
     this.profileImage,
     this.ticket,
     this.markerObtainCount,
-    this.countryInfo,
     this.pushToken,
     this.level,
     this.isWithdrawal,
@@ -40,9 +38,8 @@ class RequestFortuneUser {
 
   // 회원가입.
   RequestFortuneUser.insert({
-    required this.phone,
+    required this.email,
     required this.nickname,
-    required this.countryInfo,
     required this.pushToken,
     this.ticket = 3,
     this.markerObtainCount = 0,

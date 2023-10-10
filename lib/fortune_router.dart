@@ -16,16 +16,17 @@ import 'package:fortune/presentation/support/faqs/faqs_page.dart';
 import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
-import 'ingredientaction/ingredient_action_page.dart';
-import 'login/login_page.dart';
-import 'main/main_ext.dart';
-import 'main/main_page.dart';
-import 'missiondetail/mission_detail_page.dart';
-import 'nickname/nick_name_page.dart';
-import 'obtainhistory/obtain_history_page.dart';
-import 'onboarding/on_boarding_page.dart';
-import 'permission/require_permission_page.dart';
-import 'support/personalinfo/privacy_policy_page.dart';
+import 'presentation-web/main/web_main_page.dart';
+import 'presentation/ingredientaction/ingredient_action_page.dart';
+import 'presentation/login/login_page.dart';
+import 'presentation/main/main_ext.dart';
+import 'presentation/main/main_page.dart';
+import 'presentation/missiondetail/mission_detail_page.dart';
+import 'presentation/nickname/nick_name_page.dart';
+import 'presentation/obtainhistory/obtain_history_page.dart';
+import 'presentation/onboarding/on_boarding_page.dart';
+import 'presentation/permission/require_permission_page.dart';
+import 'presentation/support/personalinfo/privacy_policy_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;
@@ -44,6 +45,12 @@ class FortuneRouter {
       } else {
         return const MainPage(null);
       }
+    },
+  );
+
+  static var webMainHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const WebMainPage();
     },
   );
 
@@ -187,6 +194,13 @@ class FortuneRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 웹 메인.
+      ..define(
+        Routes.webMainRoute,
+        handler: webMainHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 개인정보처리방침.
       ..define(
         Routes.privacyPolicyRoutes,
@@ -304,6 +318,7 @@ class FortuneRouter {
 
 class Routes {
   static const String mainRoute = 'main';
+  static const String webMainRoute = 'webMain';
   static const String loginRoute = 'login';
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';
