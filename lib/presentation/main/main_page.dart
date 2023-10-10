@@ -267,36 +267,32 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 top: 13,
                 right: 20,
                 left: 20,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    TopLocationArea(
-                      onProfileTap: () => router.navigateTo(
-                        context,
-                        Routes.myPageRoute,
-                      ),
-                      onHistoryTap: () => router.navigateTo(
-                        context,
-                        Routes.obtainHistoryRoute,
-                      ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const SizedBox(height: 10),
+                  TopLocationArea(
+                    onProfileTap: () => router.navigateTo(
+                      context,
+                      Routes.myPageRoute,
                     ),
-                    const SizedBox(height: 16),
-                    TopNotice(
-                      onTap: () {},
+                    onHistoryTap: () => router.navigateTo(
+                      context,
+                      Routes.obtainHistoryRoute,
                     ),
-                    const SizedBox(height: 10),
-                    TopInformationArea(
-                      cartKey,
-                      onInventoryTap: () => context.showFortuneBottomSheet(
-                        isDismissible: true,
-                        content: (context) => const MyIngredientsPage(),
-                      ),
-                      onGradeAreaTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+                  ),
+                  const SizedBox(height: 16),
+                  TopNotice(
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 10),
+                  TopInformationArea(
+                    cartKey,
+                    onInventoryTap: () => context.showFortuneBottomSheet(
+                      isDismissible: true,
+                      content: (context) => const MyIngredientsPage(),
                     ),
-                    if (!kReleaseMode) _buildDebugLogout(context),
-                  ],
-                ),
+                    onGradeAreaTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+                  ),
+                ]),
               ),
             ),
             // 하단 그라데이션.
@@ -374,10 +370,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);
 
       controller.addListener(() {
-        _mapController.move(
-          LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
-          zoomTween.evaluate(animation),
-        );
+        try {
+          _mapController.move(
+            LatLng(latTween.evaluate(animation), lngTween.evaluate(animation)),
+            zoomTween.evaluate(animation),
+          );
+        } catch (e) {
+          // 에러 무시.
+        }
       });
 
       // 애니메이션 후 바로 해제.

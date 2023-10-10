@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/fortune_router.dart';
@@ -39,7 +41,8 @@ class _MissionsBottomPage extends StatefulWidget {
 }
 
 class _MissionsBottomPageState extends State<_MissionsBottomPage> {
-  final router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneRouter>().router;
+  final _tracker = serviceLocator<MixpanelTracker>();
 
   late final MissionsBloc _bloc;
 
@@ -84,16 +87,19 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                   builder: (context, state) {
                     final ad = state.ad;
                     return ad != null
-                        ? Align(
-                            alignment: Alignment.topCenter,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.r),
-                                color: ColorName.grey700,
+                        ? Bounceable(
+                            onTap: () => _tracker.trackEvent('배너클릭'),
+                            child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                  color: ColorName.grey700,
+                                ),
+                                width: state.ad?.size.width.toDouble(),
+                                height: state.ad?.size.height.toDouble(),
+                                child: AdWidget(ad: state.ad!),
                               ),
-                              width: state.ad?.size.width.toDouble(),
-                              height: state.ad?.size.height.toDouble(),
-                              child: AdWidget(ad: state.ad!),
                             ),
                           )
                         : Container();
@@ -110,7 +116,7 @@ class _MissionsBottomPageState extends State<_MissionsBottomPage> {
                         return MissionCardList(
                           missions: state.missions,
                           onItemClick: (entity) async {
-                            await router.navigateTo(
+                            await _router.navigateTo(
                               context,
                               Routes.missionDetailNormalRoute,
                               routeSettings: RouteSettings(

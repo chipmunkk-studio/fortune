@@ -92,7 +92,7 @@
   "msgWithdrawalWarning": "탈퇴 시 보유한 모든 코인과\n마커가 모두 사라지고\n신규 회원으로만 재가입 가능합니다.\n정말 탈퇴하시겠습니까?",
   "msgWithdrawal": "탈퇴",
   "msgConfirmLogout": "로그아웃 하시겠습니까?",
-  "msgVerifyYourself": "본인 인증하기",
+  "msgVerifyYourself": "이메일 인증하기",
   "msgNoWebSupport": "포춘은 웹 서비스를 지원하지 않습니다",
   "msgUnknownUser": "낯선 사람",
   "msgUnknownError": "알 수 없는 에러",
