@@ -11,70 +11,14 @@ import 'package:supabase/supabase.dart';
 class AuthRepositoryImpl extends AuthRepository {
   final AuthService _authService;
   final UserService _userService;
-  final MixpanelTracker _mixpanelTracker;
+
+  final MixpanelTracker _tracker;
 
   AuthRepositoryImpl(
     this._authService,
     this._userService,
-    this._mixpanelTracker,
+    this._tracker,
   );
-
-  // 휴대폰 번호로 로그인 요청.
-  @override
-  Future<void> signInWithOtp({
-    required String phoneNumber,
-  }) async {
-    try {
-      final response = await _authService.signInWithOtp(phoneNumber: phoneNumber);
-      return response;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: e.message,
-      );
-    }
-  }
-
-  // 회원가입.
-  @override
-  Future<AuthResponse> signUp({
-    required String phoneNumber,
-    required int countryInfoId,
-  }) async {
-    try {
-      await _userService.insert(
-        phone: phoneNumber,
-        countryInfoId: countryInfoId,
-      );
-      final response = await _authService.signUp(
-        phoneNumber: phoneNumber,
-      );
-      _mixpanelTracker.trackEvent('회원 가입', properties: {'phone': phoneNumber});
-      return response;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '${e.message}',
-      );
-    }
-  }
-
-  // 휴대폰 번호 인증.
-  @override
-  Future<AuthResponse> verifyPhoneNumber(RequestVerifyPhoneNumberParam param) async {
-    try {
-      // #1 휴대폰 번호 인증.
-      final response = await _authService.verifyPhoneNumber(
-        otpCode: param.verifyCode,
-        phoneNumber: param.phoneNumber,
-      );
-      // #2 세션 저장.
-      await _authService.persistSession(response.session!);
-      return response;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.msgVerifyCode,
-      );
-    }
-  }
 
   // 약관 받아 오기.
   @override
@@ -102,45 +46,74 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<AuthResponse> signInWithEmail({
-    required String email,
-    required String password,
-  }) async {
+  Future<AuthResponse> verifyOTP(RequestVerifyEmailParam param) async {
     try {
-      final response = await _authService.signInWithEmail(
-        email: email,
-        password: password,
+      final response = await _authService.verifyOTP(
+        email: param.email,
+        otpCode: param.verifyCode,
       );
+      final user = await _userService.findUserByEmail(param.email);
+      if (user == null) {
+        // 회원이 없을 경우 추가.
+        await _userService.insert(email: param.email);
+        _tracker.trackEvent('회원가입');
+      }
       await _authService.persistSession(response.session!);
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '테스트 계정 로그인 실패',
+        description: e.message,
       );
     }
   }
 
   @override
   Future<AuthResponse> signUpWithEmail({
-    required String phoneNumber,
     required String email,
-    required String password,
   }) async {
     try {
-      // 회원이 없을 경우 추가.
-      await _userService.insert(
-        phone: phoneNumber,
-        countryInfoId: 2,
+      final response = await _authService.signUpWithEmail(email: email);
+      return response;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: e.message,
       );
-      final response = await _authService.signUpWithEmail(
+    }
+  }
+
+  @override
+  Future<void> signInWithEmail({
+    required String email,
+  }) async {
+    try {
+      await _authService.signInWithEmail(email: email);
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: FortuneTr.msgUseNextTime,
+      );
+    }
+  }
+
+  @override
+  Future<AuthResponse> signInWithEmailWithTest({
+    required String email,
+    required String password,
+    required bool isRegistered,
+  }) async {
+    try {
+      final response = await _authService.signInWithEmailWithTest(
         email: email,
         password: password,
+        isRegistered: isRegistered,
       );
+      if (!isRegistered) {
+        await _userService.insert(email: email);
+      }
       await _authService.persistSession(response.session!);
       return response;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: FortuneTr.msgUseNextTime,
+        description: e.message,
       );
     }
   }

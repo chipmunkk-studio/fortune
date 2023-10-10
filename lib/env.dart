@@ -25,13 +25,13 @@ enum EnvKey {
   mapUrlTemplate,
   mixpanelToken,
   randomDistance,
-  twilioTestAccountEmail,
-  twilioTestPassword,
-  twilioTestPhoneNumber,
-  forceDevelopServer,
   refreshTime,
   ticketCount,
   markerCount,
+  androidGoogleClientId,
+  iosGoogleClientId,
+  testSignInEmail,
+  testSignInPassword,
 }
 
 class FortuneRemoteConfig {
@@ -41,11 +41,9 @@ class FortuneRemoteConfig {
   final String mapStyleId;
   final String mapUrlTemplate;
   final String mixpanelToken;
-  final String twilioTestAccountEmail;
-  final String twilioTestPassword;
-  final String twilioTestPhoneNumber;
+  final String testSignInEmail;
+  final String testSignInPassword;
   final double randomDistance;
-  final bool forceDevelopServer;
   final int refreshTime;
   final int markerCount;
   final int ticketCount;
@@ -60,11 +58,9 @@ class FortuneRemoteConfig {
     required this.randomDistance,
     required this.markerCount,
     required this.ticketCount,
+    required this.testSignInEmail,
+    required this.testSignInPassword,
     required this.refreshTime,
-    required this.twilioTestAccountEmail,
-    required this.forceDevelopServer,
-    required this.twilioTestPassword,
-    required this.twilioTestPhoneNumber,
   });
 
   @override
@@ -73,7 +69,8 @@ class FortuneRemoteConfig {
         "mapAccessToken: ${mapAccessToken.shortenForPrint()},\n"
         "mapStyleId: ${mapStyleId.shortenForPrint()},\n"
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
-        "forceDevelopServer: $forceDevelopServer,\n"
+        "testSignInEmail: $testSignInEmail,\n"
+        "testSignInPassword: $testSignInPassword,\n"
         "mixpanelToken: $mixpanelToken\n"
         "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
@@ -121,7 +118,7 @@ class Environment {
     /// 파이어베이스 crashlytics
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    // 웹은 크래실리틱스 수집 안함.
+    // [WEB] 웹은 크래실리틱스 수집 안함.
     if (!kIsWeb) {
       FirebaseCrashlytics.instance
         ..setCustomKey("appName", packageInfo.appName)
@@ -169,15 +166,13 @@ getRemoteConfigArgs() async {
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
     final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
-    final twilioTestAccountEmail = remoteConfig.getString(describeEnum(EnvKey.twilioTestAccountEmail));
-    final twilioTestPassword = remoteConfig.getString(describeEnum(EnvKey.twilioTestPassword));
-    final twilioTestPhoneNumber = remoteConfig.getString(describeEnum(EnvKey.twilioTestPhoneNumber));
-    final forceDevelopServer = remoteConfig.getBool(describeEnum(EnvKey.forceDevelopServer));
+    final testSignInPassword = remoteConfig.getString(describeEnum(EnvKey.testSignInPassword));
+    final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return !forceDevelopServer ? describeEnum(EnvKey.productUrl) : describeEnum(EnvKey.devUrl);
+          return describeEnum(EnvKey.productUrl);
         case false:
           return describeEnum(EnvKey.devUrl);
         default:
@@ -188,7 +183,7 @@ getRemoteConfigArgs() async {
     final anonKey = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
-          return !forceDevelopServer ? describeEnum(EnvKey.productAnonKey) : describeEnum(EnvKey.devAnonKey);
+          return describeEnum(EnvKey.productAnonKey);
         case false:
           return describeEnum(EnvKey.devAnonKey);
         default:
@@ -207,10 +202,8 @@ getRemoteConfigArgs() async {
       refreshTime: refreshTime,
       markerCount: markerCount,
       ticketCount: ticketCount,
-      forceDevelopServer: forceDevelopServer,
-      twilioTestAccountEmail: twilioTestAccountEmail,
-      twilioTestPassword: twilioTestPassword,
-      twilioTestPhoneNumber: twilioTestPhoneNumber,
+      testSignInEmail: testSignInEmail,
+      testSignInPassword: testSignInPassword,
     );
   } catch (e) {
     throw (e is Exception) ? e.handleException() : e;

@@ -6,7 +6,7 @@ import 'fortune_user_next_level_entity.dart';
 
 class FortuneUserEntity {
   final int id;
-  final String phone;
+  final String email;
   final String nickname;
   final String profileImage;
   final String pushToken;
@@ -22,7 +22,7 @@ class FortuneUserEntity {
 
   FortuneUserEntity({
     required this.id,
-    required this.phone,
+    required this.email,
     required this.nickname,
     required this.profileImage,
     required this.ticket,
@@ -38,7 +38,7 @@ class FortuneUserEntity {
 
   FortuneUserEntity copyWith({
     int? id,
-    String? phone,
+    String? email,
     String? countryCode,
     String? nickname,
     String? profileImage,
@@ -53,7 +53,7 @@ class FortuneUserEntity {
   }) {
     return FortuneUserEntity(
       id: id ?? this.id,
-      phone: phone ?? this.phone,
+      email: email ?? this.email,
       nickname: nickname ?? this.nickname,
       profileImage: profileImage ?? this.profileImage,
       ticket: ticket ?? this.ticket,
@@ -69,7 +69,7 @@ class FortuneUserEntity {
   factory FortuneUserEntity.empty() {
     return FortuneUserEntity(
       id: -1,
-      phone: '',
+      email: '',
       nickname: FortuneTr.msgUnknownUser,
       profileImage: '',
       isWithdrawal: false,

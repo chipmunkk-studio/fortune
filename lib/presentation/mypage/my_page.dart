@@ -5,7 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
 import 'package:fortune/presentation/mypage/component/info_menu.dart';
 import 'package:fortune/presentation/mypage/component/profile_info.dart';

@@ -22,7 +22,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   @override
   Future<FortuneResult<List<MissionViewEntity>>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       final missions = await missionRepository.getAllMissions();
       final missionViewItemsFutures = missions.map(
         (e) async {

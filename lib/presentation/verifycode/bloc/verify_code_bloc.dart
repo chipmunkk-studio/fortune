@@ -8,15 +8,16 @@ import 'package:fortune/domain/supabase/request/request_verify_phone_number_para
 import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/verify_phone_number_use_case.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
+import 'package:fortune/fortune_router.dart';
+import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'verify_code.dart';
 
 class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     with SideEffectBlocMixin<VerifyCodeEvent, VerifyCodeState, VerifyCodeSideEffect> {
-  final VerifyPhoneNumberUseCase verifyPhoneNumberUseCase;
+  final VerifyEmailUseCase verifyEmailUseCase;
   final CheckVerifySmsTimeUseCase checkVerifySmsTimeUseCase;
   final SignUpOrInUseCase signUpOrInUseCase;
   final CancelWithdrawalUseCase cancelWithdrawalUseCase;
@@ -25,7 +26,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   static const verifyTime = 180;
 
   VerifyCodeBloc({
-    required this.verifyPhoneNumberUseCase,
+    required this.verifyEmailUseCase,
     required this.checkVerifySmsTimeUseCase,
     required this.signUpOrInUseCase,
     required this.cancelWithdrawalUseCase,
@@ -47,6 +48,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       state.copyWith(
         phoneNumber: event.phoneNumber,
         countryInfoEntity: event.countryInfoEntity,
+        loginUserState: event.loginUserState,
       ),
     );
     await _requestSignUpOrIn(emit);
@@ -81,47 +83,58 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   FutureOr<void> verifyConfirm(VerifyConfirm event, Emitter<VerifyCodeState> emit) async {
     emit(state.copyWith(isLoginProcessing: true));
 
-    await verifyPhoneNumberUseCase(
-      RequestVerifyPhoneNumberParam(
-        phoneNumber: state.phoneNumber,
+    // 테스트 계정 일 경우 바이 패스.
+    if (state.isTestAccount) {
+      produceSideEffect(
+        VerifyCodeLandingRoute(
+          state.loginUserState != LoginUserState.web ? Routes.mainRoute : Routes.webMainRoute,
+        ),
+      );
+      return;
+    }
+
+    await verifyEmailUseCase(
+      RequestVerifyEmailParam(
+        email: state.phoneNumber,
         verifyCode: state.verifyCode,
       ),
     ).then(
-      (value) => value.fold((l) {
-        emit(state.copyWith(isLoginProcessing: false));
-        produceSideEffect(VerifyCodeError(l));
-      }, (r) async {
-        // 탈퇴 처리 된 회원인 경우 철회 함.
-        if (r.userEntity.isWithdrawal) {
-          await cancelWithdrawalUseCase();
-        }
-        emit(state.copyWith(isLoginProcessing: false));
-        produceSideEffect(VerifyCodeLandingRoute(Routes.mainRoute));
-      }),
+      (value) => value.fold(
+        (l) {
+          emit(state.copyWith(isLoginProcessing: false));
+          produceSideEffect(VerifyCodeError(l));
+        },
+        (r) async {
+          // 탈퇴 처리 된 회원인 경우 철회 함.
+          if (r.userEntity.isWithdrawal) {
+            await cancelWithdrawalUseCase();
+          }
+          emit(state.copyWith(isLoginProcessing: false));
+          produceSideEffect(
+            VerifyCodeLandingRoute(
+              state.loginUserState != LoginUserState.web ? Routes.mainRoute : Routes.webMainRoute,
+            ),
+          );
+        },
+      ),
     );
   }
 
   _requestSignUpOrIn(Emitter<VerifyCodeState> emit) async {
-    await checkVerifySmsTimeUseCase().then(
+    await signUpOrInUseCase(
+      RequestSignUpParam(
+        email: state.phoneNumber,
+        countryInfoId: state.countryInfoEntity.id,
+      ),
+    ).then(
       (value) => value.fold(
         (l) => produceSideEffect(VerifyCodeError(l)),
-        (r) async {
-          await signUpOrInUseCase(
-            RequestSignUpParam(
-              phoneNumber: state.phoneNumber,
-              countryInfoId: state.countryInfoEntity.id,
-            ),
-          ).then(
-            (value) => value.fold(
-              (l) => produceSideEffect(VerifyCodeError(l)),
-              (r) {
-                emit(
-                  state.copyWith(
-                    isRequestVerifyCodeEnable: false,
-                    verifyTime: verifyTime,
-                  ),
-                );
-              },
+        (r) {
+          emit(
+            state.copyWith(
+              isRequestVerifyCodeEnable: false,
+              verifyTime: verifyTime,
+              isTestAccount: r,
             ),
           );
         },

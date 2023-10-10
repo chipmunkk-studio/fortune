@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/usecase/nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
+import 'package:fortune/presentation/login/bloc/login_state.dart';
 
 @immutable
 abstract class LoginSideEffect extends Equatable {}
@@ -27,12 +28,14 @@ class LoginShowTermsBottomSheet extends LoginSideEffect {
 }
 
 class LoginShowVerifyCodeBottomSheet extends LoginSideEffect {
-  final String convertedPhoneNumber;
+  final String email;
   final CountryInfoEntity countryInfoEntity;
+  final LoginUserState loginUserState;
 
   LoginShowVerifyCodeBottomSheet(
-    this.convertedPhoneNumber,
+    this.email,
     this.countryInfoEntity,
+    this.loginUserState,
   );
 
   @override
@@ -52,13 +55,6 @@ class LoginWithdrawalUser extends LoginSideEffect {
   bool isReSignIn;
 
   LoginWithdrawalUser(this.isReSignIn);
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LoginNotSupportWeb extends LoginSideEffect {
-  LoginNotSupportWeb();
 
   @override
   List<Object?> get props => [];

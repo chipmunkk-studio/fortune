@@ -22,7 +22,7 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
   Future<FortuneResult<MyIngredientsViewEntity>> call() async {
     try {
       final ingredients = await ingredientRepository.findAllIngredients();
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
 
       final sortedIngredients = ingredients
           .where(

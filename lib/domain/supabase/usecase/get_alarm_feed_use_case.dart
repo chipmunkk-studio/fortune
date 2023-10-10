@@ -17,7 +17,7 @@ class GetAlarmFeedUseCase implements UseCase0<List<AlarmFeedsEntity>> {
   @override
   Future<FortuneResult<List<AlarmFeedsEntity>>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       final alarms = await alarmFeedsRepository.findAllAlarmsByUserId(user.id);
       return Right(alarms);
     } on FortuneFailure catch (e) {
