@@ -14,7 +14,7 @@ class GradeGuideUseCase implements UseCase0<GradeGuideViewEntity> {
   @override
   Future<FortuneResult<GradeGuideViewEntity>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       final entity = GradeGuideViewEntity(
         user: user,
       );

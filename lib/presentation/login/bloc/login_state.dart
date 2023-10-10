@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,7 +8,7 @@ part 'login_state.freezed.dart';
 @freezed
 class LoginState with _$LoginState {
   factory LoginState({
-    required String phoneNumber,
+    required String email,
     required String guideTitle,
     required CountryInfoEntity selectCountry,
     required bool isButtonEnabled,
@@ -18,7 +17,7 @@ class LoginState with _$LoginState {
   }) = _LoginState;
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
-        phoneNumber: "",
+        email: "",
         isButtonEnabled: false,
         isLoading: true,
         selectCountry: CountryInfoEntity.empty(),

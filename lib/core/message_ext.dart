@@ -52,7 +52,7 @@ abstract class FortuneTr {
   static final myInfo = tr('myInfo');
   static final countryCode = tr('countryCode');
   static final save = tr('save');
-  static final phoneNumber = tr('phoneNumber');
+  static final email = tr('email');
   static final logout = tr('logout');
   static final withdrawal = tr('withdrawal');
   static final myInfoModify = tr('myInfoModify');
@@ -135,8 +135,8 @@ abstract class FortuneTr {
   static final msgRequirePermissionSubTitle = tr('msgRequirePermissionSubTitle');
   static final msgRequirePermission = tr('msgRequirePermission');
   static final msgRequirePermissionContent = tr('msgRequirePermissionContent');
-  static final msgInputPhoneNumber = tr('msgInputPhoneNumber');
-  static final msgInputPhoneNumberNotValid = tr('msgInputPhoneNumberNotValid');
+  static final msgInputEmail = tr('msgInputEmail');
+  static final msgInputEmailNotValid = tr('msgInputEmailNotValid');
   static final msgRequireTermsUse = tr('msgRequireTermsUse');
   static final msgRequireTermsApprove = tr('msgRequireTermsApprove');
 

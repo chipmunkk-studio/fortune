@@ -17,7 +17,7 @@ class GetCurrentUserUseCase implements UseCase0<FortuneUserEntity?> {
   @override
   Future<FortuneResult<FortuneUserEntity?>> call() async {
     try {
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
       return Right(user);
     } on FortuneFailure catch (e) {
       return Left(e);

@@ -9,7 +9,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';

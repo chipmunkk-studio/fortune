@@ -23,12 +23,10 @@ class UserRepositoryImpl extends UserRepository {
 
   // 휴대폰 번호로 현재 사용자 찾기.
   @override
-  Future<FortuneUserEntity> findUserByPhoneNonNull() async {
+  Future<FortuneUserEntity> findUserByEmailNonNull() async {
     try {
-      final String currentPhoneNumber = Supabase.instance.client.auth.currentUser?.phone ?? '';
-      final String testAccount = await _localDataSource.getTestAccount();
-      final String phoneNumber = currentPhoneNumber.isNotEmpty ? currentPhoneNumber : testAccount;
-      final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
+      final String currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
+      final FortuneUserEntity? user = await _userService.findUserByEmail(currentEmail);
       if (user == null) {
         throw CommonFailure(errorMessage: FortuneTr.notExistUser);
       }
@@ -42,9 +40,9 @@ class UserRepositoryImpl extends UserRepository {
 
   // 사용자 찾기.
   @override
-  Future<FortuneUserEntity?> findUserByPhone(phoneNumber) async {
+  Future<FortuneUserEntity?> findUserByEmail(email) async {
     try {
-      final FortuneUserEntity? user = await _userService.findUserByPhone(phoneNumber);
+      final FortuneUserEntity? user = await _userService.findUserByEmail(email);
       return user;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -60,7 +58,7 @@ class UserRepositoryImpl extends UserRepository {
     required int markerObtainCount,
   }) async {
     try {
-      final user = await findUserByPhoneNonNull();
+      final user = await findUserByEmailNonNull();
       return await _userService.update(
         user,
         request: RequestFortuneUser(
@@ -79,7 +77,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity> updateUserNickName({required String nickname}) async {
     try {
-      final user = await findUserByPhoneNonNull();
+      final user = await findUserByEmailNonNull();
       return await _userService.update(
         user,
         request: RequestFortuneUser(
@@ -98,7 +96,7 @@ class UserRepositoryImpl extends UserRepository {
     try {
       // 테스트 계정 때문에 아이디 찾아야 됨.
       final imagePath = await _userService.getUpdateProfileFileUrl(filePath: filePath);
-      final user = await findUserByPhoneNonNull();
+      final user = await findUserByEmailNonNull();
       final result = await _userService.update(user, request: RequestFortuneUser(profileImage: imagePath));
       return result;
     } on FortuneFailure catch (e) {
@@ -111,7 +109,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<void> withdrawal() async {
     try {
-      final user = await findUserByPhoneNonNull();
+      final user = await findUserByEmailNonNull();
       await _userService.update(
         user,
         request: RequestFortuneUser(
@@ -120,7 +118,7 @@ class UserRepositoryImpl extends UserRepository {
         ),
       );
       await _supabaseClient.auth.signOut();
-      _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'phone': user.phone});
+      _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'phone': user.email});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,
@@ -132,7 +130,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<void> cancelWithdrawal() async {
     try {
-      final user = await findUserByPhoneNonNull();
+      final user = await findUserByEmailNonNull();
       await _userService.update(
         user,
         request: RequestFortuneUser(
@@ -141,7 +139,7 @@ class UserRepositoryImpl extends UserRepository {
         ),
         isCancelWithdrawal: true,
       );
-      _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'phone': user.phone});
+      _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'phone': user.email});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,

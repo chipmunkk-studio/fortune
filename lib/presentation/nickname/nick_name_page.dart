@@ -10,7 +10,7 @@ import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/core/widgets/textform/fortune_text_form.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/nickname/component/profile_image.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -66,7 +66,7 @@ class _NickNamePageState extends State<_NickNamePage> {
           dialogService.showErrorDialog(context, sideEffect.error);
         } else if (sideEffect is NickNameUserInfoInit) {
           _nickNameController.text = sideEffect.user.nickname;
-          _phoneNumberController.text = sideEffect.user.phone;
+          _phoneNumberController.text = sideEffect.user.email;
         } else if (sideEffect is NickNameRoutingPage) {
           final route = sideEffect.route;
           switch (route) {
@@ -128,7 +128,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                       Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
-                          FortuneTr.phoneNumber,
+                          FortuneTr.email,
                           style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                         ),
                       ),
@@ -141,27 +141,54 @@ class _NickNamePageState extends State<_NickNamePage> {
                       ),
                       const Spacer(),
                       IntrinsicHeight(
-                        child: Center(
-                          child: Bounceable(
-                            onTap: () {
-                              dialogService.showFortuneDialog(
-                                context,
-                                title: FortuneTr.msgConfirmWithdrawal,
-                                subTitle: FortuneTr.msgWithdrawalWarning,
-                                btnOkText: FortuneTr.msgWithdrawal,
-                                btnOkColor: ColorName.negative,
-                                btnCancelColor: ColorName.grey500,
-                                btnOkPressed: () => _bloc.add(NickNameWithdrawal()),
-                                btnCancelPressed: () {},
-                                dismissOnTouchOutside: true,
-                                dismissOnBackKeyPress: true,
-                              );
-                            },
-                            child: Text(
-                              FortuneTr.withdrawal,
-                              style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Bounceable(
+                              onTap: () {
+                                dialogService.showFortuneDialog(
+                                  context,
+                                  subTitle: FortuneTr.msgConfirmLogout,
+                                  btnCancelColor: ColorName.grey500,
+                                  btnOkPressed: () => _bloc.add(NickNameSignOut()),
+                                  btnCancelPressed: () {},
+                                  dismissOnTouchOutside: true,
+                                  dismissOnBackKeyPress: true,
+                                );
+                              },
+                              child: Text(
+                                FortuneTr.logout,
+                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 12),
+                            const VerticalDivider(
+                              thickness: 1,
+                              width: 1,
+                              color: ColorName.grey500,
+                            ),
+                            const SizedBox(width: 12),
+                            Bounceable(
+                              onTap: () {
+                                dialogService.showFortuneDialog(
+                                  context,
+                                  title: FortuneTr.msgConfirmWithdrawal,
+                                  subTitle: FortuneTr.msgWithdrawalWarning,
+                                  btnOkText: FortuneTr.msgWithdrawal,
+                                  btnOkColor: ColorName.negative,
+                                  btnCancelColor: ColorName.grey500,
+                                  btnOkPressed: () => _bloc.add(NickNameWithdrawal()),
+                                  btnCancelPressed: () {},
+                                  dismissOnTouchOutside: true,
+                                  dismissOnBackKeyPress: true,
+                                );
+                              },
+                              child: Text(
+                                FortuneTr.withdrawal,
+                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 20),

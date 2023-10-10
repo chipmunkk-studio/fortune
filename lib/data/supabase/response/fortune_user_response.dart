@@ -7,8 +7,8 @@ part 'fortune_user_response.g.dart';
 class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'id')
   final double id_;
-  @JsonKey(name: 'phone')
-  final String phone_;
+  @JsonKey(name: 'email')
+  final String email_;
   @JsonKey(name: 'nickname')
   final String nickname_;
   @JsonKey(name: 'profileImage')
@@ -30,7 +30,7 @@ class FortuneUserResponse extends FortuneUserEntity {
 
   FortuneUserResponse({
     required this.id_,
-    required this.phone_,
+    required this.email_,
     required this.nickname_,
     required this.profileImage_,
     required this.ticket_,
@@ -43,7 +43,7 @@ class FortuneUserResponse extends FortuneUserEntity {
   }) : super(
           id: id_.toInt(),
           nickname: nickname_,
-          phone: phone_,
+          email: email_,
           ticket: ticket_,
           profileImage: profileImage_ ?? "",
           markerObtainCount: markerObtainCount_,

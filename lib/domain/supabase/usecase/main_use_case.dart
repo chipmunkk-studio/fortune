@@ -37,7 +37,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   Future<FortuneResult<MainViewEntity>> call(RequestMainParam param) async {
     try {
       // 유저 정보 가져오기.
-      final user = await userRepository.findUserByPhoneNonNull();
+      final user = await userRepository.findUserByEmailNonNull();
 
       // 유저 알림 가져오기.
       final userNotices = await userNoticesRepository.findAllAlarmsByUserId(user.id);

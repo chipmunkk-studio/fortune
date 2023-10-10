@@ -7,19 +7,22 @@ import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
+import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/verify_code.dart';
 import 'component/verify_code_number_input.dart';
 
 class VerifyCodeBottomSheet extends StatelessWidget {
-  final String phoneNumber;
+  final String email;
   final CountryInfoEntity countryInfoEntity;
+  final LoginUserState loginUserState;
 
   const VerifyCodeBottomSheet({
-    required this.phoneNumber,
+    required this.email,
     required this.countryInfoEntity,
+    required this.loginUserState,
     super.key,
   });
 
@@ -29,8 +32,9 @@ class VerifyCodeBottomSheet extends StatelessWidget {
       create: (_) => serviceLocator<VerifyCodeBloc>()
         ..add(
           VerifyCodeInit(
-            phoneNumber: phoneNumber,
+            phoneNumber: email,
             countryInfoEntity: countryInfoEntity,
+            loginUserState: loginUserState,
           ),
         ),
       child: const _VerifyCodeBottomSheet(),
@@ -39,9 +43,7 @@ class VerifyCodeBottomSheet extends StatelessWidget {
 }
 
 class _VerifyCodeBottomSheet extends StatefulWidget {
-  const _VerifyCodeBottomSheet({
-    super.key,
-  });
+  const _VerifyCodeBottomSheet();
 
   @override
   State<_VerifyCodeBottomSheet> createState() => _VerifyCodeBottomSheetState();
@@ -78,7 +80,9 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
           router.navigateTo(
             context,
             sideEffect.landingRoute,
-            clearStack: sideEffect.landingRoute == Routes.mainRoute ? true : false,
+            clearStack: sideEffect.landingRoute == Routes.mainRoute || sideEffect.landingRoute == Routes.webMainRoute
+                ? true
+                : false,
           );
         } else if (sideEffect is VerifyCodeInputFromSmsListening) {
           _verifyCodeController.text = sideEffect.code;

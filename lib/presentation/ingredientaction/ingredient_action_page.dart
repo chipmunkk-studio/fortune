@@ -6,7 +6,7 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
@@ -88,7 +88,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                   ad.show(
                     onUserEarnedReward: (_, reward) {
                       _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
-                        'phone': sideEffect.param.user?.phone,
+                        'phone': sideEffect.param.user?.email,
                       });
                       FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
                       _bloc.add(IngredientActionShowAdCounting());

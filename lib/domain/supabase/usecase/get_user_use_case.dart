@@ -15,9 +15,9 @@ class GetUserUseCase implements UseCase1<FortuneUserEntity?, String> {
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity?>> call(String phoneNumber) async {
+  Future<FortuneResult<FortuneUserEntity?>> call(String email) async {
     try {
-      final user = await userRepository.findUserByPhone(phoneNumber);
+      final user = await userRepository.findUserByEmail(email);
       return Right(user);
     } on FortuneFailure catch (e) {
       return Left(e);

@@ -12,7 +12,7 @@ import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
@@ -39,7 +39,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainLandingPage>(landingPage);
     on<Main>(
       main,
-      transformer: throttle(const Duration(seconds: 10)),
+      transformer: throttle(const Duration(seconds: 3)),
     );
     on<MainMarkerClick>(onMarkerClicked);
     on<MainRequireInCircleMetersEvent>(

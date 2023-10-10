@@ -6,41 +6,38 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/validators.dart';
 
-class LoginPhoneNumber extends StatelessWidget {
-  const LoginPhoneNumber({
+class LoginEmailInputField extends StatelessWidget {
+  const LoginEmailInputField({
     super.key,
-    required TextEditingController phoneNumberController,
-    required String phoneNumber,
+    required TextEditingController emailController,
+    required String email,
     required this.onTextChanged,
-  })  : _phoneNumberController = phoneNumberController,
-        _phoneNumber = phoneNumber;
+  })  : _emailController = emailController,
+        _email = email;
 
-  final TextEditingController _phoneNumberController;
+  final TextEditingController _emailController;
   final Function1<String, void> onTextChanged;
-  final String _phoneNumber;
+  final String _email;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       autofocus: true,
-      maxLength: 13,
       style: FortuneTextStyle.button1Medium(),
-      controller: _phoneNumberController,
-      keyboardType: TextInputType.phone,
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
       inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(11),
+        FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z0-9._@-]")),
+        LengthLimitingTextInputFormatter(320),
       ],
       onChanged: onTextChanged,
       decoration: InputDecoration(
         isDense: false,
-        hintText: FortuneTr.msgInputPhoneNumber,
+        hintText: FortuneTr.msgInputEmail,
         contentPadding: const EdgeInsets.all(16),
         counterText: "",
         hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
-        errorText: FortuneValidator.isValidPhoneNumber(_phoneNumber) || _phoneNumber.isEmpty
-            ? null
-            : FortuneTr.msgInputPhoneNumberNotValid,
+        errorText: FortuneValidator.isValidEmail(_email) || _email.isEmpty ? null : FortuneTr.msgInputEmailNotValid,
         errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
       ),
     );

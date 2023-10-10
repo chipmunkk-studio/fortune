@@ -22,7 +22,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/login/bloc/login_state.dart';
 import 'package:fortune/presentation/missions/missions_bottom_page.dart';
@@ -353,14 +353,18 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             newLoc.longitude!,
           ),
           _bloc.state.zoomThreshold,
+          newLoc: newLoc,
         );
-        _bloc.add(MainMyLocationChange(newLoc));
       },
     );
   }
 
   // 카메라 이동 애니메이션.
-  void _animatedMapMove(LatLng destLocation, double destZoom) {
+  void _animatedMapMove(
+    LatLng destLocation,
+    double destZoom, {
+    LocationData? newLoc,
+  }) {
     try {
       final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
       final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
@@ -386,6 +390,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       );
 
       controller.forward();
+
+      if (newLoc != null) {
+        _bloc.add(MainMyLocationChange(newLoc));
+      }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
     }

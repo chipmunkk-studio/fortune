@@ -6,20 +6,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
-import 'package:fortune/domain/supabase/request/request_sign_up_or_in_test_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_country_info_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final GetUserUseCase getUserUseCase;
-  final SignUpOrInWithTestUseCase signUpOrInWithTestUseCase;
+  final SignInWithEmailUseCase signInWithEmailUseCase;
   final GetCountryInfoUseCase getCountryInfoUseCase;
   final WithdrawalUseCase withdrawalUseCase;
   final Environment env;
@@ -27,13 +25,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   LoginBloc({
     required this.getUserUseCase,
     required this.withdrawalUseCase,
-    required this.signUpOrInWithTestUseCase,
+    required this.signInWithEmailUseCase,
     required this.getCountryInfoUseCase,
     required this.env,
   }) : super(LoginState.initial()) {
     on<LoginInit>(init);
-    on<LoginPhoneNumberInput>(
-      phoneNumberInput,
+    on<LoginEmailInput>(
+      emailInput,
       transformer: debounce(
         const Duration(milliseconds: 200),
       ),
@@ -46,11 +44,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
     FortuneLogger.info('현재 유저 상태: ${event.loginUserState.name}');
-    // 웹은 지원하지 않음.
-    if (event.loginUserState == LoginUserState.web) {
-      produceSideEffect(LoginNotSupportWeb());
-      return;
-    }
 
     await getCountryInfoUseCase().then(
       (value) => value.fold(
@@ -72,39 +65,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     );
   }
 
-  FutureOr<void> phoneNumberInput(LoginPhoneNumberInput event, Emitter<LoginState> emit) {
+  FutureOr<void> emailInput(LoginEmailInput event, Emitter<LoginState> emit) {
     emit(
       state.copyWith(
-        phoneNumber: event.phoneNumber,
-        isButtonEnabled: FortuneValidator.isValidPhoneNumber(event.phoneNumber),
+        email: event.email,
+        isButtonEnabled: FortuneValidator.isValidEmail(event.email),
       ),
     );
   }
 
   FutureOr<void> clickNextButton(LoginBottomButtonClick event, Emitter<LoginState> emit) async {
-    final remoteConfig = env.remoteConfig;
-    // 사용자의 전화번호가 테스트 계정에 포함되어 있는지 확인.
-    bool isTestAccount = remoteConfig.twilioTestPhoneNumber.contains(state.phoneNumber);
-
-    // #1 테스트 계정 일 경우 인증번호 전송없이 회원가입/로그인 일괄 처리.
-    if (isTestAccount) {
-      await _processTestSignInOrUp(remoteConfig);
-    } else {
-      await _processSignInOrUp(emit);
-    }
+    await _processSignInOrUp(emit);
   }
 
   Future<void> _processSignInOrUp(
     Emitter<LoginState> emit, {
     bool cancelWithdrawal = false,
   }) async {
-    final convertedPhoneNumber = _getConvertedPhoneNumber(
-      state.selectCountry.phoneCode,
-      state.phoneNumber,
-    );
-
     await getUserUseCase(
-      convertedPhoneNumber,
+      state.email,
     ).then(
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
@@ -120,35 +99,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
             emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
             produceSideEffect(
               LoginShowVerifyCodeBottomSheet(
-                convertedPhoneNumber,
+                state.email,
                 state.selectCountry,
+                state.loginUserState,
               ),
             );
           } else {
             // 약관 바텀 시트 표시
-            produceSideEffect(LoginShowTermsBottomSheet(
-              convertedPhoneNumber,
-            ));
+            produceSideEffect(
+              LoginShowTermsBottomSheet(
+                state.email,
+              ),
+            );
           }
-        },
-      ),
-    );
-  }
-
-  Future<void> _processTestSignInOrUp(
-    FortuneRemoteConfig config,
-  ) async {
-    await signUpOrInWithTestUseCase(
-      RequestSignUpOrInTestParam(
-        testEmail: config.twilioTestAccountEmail,
-        testPassword: config.twilioTestPassword,
-        testPhoneNumber: '82${config.twilioTestPhoneNumber}',
-      ),
-    ).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(LoginError(l)),
-        (r) {
-          produceSideEffect(LoginLandingRoute(Routes.mainRoute));
         },
       ),
     );
@@ -156,14 +119,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   // 약관 동의 후 인증 번호 바텀시트 띄움.
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
-    final convertedPhoneNumber = _getConvertedPhoneNumber(
-      state.selectCountry.phoneCode,
-      state.phoneNumber,
-    );
     produceSideEffect(
       LoginShowVerifyCodeBottomSheet(
-        convertedPhoneNumber,
+        state.email,
         state.selectCountry,
+        state.loginUserState,
       ),
     );
   }
@@ -178,10 +138,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   FutureOr<void> selectCountry(LoginRequestSelectCountry event, Emitter<LoginState> emit) {
     emit(state.copyWith(selectCountry: event.args));
   }
-
-  _getConvertedPhoneNumber(
-    int countryCode,
-    String phoneNumber,
-  ) =>
-      '$countryCode$phoneNumber';
 }

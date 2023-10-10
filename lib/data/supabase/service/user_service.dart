@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
@@ -19,8 +17,7 @@ class UserService {
   final _userTableName = TableName.users;
   final FortuneNotificationsManager notificationManager;
 
-  static const fullSelectQuery = '*,'
-      '${TableName.countryInfo}(*)';
+  static const fullSelectQuery = '*';
 
   UserService({
     required this.notificationManager,
@@ -28,16 +25,13 @@ class UserService {
 
   // 회원가입.
   Future<void> insert({
-    required String phone,
-    required int countryInfoId,
+    required String email,
   }) async {
     final pushToken = await notificationManager.getFcmPushToken();
-    final Locale currentLocale = PlatformDispatcher.instance.locale;
     try {
       final requestToJson = RequestFortuneUser.insert(
-        phone: phone,
+        email: email,
         nickname: 'fortune${DateTime.now().millisecondsSinceEpoch}',
-        countryInfo: countryInfoId,
         pushToken: pushToken,
       ).toJson();
       FortuneLogger.info('회원가입 정보: $requestToJson');
@@ -55,7 +49,7 @@ class UserService {
   }) async {
     try {
       final requestToUpdate = RequestFortuneUser(
-        phone: request.phone ?? user.phone,
+        email: request.email ?? user.email,
         nickname: request.nickname ?? user.nickname,
         profileImage: request.profileImage ?? user.profileImage,
         ticket: request.ticket ?? user.ticket,
@@ -71,7 +65,7 @@ class UserService {
           .update(
             requestToUpdate.toJson(),
           )
-          .eq('phone', user.phone)
+          .eq('email', user.email)
           .select();
 
       return updateUser.map((e) => FortuneUserResponse.fromJson(e)).toList().single;
@@ -88,7 +82,7 @@ class UserService {
     final dynamic uploadFile = File(filePath);
     final now = DateTime.now();
     final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
-    final fullName = "${_client.auth.currentUser?.phone}/$timestamp.jpg";
+    final fullName = "${_client.auth.currentUser?.email}/$timestamp.jpg";
 
     final String path = await storage
         .from(
@@ -109,14 +103,14 @@ class UserService {
   }
 
   // 휴대폰 번호로 사용자를 찾음.
-  Future<FortuneUserEntity?> findUserByPhone(String? phone) async {
+  Future<FortuneUserEntity?> findUserByEmail(String? email) async {
     try {
       final List<dynamic> response = await _client
           .from(
             _userTableName,
           )
           .select(fullSelectQuery)
-          .eq('phone', phone)
+          .eq('email', email)
           .toSelect();
       if (response.isEmpty) {
         return null;
@@ -130,14 +124,14 @@ class UserService {
   }
 
   // 휴대폰 번호로 사용자를 찾음.
-  Future<FortuneUserEntity> findUserByPhoneNonNull(String? phone) async {
+  Future<FortuneUserEntity> findUserByEmailNonNull(String? email) async {
     try {
       final List<dynamic> response = await _client
           .from(
             _userTableName,
           )
           .select(fullSelectQuery)
-          .eq('phone', phone)
+          .eq('email', email)
           .toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: FortuneTr.notExistUser);

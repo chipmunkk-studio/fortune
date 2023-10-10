@@ -8,8 +8,8 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/checkbox/fortune_check_box.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms.dart';
-import 'package:fortune/presentation/fortune_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class AgreeTermsBottomSheet extends StatelessWidget {

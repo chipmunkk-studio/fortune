@@ -51,18 +51,18 @@ import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/sign_up_or_in_with_test_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/verify_phone_number_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
-import 'package:fortune/presentation/fortune_router.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:fortune/presentation/login/bloc/login_bloc.dart';
@@ -363,8 +363,8 @@ _initUseCase() async {
         authRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<VerifyPhoneNumberUseCase>(
-      () => VerifyPhoneNumberUseCase(
+    ..registerLazySingleton<VerifyEmailUseCase>(
+      () => VerifyEmailUseCase(
         authRepository: serviceLocator(),
         userRepository: serviceLocator(),
       ),
@@ -377,8 +377,8 @@ _initUseCase() async {
     ..registerLazySingleton<SignUpOrInUseCase>(
       () => SignUpOrInUseCase(
         authRepository: serviceLocator(),
-        localRepository: serviceLocator(),
         userRepository: serviceLocator(),
+        env: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetTermsUseCase>(
@@ -439,11 +439,9 @@ _initUseCase() async {
         obtainHistoryRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<SignUpOrInWithTestUseCase>(
-      () => SignUpOrInWithTestUseCase(
+    ..registerLazySingleton<SignInWithEmailUseCase>(
+      () => SignInWithEmailUseCase(
         authRepository: serviceLocator<AuthRepository>(),
-        userRepository: serviceLocator<UserRepository>(),
-        localRepository: serviceLocator<LocalRepository>(),
       ),
     )
     ..registerLazySingleton<GetAlarmFeedUseCase>(
@@ -537,7 +535,7 @@ _initBloc() {
         getUserUseCase: serviceLocator<GetUserUseCase>(),
         withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
         getCountryInfoUseCase: serviceLocator<GetCountryInfoUseCase>(),
-        signUpOrInWithTestUseCase: serviceLocator<SignUpOrInWithTestUseCase>(),
+        signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
         env: serviceLocator<Environment>(),
       ),
     )
@@ -598,7 +596,7 @@ _initBloc() {
     )
     ..registerFactory(
       () => VerifyCodeBloc(
-        verifyPhoneNumberUseCase: serviceLocator(),
+        verifyEmailUseCase: serviceLocator(),
         checkVerifySmsTimeUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
         cancelWithdrawalUseCase: serviceLocator(),

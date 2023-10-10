@@ -1,8 +1,8 @@
 {
   "loginGuideTitle": {
-    "phoneNumber": "We need to verify your phone number.",
-    "signInWithOtp": "Welcome back! Enter the code we texted you.",
-    "signInWithOtpNewMember": "New around here? Enter the code from our text."
+    "phoneNumber": "Email verification is required\nto use the service",
+    "signInWithOtp": "Welcome back!\nPlease enter the code sent via email",
+    "signInWithOtpNewMember": "New here?\nEnter the code we sent via email"
   },
   "bronze": "Bronze",
   "silver": "Silver",
@@ -22,7 +22,7 @@
   "move": "Go To",
   "modify": "Edit",
   "confirm": "Confirm",
-  "phoneNumber": "Phone Number",
+  "email": "Email",
   "nickname": "Nickname",
   "logout": "Log Out",
   "withdrawal": "Deactivate Account",
@@ -84,8 +84,8 @@
   "historyFortuneSpot": "History",
   "historyFortuneSpotSearchInput": "Search...",
   "msgRequireMarkerObtainDistance": "You are {} meters away.",
-  "msgInputPhoneNumber": "Enter your phone number.",
-  "msgInputPhoneNumberNotValid": "That doesn't seem like a valid number.",
+  "msgInputEmail": "Enter your Email address.",
+  "msgInputEmailNotValid": "That doesn't seem like a valid email address.",
   "msgRequireTermsUse": "Please agree to the terms to proceed.",
   "msgRequireTermsApprove": "Agree to All",
   "msgRequestSmsVerifyCode": "Try again in {} minutes and {} seconds.",
@@ -95,7 +95,7 @@
   "msgObtainMarkerSuccess": "You've collected {}!",
   "msgConsumeCoinToGetMarker": "Spend {} coins to get a marker?",
   "msgUseNextTime": "Try again in a bit.",
-  "msgRevokeWithdrawal": "Processing withdrawal",
+  "msgRevokeWithdrawal": "Want to undo the withdrawal?",
   "msgAlreadyWithdrawn": "You've already left our service.",
   "msgNoMarkers": "You haven't collected any markers yet!\nTry obtaining new markers from the map.",
   "msgMissionCompleted": "Mission accomplished!",
