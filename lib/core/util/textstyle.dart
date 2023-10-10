@@ -6,10 +6,12 @@ import 'package:fortune/core/gen/fonts.gen.dart';
 abstract class FortuneTextStyle {
   static TextStyle headLine1({
     Color? fontColor,
+    double? height,
   }) {
     return TextStyle(
       fontSize: 28.spMin,
       letterSpacing: -0.06,
+      height: height ?? 1.0,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
       color: fontColor ?? ColorName.white,
