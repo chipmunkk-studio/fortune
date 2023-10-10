@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 
@@ -10,8 +11,9 @@ class WebMainPage extends StatelessWidget {
     return FortuneScaffold(
       child: Center(
         child: Text(
-          '포춘에 오신것을 환영합니다!',
-          style: FortuneTextStyle.headLine1(),
+          FortuneTr.msgWelcome,
+          textAlign: TextAlign.center,
+          style: FortuneTextStyle.headLine1(height: 1.3),
         ),
       ),
     );

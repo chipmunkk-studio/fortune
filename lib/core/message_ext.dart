@@ -27,7 +27,6 @@ abstract class FortuneTr {
 
   static String msgJustNow() => tr('msgJustNow');
 
-
   static String msgAcquireMarker(
     String nickname,
     String location,
@@ -41,6 +40,8 @@ abstract class FortuneTr {
   static final notFoundUser = tr('msgNotFoundUser');
   static final notUpdateUser = tr('msgNotUpdateUser');
   static final renewAuthInfo = tr('msgRenewAuthInfo');
+
+  static final msgWelcome = tr('msgWelcome');
 
   static final start = tr('start');
   static final next = tr('next');
