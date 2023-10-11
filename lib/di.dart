@@ -58,11 +58,11 @@ import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dar
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
+import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
-import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:fortune/presentation/login/bloc/login_bloc.dart';
@@ -75,7 +75,6 @@ import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
 import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
 import 'package:fortune/presentation/support/notices/bloc/notices.dart';
-import 'package:fortune/presentation/support/personalinfo/bloc/privacy_policy.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
 import 'package:get_it/get_it.dart';
@@ -106,6 +105,7 @@ import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
+import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
