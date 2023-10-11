@@ -23,7 +23,14 @@ class SupportService {
   // 자주 묻는 질문.
   Future<List<FaqsEntity>> findAllFaqs() async {
     try {
-      final List<dynamic> response = await _client.from(_faqsTableName).select("*").toSelect();
+      final List<dynamic> response = await _client
+          .from(_faqsTableName)
+          .select("*")
+          .order(
+            'created_at',
+            ascending: false,
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {

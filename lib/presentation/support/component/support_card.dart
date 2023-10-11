@@ -10,11 +10,13 @@ class SupportCard extends StatefulWidget {
     required this.title,
     required this.content,
     required this.date,
+    this.isShowDate = false,
   }) : super(key: key);
 
   final String title;
   final String content;
   final String date;
+  final bool isShowDate;
 
   @override
   State<SupportCard> createState() => _SupportCardState();
@@ -44,11 +46,13 @@ class _SupportCardState extends State<SupportCard> {
               widget.title,
               style: FortuneTextStyle.body1Semibold(),
             ),
-            const SizedBox(height: 8),
-            Text(
-              widget.date,
-              style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
-            ),
+            if (widget.isShowDate) ...[
+              const SizedBox(height: 8),
+              Text(
+                widget.date,
+                style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
+              ),
+            ],
             const SizedBox(height: 16),
           ],
         ),
