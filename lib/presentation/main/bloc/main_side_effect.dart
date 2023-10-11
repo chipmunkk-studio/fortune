@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/error/fortune_app_failures.dart';
 
@@ -18,12 +18,10 @@ class MainError extends MainSideEffect {
 }
 
 class MainLocationChangeListenSideEffect extends MainSideEffect {
-  final Location myLocation;
-  final LocationData myLocationData;
+  final Position myLocation;
 
   MainLocationChangeListenSideEffect(
     this.myLocation,
-    this.myLocationData,
   );
 
   @override

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:location/location.dart';
 
 import '../component/map/main_location_data.dart';
 
@@ -26,7 +26,7 @@ class Main extends MainEvent {
 }
 
 class MainMyLocationChange extends MainEvent {
-  final LocationData newLoc;
+  final Position newLoc;
 
   MainMyLocationChange(this.newLoc);
 
