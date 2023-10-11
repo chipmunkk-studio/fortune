@@ -371,6 +371,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       controller.forward();
 
       if (newLoc != null) {
+        FortuneLogger.info("회전방향: ${newLoc.heading}");
         _bloc.add(MainMyLocationChange(newLoc));
       }
     } catch (e) {

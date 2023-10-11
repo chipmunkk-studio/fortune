@@ -52,7 +52,7 @@ class MainMap extends StatelessWidget {
                     myLocation!.longitude!,
                   ),
                   zoom: _bloc.state.zoomThreshold,
-                  interactiveFlags: InteractiveFlag.pinchZoom,
+                  interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
                   onPositionChanged: (mapPosition, boolHasGesture) {
                     if (boolHasGesture) {
                       onZoomChanged();
@@ -99,7 +99,7 @@ class MainMap extends StatelessWidget {
                                 state.myLocation!.latitude!,
                                 state.myLocation!.longitude!,
                               ),
-                              color: ColorName.grey700.withOpacity(0.1),
+                              color: ColorName.primary.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
                               radius: state.clickableRadiusLength,
@@ -114,7 +114,7 @@ class MainMap extends StatelessWidget {
               Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
-                    glowColor: ColorName.negative,
+                    glowColor: ColorName.primary.withOpacity(0.1),
                     duration: const Duration(milliseconds: 2000),
                     repeat: true,
                     showTwoGlows: true,
