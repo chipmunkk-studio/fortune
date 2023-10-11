@@ -39,7 +39,6 @@ dependencies:
   lottie: ^2.6.0
   material_dialogs: ^1.1.4
   page_view_indicators: ^2.0.0
-  location: ^5.0.3
   image_picker: ^1.0.4
   image_cropper: ^5.0.0
   flutter_keyboard_visibility: ^5.4.1

@@ -4,6 +4,7 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
@@ -14,8 +15,8 @@ import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -68,8 +69,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
           }
 
-          Location location = Location();
-          LocationData locationData = await location.getLocation();
+          final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
           final latitude = locationData.latitude;
           final longitude = locationData.longitude;
@@ -110,17 +110,24 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
-    Location location = Location();
-    LocationData locationData = await location.getLocation();
+    try {
+      final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
 
-    // #1 내 위치먼저 찍음.
-    emit(state.copyWith(myLocation: locationData));
+      // #1 내 위치먼저 찍음.
+      emit(state.copyWith(myLocation: locationData));
 
-    // #1-1 카메라 센터를 내 현재위치로 변경.
-    produceSideEffect(MainLocationChangeListenSideEffect(location, locationData));
+      // #1-1 카메라 센터를 내 현재위치로 변경.
+      produceSideEffect(
+        MainLocationChangeListenSideEffect(
+          locationData,
+        ),
+      );
 
-    // #3 소켓연결해서 리스트 변경 감지.
-    await getMain(emit);
+      // #3 소켓연결해서 리스트 변경 감지.
+      await getMain(emit);
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+    }
   }
 
   // 메인 화면을 구성하는데 필요한 모든 정보를 가져옴.

@@ -102,7 +102,7 @@
   "msgMissionCompleted": "Mission accomplished!",
   "msgPaymentDelay": "Rewards processing may take some time. Thank you for your patience.",
   "msgConfirmWithdrawal": "Really want to leave?",
-  "msgWithdrawalWarning": "You'll lose all coins and markers if you leave. You can rejoin as a newbie. Sure you want to go?",
+  "msgWithdrawalWarning": "If you withdraw, all your coins and markers will be lost within 30 days.\nYou can only rejoin as a new member.\nAre you sure you want to proceed with the withdrawal?",
   "msgWithdrawal": "Deactivate",
   "msgConfirmLogout": "Logging out?",
   "msgVerifyYourself": "Authenticate Email",

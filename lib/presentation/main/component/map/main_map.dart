@@ -11,8 +11,8 @@ import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:fortune/presentation/main/main_ext.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
 
 import 'center_profile.dart';
 import 'obtain_loading_view.dart';
@@ -23,7 +23,7 @@ class MainMap extends StatelessWidget {
   final FluroRouter router;
   final MapController mapController;
   final FortuneRemoteConfig remoteConfigArgs;
-  final LocationData? myLocation;
+  final Position? myLocation;
   final Function0 onZoomChanged;
 
   const MainMap(

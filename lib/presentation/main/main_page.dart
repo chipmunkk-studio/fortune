@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -14,25 +13,21 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
-import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
-import 'package:fortune/presentation/login/bloc/login_state.dart';
 import 'package:fortune/presentation/missions/missions_bottom_page.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart' show Location, LocationData;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
@@ -80,9 +75,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
   final router = serviceLocator<FortuneRouter>().router;
-  late StreamSubscription<LocationData> locationChangeSubscription;
+  late StreamSubscription<Position> locationChangeSubscription;
   late Function(GlobalKey) runAddToCartAnimation;
-  LocationData? myLocation;
+  Position? myLocation;
   bool _detectPermission = false;
   FToast fToast = FToast();
 
@@ -140,7 +135,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           // 내 위치 잡고 최초에 한번만 다시 그림.
           if (myLocation == null) {
             setState(() {
-              myLocation = sideEffect.myLocationData;
+              myLocation = sideEffect.myLocation;
             });
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
@@ -320,46 +315,30 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     );
   }
 
-  Align _buildDebugLogout(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: FortuneTextButton(
-        onPress: () {
-          Supabase.instance.client.auth.signOut();
-          router.navigateTo(
-            context,
-            "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
-            clearStack: true,
-            replace: false,
-          );
-        },
-        text: '로그아웃',
-        textStyle: FortuneTextStyle.body3Light(),
-      ),
-    );
-  }
-
   // 위치변경감지.
-  Future<StreamSubscription<LocationData>> listenLocationChange(Location myLocation) async {
-    return myLocation.onLocationChanged.listen(
-      (newLoc) {
-        _animatedMapMove(
-          LatLng(
-            newLoc.latitude!,
-            newLoc.longitude!,
-          ),
-          _bloc.state.zoomThreshold,
-          newLoc: newLoc,
-        );
-      },
-    );
+  Future<StreamSubscription<Position>> listenLocationChange(Position myLocation) async {
+    return Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 100,
+      ),
+    ).listen((Position? position) {
+      _animatedMapMove(
+        LatLng(
+          position!.latitude,
+          position.longitude,
+        ),
+        _bloc.state.zoomThreshold,
+        newLoc: position,
+      );
+    });
   }
 
   // 카메라 이동 애니메이션.
   void _animatedMapMove(
     LatLng destLocation,
     double destZoom, {
-    LocationData? newLoc,
+    Position? newLoc,
   }) {
     try {
       final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
