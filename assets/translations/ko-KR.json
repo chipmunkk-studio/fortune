@@ -113,7 +113,7 @@
   "msgAcquireCoin": "코인을 획득하시겠습니까?",
   "msgMissionReward": "미션을 완료하시면 리워드를 드려요!",
   "msgGradeInfo": "등급 안내",
-  "msgRewardInProgress": "· 현재 보상 정보를 준비 중입니다.",
+  "msgRewardInProgress": "현재 보상 정보를 준비 중입니다.",
   "msgGradeChangeNotice": "· 등급별 혜택 및 선정 기준은 변경될 수 있습니다",
   "msgCurrentGradePrefix": "나의 현재 등급은",
   "msgCenterLevel": "Lv. {}",

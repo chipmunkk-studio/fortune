@@ -139,8 +139,8 @@ Future<void> init() async {
     debug: false,
   );
 
-  /// FCM
-  await initFCM();
+  /// FCM todo 나중에 작업할 때 다시 활성화.
+  // await initFCM();
 
   /// 파이어베이스 analytics.
   final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
