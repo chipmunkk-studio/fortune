@@ -96,8 +96,8 @@ class MainMap extends StatelessWidget {
                           circles: <CircleMarker>[
                             CircleMarker(
                               point: LatLng(
-                                state.myLocation!.latitude!,
-                                state.myLocation!.longitude!,
+                                state.myLocation!.latitude,
+                                state.myLocation!.longitude,
                               ),
                               color: ColorName.primary.withOpacity(0.1),
                               borderStrokeWidth: 0,
@@ -114,11 +114,11 @@ class MainMap extends StatelessWidget {
               Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
-                    glowColor: ColorName.primary.withOpacity(0.1),
+                    glowColor: ColorName.primary.withOpacity(0.5),
                     duration: const Duration(milliseconds: 2000),
                     repeat: true,
                     showTwoGlows: true,
-                    repeatPauseDuration: const Duration(milliseconds: 5),
+                    repeatPauseDuration: const Duration(seconds: 1),
                     endRadius: 120,
                     child: BlocBuilder<MainBloc, MainState>(
                       buildWhen: (previous, current) => previous.user?.profileImage != current.user?.profileImage,

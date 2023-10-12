@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,7 +22,8 @@ import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
-import 'package:fortune/presentation/missions/missions_bottom_page.dart';
+import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
+import 'package:fortune/presentation/missions/missions_top_contents.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -233,7 +235,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             Positioned(
               bottom: 8,
               right: 8,
-              child: GestureDetector(
+              child: Bounceable(
                 onTap: _onMyBagClick,
                 child: Container(
                   padding: const EdgeInsets.all(4),
@@ -281,7 +283,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   const SizedBox(height: 10),
                   TopInformationArea(
                     cartKey,
-                    onInventoryTap: () => context.showFortuneBottomSheet(
+                    onInventoryTap: () => context.showBottomSheet(
                       isDismissible: true,
                       content: (context) => const MyIngredientsPage(),
                     ),
@@ -463,8 +465,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
   // 가방 클릭
   _onMyBagClick() {
-    context.showFortuneBottomSheet(
-      content: (context) => MissionsBottomPage(_bloc),
+    context.showFullBottomSheet(
+      topContent: (context) => const MissionsTopContents(),
+      scrollContent: (context) => MissionsBottomContents(_bloc),
     );
   }
 }
