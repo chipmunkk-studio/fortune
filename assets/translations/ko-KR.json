@@ -101,7 +101,7 @@
   "msgRewardExhausted": "리워드가 모두 소진 되었습니다.",
   "msgRemainingReward": "남은 리워드",
   "msgExchange": "리워드 신청하기",
-  "msgRewardRedemptionNotice": "리워드 신청 시 마커가 차감되며\n회원 정보에 등록된 휴대폰 번호로\n모바일 교환권이 발송됩니다.",
+  "msgRewardRedemptionNotice": "리워드 신청 시 마커가 차감되며\n회원 정보에 등록된 이메일로\n모바일 교환권이 발송됩니다.",
   "msgCongratsMissionCompleted": "미션 달성을 축하드려요!",
   "msgHelpedBy": "님이",
   "msgAvailableMissions": "수행 가능한 미션",

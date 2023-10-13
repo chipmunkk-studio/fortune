@@ -44,7 +44,7 @@
   "msgRewardExhausted": "All rewards have been claimed.",
   "msgRemainingReward": "Remaining",
   "msgExchange": "Apply for Rewards",
-  "msgRewardRedemptionNotice": "When redeeming rewards, markers will be deducted and a mobile voucher will be sent to the phone number registered in your member information.",
+  "msgRewardRedemptionNotice": "When redeeming rewards, markers will be deducted and a mobile voucher will be sent to the email registered in your member information.",
   "msgCongratsMissionCompleted": "Congratulations on completing the mission!",
   "msgRelayMissionHeadings": "You've successfully completed the Relay Mission!",
   "msgRelayMissionContents": "Congratulations on clearing the Relay Mission!",
