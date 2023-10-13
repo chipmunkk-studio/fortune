@@ -17,16 +17,16 @@ class MissionsBloc extends Bloc<MissionsEvent, MissionsState>
   MissionsBloc({
     required this.getAllMissionsUseCase,
   }) : super(MissionsState.initial()) {
-    on<MissionsInit>(init);
+    on<MissionsBottomInit>(bottomInit);
+    on<MissionsTopInit>(topInit);
     on<MissionsLoadBannerAd>(loadBannerAd);
   }
 
-  FutureOr<void> init(MissionsInit event, Emitter<MissionsState> emit) async {
+  FutureOr<void> bottomInit(MissionsBottomInit event, Emitter<MissionsState> emit) async {
     await getAllMissionsUseCase().then(
       (value) => value.fold(
         (l) => produceSideEffect(MissionsError(l)),
         (r) {
-          _loadBannerAd();
           emit(
             state.copyWith(
               missions: r,
@@ -36,6 +36,10 @@ class MissionsBloc extends Bloc<MissionsEvent, MissionsState>
         },
       ),
     );
+  }
+
+  FutureOr<void> topInit(MissionsTopInit event, Emitter<MissionsState> emit) {
+    _loadBannerAd();
   }
 
   FutureOr<void> loadBannerAd(MissionsLoadBannerAd event, Emitter<MissionsState> emit) {

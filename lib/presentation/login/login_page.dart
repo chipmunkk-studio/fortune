@@ -73,7 +73,7 @@ class _LoginPageState extends State<_LoginPage> {
         if (sideEffect is LoginError) {
           dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
         } else if (sideEffect is LoginShowTermsBottomSheet) {
-          final result = await context.showFortuneBottomSheet(
+          final result = await context.showBottomSheet(
             isDismissible: false,
             content: (context) => AgreeTermsBottomSheet(sideEffect.phoneNumber),
           );
@@ -81,7 +81,7 @@ class _LoginPageState extends State<_LoginPage> {
             _bloc.add(LoginRequestVerifyCode());
           }
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
-          final result = await context.showFortuneBottomSheet(
+          final result = await context.showBottomSheet(
             isDismissible: false,
             content: (context) => VerifyCodeBottomSheet(
               loginUserState: sideEffect.loginUserState,
@@ -147,6 +147,7 @@ class _LoginPageState extends State<_LoginPage> {
                                 );
                               },
                             ),
+                            const SizedBox(height: 20),
                             if (!kReleaseMode) buildDebugRow(context)
                           ],
                         ),
@@ -189,7 +190,7 @@ class _LoginPageState extends State<_LoginPage> {
       children: [
         FortuneTextButton(
           onPress: () {
-            context.showFortuneBottomSheet(
+            context.showBottomSheet(
               isDismissible: false,
               content: (context) => const AgreeTermsBottomSheet(''),
             );
@@ -199,7 +200,7 @@ class _LoginPageState extends State<_LoginPage> {
         const SizedBox(width: 12),
         FortuneTextButton(
           onPress: () {
-            context.showFortuneBottomSheet(
+            context.showBottomSheet(
               isDismissible: false,
               content: (context) => VerifyCodeBottomSheet(
                   email: '', countryInfoEntity: CountryInfoEntity.empty(), loginUserState: LoginUserState.none),

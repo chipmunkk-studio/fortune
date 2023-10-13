@@ -48,14 +48,12 @@ extension FortuneMapDataConverter on List<MainLocationData> {
           e.location.latitude,
           e.location.longitude,
         ),
-        builder: (BuildContext context) {
-          return LinearBounceAnimation(
-            child: MainMarkerView(
-              marker: e,
-              onMarkerClick: onMarkerClick,
-            ),
-          );
-        },
+        child: LinearBounceAnimation(
+          child: MainMarkerView(
+            marker: e,
+            onMarkerClick: onMarkerClick,
+          ),
+        ),
       );
     }).toList();
   }
