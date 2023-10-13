@@ -343,9 +343,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     Position? newLoc,
   }) {
     try {
-      final latTween = Tween<double>(begin: _mapController.center.latitude, end: destLocation.latitude);
-      final lngTween = Tween<double>(begin: _mapController.center.longitude, end: destLocation.longitude);
-      final zoomTween = Tween<double>(begin: _mapController.zoom, end: destZoom);
+      final latTween = Tween<double>(begin: _mapController.camera.center.latitude, end: destLocation.latitude);
+      final lngTween = Tween<double>(begin: _mapController.camera.center.longitude, end: destLocation.longitude);
+      final zoomTween = Tween<double>(begin: _mapController.camera.zoom, end: destZoom);
 
       final controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
       final Animation<double> animation = CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn);

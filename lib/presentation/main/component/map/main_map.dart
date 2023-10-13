@@ -99,7 +99,7 @@ class MainMap extends StatelessWidget {
                                 state.myLocation!.latitude,
                                 state.myLocation!.longitude,
                               ),
-                              color: ColorName.primary.withOpacity(0.1),
+                              color: ColorName.secondary.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
                               radius: state.clickableRadiusLength * 2,
@@ -114,7 +114,7 @@ class MainMap extends StatelessWidget {
               Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
-                    glowColor: ColorName.primary.withOpacity(0.5),
+                    glowColor: ColorName.secondary.withOpacity(0.5),
                     duration: const Duration(milliseconds: 2000),
                     repeat: true,
                     showTwoGlows: true,
@@ -126,7 +126,7 @@ class MainMap extends StatelessWidget {
                         return ScaleAnimation(
                           child: CenterProfile(
                             imageUrl: state.user?.profileImage ?? "",
-                            backgroundColor: const Color(0xff7367FF).withOpacity(1.0),
+                            backgroundColor: ColorName.secondary.withOpacity(1.0),
                           ),
                         );
                       },
