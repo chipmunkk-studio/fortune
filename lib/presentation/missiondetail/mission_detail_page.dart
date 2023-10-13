@@ -15,6 +15,7 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'bloc/mission_detail.dart';
+import 'component/skeleton.dart';
 
 class MissionDetailPage extends StatelessWidget {
   const MissionDetailPage(
@@ -83,32 +84,36 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
       },
       child: Stack(
         children: [
-          FortuneScaffold(
-            padding: const EdgeInsets.all(0),
-            appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
-            child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
-              buildWhen: (previous, current) => previous.isLoading != current.isLoading,
-              builder: (context, state) {
-                return Skeleton(
-                  isLoading: state.isLoading,
-                  skeleton: Container(),
-                  child: () {
-                    switch (state.entity.mission.missionType) {
-                      case MissionType.normal:
-                        return NormalMission(
-                          state,
-                          onExchangeClick: () {
-                            router.pop(context);
-                            _bloc.add(MissionDetailExchange());
-                          },
-                        );
-                      default:
-                        return Container();
-                    }
-                  }(),
-                );
-              },
-            ),
+          BlocBuilder<MissionDetailBloc, MissionDetailState>(
+            builder: (context, state) {
+              return FortuneScaffold(
+                padding: const EdgeInsets.all(0),
+                appBar: FortuneCustomAppBar.leadingAppBar(context, title: ""),
+                child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+                  buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+                  builder: (context, state) {
+                    return Skeleton(
+                      isLoading: state.isLoading,
+                      skeleton: const MissionDetailSkeleton(),
+                      child: () {
+                        switch (state.entity.mission.missionType) {
+                          case MissionType.normal:
+                            return NormalMission(
+                              state,
+                              onExchangeClick: () {
+                                router.pop(context);
+                                _bloc.add(MissionDetailExchange());
+                              },
+                            );
+                          default:
+                            return Container();
+                        }
+                      }(),
+                    );
+                  },
+                ),
+              );
+            },
           ),
           Align(
             alignment: Alignment.topCenter,
