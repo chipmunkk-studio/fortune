@@ -7,7 +7,7 @@ import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -51,7 +51,7 @@ class _VerifyCodeBottomSheet extends StatefulWidget {
 
 class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   late VerifyCodeBloc _bloc;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   final TextEditingController _verifyCodeController = TextEditingController();
 
   @override

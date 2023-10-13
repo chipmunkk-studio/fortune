@@ -8,7 +8,7 @@ import 'package:fortune/domain/supabase/request/request_verify_phone_number_para
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 

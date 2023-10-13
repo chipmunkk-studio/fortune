@@ -58,7 +58,7 @@ import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dar
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
@@ -152,7 +152,7 @@ Future<void> init() async {
   serviceLocator.registerLazySingleton<FortuneAnalytics>(() => fortuneAnalytics);
 
   /// Router.
-  serviceLocator.registerLazySingleton<FortuneRouter>(() => FortuneRouter()..init());
+  serviceLocator.registerLazySingleton<FortuneAppRouter>(() => FortuneAppRouter()..init());
 
   await initSupabase();
 }

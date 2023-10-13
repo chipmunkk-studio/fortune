@@ -5,7 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
 import 'package:fortune/presentation/mypage/component/info_menu.dart';
 import 'package:fortune/presentation/mypage/component/profile_info.dart';
@@ -35,7 +35,7 @@ class _MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<_MyPage> {
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   late MyPageBloc _bloc;
 
   @override

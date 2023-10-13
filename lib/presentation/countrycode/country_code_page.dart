@@ -8,7 +8,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -48,7 +48,7 @@ class _CountryCodePage extends StatefulWidget {
 
 class _CountryCodePageState extends State<_CountryCodePage> {
   final _scrollDirection = Axis.vertical;
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   late CountryCodeBloc _bloc;
   late AutoScrollController _controller;
 

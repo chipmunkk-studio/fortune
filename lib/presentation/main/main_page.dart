@@ -20,7 +20,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
@@ -76,7 +76,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   late MainBloc _bloc;
   final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   late StreamSubscription<Position> locationChangeSubscription;
   late Function(GlobalKey) runAddToCartAnimation;
   Position? myLocation;

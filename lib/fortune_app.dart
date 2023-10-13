@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'core/util/theme.dart';
-import 'fortune_router.dart';
 
 class FortuneApp extends StatelessWidget {
   final String startRoute;
@@ -47,7 +47,7 @@ class FortuneApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 title: "Fortune",
                 theme: theme(),
-                onGenerateRoute: serviceLocator<FortuneRouter>().router.generator,
+                onGenerateRoute: serviceLocator<FortuneAppRouter>().router.generator,
                 initialRoute: startRoute,
                 localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,

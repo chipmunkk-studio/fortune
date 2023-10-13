@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/component/mission_card_list.dart';
 import 'package:fortune/presentation/missions/component/missions_skeleton.dart';
@@ -34,7 +34,7 @@ class _MissionsBottomContents extends StatefulWidget {
 }
 
 class _MissionsBottomContentsState extends State<_MissionsBottomContents> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
 
   late final MissionsBloc _bloc;
 

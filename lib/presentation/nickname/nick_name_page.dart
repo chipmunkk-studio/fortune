@@ -10,7 +10,7 @@ import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/core/widgets/textform/fortune_text_form.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/nickname/component/profile_image.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -41,7 +41,7 @@ class _NickNamePage extends StatefulWidget {
 }
 
 class _NickNamePageState extends State<_NickNamePage> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   late NickNameBloc _bloc;
   final _nickNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();

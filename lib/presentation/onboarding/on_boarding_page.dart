@@ -7,7 +7,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     Assets.images.onboarding.guide3.path,
   ];
 
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
 
   @override
   void initState() {

@@ -28,7 +28,7 @@ import 'presentation/obtainhistory/obtain_history_page.dart';
 import 'presentation/onboarding/on_boarding_page.dart';
 import 'presentation/permission/require_permission_page.dart';
 
-class FortuneRouter {
+class FortuneAppRouter {
   late final FluroRouter router;
 
   static const String loginParam = "loginParam";

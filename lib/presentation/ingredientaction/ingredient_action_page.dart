@@ -6,7 +6,7 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
@@ -60,7 +60,7 @@ class _IngredientActionPage extends StatefulWidget {
 }
 
 class _IngredientActionPageState extends State<_IngredientActionPage> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   final MixpanelTracker _mixpanelTracker = serviceLocator<MixpanelTracker>();
 
   late IngredientActionBloc _bloc;

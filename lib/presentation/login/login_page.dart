@@ -9,7 +9,7 @@ import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/fortune_app_router.dart';
 import 'package:fortune/presentation/verifycode/verify_code_bottom_sheet.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -50,7 +50,7 @@ class _LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<_LoginPage> {
   late LoginBloc _bloc;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
