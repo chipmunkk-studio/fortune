@@ -14,6 +14,7 @@ import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
 import 'package:fortune/presentation/support/faqs/faqs_page.dart';
 import 'package:fortune/presentation/support/notices/notices_page.dart';
+import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
 import 'presentation-web/main/web_main_page.dart';
@@ -26,7 +27,6 @@ import 'presentation/nickname/nick_name_page.dart';
 import 'presentation/obtainhistory/obtain_history_page.dart';
 import 'presentation/onboarding/on_boarding_page.dart';
 import 'presentation/permission/require_permission_page.dart';
-import 'presentation/support/personalinfo/privacy_policy_page.dart';
 
 class FortuneRouter {
   late final FluroRouter router;

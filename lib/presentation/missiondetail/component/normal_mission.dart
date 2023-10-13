@@ -151,7 +151,7 @@ class NormalMission extends StatelessWidget {
     required MissionDetailEntity entity,
     required bool isEnableButton,
   }) {
-    context.showFortuneBottomSheet(
+    context.showBottomSheet(
       content: (context) {
         return ExchangeBottom(
           onExchangeClick: onExchangeClick,

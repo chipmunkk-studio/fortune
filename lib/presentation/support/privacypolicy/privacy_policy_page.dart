@@ -76,6 +76,7 @@ class _PrivacyPolicyPageState extends State<_PrivacyPolicyPage> {
                   title: item.title,
                   content: item.content,
                   date: item.createdAt,
+                  isShowDate: true,
                 );
               },
             ),

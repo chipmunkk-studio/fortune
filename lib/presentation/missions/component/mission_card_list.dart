@@ -22,6 +22,8 @@ class MissionCardList extends StatelessWidget {
     return ListView.separated(
       physics: const BouncingScrollPhysics(),
       itemCount: missions.length,
+      // 스크롤러블 안에서는 true로 해야 함.
+      shrinkWrap: true,
       padding: const EdgeInsets.only(bottom: 20),
       separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
       itemBuilder: (BuildContext context, int index) {
