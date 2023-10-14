@@ -107,6 +107,7 @@ abstract class FortuneTr {
   static final msgRelayMissionContents = tr('msgRelayMissionContents');
   static final msgPrivacyPolicy = tr('msgPrivacyPolicy');
   static final msgMissionEarlyEnd = tr('msgMissionEarlyEnd');
+  static final msgUnknownLocation = tr('msgUnknownLocation');
   static final msgUnfairParticipation = tr('msgUnfairParticipation');
   static final msgMissionGuide = tr('msgMissionGuide');
   static final msgRewardGuide = tr('msgRewardGuide');

@@ -69,18 +69,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
           }
 
-          final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+          final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
 
           final latitude = locationData.latitude;
           final longitude = locationData.longitude;
 
           if (latitude != null && longitude != null) {
-            final locationName = await getLocationName(
-                  latitude,
-                  longitude,
-                  isDetailStreet: false,
-                ) ??
-                state.locationName;
+            final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: locationName));
           }
 
@@ -179,7 +174,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final longitude = event.newLoc.longitude;
 
     if (latitude != null && longitude != null) {
-      final locationName = await getLocationName(latitude, longitude, isDetailStreet: false) ?? state.locationName;
+      final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
       emit(
         state.copyWith(
           myLocation: event.newLoc,

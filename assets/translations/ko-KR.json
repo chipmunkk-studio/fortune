@@ -77,6 +77,7 @@
   "msgInputNickNameNotValid": "12자 이내, 공백 없이 입력해주세요.",
   "msgRequireTermsUse": "서비스 이용을 위해\n약관에 동의해주세요",
   "msgRequireTermsApprove": "모두 동의하기",
+  "msgUnknownLocation": "알 수 없는 위치",
   "msgRequestSmsVerifyCode": "{}분 {}초 후에 다시 요청해주세요",
   "msgWatchAd": "광고 시청 후\n코인을 획득할 수 있어요",
   "callMyLocation": "내 위치 정보를 불러오는 중..",

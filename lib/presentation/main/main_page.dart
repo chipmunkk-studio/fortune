@@ -321,7 +321,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Future<StreamSubscription<Position>> listenLocationChange(Position myLocation) async {
     return Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
+        accuracy: LocationAccuracy.best,
         distanceFilter: 100,
       ),
     ).listen((Position? position) {
