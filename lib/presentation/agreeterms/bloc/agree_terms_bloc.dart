@@ -49,6 +49,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       final unCheckedTerms = state.agreeTerms.where((element) => !element.isChecked);
       if (unCheckedTerms.isEmpty) {
         produceSideEffect(AgreeTermsPop(true));
+        return;
       }
     }
   }

@@ -17,7 +17,7 @@ class FortuneTextForm extends StatefulWidget {
   final String? hint;
   final Color? textColor;
   final bool readOnly;
-  final String? errorMessage;
+  final String? errorText;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? textEditingController;
   final int? maxLength;
@@ -25,7 +25,7 @@ class FortuneTextForm extends StatefulWidget {
   const FortuneTextForm({
     required this.onTextChanged,
     required this.textEditingController,
-    this.errorMessage,
+    this.errorText,
     Key? key,
     this.keyboardType,
     this.hint,
@@ -84,7 +84,7 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
         contentPadding: EdgeInsets.fromLTRB(prefixIcon == null ? 16 : 0, 16, suffixIcon == null ? 16 : 0, 16),
         counterText: "",
         hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
-        errorText: widget.errorMessage,
+        errorText: widget.errorText,
         errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
         suffixIcon: focusNode.hasFocus ? suffixIcon : null,
         prefixIcon: prefixIcon,

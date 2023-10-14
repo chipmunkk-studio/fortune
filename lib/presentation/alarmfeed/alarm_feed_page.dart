@@ -10,7 +10,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
 import 'package:fortune/presentation/alarmfeed/component/alarm_feed_skeleton.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -37,7 +37,7 @@ class _AlarmFeedPage extends StatefulWidget {
 }
 
 class _AlarmFeedPageState extends State<_AlarmFeedPage> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   late AlarmFeedBloc _bloc;
 
   @override
@@ -78,7 +78,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                           return Bounceable(
                             onTap: () => _router.navigateTo(
                               context,
-                              Routes.alarmRewardRoute,
+                              AppRoutes.alarmRewardRoute,
                               routeSettings: RouteSettings(
                                 arguments: item.reward.id,
                               ),

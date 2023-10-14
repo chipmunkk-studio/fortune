@@ -8,7 +8,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/checkbox/fortune_check_box.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -40,7 +40,7 @@ class _AgreeTermsBottomSheet extends StatefulWidget {
 
 class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   late AgreeTermsBloc _bloc;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                         GestureDetector(
                           onTap: () => router.navigateTo(
                             context,
-                            "${Routes.termsDetailRoute}/${item.index}",
+                            "${AppRoutes.termsDetailRoute}/${item.index}",
                           ),
                           child: Assets.icons.icArrowRight16.svg(),
                         ),

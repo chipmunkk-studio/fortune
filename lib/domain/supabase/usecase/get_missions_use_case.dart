@@ -35,7 +35,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
               userId: user.id,
               ingredientId: e.ingredient.id,
             );
-            return history.length;
+            return history.length >= e.requireCount ? e.requireCount : history.length;
           }).toList();
 
           // 사용자의 총 획득량.

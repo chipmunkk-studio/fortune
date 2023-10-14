@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_bottom_button.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/fortune_router.dart';
-import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/verify_code.dart';
@@ -16,13 +14,9 @@ import 'component/verify_code_number_input.dart';
 
 class VerifyCodeBottomSheet extends StatelessWidget {
   final String email;
-  final CountryInfoEntity countryInfoEntity;
-  final LoginUserState loginUserState;
 
   const VerifyCodeBottomSheet({
     required this.email,
-    required this.countryInfoEntity,
-    required this.loginUserState,
     super.key,
   });
 
@@ -31,11 +25,7 @@ class VerifyCodeBottomSheet extends StatelessWidget {
     return BlocProvider(
       create: (_) => serviceLocator<VerifyCodeBloc>()
         ..add(
-          VerifyCodeInit(
-            phoneNumber: email,
-            countryInfoEntity: countryInfoEntity,
-            loginUserState: loginUserState,
-          ),
+          VerifyCodeInit(phoneNumber: email),
         ),
       child: const _VerifyCodeBottomSheet(),
     );
@@ -51,7 +41,7 @@ class _VerifyCodeBottomSheet extends StatefulWidget {
 
 class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
   late VerifyCodeBloc _bloc;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   final TextEditingController _verifyCodeController = TextEditingController();
 
   @override
@@ -80,13 +70,8 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
           router.navigateTo(
             context,
             sideEffect.landingRoute,
-            clearStack: sideEffect.landingRoute == Routes.mainRoute || sideEffect.landingRoute == Routes.webMainRoute
-                ? true
-                : false,
+            clearStack: sideEffect.landingRoute == AppRoutes.mainRoute,
           );
-        } else if (sideEffect is VerifyCodeInputFromSmsListening) {
-          _verifyCodeController.text = sideEffect.code;
-          _bloc.add(VerifyConfirm());
         }
       },
       child: BlocBuilder<VerifyCodeBloc, VerifyCodeState>(

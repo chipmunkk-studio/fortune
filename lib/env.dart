@@ -23,7 +23,8 @@ enum EnvKey {
   mapAccessToken,
   mapStyleId,
   mapUrlTemplate,
-  mixpanelToken,
+  mixpanelDevelopToken,
+  mixpanelReleaseToken,
   randomDistance,
   refreshTime,
   ticketCount,
@@ -40,7 +41,8 @@ class FortuneRemoteConfig {
   final String mapAccessToken;
   final String mapStyleId;
   final String mapUrlTemplate;
-  final String mixpanelToken;
+  final String mixpanelDevelopToken;
+  final String mixpanelReleaseToken;
   final String testSignInEmail;
   final String testSignInPassword;
   final double randomDistance;
@@ -53,7 +55,8 @@ class FortuneRemoteConfig {
     required this.mapAccessToken,
     required this.mapStyleId,
     required this.mapUrlTemplate,
-    required this.mixpanelToken,
+    required this.mixpanelReleaseToken,
+    required this.mixpanelDevelopToken,
     required this.anonKey,
     required this.randomDistance,
     required this.markerCount,
@@ -71,7 +74,8 @@ class FortuneRemoteConfig {
         "mapUrlTemplate: ${mapUrlTemplate.shortenForPrint()},\n"
         "testSignInEmail: $testSignInEmail,\n"
         "testSignInPassword: $testSignInPassword,\n"
-        "mixpanelToken: $mixpanelToken\n"
+        "mixpanelReleaseToken: $mixpanelReleaseToken\n"
+        "mixpanelDevelopToken: $mixpanelDevelopToken\n"
         "refreshTime: $refreshTime\n"
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
@@ -99,7 +103,7 @@ class Environment {
 
   bool get isDebuggable => buildType == BuildType.dev;
 
-  init() async {
+  init(bool kIsWeb) async {
     /// 빌드 타입.
     buildType = () {
       if (kReleaseMode) {
@@ -158,7 +162,8 @@ getRemoteConfigArgs() async {
 
   try {
     await remoteConfig.fetchAndActivate();
-    final mixpanelToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelToken));
+    final mixpanelDevelopToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelDevelopToken));
+    final mixpanelReleaseToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelReleaseToken));
     final mapAccessToken = remoteConfig.getString(describeEnum(EnvKey.mapAccessToken));
     final mayStyleId = remoteConfig.getString(describeEnum(EnvKey.mapStyleId));
     final mapUrlTemplate = remoteConfig.getString(describeEnum(EnvKey.mapUrlTemplate));
@@ -193,7 +198,8 @@ getRemoteConfigArgs() async {
 
     return FortuneRemoteConfig(
       baseUrl: baseUrl,
-      mixpanelToken: mixpanelToken,
+      mixpanelReleaseToken: mixpanelReleaseToken,
+      mixpanelDevelopToken: mixpanelDevelopToken,
       mapAccessToken: mapAccessToken,
       mapStyleId: mayStyleId,
       mapUrlTemplate: mapUrlTemplate,

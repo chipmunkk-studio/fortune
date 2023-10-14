@@ -264,8 +264,12 @@ class $AssetsImagesGen {
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
 
+  /// File path: assets/images/web_main.png
+  AssetGenImage get webMain =>
+      const AssetGenImage('assets/images/web_main.png');
+
   /// List of all assets
-  List<dynamic> get values => [icLauncher, ivDefaultProfile];
+  List<dynamic> get values => [icLauncher, ivDefaultProfile, webMain];
 }
 
 class $AssetsTranslationsGen {

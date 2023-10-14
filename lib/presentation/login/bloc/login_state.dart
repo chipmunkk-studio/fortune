@@ -10,7 +10,6 @@ class LoginState with _$LoginState {
   factory LoginState({
     required String email,
     required String guideTitle,
-    required CountryInfoEntity selectCountry,
     required bool isButtonEnabled,
     required bool isLoading,
     required LoginUserState loginUserState,
@@ -20,7 +19,6 @@ class LoginState with _$LoginState {
         email: "",
         isButtonEnabled: false,
         isLoading: true,
-        selectCountry: CountryInfoEntity.empty(),
         loginUserState: LoginUserState.none,
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
       );
@@ -28,7 +26,6 @@ class LoginState with _$LoginState {
 
 enum LoginUserState {
   needToLogin,
-  web,
   none,
 }
 

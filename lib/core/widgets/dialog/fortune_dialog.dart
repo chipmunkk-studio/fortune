@@ -9,7 +9,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
@@ -29,7 +29,7 @@ class FortuneDialogService {
     if (_isDialogShowing) return;
     _isDialogShowing = true;
 
-    final router = serviceLocator<FortuneRouter>().router;
+    final router = serviceLocator<FortuneAppRouter>().router;
 
     _fortuneErrorDialog(
       context,
@@ -43,7 +43,7 @@ class FortuneDialogService {
                 _sClient.auth.signOut();
                 router.navigateTo(
                   context,
-                  "${Routes.loginRoute}/:${LoginUserState.needToLogin}",
+                  "${AppRoutes.loginRoute}/:${LoginUserState.needToLogin}",
                   clearStack: true,
                   replace: false,
                 );

@@ -5,7 +5,7 @@ import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -35,7 +35,7 @@ class _MyIngredientsPage extends StatefulWidget {
 }
 
 class _MyIngredientsPageState extends State<_MyIngredientsPage> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   late MyIngredientsBloc _bloc;
 
   @override
