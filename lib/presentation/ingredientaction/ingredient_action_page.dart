@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 class IngredientActionParam {
@@ -60,7 +59,7 @@ class _IngredientActionPage extends StatefulWidget {
 }
 
 class _IngredientActionPageState extends State<_IngredientActionPage> {
-  final _router = serviceLocator<FortuneRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   final MixpanelTracker _mixpanelTracker = serviceLocator<MixpanelTracker>();
 
   late IngredientActionBloc _bloc;

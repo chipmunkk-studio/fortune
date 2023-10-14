@@ -8,8 +8,7 @@ import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/verifycode/verify_code_bottom_sheet.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -50,7 +49,7 @@ class _LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<_LoginPage> {
   late LoginBloc _bloc;
-  final router = serviceLocator<FortuneRouter>().router;
+  final router = serviceLocator<FortuneAppRouter>().router;
   final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
@@ -83,11 +82,7 @@ class _LoginPageState extends State<_LoginPage> {
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,
-            content: (context) => VerifyCodeBottomSheet(
-              loginUserState: sideEffect.loginUserState,
-              email: sideEffect.email,
-              countryInfoEntity: sideEffect.countryInfoEntity,
-            ),
+            content: (context) => VerifyCodeBottomSheet(email: sideEffect.email),
           );
         } else if (sideEffect is LoginLandingRoute) {
           router.navigateTo(
@@ -132,7 +127,7 @@ class _LoginPageState extends State<_LoginPage> {
                             BlocBuilder<LoginBloc, LoginState>(
                               buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
                               builder: (context, state) {
-                                return Text(state.guideTitle, style: FortuneTextStyle.headLine1());
+                                return Text(state.guideTitle, style: FortuneTextStyle.headLine1(height: 1.3));
                               },
                             ),
                             const SizedBox(height: 20),
@@ -202,8 +197,7 @@ class _LoginPageState extends State<_LoginPage> {
           onPress: () {
             context.showBottomSheet(
               isDismissible: false,
-              content: (context) => VerifyCodeBottomSheet(
-                  email: '', countryInfoEntity: CountryInfoEntity.empty(), loginUserState: LoginUserState.none),
+              content: (context) => const VerifyCodeBottomSheet(email: ''),
             );
           },
           text: '인증번호 확인 바텀시트',

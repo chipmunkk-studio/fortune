@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
@@ -17,40 +16,31 @@ import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
-import 'presentation-web/main/web_main_page.dart';
-import 'presentation/ingredientaction/ingredient_action_page.dart';
-import 'presentation/login/login_page.dart';
-import 'presentation/main/main_ext.dart';
-import 'presentation/main/main_page.dart';
-import 'presentation/missiondetail/mission_detail_page.dart';
-import 'presentation/nickname/nick_name_page.dart';
-import 'presentation/obtainhistory/obtain_history_page.dart';
-import 'presentation/onboarding/on_boarding_page.dart';
-import 'presentation/permission/require_permission_page.dart';
+import '../../presentation/ingredientaction/ingredient_action_page.dart';
+import '../../presentation/login/login_page.dart';
+import '../../presentation/main/main_ext.dart';
+import '../../presentation/main/main_page.dart';
+import '../../presentation/missiondetail/mission_detail_page.dart';
+import '../../presentation/nickname/nick_name_page.dart';
+import '../../presentation/obtainhistory/obtain_history_page.dart';
+import '../../presentation/onboarding/on_boarding_page.dart';
+import '../../presentation/permission/require_permission_page.dart';
 
-class FortuneRouter {
+class FortuneAppRouter {
   late final FluroRouter router;
 
-  static const String loginParam = "loginParam";
-  static const String mainParam = "mainParam";
-  static const String termsParam = "termsParam";
+  static const String routeParam = "routeParam";
 
   static var mainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final data = params[mainParam]?.first.toString() ?? '';
+      final data = params[routeParam]?.first.toString() ?? '';
       if (data.isNotEmpty) {
-        Map<String, dynamic> decodedMap = jsonDecode(params[mainParam]?.first ?? '');
+        Map<String, dynamic> decodedMap = jsonDecode(params[routeParam]?.first ?? '');
         FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
         return MainPage(notification);
       } else {
         return const MainPage(null);
       }
-    },
-  );
-
-  static var webMainHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const WebMainPage();
     },
   );
 
@@ -76,7 +66,7 @@ class FortuneRouter {
   static var termsDetailHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       int? data;
-      var paramValue = params[termsParam]?.first;
+      var paramValue = params[routeParam]?.first;
       if (paramValue != null) {
         data = int.tryParse(paramValue);
       }
@@ -93,12 +83,10 @@ class FortuneRouter {
 
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      String sessionsState = params[loginParam]?.first ?? LoginUserState.none.name;
+      String sessionsState = params[routeParam]?.first ?? LoginUserState.none.name;
       final loginUserState = () {
         if (sessionsState.contains("needToLogin")) {
           return LoginUserState.needToLogin;
-        } else if (kIsWeb) {
-          return LoginUserState.web;
         } else {
           return LoginUserState.none;
         }
@@ -175,63 +163,56 @@ class FortuneRouter {
 
       /// 로그인.
       ..define(
-        Routes.loginRoute,
+        AppRoutes.loginRoute,
         handler: loginHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 로그인 > 세션 만료 인 경우
       ..define(
-        "${Routes.loginRoute}/:$loginParam",
+        "${AppRoutes.loginRoute}/:$routeParam",
         handler: loginHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 메인.
       ..define(
-        Routes.mainRoute,
+        AppRoutes.mainRoute,
         handler: mainHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 웹 메인.
-      ..define(
-        Routes.webMainRoute,
-        handler: webMainHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 개인정보처리방침.
       ..define(
-        Routes.privacyPolicyRoutes,
+        AppRoutes.privacyPolicyRoutes,
         handler: privacyPolicyHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 메인. > 노티피케이션
       ..define(
-        "${Routes.mainRoute}/:$mainParam",
+        "${AppRoutes.mainRoute}/:$routeParam",
         handler: mainHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 권한 요청.
       ..define(
-        Routes.requestPermissionRoute,
+        AppRoutes.requestPermissionRoute,
         handler: permissionHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 온보딩.
       ..define(
-        Routes.onBoardingRoute,
+        AppRoutes.onBoardingRoute,
         handler: onBoardingHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 재료 획득 액션.
       ..define(
-        Routes.ingredientActionRoute,
+        AppRoutes.ingredientActionRoute,
         opaque: false,
         handler: ingredientActionHandler,
         transitionType: TransitionType.fadeIn,
@@ -239,86 +220,85 @@ class FortuneRouter {
 
       /// 노말 미션 상세.
       ..define(
-        Routes.missionDetailNormalRoute,
+        AppRoutes.missionDetailNormalRoute,
         handler: missionDetailNormalHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 알림 피드.
       ..define(
-        Routes.alarmFeedRoute,
+        AppRoutes.alarmFeedRoute,
         handler: alarmFeedHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 알림 보상.
       ..define(
-        Routes.alarmRewardRoute,
+        AppRoutes.alarmRewardRoute,
         handler: alarmRewardHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 마이페이지.
       ..define(
-        Routes.myPageRoute,
+        AppRoutes.myPageRoute,
         handler: myPageHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 약관 상세.
       ..define(
-        "${Routes.termsDetailRoute}/:$termsParam",
+        "${AppRoutes.termsDetailRoute}/:$routeParam",
         handler: termsDetailHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 자주 묻는 질문.
       ..define(
-        Routes.faqsRoute,
+        AppRoutes.faqsRoute,
         handler: faqsHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 국가 코드.
       ..define(
-        Routes.countryCodeRoute,
+        AppRoutes.countryCodeRoute,
         handler: countryCodeHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 공지사항.
       ..define(
-        Routes.noticesRoutes,
+        AppRoutes.noticesRoutes,
         handler: noticesHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 등급가이드.
       ..define(
-        Routes.gradeGuideRoute,
+        AppRoutes.gradeGuideRoute,
         handler: gradeGuideHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 닉네임.
       ..define(
-        Routes.nickNameRoute,
+        AppRoutes.nickNameRoute,
         handler: nickNameHandler,
         transitionType: TransitionType.cupertino,
       )
 
       /// 마커 히스토리.
       ..define(
-        Routes.obtainHistoryRoute,
+        AppRoutes.obtainHistoryRoute,
         handler: obtainHistoryHandler,
         transitionType: TransitionType.cupertino,
       );
   }
 }
 
-class Routes {
+class AppRoutes {
   static const String mainRoute = 'main';
-  static const String webMainRoute = 'webMain';
   static const String loginRoute = 'login';
   static const String onBoardingRoute = 'onBoarding';
   static const String requestPermissionRoute = 'requestPermission';

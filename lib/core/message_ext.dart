@@ -138,6 +138,7 @@ abstract class FortuneTr {
   static final msgRequirePermissionContent = tr('msgRequirePermissionContent');
   static final msgInputEmail = tr('msgInputEmail');
   static final msgInputEmailNotValid = tr('msgInputEmailNotValid');
+  static final msgInputNickNameNotValid = tr('msgInputNickNameNotValid');
   static final msgRequireTermsUse = tr('msgRequireTermsUse');
   static final msgRequireTermsApprove = tr('msgRequireTermsApprove');
 

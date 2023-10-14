@@ -13,7 +13,7 @@ import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -63,7 +63,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final landingPage = event.entity.landingRoute;
     if (landingPage.isNotEmpty) {
       switch (landingPage) {
-        case Routes.obtainHistoryRoute:
+        case AppRoutes.obtainHistoryRoute:
           final searchText = event.entity.searchText;
           if (searchText.isNotEmpty) {
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));

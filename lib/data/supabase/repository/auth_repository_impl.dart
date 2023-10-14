@@ -7,6 +7,7 @@ import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:fortune/domain/supabase/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthService _authService;

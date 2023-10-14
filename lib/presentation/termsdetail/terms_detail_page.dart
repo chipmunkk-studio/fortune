@@ -4,7 +4,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -36,7 +36,6 @@ class _TermsDetailPage extends StatefulWidget {
 }
 
 class _TermsDetailPageState extends State<_TermsDetailPage> {
-  final _router = serviceLocator<FortuneRouter>().router;
   late TermsDetailBloc _bloc;
 
   @override

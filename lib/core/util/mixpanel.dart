@@ -18,9 +18,6 @@ class MixpanelTracker {
     String eventName, {
     Map<String, dynamic>? properties,
   }) {
-    // 리얼에서만 로깅함.
-    if (kReleaseMode) {
-      _mixpanel?.track(eventName, properties: properties);
-    }
+    _mixpanel?.track(eventName, properties: properties);
   }
 }

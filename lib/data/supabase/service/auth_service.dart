@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/failure/auth_failure.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:fortune/fortune_router.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -184,11 +184,9 @@ class AuthService {
   }
 
   // 세션 복구
-  Future<String> recoverSession(Map<String, dynamic> data) async {
-    if (kIsWeb) {
-      return Routes.loginRoute;
-    }
-
+  Future<String> recoverAppSession({
+    required Map<String, dynamic> remoteMessageData,
+  }) async {
     final isAnyPermissionDenied = await FortunePermissionUtil.checkPermissionsStatus(
       Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
     );
@@ -204,31 +202,38 @@ class AuthService {
     }
     // #2 권한이 있을 경우.
     else {
-      return handleJoinMemberState(data);
+      return handleJoinMemberState(remoteMessageData);
     }
+  }
+
+  Future<String> recoverWebSession() async {
+    final route = await refreshWebSession();
+    return route;
   }
 
   Future<String> handlePermissionDeniedState() {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음 (권한이 없음)');
-    return Future.value(Routes.requestPermissionRoute);
+    return Future.value(AppRoutes.requestPermissionRoute);
   }
 
-  Future<String> handleJoinMemberState(Map<String, dynamic> data) async {
+  Future<String> handleJoinMemberState(Map<String, dynamic> remoteMessageData) async {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 있음. ');
     // 세션이 만료된 경우.
-    final currentLoginUserState = await refreshSession();
+    final currentLoginUserState = await refreshAppSession();
     if (currentLoginUserState == LoginUserState.needToLogin) {
-      return "${Routes.loginRoute}/${currentLoginUserState.name}";
+      return "${AppRoutes.loginRoute}/${currentLoginUserState.name}";
     }
-    return data.isNotEmpty ? "${Routes.mainRoute}/${jsonEncode(data)}" : Routes.mainRoute;
+    return remoteMessageData.isNotEmpty
+        ? "${AppRoutes.mainRoute}/${jsonEncode(remoteMessageData)}"
+        : AppRoutes.mainRoute;
   }
 
   Future<String> handleNoLoginState() {
     FortuneLogger.info('RecoverSession:: 로그인 한 계정이 없음.');
-    return Future.value(Routes.onBoardingRoute);
+    return Future.value(AppRoutes.onBoardingRoute);
   }
 
-  Future<LoginUserState> refreshSession() async {
+  Future<LoginUserState> refreshAppSession() async {
     try {
       final session = client.auth.currentSession;
       if (session == null || JwtDecoder.isExpired(session.accessToken)) {
@@ -244,6 +249,25 @@ class AuthService {
     } catch (e) {
       FortuneLogger.info('refreshSession:: 계정 복구 실패. ${e.toString()}');
       return LoginUserState.needToLogin;
+    }
+  }
+
+  Future<String> refreshWebSession() async {
+    try {
+      final session = client.auth.currentSession;
+      if (session == null || JwtDecoder.isExpired(session.accessToken)) {
+        FortuneLogger.info('RecoverSession:: 세션 만료. ${session?.accessToken}');
+        return WebRoutes.loginRoute;
+      } else {
+        final jsonStr = preferences.getString(supabaseSessionKey)!;
+        final response = await client.auth.recoverSession(jsonStr);
+        FortuneLogger.info('RecoverSession:: 계정 복구 성공. ${response.user?.phone}');
+        await persistSession(response.session!);
+        return WebRoutes.mainRoute;
+      }
+    } catch (e) {
+      FortuneLogger.info('refreshSession:: 계정 복구 실패. ${e.toString()}');
+      return WebRoutes.loginRoute;
     }
   }
 

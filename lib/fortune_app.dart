@@ -1,12 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'core/util/theme.dart';
-import 'fortune_router.dart';
 
 class FortuneApp extends StatelessWidget {
   final String startRoute;
@@ -23,9 +25,6 @@ class FortuneApp extends StatelessWidget {
         minTextAdapt: true,
         rebuildFactor: RebuildFactors.change,
         builder: (BuildContext context, Widget? child) {
-          /// 강제로 언어를 한글로 설정. 배포 시 삭제해야 함.
-          // EasyLocalization.of(context)?.setLocale(const Locale('en', 'US'));
-          // EasyLocalization.of(context)?.setLocale(const Locale('ko', 'KR'));
           return MediaQuery(
             // 화면 비율 일정 하도록 함.
             data: MediaQueryData.fromView(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),
@@ -47,7 +46,7 @@ class FortuneApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 title: "Fortune",
                 theme: theme(),
-                onGenerateRoute: serviceLocator<FortuneRouter>().router.generator,
+                onGenerateRoute: _getRouter(),
                 initialRoute: startRoute,
                 localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,
@@ -57,4 +56,12 @@ class FortuneApp extends StatelessWidget {
           );
         },
       );
+
+  _getRouter() {
+    if (kIsWeb) {
+      return serviceLocator<FortuneWebRouter>().router.generator;
+    } else {
+      return serviceLocator<FortuneAppRouter>().router.generator;
+    }
+  }
 }
