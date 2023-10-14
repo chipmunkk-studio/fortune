@@ -7,7 +7,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
@@ -108,7 +108,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             text: FortuneTr.start,
             onPress: () => router.navigateTo(
               context,
-              Routes.requestPermissionRoute,
+              AppRoutes.requestPermissionRoute,
             ),
           ),
         ],

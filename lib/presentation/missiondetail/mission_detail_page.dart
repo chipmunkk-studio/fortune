@@ -9,7 +9,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/missiondetail/component/normal_mission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';

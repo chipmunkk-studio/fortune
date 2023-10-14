@@ -74,6 +74,7 @@
   "msgRequireMarkerObtainDistance": "현재 위치에서 {}m 더 가야해요",
   "msgInputEmail": "이메일을 입력하세요",
   "msgInputEmailNotValid": "올바른 이메일 주소가 아닙니다",
+  "msgInputNickNameNotValid": "12자 이내, 공백 없이 입력해주세요.",
   "msgRequireTermsUse": "서비스 이용을 위해\n약관에 동의해주세요",
   "msgRequireTermsApprove": "모두 동의하기",
   "msgRequestSmsVerifyCode": "{}분 {}초 후에 다시 요청해주세요",

@@ -12,7 +12,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/notice/top_notice_auto_slider.dart';
 

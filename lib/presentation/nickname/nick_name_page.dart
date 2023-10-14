@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
@@ -6,11 +7,12 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/core/widgets/textform/fortune_text_form.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/nickname/component/profile_image.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
@@ -70,14 +72,14 @@ class _NickNamePageState extends State<_NickNamePage> {
         } else if (sideEffect is NickNameRoutingPage) {
           final route = sideEffect.route;
           switch (route) {
-            case Routes.loginRoute:
+            case AppRoutes.loginRoute:
               _router.navigateTo(
                 context,
                 sideEffect.route,
                 clearStack: true,
               );
               break;
-            case Routes.myPageRoute:
+            case AppRoutes.myPageRoute:
               _router.pop(context);
               break;
             default:
@@ -117,7 +119,11 @@ class _NickNamePageState extends State<_NickNamePage> {
                       FortuneTextForm(
                         suffixIcon: Assets.icons.icCancelCircle.path,
                         textEditingController: _nickNameController,
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'\S'))],
                         maxLength: 12,
+                        errorText: FortuneValidator.isValidNickName(state.nickName) || state.nickName.isEmpty
+                            ? null
+                            : FortuneTr.msgInputNickNameNotValid,
                         onTextChanged: (text) => _bloc.add(NickNameTextInput(text)),
                         onSuffixIconClicked: () {
                           _bloc.add(NickNameTextInput(''));

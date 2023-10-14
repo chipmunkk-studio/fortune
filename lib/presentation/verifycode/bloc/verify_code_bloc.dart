@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
-import 'package:fortune/fortune_app_router.dart';
-import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'verify_code.dart';
@@ -40,13 +39,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   }
 
   FutureOr<void> init(VerifyCodeInit event, Emitter<VerifyCodeState> emit) async {
-    emit(
-      state.copyWith(
-        phoneNumber: event.phoneNumber,
-        countryInfoEntity: event.countryInfoEntity,
-        loginUserState: event.loginUserState,
-      ),
-    );
+    emit(state.copyWith(phoneNumber: event.phoneNumber));
     await _requestSignUpOrIn(emit);
   }
 
@@ -67,9 +60,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         isConfirmEnable: FortuneValidator.isValidVerifyCode(event.verifyCode),
       ),
     );
-    if (event.isFromListening) {
-      produceSideEffect(VerifyCodeInputFromSmsListening(event.verifyCode));
-    }
   }
 
   FutureOr<void> requestVerifyCode(VerifyCodeRequestVerifyCode event, Emitter<VerifyCodeState> emit) async {
@@ -81,11 +71,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
 
     // 테스트 계정 일 경우 바이 패스.
     if (state.isTestAccount) {
-      produceSideEffect(
-        VerifyCodeLandingRoute(
-          state.loginUserState != LoginUserState.web ? Routes.mainRoute : Routes.webMainRoute,
-        ),
-      );
+      produceSideEffect(VerifyCodeLandingRoute(AppRoutes.mainRoute));
       return;
     }
 
@@ -102,11 +88,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         },
         (r) async {
           emit(state.copyWith(isLoginProcessing: false));
-          produceSideEffect(
-            VerifyCodeLandingRoute(
-              state.loginUserState != LoginUserState.web ? Routes.mainRoute : Routes.webMainRoute,
-            ),
-          );
+          produceSideEffect(VerifyCodeLandingRoute(AppRoutes.mainRoute));
         },
       ),
     );
@@ -116,7 +98,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     await signUpOrInUseCase(
       RequestSignUpParam(
         email: state.phoneNumber,
-        countryInfoId: state.countryInfoEntity.id,
       ),
     ).then(
       (value) => value.fold(

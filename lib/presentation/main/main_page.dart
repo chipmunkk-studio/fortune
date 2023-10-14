@@ -20,7 +20,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
@@ -269,11 +269,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   TopLocationArea(
                     onProfileTap: () => router.navigateTo(
                       context,
-                      Routes.myPageRoute,
+                      AppRoutes.myPageRoute,
                     ),
                     onHistoryTap: () => router.navigateTo(
                       context,
-                      Routes.obtainHistoryRoute,
+                      AppRoutes.obtainHistoryRoute,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -287,7 +287,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       isDismissible: true,
                       content: (context) => const MyIngredientsPage(),
                     ),
-                    onGradeAreaTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+                    onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
                   ),
                 ]),
               ),
@@ -436,7 +436,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       btnOkPressed: () async {
         final markerActionResult = await router.navigateTo(
           context,
-          Routes.ingredientActionRoute,
+          AppRoutes.ingredientActionRoute,
           routeSettings: RouteSettings(
             arguments: IngredientActionParam(
               ingredient: data.ingredient,

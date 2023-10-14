@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/usecase/nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -84,7 +84,7 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
           produceSideEffect(NickNameError(l));
         },
         (r) {
-          produceSideEffect(NickNameRoutingPage(route: Routes.myPageRoute));
+          produceSideEffect(NickNameRoutingPage(route: AppRoutes.myPageRoute));
         },
       ),
     );
@@ -95,7 +95,7 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
     await Supabase.instance.client.auth.signOut().then((value) async {
       emit(state.copyWith(isUpdating: false));
       produceSideEffect(
-        NickNameRoutingPage(route: Routes.loginRoute),
+        NickNameRoutingPage(route: AppRoutes.loginRoute),
       );
     });
   }
@@ -112,7 +112,7 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
           emit(state.copyWith(isUpdating: false));
           produceSideEffect(
             NickNameRoutingPage(
-              route: Routes.loginRoute,
+              route: AppRoutes.loginRoute,
               isWithdrawal: true,
             ),
           );

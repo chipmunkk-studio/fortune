@@ -29,13 +29,9 @@ class LoginShowTermsBottomSheet extends LoginSideEffect {
 
 class LoginShowVerifyCodeBottomSheet extends LoginSideEffect {
   final String email;
-  final CountryInfoEntity countryInfoEntity;
-  final LoginUserState loginUserState;
 
   LoginShowVerifyCodeBottomSheet(
     this.email,
-    this.countryInfoEntity,
-    this.loginUserState,
   );
 
   @override

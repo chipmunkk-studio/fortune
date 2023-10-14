@@ -1,13 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_country_info_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/env.dart';
@@ -18,7 +15,6 @@ import 'login.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final GetUserUseCase getUserUseCase;
   final SignInWithEmailUseCase signInWithEmailUseCase;
-  final GetCountryInfoUseCase getCountryInfoUseCase;
   final CancelWithdrawalUseCase cancelWithdrawalUseCase;
   final Environment env;
 
@@ -26,7 +22,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     required this.getUserUseCase,
     required this.cancelWithdrawalUseCase,
     required this.signInWithEmailUseCase,
-    required this.getCountryInfoUseCase,
     required this.env,
   }) : super(LoginState.initial()) {
     on<LoginInit>(init);
@@ -39,28 +34,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     on<LoginBottomButtonClick>(clickNextButton);
     on<LoginRequestVerifyCode>(requestVerifyCode);
     on<LoginRequestCancelWithdrawal>(cancelWithdrawal);
-    on<LoginRequestSelectCountry>(selectCountry);
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
     FortuneLogger.info('현재 유저 상태: ${event.loginUserState.name}');
-
-    await getCountryInfoUseCase().then(
-      (value) => value.fold(
-        (l) => produceSideEffect(LoginError(l)),
-        (r) {
-          final selectedCountry = r.firstWhereOrNull(
-                (element) => element.iso2 == PlatformDispatcher.instance.locale.countryCode,
-              ) ??
-              r.firstWhere((element) => element.iso2 == 'US');
-          emit(
-            state.copyWith(
-              loginUserState: event.loginUserState,
-              isLoading: false,
-              selectCountry: selectedCountry,
-            ),
-          );
-        },
+    emit(
+      state.copyWith(
+        loginUserState: event.loginUserState,
+        isLoading: false,
       ),
     );
   }
@@ -94,13 +75,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
           if (r != null) {
             // 인증번호 전송
             emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
-            produceSideEffect(
-              LoginShowVerifyCodeBottomSheet(
-                state.email,
-                state.selectCountry,
-                state.loginUserState,
-              ),
-            );
+            produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
           } else {
             // 약관 바텀 시트 표시
             produceSideEffect(
@@ -116,13 +91,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
 
   // 약관 동의 후 인증 번호 바텀시트 띄움.
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
-    produceSideEffect(
-      LoginShowVerifyCodeBottomSheet(
-        state.email,
-        state.selectCountry,
-        state.loginUserState,
-      ),
-    );
+    produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
   }
 
   FutureOr<void> cancelWithdrawal(LoginRequestCancelWithdrawal event, Emitter<LoginState> emit) async {
@@ -134,9 +103,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
         },
       ),
     );
-  }
-
-  FutureOr<void> selectCountry(LoginRequestSelectCountry event, Emitter<LoginState> emit) {
-    emit(state.copyWith(selectCountry: event.args));
   }
 }

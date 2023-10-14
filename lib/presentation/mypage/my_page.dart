@@ -5,7 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
 import 'package:fortune/presentation/mypage/component/info_menu.dart';
 import 'package:fortune/presentation/mypage/component/profile_info.dart';
@@ -74,10 +74,10 @@ class _MyPageState extends State<_MyPage> {
                         return ProfileInfo(
                           entity: state.user,
                           onNicknameModifyTap: () async {
-                            await router.navigateTo(context, Routes.nickNameRoute);
+                            await router.navigateTo(context, AppRoutes.nickNameRoute);
                             _bloc.add(MyPageInit());
                           },
-                          onGradeGuideTap: () => router.navigateTo(context, Routes.gradeGuideRoute),
+                          onGradeGuideTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
                           onProfileTap: () {
                             FortuneImagePicker().loadImagePicker(
                               (path) => _bloc.add(MyPageUpdateProfile(path)),
@@ -90,17 +90,17 @@ class _MyPageState extends State<_MyPage> {
                     InfoMenu(
                       FortuneTr.notice,
                       icon: Assets.icons.icMegaphone.svg(),
-                      onTap: () => router.navigateTo(context, Routes.noticesRoutes),
+                      onTap: () => router.navigateTo(context, AppRoutes.noticesRoutes),
                     ),
                     InfoMenu(
                       FortuneTr.faq,
                       icon: Assets.icons.icQuestion.svg(),
-                      onTap: () => router.navigateTo(context, Routes.faqsRoute),
+                      onTap: () => router.navigateTo(context, AppRoutes.faqsRoute),
                     ),
                     InfoMenu(
                       FortuneTr.msgPrivacyPolicy,
                       icon: Assets.icons.icNote24.svg(),
-                      onTap: () => router.navigateTo(context, Routes.privacyPolicyRoutes),
+                      onTap: () => router.navigateTo(context, AppRoutes.privacyPolicyRoutes),
                     ),
                     BlocBuilder<MyPageBloc, MyPageState>(
                       buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,

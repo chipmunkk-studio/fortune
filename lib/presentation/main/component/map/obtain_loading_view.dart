@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/fortune_ext.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'main_location_data.dart';

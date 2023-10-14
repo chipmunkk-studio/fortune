@@ -58,7 +58,11 @@ import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dar
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
-import 'package:fortune/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
+import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
+import 'package:fortune/presentation-web/login/bloc/web_login.dart';
+import 'package:fortune/presentation-web/verifycode/bloc/web_verify_code.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
@@ -130,7 +134,7 @@ Future<void> init() async {
     );
 
   /// 개발 환경 설정.
-  await initEnvironment();
+  await initEnvironment(kIsWeb);
 
   /// Supabase
   await Supabase.initialize(
@@ -152,12 +156,18 @@ Future<void> init() async {
   serviceLocator.registerLazySingleton<FortuneAnalytics>(() => fortuneAnalytics);
 
   /// Router.
-  serviceLocator.registerLazySingleton<FortuneAppRouter>(() => FortuneAppRouter()..init());
-
-  await initSupabase();
+  initRouter(kIsWeb);
+  /// Supabase
+  await initSupabase(kIsWeb);
 }
 
-initSupabase() async {
+initRouter(bool kIsWeb) {
+  kIsWeb
+      ? serviceLocator.registerLazySingleton<FortuneWebRouter>(() => FortuneWebRouter()..init())
+      : serviceLocator.registerLazySingleton<FortuneAppRouter>(() => FortuneAppRouter()..init());
+}
+
+initSupabase(bool kIsWeb) async {
   /// data.
   await _initService();
 
@@ -167,25 +177,26 @@ initSupabase() async {
   /// UseCase.
   await _initUseCase();
 
-  /// Bloc.
-  await _initBloc();
+  /// App Bloc.
+  await _initBloc(kIsWeb);
 }
 
 /// 환경설정.
-initEnvironment() async {
+initEnvironment(bool kIsWeb) async {
   final Environment environment = Environment.create(
     remoteConfig: await getRemoteConfigArgs(),
-  )..init();
+  )..init(kIsWeb);
 
   /// 믹스패널 추가 > 웹이 아닐 경우에만 지원.
   if (!kIsWeb) {
     final mixpanel = await Mixpanel.init(
-      environment.remoteConfig.mixpanelToken,
-      trackAutomaticEvents: true,
+      kReleaseMode ? environment.remoteConfig.mixpanelReleaseToken : environment.remoteConfig.mixpanelDevelopToken,
+      trackAutomaticEvents: false,
     );
     mixpanel.setLoggingEnabled(true);
     serviceLocator.registerLazySingleton<Mixpanel>(() => mixpanel);
   }
+
   serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker());
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
@@ -527,14 +538,17 @@ _initUseCase() async {
     );
 }
 
+_initBloc(bool kIsWeb) async {
+  kIsWeb ? await _initWebBloc() : await _initAppBloc();
+}
+
 /// Bloc.
-_initBloc() {
+_initAppBloc() {
   serviceLocator
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
         cancelWithdrawalUseCase: serviceLocator<CancelWithdrawalUseCase>(),
-        getCountryInfoUseCase: serviceLocator<GetCountryInfoUseCase>(),
         signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
         env: serviceLocator<Environment>(),
       ),
@@ -647,6 +661,40 @@ _initBloc() {
     ..registerFactory(
       () => AgreeTermsBloc(
         getTermsUseCase: serviceLocator(),
+      ),
+    );
+}
+
+_initWebBloc() {
+  serviceLocator
+    ..registerFactory(
+      () => WebAgreeTermsBloc(
+        getTermsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => WebVerifyCodeBloc(
+        verifyEmailUseCase: serviceLocator(),
+        checkVerifySmsTimeUseCase: serviceLocator(),
+        signUpOrInUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => PrivacyPolicyBloc(
+        getPrivacyPolicyUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => TermsDetailBloc(
+        getTermsByIndexUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => WebLoginBloc(
+        getUserUseCase: serviceLocator<GetUserUseCase>(),
+        cancelWithdrawalUseCase: serviceLocator<CancelWithdrawalUseCase>(),
+        signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
+        env: serviceLocator<Environment>(),
       ),
     );
 }
