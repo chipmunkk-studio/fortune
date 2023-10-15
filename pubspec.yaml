@@ -33,7 +33,6 @@ dependencies:
   upgrader: ^8.1.0
   google_fonts: ^6.1.0
   webview_flutter: ^4.4.1
-  new_version: ^0.3.1
 
   # ui
   cupertino_icons: ^1.0.6
