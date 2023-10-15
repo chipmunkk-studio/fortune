@@ -51,7 +51,7 @@ class MainMap extends StatelessWidget {
                     myLocation!.latitude!,
                     myLocation!.longitude!,
                   ),
-                  zoom: _bloc.state.zoomThreshold,
+                  initialZoom: _bloc.state.zoomThreshold,
                   interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
                   onPositionChanged: (mapPosition, boolHasGesture) {
                     if (boolHasGesture) {
