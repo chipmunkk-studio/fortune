@@ -106,7 +106,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-      final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      final locationData = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      );
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));
@@ -117,8 +119,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           locationData,
         ),
       );
-
-      // #3 소켓연결해서 리스트 변경 감지.
+      // 마커 목록 불러옴.
       await getMain(emit);
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -170,17 +171,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   // 위치 변경 시.
   FutureOr<void> locationChange(MainMyLocationChange event, Emitter<MainState> emit) async {
-    final latitude = event.newLoc.latitude;
-    final longitude = event.newLoc.longitude;
-
-    if (latitude != null && longitude != null) {
+    try {
+      final latitude = event.newLoc.latitude;
+      final longitude = event.newLoc.longitude;
       final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
+
       emit(
         state.copyWith(
           myLocation: event.newLoc,
           locationName: locationName,
         ),
       );
+      add(Main());
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
     }
   }
 
@@ -210,12 +214,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     add(MainScreenFreeze(flag: true, data: event.data));
 
     final marker = event.data;
-    final latitude = marker.location.latitude;
-    final longitude = marker.location.longitude;
     final krLocationName = state.locationName;
-
-    // todo 영어 위치.
-    // final enLocationName = await getLocationName(latitude, longitude, localeIdentifier: "en_US");
 
     await obtainMarkerUseCase(
       RequestObtainMarkerParam(
@@ -249,17 +248,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               isObtainProcessing: false,
             ),
           );
-
-          // todo 레벨업 혹은 등급업일 경우 다이얼로그 노출
-          // if (result.isLevelOrGradeUp) {
-          //   produceSideEffect(
-          //     MainShowDialog(
-          //       landingRoute: Routes.obtainHistoryRoute,
-          //       title: result.dialogHeadings,
-          //       subTitle: result.dialogContent,
-          //     ),
-          //   );
-          // }
           add(MainScreenFreeze(flag: false, data: event.data));
           await getMain(emit);
         },
