@@ -48,8 +48,8 @@ class MainMap extends StatelessWidget {
                 mapController: mapController,
                 options: MapOptions(
                   center: LatLng(
-                    myLocation!.latitude!,
-                    myLocation!.longitude!,
+                    myLocation!.latitude,
+                    myLocation!.longitude,
                   ),
                   initialZoom: _bloc.state.zoomThreshold,
                   interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
@@ -62,7 +62,10 @@ class MainMap extends StatelessWidget {
                     FortuneLogger.debug(
                       tag: "gradeTest",
                       "point: $point, distance: ${isMarkerInsideCircle(
-                        LatLng(_bloc.state.myLocation!.latitude!, _bloc.state.myLocation!.longitude!),
+                        LatLng(
+                          _bloc.state.myLocation!.latitude,
+                          _bloc.state.myLocation!.longitude,
+                        ),
                         point,
                         _bloc.state.clickableRadiusLength,
                       )}",
@@ -159,8 +162,8 @@ class MainMap extends StatelessWidget {
   ) async {
     LatLng markerPosition = LatLng(data.location.latitude, data.location.longitude);
     LatLng currentPosition = LatLng(
-      _bloc.state.myLocation!.latitude!,
-      _bloc.state.myLocation!.longitude!,
+      _bloc.state.myLocation!.latitude,
+      _bloc.state.myLocation!.longitude,
     );
 
     final double distance = isMarkerInsideCircle(
