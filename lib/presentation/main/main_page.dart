@@ -113,8 +113,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
             _detectPermission = false;
           }
-        } else {
-          _bloc.add(Main());
         }
         break;
       case AppLifecycleState.paused:
