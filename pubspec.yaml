@@ -8,7 +8,7 @@ description: fortune flutter
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
-version: 1.2.0+5
+version: 1.2.1+6
 
 # 3.0.0 이상을 지원하면서, 4.0.0미만에 버전도 작동하도록 함
 environment:

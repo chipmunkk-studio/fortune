@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_next_level_entity.dart';
@@ -92,7 +93,7 @@ getLocationName(
   String? localeIdentifier,
   bool isDetailStreet = true,
 }) async {
-  const unknownLocation = '알 수 없는 위치';
+  final unknownLocation = FortuneTr.msgUnknownLocation;
   try {
     // 영어
     List<Placemark> placemarks = await placemarkFromCoordinates(
@@ -110,7 +111,7 @@ getLocationName(
       String? postalCode = pos1.postalCode;
       String? country = pos1.country;
       if (isDetailStreet) {
-        return pos1.street; // 서울특별시 성동구
+        return pos1.street ?? unknownLocation;
       } else {
         return "$administrativeArea $subLocality";
       }
@@ -119,7 +120,7 @@ getLocationName(
     }
   } catch (e) {
     FortuneLogger.error(message: e.toString());
-    return null;
+    return unknownLocation;
   }
 }
 
