@@ -153,12 +153,16 @@ class FortuneNotificationsManager {
   }
 
   Future<void> _onAPNSTokenReceived(String? token) async {
-    FortuneLogger.info(tag: _TAG, "APNS Token $token");
+    try {
+      FortuneLogger.info(tag: _TAG, "APNS Token $token");
 
-    final storedToken = await _apnsTokenStorage.get();
+      final storedToken = await _apnsTokenStorage.get();
 
-    if (storedToken == null || storedToken != token) {
-      await _apnsTokenStorage.save(token!);
+      if (storedToken == null || storedToken != token) {
+        await _apnsTokenStorage.save(token!);
+      }
+    } catch (e) {
+      // todo APNS 토큰 넣어야 됨.
     }
   }
 

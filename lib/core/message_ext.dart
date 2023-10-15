@@ -83,6 +83,7 @@ abstract class FortuneTr {
   static final msgMissionReward = tr('msgMissionReward');
   static final msgGradeInfo = tr('msgGradeInfo');
   static final msgRewardInProgress = tr('msgRewardInProgress');
+  static final msgCollectWithCoin = tr('msgCollectWithCoin');
   static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
   static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
   static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');

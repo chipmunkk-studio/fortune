@@ -119,6 +119,7 @@ class FortuneDialogService {
     Color? btnTextColor,
     dismissOnTouchOutside = false,
     dismissOnBackKeyPress = false,
+    Widget? topContent,
   }) {
     AwesomeDialog(
       context: context,
@@ -137,6 +138,8 @@ class FortuneDialogService {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // 탑 콘텐츠
+                if (topContent != null) topContent,
                 // 타이틀이 있을 경우.
                 if (title != null)
                   const SizedBox(height: 20)
@@ -178,7 +181,8 @@ class FortuneDialogService {
     ).show();
   }
 
-  void showFortuneMaterialDialog(
+  /// 로띠 참고용.
+  _showFortuneMaterialDialog(
     BuildContext context, {
     required String title,
     required String message,

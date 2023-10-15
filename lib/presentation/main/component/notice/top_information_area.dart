@@ -16,12 +16,14 @@ class TopInformationArea extends StatelessWidget {
   final GlobalKey<CartIconKey> _cartKey;
   final Function0 onInventoryTap;
   final Function0 onGradeAreaTap;
+  final Function0 onCoinTap;
 
   const TopInformationArea(
     this._cartKey, {
     super.key,
     required this.onInventoryTap,
     required this.onGradeAreaTap,
+    required this.onCoinTap,
   });
 
   @override
@@ -39,7 +41,8 @@ class TopInformationArea extends StatelessWidget {
               Flexible(
                 child: BlocBuilder<MainBloc, MainState>(
                   buildWhen: (previous, current) =>
-                      previous.user?.nextLevelInfo.nextLevelMarkerCount != current.user?.nextLevelInfo.nextLevelMarkerCount,
+                      previous.user?.nextLevelInfo.nextLevelMarkerCount !=
+                      current.user?.nextLevelInfo.nextLevelMarkerCount,
                   builder: (context, state) {
                     final user = state.user;
                     return user != null
@@ -59,7 +62,10 @@ class TopInformationArea extends StatelessWidget {
               // 티켓 카운트.
               BlocBuilder<MainBloc, MainState>(
                 buildWhen: (previous, current) => previous.user?.ticket != current.user?.ticket,
-                builder: (context, state) => _TicketCount(state.user?.ticket ?? 0),
+                builder: (context, state) => Bounceable(
+                  onTap: onCoinTap,
+                  child: _CoinCount(state.user?.ticket ?? 0),
+                ),
               ),
               const SizedBox(width: 10),
               // 마커 획득 갯수.
@@ -137,10 +143,10 @@ class _UserLevel extends StatelessWidget {
   }
 }
 
-class _TicketCount extends StatelessWidget {
+class _CoinCount extends StatelessWidget {
   final int? _ticket;
 
-  const _TicketCount(
+  const _CoinCount(
     this._ticket,
   );
 

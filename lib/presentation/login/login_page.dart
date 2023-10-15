@@ -130,7 +130,7 @@ class _LoginPageState extends State<_LoginPage> {
                                 return Text(state.guideTitle, style: FortuneTextStyle.headLine1(height: 1.3));
                               },
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 40),
                             // 로그인 상태.
                             BlocBuilder<LoginBloc, LoginState>(
                               buildWhen: (previous, current) => previous.email != current.email,
