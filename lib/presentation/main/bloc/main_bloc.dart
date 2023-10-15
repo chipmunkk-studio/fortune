@@ -47,10 +47,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       _toastRequireMeters,
       transformer: throttle(const Duration(seconds: 2)),
     );
-    on<MainMyLocationChange>(
-      locationChange,
-      transformer: debounce(const Duration(seconds: 2)),
-    );
+    on<MainMyLocationChange>(locationChange);
     on<MainSetRewardAd>(setRewardAd);
     on<MainScreenFreeze>(_screenFreeze);
     on<MainMarkerObtain>(
@@ -175,14 +172,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       final latitude = event.newLoc.latitude;
       final longitude = event.newLoc.longitude;
       final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
-
       emit(
         state.copyWith(
           myLocation: event.newLoc,
           locationName: locationName,
         ),
       );
-      add(Main());
     } catch (e) {
       FortuneLogger.error(message: e.toString());
     }

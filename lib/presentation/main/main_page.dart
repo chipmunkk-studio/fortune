@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:fortune/core/error/failure/network_failure.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
@@ -20,7 +22,6 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
@@ -50,16 +51,9 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UpgradeAlert(
-      child: BlocProvider(
-        create: (_) => serviceLocator<MainBloc>()
-          ..add(
-            MainInit(
-              notificationEntity: notificationEntity,
-            ),
-          ),
-        child: const _MainPage(),
-      ),
+    return BlocProvider(
+      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
+      child: const _MainPage(),
     );
   }
 }
@@ -208,108 +202,117 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       },
       child: FortuneScaffold(
         padding: EdgeInsets.zero,
-        child: Stack(
-          children: [
-            // 메인 맵.
-            MainMap(
-              _bloc,
-              router: router,
-              context: context,
-              remoteConfigArgs: environment,
-              mapController: _mapController,
-              myLocation: myLocation,
-              onZoomChanged: () {
-                _animatedMapMove(
-                  LatLng(
-                    _bloc.state.myLocation!.latitude!,
-                    _bloc.state.myLocation!.longitude!,
+        child: UpgradeAlert(
+          upgrader: Upgrader(
+            dialogStyle: Platform.isIOS ? UpgradeDialogStyle.cupertino : UpgradeDialogStyle.material,
+            durationUntilAlertAgain: const Duration(days: 1),
+            canDismissDialog: true,
+            shouldPopScope: () => true,
+          ),
+          child: Stack(
+            children: [
+              // 메인 맵.
+              MainMap(
+                _bloc,
+                router: router,
+                context: context,
+                remoteConfigArgs: environment,
+                mapController: _mapController,
+                myLocation: myLocation,
+                onZoomChanged: () {
+                  _animatedMapMove(
+                    LatLng(
+                      _bloc.state.myLocation!.latitude,
+                      _bloc.state.myLocation!.longitude,
+                    ),
+                    _bloc.state.zoomThreshold,
+                  );
+                  _bloc.add(Main());
+                },
+              ),
+              // 카트.
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: Bounceable(
+                  onTap: _onMyBagClick,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: ColorName.grey800,
+                      borderRadius: BorderRadius.circular(50.r),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Assets.icons.icInventory.svg(),
+                    ),
                   ),
-                  _bloc.state.zoomThreshold,
-                );
-                _bloc.add(Main());
-              },
-            ),
-            // 카트.
-            Positioned(
-              bottom: 8,
-              right: 8,
-              child: Bounceable(
-                onTap: _onMyBagClick,
+                ),
+              ),
+              AddToCartAnimation(
+                cartKey: cartKey,
+                opacity: 0.85,
+                dragAnimation: const DragToCartAnimationOptions(
+                  rotation: true,
+                ),
+                jumpAnimation: const JumpAnimationOptions(),
+                createAddToCartAnimation: (runAddToCartAnimation) {
+                  this.runAddToCartAnimation = runAddToCartAnimation;
+                },
+                child: Positioned(
+                  top: 13,
+                  right: 20,
+                  left: 20,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const SizedBox(height: 10),
+                    TopLocationArea(
+                      onProfileTap: () => router.navigateTo(
+                        context,
+                        AppRoutes.myPageRoute,
+                      ),
+                      onHistoryTap: () => router.navigateTo(
+                        context,
+                        AppRoutes.obtainHistoryRoute,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TopNotice(
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    TopInformationArea(
+                      cartKey,
+                      onInventoryTap: () => context.showBottomSheet(
+                        isDismissible: true,
+                        content: (context) => const MyIngredientsPage(),
+                      ),
+                      onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
+                      onCoinTap: _showCoinDialog,
+                    ),
+                  ]),
+                ),
+              ),
+              // 하단 그라데이션.
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  height: 24,
                   decoration: BoxDecoration(
-                    color: ColorName.grey800,
-                    borderRadius: BorderRadius.circular(50.r),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Assets.icons.icInventory.svg(),
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        ColorName.grey900.withOpacity(1.0),
+                        ColorName.grey900.withOpacity(0.0),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            AddToCartAnimation(
-              cartKey: cartKey,
-              opacity: 0.85,
-              dragAnimation: const DragToCartAnimationOptions(
-                rotation: true,
-              ),
-              jumpAnimation: const JumpAnimationOptions(),
-              createAddToCartAnimation: (runAddToCartAnimation) {
-                this.runAddToCartAnimation = runAddToCartAnimation;
-              },
-              child: Positioned(
-                top: 13,
-                right: 20,
-                left: 20,
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const SizedBox(height: 10),
-                  TopLocationArea(
-                    onProfileTap: () => router.navigateTo(
-                      context,
-                      AppRoutes.myPageRoute,
-                    ),
-                    onHistoryTap: () => router.navigateTo(
-                      context,
-                      AppRoutes.obtainHistoryRoute,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TopNotice(
-                    onTap: () {},
-                  ),
-                  const SizedBox(height: 10),
-                  TopInformationArea(
-                    cartKey,
-                    onInventoryTap: () => context.showBottomSheet(
-                      isDismissible: true,
-                      content: (context) => const MyIngredientsPage(),
-                    ),
-                    onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
-                  ),
-                ]),
-              ),
-            ),
-            // 하단 그라데이션.
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 24,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      ColorName.grey900.withOpacity(1.0),
-                      ColorName.grey900.withOpacity(0.0),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -369,7 +372,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
       if (newLoc != null) {
         FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}");
-        _bloc.add(MainMyLocationChange(newLoc));
+        _bloc
+          ..add(MainMyLocationChange(newLoc))
+          ..add(Main());
       }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -465,4 +470,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       scrollContent: (context) => MissionsBottomContents(_bloc),
     );
   }
+
+  // 코인 클릭.
+  _showCoinDialog() => dialogService.showFortuneDialog(
+        context,
+        dismissOnTouchOutside: true,
+        dismissOnBackKeyPress: true,
+        btnOkText: FortuneTr.confirm,
+        btnOkPressed: () {},
+        subTitle: FortuneTr.msgCollectWithCoin,
+      );
 }

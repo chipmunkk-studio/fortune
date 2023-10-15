@@ -8,11 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/notice/top_notice_auto_slider.dart';
 
@@ -77,7 +77,7 @@ class _TopNoticeState extends State<TopNotice> {
                                   Row(
                                     children: [
                                       Text(
-                                        e.user.nickname.isEmpty ? '알 수 없는 사람' : e.user.nickname,
+                                        e.user.nickname.isEmpty ? FortuneTr.msgUnknownUser : e.user.nickname,
                                         style: FortuneTextStyle.body3Semibold(),
                                       ),
                                       Flexible(
