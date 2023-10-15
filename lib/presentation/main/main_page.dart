@@ -232,18 +232,18 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               ),
               // 카트.
               Positioned(
-                bottom: 8,
-                right: 8,
+                bottom: 16,
+                right: 16,
                 child: Bounceable(
                   onTap: _onMyBagClick,
                   child: Container(
                     padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
-                      color: ColorName.grey800,
+                      color: ColorName.grey700,
                       borderRadius: BorderRadius.circular(50.r),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Assets.icons.icInventory.svg(),
                     ),
                   ),
