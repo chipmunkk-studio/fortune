@@ -11,6 +11,7 @@
   "diamond": "Diamond",
   "msgNotExistUser": "User not found.",
   "msgNotExistTerms": "Terms of Service unavailable.",
+  "msgCollectWithCoin": "Spend coins\nto gather markers",
   "msgNotFoundUser": "User not located.",
   "msgNotUpdateUser": "Failed to update user.",
   "msgRenewAuthInfo": "Refreshing authentication...",

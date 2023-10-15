@@ -12,6 +12,7 @@ import 'package:fortune/core/error/failure/network_failure.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
@@ -21,7 +22,6 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
@@ -287,6 +287,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         content: (context) => const MyIngredientsPage(),
                       ),
                       onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
+                      onCoinTap: _showCoinDialog,
                     ),
                   ]),
                 ),
@@ -469,4 +470,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       scrollContent: (context) => MissionsBottomContents(_bloc),
     );
   }
+
+  // 코인 클릭.
+  _showCoinDialog() => dialogService.showFortuneDialog(
+        context,
+        dismissOnTouchOutside: true,
+        dismissOnBackKeyPress: true,
+        btnOkText: FortuneTr.confirm,
+        btnOkPressed: () {},
+        subTitle: FortuneTr.msgCollectWithCoin,
+      );
 }
