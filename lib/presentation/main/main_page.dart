@@ -113,8 +113,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
             _detectPermission = false;
           }
-        } else {
-          _bloc.add(Main());
         }
         break;
       case AppLifecycleState.paused:
@@ -320,10 +318,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   // 위치변경감지.
   Future<StreamSubscription<Position>> listenLocationChange(Position myLocation) async {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 100,
-      ),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
     ).listen((Position? position) {
       _animatedMapMove(
         LatLng(
@@ -373,7 +368,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       controller.forward();
 
       if (newLoc != null) {
-        FortuneLogger.info("회전방향: ${newLoc.heading}");
+        FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}");
         _bloc.add(MainMyLocationChange(newLoc));
       }
     } catch (e) {
