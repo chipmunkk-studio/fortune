@@ -1,17 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:fortune/di.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
 class MixpanelTracker {
   Mixpanel? _mixpanel;
 
-  Mixpanel? get mixpanel {
-    if (kIsWeb) {
-      return null;
-    }
+  MixpanelTracker(this._mixpanel);
 
-    _mixpanel ??= serviceLocator<Mixpanel>();
-    return _mixpanel;
+  factory MixpanelTracker.init(Mixpanel? mixpanel) {
+    return MixpanelTracker(kIsWeb ? null : mixpanel);
   }
 
   void trackEvent(

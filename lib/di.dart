@@ -157,6 +157,7 @@ Future<void> init() async {
 
   /// Router.
   initRouter(kIsWeb);
+
   /// Supabase
   await initSupabase(kIsWeb);
 }
@@ -188,16 +189,16 @@ initEnvironment(bool kIsWeb) async {
   )..init(kIsWeb);
 
   /// 믹스패널 추가 > 웹이 아닐 경우에만 지원.
+  Mixpanel? mixpanel;
   if (!kIsWeb) {
-    final mixpanel = await Mixpanel.init(
+    mixpanel = await Mixpanel.init(
       kReleaseMode ? environment.remoteConfig.mixpanelReleaseToken : environment.remoteConfig.mixpanelDevelopToken,
       trackAutomaticEvents: false,
     );
     mixpanel.setLoggingEnabled(true);
-    serviceLocator.registerLazySingleton<Mixpanel>(() => mixpanel);
   }
 
-  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker());
+  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker(mixpanel));
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
 
