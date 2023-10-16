@@ -61,15 +61,30 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                   remainCount: state.user.nextLevelInfo.nextLevelMarkerCount.toString(),
                 ),
                 const SizedBox(height: 40),
-                ItemGrade(getUserGradeIconInfo(1)),
+                ItemGrade(
+                  getUserGradeIconInfo(1),
+                  rewardGuideText: FortuneTr.msgNoReward,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(2)),
+                ItemGrade(
+                  getUserGradeIconInfo(2),
+                  rewardGuideText: FortuneTr.msgRewardPreparation,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(3)),
+                ItemGrade(
+                  getUserGradeIconInfo(3),
+                  rewardGuideText: FortuneTr.msgRewardPreparation,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(4)),
+                ItemGrade(
+                  getUserGradeIconInfo(4),
+                  rewardGuideText: FortuneTr.msgRewardPreparation,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(5)),
+                ItemGrade(
+                  getUserGradeIconInfo(5),
+                  rewardGuideText: FortuneTr.msgRewardPreparation,
+                ),
                 const SizedBox(height: 12),
                 Text(
                   "· ${FortuneTr.msgRewardInProgress}",

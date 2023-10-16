@@ -40,6 +40,9 @@ class ColorName {
   /// Color: #EF5248
   static const Color negative = Color(0xFFEF5248);
 
+  /// Color: #331D1D
+  static const Color negativeDark = Color(0xFF331D1D);
+
   /// Color: #FAE1E1
   static const Color negativeLight = Color(0xFFFAE1E1);
 

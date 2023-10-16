@@ -65,8 +65,8 @@ class _MyPageState extends State<_MyPage> {
               skeleton: const MyPageSkeleton(),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     BlocBuilder<MyPageBloc, MyPageState>(
                       buildWhen: (previous, current) => previous.user != current.user,
@@ -89,6 +89,7 @@ class _MyPageState extends State<_MyPage> {
                     const SizedBox(height: 32),
                     InfoMenu(
                       FortuneTr.notice,
+                      hasNew: state.hasNewNotice,
                       icon: Assets.icons.icMegaphone.svg(),
                       onTap: () => router.navigateTo(context, AppRoutes.noticesRoutes),
                     ),

@@ -45,7 +45,14 @@ class SupportService {
   // 공지 사항.
   Future<List<NoticesEntity>> findAllNotices() async {
     try {
-      final List<dynamic> response = await _client.from(_noticesTableName).select("*").toSelect();
+      final List<dynamic> response = await _client
+          .from(_noticesTableName)
+          .select("*")
+          .order(
+            'created_at',
+            ascending: false,
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -60,7 +67,14 @@ class SupportService {
   // 개인정보처리방침
   Future<List<PrivacyPolicyEntity>> findPrivacyPolicy() async {
     try {
-      final List<dynamic> response = await _client.from(_privacyPolicyTableName).select("*").toSelect();
+      final List<dynamic> response = await _client
+          .from(_privacyPolicyTableName)
+          .select("*")
+          .order(
+            'created_at',
+            ascending: false,
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {

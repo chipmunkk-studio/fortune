@@ -110,10 +110,11 @@ getLocationName(
       String? administrativeArea = pos1.administrativeArea;
       String? postalCode = pos1.postalCode;
       String? country = pos1.country;
+      String nonDetailStreet = "$administrativeArea $subLocality";
       if (isDetailStreet) {
         return pos1.street ?? unknownLocation;
       } else {
-        return "$administrativeArea $subLocality";
+        return nonDetailStreet.isEmpty ? unknownLocation : nonDetailStreet;
       }
     } else {
       return unknownLocation;

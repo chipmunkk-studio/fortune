@@ -44,15 +44,16 @@ import 'main_ext.dart';
 class MainPage extends StatelessWidget {
   final FortuneNotificationEntity? notificationEntity;
 
-  const MainPage(
-    this.notificationEntity, {
+  const MainPage(this.notificationEntity, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MainBloc>()..add(MainInit(notificationEntity: notificationEntity)),
+      create: (_) =>
+      serviceLocator<MainBloc>()
+        ..add(MainInit(notificationEntity: notificationEntity)),
       child: const _MainPage(),
     );
   }
@@ -142,15 +143,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 icon: Assets.icons.icCheckCircleFill24.svg(),
                 content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.exposureName),
               ),
-              positionedToastBuilder: (context, child) => Positioned(
-                bottom: 40,
-                left: 0,
-                right: 0,
-                child: child,
-              ),
+              positionedToastBuilder: (context, child) =>
+                  Positioned(
+                    bottom: 40,
+                    left: 0,
+                    right: 0,
+                    child: child,
+                  ),
               toastDuration: const Duration(seconds: 2),
             );
-          }();
+          }
+          ();
         } else if (sideEffect is MainRequireLocationPermission) {
           dialogService.showFortuneDialog(
             context,
@@ -174,12 +177,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 sideEffect.meters.toStringAsFixed(1),
               ),
             ),
-            positionedToastBuilder: (context, child) => Positioned(
-              bottom: 40,
-              left: 0,
-              right: 0,
-              child: child,
-            ),
+            positionedToastBuilder: (context, child) =>
+                Positioned(
+                  bottom: 40,
+                  left: 0,
+                  right: 0,
+                  child: child,
+                ),
             toastDuration: const Duration(seconds: 2),
           );
         } else if (sideEffect is MainShowObtainDialog) {
@@ -266,14 +270,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     const SizedBox(height: 10),
                     TopLocationArea(
-                      onProfileTap: () => router.navigateTo(
-                        context,
-                        AppRoutes.myPageRoute,
-                      ),
-                      onHistoryTap: () => router.navigateTo(
-                        context,
-                        AppRoutes.obtainHistoryRoute,
-                      ),
+                      onProfileTap: () =>
+                          router.navigateTo(
+                            context,
+                            AppRoutes.myPageRoute,
+                          ),
+                      onHistoryTap: () =>
+                          router.navigateTo(
+                            context,
+                            AppRoutes.obtainHistoryRoute,
+                          ),
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
@@ -282,10 +288,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     const SizedBox(height: 10),
                     TopInformationArea(
                       cartKey,
-                      onInventoryTap: () => context.showBottomSheet(
-                        isDismissible: true,
-                        content: (context) => const MyIngredientsPage(),
-                      ),
+                      onInventoryTap: () =>
+                          context.showBottomSheet(
+                            isDismissible: true,
+                            content: (context) => const MyIngredientsPage(),
+                          ),
                       onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
                       onCoinTap: _showCoinDialog,
                     ),
@@ -335,11 +342,10 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   // 카메라 이동 애니메이션.
-  void _animatedMapMove(
-    LatLng destLocation,
-    double destZoom, {
-    Position? newLoc,
-  }) {
+  void _animatedMapMove(LatLng destLocation,
+      double destZoom, {
+        Position? newLoc,
+      }) {
     try {
       final latTween = Tween<double>(begin: _mapController.camera.center.latitude, end: destLocation.latitude);
       final lngTween = Tween<double>(begin: _mapController.camera.center.longitude, end: destLocation.longitude);
@@ -361,7 +367,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
       // 애니메이션 후 바로 해제.
       animation.addStatusListener(
-        (status) {
+            (status) {
           if (status == AnimationStatus.completed) {
             controller.dispose();
           }
@@ -373,8 +379,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       if (newLoc != null) {
         FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}");
         _bloc
-          ..add(MainMyLocationChange(newLoc))
-          ..add(Main());
+          .add(MainMyLocationChange(newLoc));
+        // ..add(Main());
       }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -411,18 +417,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     }
   }
 
-  _showObtainIngredientDialog(
-    MainLocationData data,
-    GlobalKey globalKey,
-    bool isShowAd,
-  ) {
+  _showObtainIngredientDialog(MainLocationData data,
+      GlobalKey globalKey,
+      bool isShowAd,) {
     String dialogSubtitle = (data.ingredient.type == IngredientType.coin) && isShowAd
         ? FortuneTr.msgWatchAd
         : (data.ingredient.type != IngredientType.coin)
-            ? FortuneTr.msgConsumeCoinToGetMarker(
-                data.ingredient.rewardTicket.abs().toString(),
-              )
-            : FortuneTr.msgAcquireCoin;
+        ? FortuneTr.msgConsumeCoinToGetMarker(
+      data.ingredient.rewardTicket.abs().toString(),
+    )
+        : FortuneTr.msgAcquireCoin;
 
     dialogService.showFortuneDialog(
       context,
@@ -472,7 +476,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   // 코인 클릭.
-  _showCoinDialog() => dialogService.showFortuneDialog(
+  _showCoinDialog() =>
+      dialogService.showFortuneDialog(
         context,
         dismissOnTouchOutside: true,
         dismissOnBackKeyPress: true,

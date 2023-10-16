@@ -154,7 +154,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 markers: markerList,
                 user: entity.user,
-                notices: entity.notices,
                 haveCount: entity.haveCount,
                 missionClearUsers: entity.missionClearUsers,
                 isLoading: false,

@@ -16,6 +16,7 @@
     <color name="positiveLight">#FFE6FAED</color>
     <color name="positive">#FF28AF58</color>
     <color name="negativeLight">#FAE1E1</color>
+    <color name="negativeDark">#331D1D</color>
     <color name="negative">#EF5248</color>
     <color name="warningLight">#FFF9F4E4</color>
     <color name="warning">#FFEDBE13</color>

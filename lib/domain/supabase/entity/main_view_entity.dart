@@ -8,7 +8,6 @@ class MainViewEntity {
   final FortuneUserEntity user;
   final List<MarkerEntity> markers;
   final List<MissionClearUserHistoriesEntity> missionClearUsers;
-  final List<AlarmFeedsEntity> notices;
   final int haveCount;
 
   MainViewEntity({
@@ -16,6 +15,5 @@ class MainViewEntity {
     required this.markers,
     required this.missionClearUsers,
     required this.haveCount,
-    required this.notices,
   });
 }

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
-import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
@@ -39,9 +39,6 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 유저 정보 가져오기.
       final user = await userRepository.findUserByEmailNonNull();
 
-      // 유저 알림 가져오기.
-      final userNotices = await userNoticesRepository.findAllAlarmsByUserId(user.id);
-
       // 내 주변의 마커를 가져옴.
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude)).toList();
 
@@ -61,8 +58,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = remoteConfig.markerCount;
-      final keepTicketCount = remoteConfig.ticketCount;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
+      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 3;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
@@ -102,7 +99,6 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
         MainViewEntity(
           user: user,
           markers: markersNearByMe,
-          notices: userNotices,
           missionClearUsers: missionClearHistories,
           haveCount: haveCounts.length,
         ),

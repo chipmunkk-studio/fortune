@@ -9,16 +9,19 @@ class MyPageState with _$MyPageState {
     required FortuneUserEntity user,
     required bool isAllowPushAlarm,
     required bool isLoading,
+    required bool hasNewNotice,
   }) = _MyPageState;
 
   factory MyPageState.initial([
     FortuneUserEntity? user,
     bool? isAllowPushAlarm,
     bool? isLoading,
+    bool? hasNewNotice,
   ]) =>
       MyPageState(
         user: user ?? FortuneUserEntity.empty(),
         isAllowPushAlarm: isAllowPushAlarm ?? false,
         isLoading: isLoading ?? true,
+        hasNewNotice: hasNewNotice ?? false,
       );
 }

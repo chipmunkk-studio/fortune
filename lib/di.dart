@@ -483,6 +483,7 @@ _initUseCase() async {
       () => MyPageUseCase(
         userRepository: serviceLocator(),
         localRepository: serviceLocator(),
+        supportRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<NickNameUseCase>(
