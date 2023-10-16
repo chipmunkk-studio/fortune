@@ -49,7 +49,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) => element.ingredient.type != IngredientType.coin,
-      )
+          )
           .toList();
 
       // 미션 클리어 히스토리.
@@ -58,8 +58,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
-      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 3;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 1;
+      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 0;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
@@ -68,7 +68,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       final isTicketEmpty = markersNearByMe
           .where(
             (element) => element.ingredient.type == IngredientType.coin,
-      )
+          )
           .toList();
 
       // 티켓이 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
