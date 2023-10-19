@@ -1,6 +1,7 @@
 enum MissionType {
   normal,
   relay,
+  grade,
   none,
 }
 
@@ -18,6 +19,8 @@ getMissionType(String type) {
     return MissionType.relay;
   } else if (MissionType.normal.name == type) {
     return MissionType.normal;
+  } else if (MissionType.grade.name == type) {
+    return MissionType.grade;
   } else {
     return MissionType.normal;
   }

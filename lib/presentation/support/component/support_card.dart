@@ -44,7 +44,7 @@ class _SupportCardState extends State<SupportCard> {
             const SizedBox(height: 16),
             Text(
               widget.title,
-              style: FortuneTextStyle.body1Semibold(),
+              style: FortuneTextStyle.body1Semibold(height: 1.3),
             ),
             if (widget.isShowDate) ...[
               const SizedBox(height: 8),
