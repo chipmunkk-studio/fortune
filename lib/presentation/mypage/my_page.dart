@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
@@ -35,12 +36,15 @@ class _MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<_MyPage> {
-  final router = serviceLocator<FortuneAppRouter>().router;
+  final _router = serviceLocator<FortuneAppRouter>().router;
   late MyPageBloc _bloc;
+
+  final MixpanelTracker _tracker = serviceLocator<MixpanelTracker>();
 
   @override
   void initState() {
     super.initState();
+    _tracker.trackEvent('마이페이지_랜딩');
     _bloc = BlocProvider.of<MyPageBloc>(context);
   }
 
@@ -65,8 +69,8 @@ class _MyPageState extends State<_MyPage> {
               skeleton: const MyPageSkeleton(),
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     BlocBuilder<MyPageBloc, MyPageState>(
                       buildWhen: (previous, current) => previous.user != current.user,
@@ -74,11 +78,16 @@ class _MyPageState extends State<_MyPage> {
                         return ProfileInfo(
                           entity: state.user,
                           onNicknameModifyTap: () async {
-                            await router.navigateTo(context, AppRoutes.nickNameRoute);
+                            _tracker.trackEvent('마이페이지_닉네임_클릭');
+                            await _router.navigateTo(context, AppRoutes.nickNameRoute);
                             _bloc.add(MyPageInit());
                           },
-                          onGradeGuideTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
+                          onGradeGuideTap: () {
+                            _tracker.trackEvent('마이페이지_등급_클릭');
+                            return _router.navigateTo(context, AppRoutes.gradeGuideRoute);
+                          },
                           onProfileTap: () {
+                            _tracker.trackEvent('마이페이지_프로필_클릭');
                             FortuneImagePicker().loadImagePicker(
                               (path) => _bloc.add(MyPageUpdateProfile(path)),
                             );
@@ -89,18 +98,28 @@ class _MyPageState extends State<_MyPage> {
                     const SizedBox(height: 32),
                     InfoMenu(
                       FortuneTr.notice,
+                      hasNew: state.hasNewNotice,
                       icon: Assets.icons.icMegaphone.svg(),
-                      onTap: () => router.navigateTo(context, AppRoutes.noticesRoutes),
+                      onTap: () {
+                        _tracker.trackEvent('마이페이지_공지사항_클릭');
+                        return _router.navigateTo(context, AppRoutes.noticesRoutes);
+                      },
                     ),
                     InfoMenu(
                       FortuneTr.faq,
                       icon: Assets.icons.icQuestion.svg(),
-                      onTap: () => router.navigateTo(context, AppRoutes.faqsRoute),
+                      onTap: () {
+                        _tracker.trackEvent('마이페이지_FAQ_클릭');
+                        return _router.navigateTo(context, AppRoutes.faqsRoute);
+                      },
                     ),
                     InfoMenu(
                       FortuneTr.msgPrivacyPolicy,
                       icon: Assets.icons.icNote24.svg(),
-                      onTap: () => router.navigateTo(context, AppRoutes.privacyPolicyRoutes),
+                      onTap: () {
+                        _tracker.trackEvent('마이페이지_개인정보처리방침_클릭');
+                        return _router.navigateTo(context, AppRoutes.privacyPolicyRoutes);
+                      },
                     ),
                     BlocBuilder<MyPageBloc, MyPageState>(
                       buildWhen: (previous, current) => previous.isAllowPushAlarm != current.isAllowPushAlarm,
@@ -108,7 +127,10 @@ class _MyPageState extends State<_MyPage> {
                         return SwitchMenu(
                           FortuneTr.pushAlarm,
                           isOn: state.isAllowPushAlarm,
-                          onTap: (isOn) => _bloc.add(MyPageUpdatePushAlarm(isOn)),
+                          onTap: (isOn) {
+                            _tracker.trackEvent('마이페이지_알람설정_클릭');
+                            _bloc.add(MyPageUpdatePushAlarm(isOn));
+                          },
                           icon: Assets.icons.icPushAlarm.svg(),
                         );
                       },
@@ -120,13 +142,6 @@ class _MyPageState extends State<_MyPage> {
           },
         ),
       ),
-    );
-  }
-
-  _onPop(String code, String name) {
-    router.pop(
-      context,
-      true,
     );
   }
 }

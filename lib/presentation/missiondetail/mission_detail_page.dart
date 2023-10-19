@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/di.dart';
@@ -44,6 +45,8 @@ class _MissionDetailPage extends StatefulWidget {
 class _MissionDetailPageState extends State<_MissionDetailPage> {
   late final MissionDetailBloc _bloc;
   final router = serviceLocator<FortuneAppRouter>().router;
+
+  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
   final ConfettiController _controller = ConfettiController(
     duration: const Duration(
       seconds: 2,
@@ -53,6 +56,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
   @override
   void initState() {
     super.initState();
+    tracker.trackEvent('미션상세_랜딩');
     _bloc = BlocProvider.of<MissionDetailBloc>(context);
   }
 

@@ -9,15 +9,6 @@ class AlarmFeedSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 20),
-        SkeletonLine(
-          style: SkeletonLineStyle(
-            height: 120,
-            width: double.infinity,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-        ),
-        const SizedBox(height: 20),
         SkeletonLine(
           style: SkeletonLineStyle(
             height: 120,

@@ -10,11 +10,15 @@ import '../../bloc/main.dart';
 class TopLocationArea extends StatelessWidget {
   final Function0 onProfileTap;
   final Function0 onHistoryTap;
+  final Function0 onAlarmClick;
+  final bool hasNewAlarm;
 
   const TopLocationArea({
     Key? key,
     required this.onProfileTap,
     required this.onHistoryTap,
+    required this.onAlarmClick,
+    required this.hasNewAlarm,
   }) : super(key: key);
 
   @override
@@ -37,6 +41,29 @@ class TopLocationArea extends StatelessWidget {
             Bounceable(
               onTap: onHistoryTap,
               child: Assets.icons.icSearch24.svg(),
+            ),
+            const SizedBox(width: 20),
+            Bounceable(
+              onTap: onAlarmClick,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Assets.icons.icPushAlarm.svg(),
+                  if (hasNewAlarm)
+                    Positioned(
+                      right: -5,
+                      top: -5,
+                      child: Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
             const SizedBox(width: 20),
             Bounceable(

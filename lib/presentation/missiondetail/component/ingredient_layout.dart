@@ -113,11 +113,11 @@ class IngredientLayout extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: "${item.haveCount}",
-                            style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.primary),
+                            style: FortuneTextStyle.caption3Semibold(color: ColorName.primary),
                           ),
                           TextSpan(
                             text: "/${item.requireCount}",
-                            style: FortuneTextStyle.caption3Semibold(fontColor: ColorName.grey500),
+                            style: FortuneTextStyle.caption3Semibold(color: ColorName.grey500),
                           ),
                         ],
                       ),

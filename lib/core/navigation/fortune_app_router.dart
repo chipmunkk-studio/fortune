@@ -6,7 +6,6 @@ import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
-import 'package:fortune/presentation/alarmreward/alarm_reward_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
@@ -145,13 +144,6 @@ class FortuneAppRouter {
     },
   );
 
-  static var alarmRewardHandler = Handler(
-    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      final args = context?.settings?.arguments as int?;
-      return args != null ? AlarmRewardPage(args) : null;
-    },
-  );
-
   static var privacyPolicyHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const PrivacyPolicyPage();
@@ -232,13 +224,6 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 알림 보상.
-      ..define(
-        AppRoutes.alarmRewardRoute,
-        handler: alarmRewardHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
       /// 마이페이지.
       ..define(
         AppRoutes.myPageRoute,
@@ -304,7 +289,6 @@ class AppRoutes {
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String alarmFeedRoute = 'alarmFeed';
-  static const String alarmRewardRoute = 'alarmReward';
   static const String missionDetailNormalRoute = 'missionDetailNormal';
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNotices';

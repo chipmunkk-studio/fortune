@@ -102,7 +102,7 @@ class _TopNoticeState extends State<TopNotice> {
                                           ),
                                         ),
                                         Text(
-                                          FortuneTr.msgAcquired,
+                                          " ${FortuneTr.msgAcquired}",
                                           style: FortuneTextStyle.body3Light(),
                                           overflow: TextOverflow.ellipsis,
                                         ),

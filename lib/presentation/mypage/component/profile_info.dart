@@ -165,10 +165,10 @@ class _Grade extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                getUserGradeIconInfo(entity.grade).icon.svg(width: 20, height: 20),
+                getUserGradeIconInfo(entity.id).icon.svg(width: 20, height: 20),
                 const SizedBox(width: 8),
                 Text(
-                  getUserGradeIconInfo(entity.grade).name,
+                  getUserGradeIconInfo(entity.id).name,
                   style: FortuneTextStyle.body3Semibold(),
                 ),
               ],

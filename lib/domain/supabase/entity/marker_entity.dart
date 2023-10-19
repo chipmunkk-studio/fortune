@@ -7,7 +7,6 @@ class MarkerEntity {
   final double longitude;
   final int? lastObtainUser;
   final int hitCount;
-  final bool isReward;
 
   MarkerEntity({
     required this.id,
@@ -16,7 +15,6 @@ class MarkerEntity {
     required this.longitude,
     required this.lastObtainUser,
     required this.hitCount,
-    required this.isReward,
   });
 
   MarkerEntity.empty()
@@ -25,7 +23,6 @@ class MarkerEntity {
         latitude = 0.0,
         longitude = 0.0,
         lastObtainUser = null,
-        isReward = false,
         hitCount = 0;
 
   bool get isEmpty =>
@@ -34,6 +31,5 @@ class MarkerEntity {
       latitude == 0.0 &&
       longitude == 0.0 &&
       lastObtainUser == null &&
-      !isReward &&
       hitCount == 0;
 }

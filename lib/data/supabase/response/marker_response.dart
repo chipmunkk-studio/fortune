@@ -1,4 +1,3 @@
-import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -20,8 +19,6 @@ class MarkerResponse extends MarkerEntity {
   final int hitCount_;
   @JsonKey(name: 'last_obtain_user')
   final int? lastObtainUser_;
-  @JsonKey(name: 'is_reward')
-  final bool isReward_;
 
   MarkerResponse({
     required this.id_,
@@ -30,7 +27,6 @@ class MarkerResponse extends MarkerEntity {
     required this.hitCount_,
     required this.longitude_,
     required this.lastObtainUser_,
-    required this.isReward_,
   }) : super(
           id: id_.toInt(),
           ingredient: ingredient_,
@@ -38,7 +34,6 @@ class MarkerResponse extends MarkerEntity {
           latitude: latitude_,
           longitude: longitude_,
           lastObtainUser: lastObtainUser_,
-          isReward: isReward_,
         );
 
   factory MarkerResponse.fromJson(Map<String, dynamic> json) => _$MarkerResponseFromJson(json);

@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
+import 'package:fortune/domain/supabase/entity/support/app_update_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/faq_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/notices_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/privacy_policy_entity.dart';
@@ -41,6 +43,18 @@ class SupportRepositoryImpl extends SupportRepository {
     try {
       List<PrivacyPolicyEntity> privacy = await supportService.findPrivacyPolicy();
       return privacy;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<List<AppUpdateEntity>> getAppUpdateRecently() async {
+    try {
+      List<AppUpdateEntity> update = await supportService.findAllAppUpdate();
+      return update;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',

@@ -87,7 +87,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                   ad.show(
                     onUserEarnedReward: (_, reward) {
                       _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
-                        'phone': sideEffect.param.user?.email,
+                        'email': sideEffect.param.user?.email,
                       });
                       FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
                       _bloc.add(IngredientActionShowAdCounting());
@@ -97,6 +97,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                   _bloc.add(IngredientActionShowAdCounting());
                 }
               } catch (e) {
+                _mixpanelTracker.trackEvent('광고 없음', properties: {
+                  'email': sideEffect.param.user?.email,
+                });
                 FortuneLogger.info("#2 광고 없음: $e");
                 _router.pop(context, true);
               }

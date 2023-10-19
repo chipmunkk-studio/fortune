@@ -29,8 +29,13 @@ class AlarmFeedsService {
             fullSelectQuery,
           )
           .match({
-        TableName.users: userId,
-      }).toSelect();
+            TableName.users: userId,
+          })
+          .order(
+            'created_at',
+            ascending: false,
+          )
+          .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -65,18 +70,18 @@ class AlarmFeedsService {
 
   // 알림 업데이트.
   Future<void> update(
-    int noticeId, {
+    int alarmId, {
     required RequestAlarmFeeds request,
   }) async {
-    AlarmFeedsEntity eventNotice = await findNoticeById(noticeId);
+    AlarmFeedsEntity eventNotice = await findNoticeById(alarmId);
 
     final requestToUpdate = RequestAlarmFeeds(
       users: request.users ?? eventNotice.user.id,
       alarmRewardHistory: request.alarmRewardHistory ?? eventNotice.reward.id,
       type: request.type ?? eventNotice.type.name,
       isRead: request.isRead ?? eventNotice.isRead,
-      headings: '',
-      content: '',
+      headings: request.headings ?? eventNotice.headings,
+      content: request.content ?? eventNotice.content,
     );
 
     try {
@@ -85,7 +90,7 @@ class AlarmFeedsService {
           .update(
             requestToUpdate.toJson(),
           )
-          .eq('id', noticeId)
+          .eq('id', alarmId)
           .select(fullSelectQuery);
       return updateResponse.map((e) => AlarmFeedsResponse.fromJson(e)).toList().single;
     } catch (e) {

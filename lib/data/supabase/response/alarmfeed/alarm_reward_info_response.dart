@@ -10,17 +10,21 @@ class AlarmRewardInfoResponse extends AlarmRewardInfoEntity {
   final double id_;
   @JsonKey(name: 'type')
   final String type_;
-  @JsonKey(name: 'has_unique_marker')
-  final bool hasUniqueMarker_;
+  @JsonKey(name: 'has_epic_marker')
+  final bool? hasEpicMarker_;
+  @JsonKey(name: 'has_rare_marker')
+  final bool? hasRareMarker_;
 
   AlarmRewardInfoResponse({
     required this.id_,
     required this.type_,
-    required this.hasUniqueMarker_,
+    required this.hasEpicMarker_,
+    required this.hasRareMarker_,
   }) : super(
           id: id_.toInt(),
           type: getEventRewardType(type_),
-          hasUniqueMarker: hasUniqueMarker_,
+          hasEpicMarker: hasEpicMarker_ ?? false,
+          hasRareMarker: hasRareMarker_ ?? false,
         );
 
   factory AlarmRewardInfoResponse.fromJson(Map<String, dynamic> json) => _$AlarmRewardInfoResponseFromJson(json);

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
 class ItemGrade extends StatelessWidget {
   final FortuneUserGradeEntity gradeInfo;
+  final String rewardGuideText;
 
   const ItemGrade(
     this.gradeInfo, {
     super.key,
+    required this.rewardGuideText,
   });
 
   @override
@@ -39,7 +40,7 @@ class ItemGrade extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 6.h),
-              Text(FortuneTr.msgRewardPreparation, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
+              Text(rewardGuideText, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
             ],
           ),
           const Spacer(),
