@@ -17,6 +17,7 @@
   "msgRenewAuthInfo": "Refreshing authentication...",
   "msgVerifyCode": "Please enter the verification code.",
   "msgConfirmNetworkConnection": "Check your internet connection.",
+  "msgReceiveRewardCompleted": "Reward Completed",
   "msgInputNickNameNotValid": "Nicknames can only be up to 12 characters without spaces",
   "msgNoNotifications": "No notifications.",
   "msgRewardCompleted": "The reward has already been redeemed.",
