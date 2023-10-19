@@ -8,4 +8,6 @@ abstract class AlarmFeedsRepository {
   // 사용자 알림 추가
   Future<AlarmFeedsEntity> insertAlarm(RequestAlarmFeeds content);
 
+  // 모든 알림피드 읽기.
+  Future<void> readAllAlarm(int userId);
 }

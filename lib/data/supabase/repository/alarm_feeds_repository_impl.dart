@@ -15,14 +15,6 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
   Future<List<AlarmFeedsEntity>> findAllAlarmsByUserId(int userId) async {
     try {
       final alarms = await alarmFeedsService.findAllAlarmFeeds(userId);
-      alarms.sort((a, b) {
-        if (a.isReceive != b.isReceive) {
-          // isReceive가 true인 알람이 앞쪽에 오도록 정렬
-          return a.isReceive ? 1 : -1;
-        }
-        // isReceive 값이 같은 경우, 생성 시간이 빠른 순으로 정렬
-        return b.createdAt.compareTo(a.createdAt);
-      });
       return alarms;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -36,6 +28,25 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
     try {
       final result = await alarmFeedsService.insert(content);
       return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '이벤트 알림 추가 실패',
+      );
+    }
+  }
+
+  @override
+  Future<void> readAllAlarm(int userId) async {
+    try {
+      final allAlarms = await findAllAlarmsByUserId(userId);
+      await Future.wait(allAlarms.map((element) async {
+        await alarmFeedsService.update(
+          element.id,
+          request: RequestAlarmFeeds(
+            isRead: true,
+          ),
+        );
+      }));
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '이벤트 알림 추가 실패',

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
@@ -39,6 +40,10 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 유저 정보 가져오기.
       final user = await userRepository.findUserByEmailNonNull();
 
+      // 유저 알림 가져오기. (안읽은거 하나라도 있는지.)
+      final userAlarms = await userNoticesRepository.findAllAlarmsByUserId(user.id);
+      final bool hasNewAlarm = userAlarms.any((element) => !element.isRead);
+
       // 내 주변의 마커를 가져옴.
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude)).toList();
 
@@ -48,7 +53,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 내 주변 마커 리스트.(티켓 X)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
-            (element) => element.ingredient.type != IngredientType.coin,
+            (element) =>
+                element.ingredient.type != IngredientType.coin && element.ingredient.type == IngredientType.normal,
           )
           .toList();
 
@@ -58,8 +64,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 1;
-      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 0;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
+      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 1;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
@@ -100,6 +106,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
           user: user,
           markers: markersNearByMe,
           missionClearUsers: missionClearHistories,
+          hasNewAlarm: hasNewAlarm,
           haveCount: haveCounts.length,
         ),
       );

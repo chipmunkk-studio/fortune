@@ -8,14 +8,17 @@ class AlarmFeedState with _$AlarmFeedState {
   factory AlarmFeedState({
     required List<AlarmFeedsEntity> feeds,
     required bool isLoading,
+    required bool isReceiving,
   }) = _AlarmFeedState;
 
   factory AlarmFeedState.initial([
     List<AlarmFeedsEntity>? feeds,
     bool? isLoading,
+    bool? isReceiving,
   ]) =>
       AlarmFeedState(
         feeds: feeds ?? List.empty(),
         isLoading: isLoading ?? true,
+        isReceiving: isReceiving ?? false,
       );
 }

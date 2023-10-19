@@ -6,6 +6,7 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/image_picker.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
@@ -44,13 +45,15 @@ class _NickNamePage extends StatefulWidget {
 
 class _NickNamePageState extends State<_NickNamePage> {
   final _router = serviceLocator<FortuneAppRouter>().router;
+  final MixpanelTracker _tracker = serviceLocator<MixpanelTracker>();
   late NickNameBloc _bloc;
   final _nickNameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _tracker.trackEvent('닉네임_랜딩');
     _bloc = BlocProvider.of<NickNameBloc>(context);
   }
 
@@ -68,7 +71,7 @@ class _NickNamePageState extends State<_NickNamePage> {
           dialogService.showErrorDialog(context, sideEffect.error);
         } else if (sideEffect is NickNameUserInfoInit) {
           _nickNameController.text = sideEffect.user.nickname;
-          _phoneNumberController.text = sideEffect.user.email;
+          _emailController.text = sideEffect.user.email;
         } else if (sideEffect is NickNameRoutingPage) {
           final route = sideEffect.route;
           switch (route) {
@@ -141,7 +144,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                       const SizedBox(height: 8),
                       FortuneTextForm(
                         readOnly: true,
-                        textEditingController: _phoneNumberController,
+                        textEditingController: _emailController,
                         maxLength: 12,
                         onTextChanged: (String a) {},
                       ),

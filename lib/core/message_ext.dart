@@ -27,6 +27,11 @@ abstract class FortuneTr {
 
   static String msgJustNow() => tr('msgJustNow');
 
+  static String msgLevelUpContents(String level) => tr('msgLevelUpContents', args: [level]);
+
+  static String msgAchievedGrade(String grade) => tr('msgAchievedGrade', args: [grade]);
+  static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
+
   static String msgAcquireMarker(
     String nickname,
     String location,
@@ -40,8 +45,10 @@ abstract class FortuneTr {
   static final notFoundUser = tr('msgNotFoundUser');
   static final notUpdateUser = tr('msgNotUpdateUser');
   static final renewAuthInfo = tr('msgRenewAuthInfo');
+  static final msgCoinReward = tr('msgCoinReward');
 
   static final msgWelcome = tr('msgWelcome');
+  static final msgFortuneCookieReward = tr('msgFortuneCookieReward');
 
   static final start = tr('start');
   static final next = tr('next');
@@ -81,9 +88,12 @@ abstract class FortuneTr {
   static final msgHelpedBy = tr('msgHelpedBy');
   static final msgAvailableMissions = tr('msgAvailableMissions');
   static final msgMissionReward = tr('msgMissionReward');
+  static final msgNoNotifications = tr('msgNoNotifications');
+  static final msgRewardCompleted = tr('msgRewardCompleted');
   static final msgGradeInfo = tr('msgGradeInfo');
   static final msgRewardInProgress = tr('msgRewardInProgress');
   static final msgCollectWithCoin = tr('msgCollectWithCoin');
+  static final msgNewGradeReached = tr('msgNewGradeReached');
   static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
   static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
   static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');
@@ -103,7 +113,6 @@ abstract class FortuneTr {
   static final msgRewardRedemptionNotice = tr('msgRewardRedemptionNotice');
   static final msgCongratsMissionCompleted = tr('msgCongratsMissionCompleted');
   static final msgLevelUpHeadings = tr('msgLevelUpHeadings');
-  static final msgLevelUpContents = tr('msgLevelUpContents');
   static final msgRelayMissionHeadings = tr('msgRelayMissionHeadings');
   static final msgNoReward = tr('msgNoReward');
   static final msgRelayMissionContents = tr('msgRelayMissionContents');
@@ -120,7 +129,7 @@ abstract class FortuneTr {
   // 온보딩
   static final msgOnboardingTitle1 = tr('msgOnboardingTitle1');
   static final msgOnboardingTitle2 = tr('msgOnboardingTitle2');
-  static final msgOnboardingTitle3 = tr('msgOnboardingTitle3');
+  static final msgReceiveReward = tr('msgReceiveReward');
   static final msgOnboarding1 = tr('msgOnboarding1');
   static final msgOnboarding2 = tr('msgOnboarding2');
   static final msgOnboarding3 = tr('msgOnboarding3');

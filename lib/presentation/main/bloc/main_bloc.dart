@@ -5,13 +5,16 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
+import 'package:fortune/domain/supabase/usecase/get_app_update.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -25,16 +28,23 @@ import 'main.dart';
 class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainEvent, MainState, MainSideEffect> {
   static const tag = "[CountryCodeBloc]";
 
+  final GetAppUpdate getAppUpdate;
   final MainUseCase mainUseCase;
   final ObtainMarkerUseCase obtainMarkerUseCase;
   final FortuneRemoteConfig remoteConfig;
   final GetShowAdUseCase getShowAdUseCase;
+  final ReadAlarmFeedUseCase readAlarmFeedUseCase;
+
+  final MixpanelTracker tracker;
 
   MainBloc({
     required this.remoteConfig,
     required this.mainUseCase,
+    required this.getAppUpdate,
     required this.obtainMarkerUseCase,
     required this.getShowAdUseCase,
+    required this.readAlarmFeedUseCase,
+    required this.tracker,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -50,6 +60,9 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainMyLocationChange>(locationChange);
     on<MainSetRewardAd>(setRewardAd);
     on<MainScreenFreeze>(_screenFreeze);
+    on<MainAlarmRead>(_readAlarm);
+    on<MainMapRotate>(_rotate);
+    on<MainTabCompass>(_tabCompass);
     on<MainMarkerObtain>(
       _markerObtain,
       transformer: sequential(),
@@ -62,6 +75,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       switch (landingPage) {
         case AppRoutes.obtainHistoryRoute:
           final searchText = event.entity.searchText;
+
           if (searchText.isNotEmpty) {
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
           }
@@ -71,12 +85,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           final latitude = locationData.latitude;
           final longitude = locationData.longitude;
 
-          if (latitude != null && longitude != null) {
-            final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
-            return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: locationName));
-          }
+          final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
 
-          return produceSideEffect(MainSchemeLandingPage(landingPage));
+          return produceSideEffect(
+            MainSchemeLandingPage(
+              landingPage,
+              searchText: locationName,
+            ),
+          );
         default:
           produceSideEffect(MainSchemeLandingPage(landingPage));
       }
@@ -84,20 +100,30 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> init(MainInit event, Emitter<MainState> emit) async {
-    final notificationEntity = event.notificationEntity;
-    bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
+    await getAppUpdate().then(
+      (value) => value.fold(
+        (l) => produceSideEffect(MainError(l)),
+        (r) async {
+          if (r != null && r.isActive) {
+            produceSideEffect(MainShowAppUpdate(entity: r));
+          } else {
+            final notificationEntity = event.notificationEntity;
+            bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
+            // 위치 권한이 없을 경우.
+            if (!hasPermission) {
+              produceSideEffect(MainRequireLocationPermission());
+              return;
+            }
+            // 마커 목록들을 받아옴.
+            add(Main());
 
-    // 위치 권한이 없을 경우.
-    if (!hasPermission) {
-      produceSideEffect(MainRequireLocationPermission());
-      return;
-    }
-    // 마커 목록들을 받아옴.
-    add(Main());
-
-    if (notificationEntity != null) {
-      add(MainLandingPage(notificationEntity));
-    }
+            if (notificationEntity != null) {
+              add(MainLandingPage(notificationEntity));
+            }
+          }
+        },
+      ),
+    );
   }
 
   // 위치 정보 초기화.
@@ -129,8 +155,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     if (myLoc != null) {
       await mainUseCase(
         RequestMainParam(
-          longitude: myLoc.longitude ?? 0,
-          latitude: myLoc.latitude ?? 0,
+          longitude: myLoc.longitude,
+          latitude: myLoc.latitude,
         ),
       ).then(
         (value) => value.fold(
@@ -155,6 +181,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
                 markers: markerList,
                 user: entity.user,
                 haveCount: entity.haveCount,
+                hasNewAlarm: entity.hasNewAlarm,
                 missionClearUsers: entity.missionClearUsers,
                 isLoading: false,
               ),
@@ -268,5 +295,35 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   FutureOr<void> _toastRequireMeters(MainRequireInCircleMetersEvent event, Emitter<MainState> emit) {
     produceSideEffect(MainRequireInCircleMeters(event.distance));
+  }
+
+  FutureOr<void> _readAlarm(MainAlarmRead event, Emitter<MainState> emit) async {
+    await readAlarmFeedUseCase().then(
+      (value) => value.fold(
+        (l) => produceSideEffect(
+          MainError(l),
+        ),
+        (r) {
+          emit(state.copyWith(hasNewAlarm: false));
+        },
+      ),
+    );
+  }
+
+  FutureOr<void> _rotate(MainMapRotate event, Emitter<MainState> emit) async {
+    if (state.isRotatable) {
+      produceSideEffect(
+        MainRotateEffect(
+          prevData: state.headings,
+          nextData: event.data.heading ?? 0,
+        ),
+      );
+      emit(state.copyWith(headings: event.data.heading ?? 0));
+    }
+  }
+
+  FutureOr<void> _tabCompass(MainTabCompass event, Emitter<MainState> emit) {
+    final prevState = state.isRotatable;
+    emit(state.copyWith(isRotatable: !prevState));
   }
 }

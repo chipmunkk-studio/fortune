@@ -68,10 +68,10 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required int markerCount,
   }) async {
     try {
-      // 티켓/유니크 가 아닌 리스트 들만 뽑음.
+      // 노말인 마커들만 뿌림.
       final nonTicketAndUniqueIngredients = ingredients
           .where(
-            (ingredient) => ingredient.type != IngredientType.coin && ingredient.type != IngredientType.unique,
+            (ingredient) => ingredient.type == IngredientType.normal,
           )
           .toList();
 

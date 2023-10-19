@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/date.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
@@ -42,7 +43,7 @@ class AlarmFeedsResponse extends AlarmFeedsEntity {
           type: getEventNoticeType(type_),
           user: users_ ?? FortuneUserEntity.empty(),
           reward: alarmRewards_ ?? AlarmRewardHistoryEntity.empty(),
-          createdAt: createdAt_,
+          createdAt: FortuneDateExtension.convertTimeAgo(createdAt_),
           headings: headings_,
           content: content_,
           isRead: isRead_,

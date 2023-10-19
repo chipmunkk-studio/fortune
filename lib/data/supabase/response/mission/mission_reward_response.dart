@@ -9,19 +9,19 @@ class MissionRewardResponse extends MissionRewardEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'total_count')
-  final int totalCount_;
+  final int? totalCount_;
   @JsonKey(name: 'kr_reward_name')
-  final String krRewardName_;
+  final String? krRewardName_;
   @JsonKey(name: 'en_reward_name')
-  final String enRewardName_;
+  final String? enRewardName_;
   @JsonKey(name: 'remain_count')
-  final int remainCount_;
+  final int? remainCount_;
   @JsonKey(name: 'reward_image')
-  final String rewardImage_;
+  final String? rewardImage_;
   @JsonKey(name: 'kr_note')
-  final String krNote_;
+  final String? krNote_;
   @JsonKey(name: 'en_note')
-  final String enNote_;
+  final String? enNote_;
   @JsonKey(name: 'created_at')
   final String createdAt_;
 
@@ -36,14 +36,14 @@ class MissionRewardResponse extends MissionRewardEntity {
     required this.krNote_,
     required this.createdAt_,
   }) : super(
-          id: id_.toInt(),
-          totalCount: totalCount_,
-          remainCount: remainCount_,
-          rewardName: getLocaleContent(en: enRewardName_ ?? '', kr: krRewardName_ ?? ''),
-          rewardImage: rewardImage_,
-          note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
-          createdAt: createdAt_,
-        );
+    id: id_.toInt(),
+    totalCount: totalCount_ ?? 0,
+    remainCount: remainCount_ ?? 0,
+    rewardName: getLocaleContent(en: enRewardName_ ?? '', kr: krRewardName_ ?? ''),
+    rewardImage: rewardImage_ ?? '',
+    note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
+    createdAt: createdAt_,
+  );
 
   factory MissionRewardResponse.fromJson(Map<String, dynamic> json) => _$MissionRewardResponseFromJson(json);
 

@@ -3,17 +3,20 @@ import 'package:fortune/data/supabase/service/service_ext.dart';
 class AlarmRewardInfoEntity {
   final int id;
   final AlarmRewardType type;
-  final bool hasUniqueMarker;
+  final bool hasEpicMarker;
+  final bool hasRareMarker;
 
   AlarmRewardInfoEntity({
     required this.id,
     required this.type,
-    required this.hasUniqueMarker,
+    required this.hasEpicMarker,
+    required this.hasRareMarker,
   });
 
   factory AlarmRewardInfoEntity.empty() => AlarmRewardInfoEntity(
         id: -1,
         type: AlarmRewardType.none,
-        hasUniqueMarker: false,
+        hasEpicMarker: false,
+        hasRareMarker: false,
       );
 }

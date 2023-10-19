@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -9,11 +10,13 @@ import 'agree_terms.dart';
 class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
     with SideEffectBlocMixin<AgreeTermsEvent, AgreeTermsState, AgreeTermsSideEffect> {
   final GetTermsUseCase getTermsUseCase;
+  final MixpanelTracker tracker;
 
   static const tag = "[PhoneNumberBloc]";
 
   AgreeTermsBloc({
     required this.getTermsUseCase,
+    required this.tracker,
   }) : super(AgreeTermsState.initial()) {
     on<AgreeTermsInit>(init);
     on<AgreeTermsTermClick>(onTermsClick);
@@ -36,6 +39,7 @@ class AgreeTermsBloc extends Bloc<AgreeTermsEvent, AgreeTermsState>
       return term.copyWith(isChecked: !term.isChecked);
     }).toList();
     emit(state.copyWith(agreeTerms: updatedAgreeTerms));
+    tracker.trackEvent('약관_개별_클릭');
   }
 
   FutureOr<void> onAllTermsClick(AgreeTermsAllClick event, Emitter<AgreeTermsState> emit) async {

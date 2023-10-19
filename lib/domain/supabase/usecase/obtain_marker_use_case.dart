@@ -40,11 +40,11 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
       final ingredient = param.marker.ingredient;
-      final prevUser = await userRepository.findUserByEmailNonNull();
+      final currentUser = await userRepository.findUserByEmailNonNull();
       final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
-      final currentTicket = prevUser.ticket;
+      final currentTicket = currentUser.ticket;
       final requiredTicket = marker.ingredient.rewardTicket.abs();
 
       if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.coin) {
@@ -54,15 +54,15 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       // 마커 재배치.
       await markerRepository.reLocateMarker(
         marker: marker,
-        user: prevUser,
+        user: currentUser,
         location: param.marker.location,
       );
 
-      int updatedTicket = prevUser.ticket;
-      int markerObtainCount = prevUser.markerObtainCount;
+      int updatedTicket = currentUser.ticket;
+      int markerObtainCount = currentUser.markerObtainCount;
 
       // 티켓 및 획득 카운트 업데이트.
-      updatedTicket = prevUser.ticket + ingredient.rewardTicket;
+      updatedTicket = currentUser.ticket + ingredient.rewardTicket;
       markerObtainCount =
           param.marker.ingredient.type != IngredientType.coin ? markerObtainCount + 1 : markerObtainCount;
 
@@ -73,8 +73,11 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       );
 
       // 레벨업 혹은 등급 업을 했을 경우.
-      if (prevUser.level != updateUser.level) {
-        await _generateRewardHistory(prevUser);
+      if (currentUser.level != updateUser.level) {
+        await _generateLevelOrGradeUpRewardHistory(
+          updateUser: updateUser,
+          currentUser: currentUser,
+        );
       }
 
       // 히스토리 추가.
@@ -82,10 +85,10 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         await obtainHistoryRepository
             .insertObtainHistory(
           request: RequestObtainHistory.insert(
-            userId: prevUser.id,
+            userId: currentUser.id,
             markerId: marker.id,
             ingredientId: marker.ingredient.id,
-            nickName: prevUser.nickname,
+            nickName: currentUser.nickname,
             locationName: param.kLocation,
             krIngredientName: param.marker.ingredient.krName,
             enIngredientName: param.marker.ingredient.enName,
@@ -94,7 +97,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             .then(
           (value) async {
             await _confirmRelayMissionClear(
-              user: prevUser,
+              user: currentUser,
               markerId: marker.id,
             );
           },
@@ -102,7 +105,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       }
 
       // 히스토리 수.
-      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: prevUser.id);
+      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: currentUser.id);
 
       return Right(
         MarkerObtainEntity(
@@ -128,19 +131,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       if (isClear) {
         // 미션 클리어.
         final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.relay);
-        final ingredient = await ingredientRepository.getIngredientByRandom(rewardType);
-
-        // 마커 획득 히스토리 추가.
-        await obtainHistoryRepository.insertObtainHistory(
-          request: RequestObtainHistory.insert(
-            ingredientId: ingredient.id,
-            userId: user.id,
-            nickName: user.nickname,
-            enIngredientName: ingredient.enName,
-            krIngredientName: ingredient.krName,
-            isReward: true,
-          ),
-        );
+        final ingredient = await ingredientRepository.generateIngredientByRewardInfoType(rewardType);
 
         // 알람 히스토리 추가.
         final response = await rewardRepository.insertRewardHistory(
@@ -149,6 +140,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           ingredient: ingredient,
         );
 
+        // 알람에 추가.
         await eventNoticesRepository.insertAlarm(
           RequestAlarmFeeds.insert(
             headings: FortuneTr.msgRelayMissionHeadings,
@@ -159,6 +151,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           ),
         );
 
+        // 미션 클리어.
         await missionsRepository.postMissionClear(
           missionId: clearConditions.mission.id,
           userId: user.id,
@@ -167,22 +160,35 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
     }
   }
 
-  _generateRewardHistory(FortuneUserEntity user) async {
-    final rewardInfo = await rewardRepository.findRewardInfoByType(AlarmRewardType.level);
-    final ingredient = await ingredientRepository.getIngredientByRandom(rewardInfo);
+  _generateLevelOrGradeUpRewardHistory({
+    required FortuneUserEntity updateUser,
+    required FortuneUserEntity currentUser,
+  }) async {
+    final isGradeUp = currentUser.grade.name != updateUser.grade.name;
+    // 리워드 정보 가져옴. (레벨업/등급업)
+    final rewardInfo = await rewardRepository.findRewardInfoByType(
+      isGradeUp ? AlarmRewardType.grade : AlarmRewardType.level,
+    );
 
+    // 리워드 정보에 따라 재료 생성.
+    final ingredient = await ingredientRepository.generateIngredientByRewardInfoType(rewardInfo);
+
+    // 보상 히스토리 등록.
     final response = await rewardRepository.insertRewardHistory(
-      user: user,
+      user: updateUser,
       alarmRewardInfo: rewardInfo,
       ingredient: ingredient,
     );
 
+    // 알람 등록.
     await eventNoticesRepository.insertAlarm(
       RequestAlarmFeeds.insert(
         type: AlarmFeedType.user.name,
-        headings: FortuneTr.msgLevelUpHeadings,
-        content: FortuneTr.msgLevelUpContents,
-        users: user.id,
+        headings: isGradeUp ? FortuneTr.msgNewGradeReached : FortuneTr.msgLevelUpHeadings,
+        content: isGradeUp
+            ? FortuneTr.msgAchievedGrade(updateUser.grade.name)
+            : FortuneTr.msgLevelUpContents(updateUser.level.toString()),
+        users: updateUser.id,
         alarmRewardHistory: response.id,
       ),
     );

@@ -3,6 +3,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/analytics.dart';
@@ -50,6 +52,8 @@ import 'package:fortune/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -58,14 +62,11 @@ import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dar
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
-import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
 import 'package:fortune/presentation-web/login/bloc/web_login.dart';
 import 'package:fortune/presentation-web/verifycode/bloc/web_verify_code.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
-import 'package:fortune/presentation/alarmreward/bloc/alarm_reward.dart';
 import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
 import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
@@ -100,6 +101,7 @@ import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
+import 'domain/supabase/usecase/get_app_update.dart';
 import 'domain/supabase/usecase/get_country_info_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
@@ -331,7 +333,7 @@ _initRepository() {
     ..registerLazySingleton<AlarmRewardRepository>(
       () => AlarmRewardRepositoryImpl(
         rewardsService: serviceLocator<AlarmRewardHistoryService>(),
-        eventRewardInfoService: serviceLocator<AlarmRewardInfoService>(),
+        alarmRewardInfoService: serviceLocator<AlarmRewardInfoService>(),
       ),
     )
     ..registerLazySingleton<MissionsRepository>(
@@ -406,6 +408,12 @@ _initUseCase() async {
     ..registerLazySingleton<GetFaqsUseCase>(
       () => GetFaqsUseCase(
         repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<ReadAlarmFeedUseCase>(
+      () => ReadAlarmFeedUseCase(
+        userRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetShowAdUseCase>(
@@ -486,6 +494,11 @@ _initUseCase() async {
         supportRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetAppUpdate>(
+      () => GetAppUpdate(
+        supportRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<NickNameUseCase>(
       () => NickNameUseCase(
         userRepository: serviceLocator(),
@@ -520,6 +533,14 @@ _initUseCase() async {
     ..registerLazySingleton<GetPrivacyPolicyUseCase>(
       () => GetPrivacyPolicyUseCase(
         repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<ReceiveAlarmRewardUseCase>(
+      () => ReceiveAlarmRewardUseCase(
+        userRepository: serviceLocator(),
+        rewardRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
+        historyRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<SetShowAdUseCase>(
@@ -561,6 +582,7 @@ _initAppBloc() {
     ..registerFactory(
       () => AlarmFeedBloc(
         getAlarmFeedUseCase: serviceLocator(),
+        receiveAlarmRewardUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -587,16 +609,14 @@ _initAppBloc() {
         mainUseCase: serviceLocator(),
         obtainMarkerUseCase: serviceLocator(),
         getShowAdUseCase: serviceLocator(),
+        readAlarmFeedUseCase: serviceLocator(),
+        getAppUpdate: serviceLocator(),
+        tracker: serviceLocator<MixpanelTracker>(),
       ),
     )
     ..registerFactory(
       () => TermsDetailBloc(
         getTermsByIndexUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => AlarmRewardBloc(
-        getAlarmRewardUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -663,6 +683,7 @@ _initAppBloc() {
     ..registerFactory(
       () => AgreeTermsBloc(
         getTermsUseCase: serviceLocator(),
+        tracker: serviceLocator(),
       ),
     );
 }

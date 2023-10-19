@@ -1,18 +1,20 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/core/util/date.dart';
+import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
 import 'package:fortune/presentation/alarmfeed/component/alarm_feed_skeleton.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/presentation/alarmfeed/component/item_alarm_feed.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class AlarmFeedPage extends StatelessWidget {
   const AlarmFeedPage({Key? key}) : super(key: key);
@@ -21,10 +23,7 @@ class AlarmFeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => serviceLocator<AlarmFeedBloc>()..add(AlarmRewardInit()),
-      child: FortuneScaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context, title: '알림'),
-        child: const _AlarmFeedPage(),
-      ),
+      child: const _AlarmFeedPage(),
     );
   }
 }
@@ -38,11 +37,18 @@ class _AlarmFeedPage extends StatefulWidget {
 
 class _AlarmFeedPageState extends State<_AlarmFeedPage> {
   final _router = serviceLocator<FortuneAppRouter>().router;
+  final ConfettiController _controller = ConfettiController(
+    duration: const Duration(
+      seconds: 2,
+    ),
+  );
   late AlarmFeedBloc _bloc;
+  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
 
   @override
   void initState() {
     super.initState();
+    tracker.trackEvent('알림_랜딩');
     _bloc = BlocProvider.of<AlarmFeedBloc>(context);
   }
 
@@ -50,6 +56,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
   void dispose() {
     super.dispose();
     _bloc.close();
+    _controller.dispose();
   }
 
   @override
@@ -58,92 +65,105 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
       listener: (context, sideEffect) async {
         if (sideEffect is AlarmFeedError) {
           dialogService.showErrorDialog(context, sideEffect.error);
+        } else if (sideEffect is AlarmFeedReceiveConfetti) {
+          _controller.play();
+        } else if (sideEffect is AlarmFeedReceiveShowDialog) {
+          final reward = sideEffect.entity.reward;
+          dialogService.showFortuneDialog(
+            context,
+            dismissOnBackKeyPress: true,
+            dismissOnTouchOutside: true,
+            subTitle: FortuneTr.msgAcquiredMarker(reward.ingredients.exposureName),
+            btnOkText: FortuneTr.confirm,
+            btnOkPressed: () {},
+            topContent: SizedBox.square(
+              dimension: 84,
+              child: ClipOval(
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: reward.ingredients.imageUrl,
+                ),
+              ),
+            ),
+          );
         }
       },
       child: BlocBuilder<AlarmFeedBloc, AlarmFeedState>(
         buildWhen: (previous, current) => previous.feeds != current.feeds,
         builder: (context, state) {
-          return Skeleton(
-            skeleton: const AlarmFeedSkeleton(),
-            isLoading: state.isLoading,
-            child: state.feeds.isNotEmpty
-                ? Stack(
-                    children: [
-                      ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: state.feeds.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 20),
-                        itemBuilder: (context, index) {
-                          final item = state.feeds[index];
-                          return Bounceable(
-                            onTap: () => _router.navigateTo(
-                              context,
-                              AppRoutes.alarmRewardRoute,
-                              routeSettings: RouteSettings(
-                                arguments: item.reward.id,
-                              ),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: ColorName.grey800,
-                                borderRadius: BorderRadius.circular(
-                                  20.r,
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(width: 20),
-                                      Assets.icons.icMegaphone.svg(
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              item.headings,
-                                              style: FortuneTextStyle.body2Semibold(),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              item.content,
-                                              style: FortuneTextStyle.body3Light(color: ColorName.grey200),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        FortuneDateExtension.convertTimeAgo(item.createdAt),
-                                        style: FortuneTextStyle.body3Light(color: ColorName.grey200),
-                                      ),
-                                      const SizedBox(width: 20),
-                                    ],
+          return Stack(
+            children: [
+              FortuneScaffold(
+                appBar: FortuneCustomAppBar.leadingAppBar(context, title: '알림'),
+                child: Skeleton(
+                  skeleton: const AlarmFeedSkeleton(),
+                  isLoading: state.isLoading,
+                  child: state.feeds.isNotEmpty
+                      ? Stack(
+                          children: [
+                            ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.feeds.length,
+                              separatorBuilder: (context, index) => const SizedBox(height: 20),
+                              itemBuilder: (context, index) {
+                                final item = state.feeds[index];
+                                return Bounceable(
+                                  onTap: () => _bloc.add(AlarmRewardReceive(item)),
+                                  child: ItemAlarmFeed(
+                                    item,
+                                    onReceive: (feed) => _bloc.add(AlarmRewardReceive(item)),
                                   ),
-                                  const SizedBox(height: 20),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      "알림이 없습니다",
-                      style: FortuneTextStyle.subTitle1Medium(),
-                    ),
-                  ),
+                          ],
+                        )
+                      : Center(
+                          child: Text(
+                            FortuneTr.msgNoNotifications,
+                            style: FortuneTextStyle.subTitle1Medium(),
+                          ),
+                        ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: ConfettiWidget(
+                  confettiController: _controller,
+                  shouldLoop: false,
+                  blastDirectionality: BlastDirectionality.explosive,
+                  colors: const [
+                    ColorName.primary,
+                    ColorName.grey100,
+                    ColorName.secondary,
+                  ],
+                  gravity: 0.3,
+                  numberOfParticles: 30,
+                  minimumSize: const Size(25, 25),
+                  maximumSize: const Size(50, 50),
+                  createParticlePath: _drawHeart,
+                  emissionFrequency: 0.001,
+                ),
+              ),
+            ],
           );
         },
       ),
     );
+  }
+
+  Path _drawHeart(Size size) {
+    final double width = size.width;
+    final double height = size.height;
+
+    final path = Path()
+      ..moveTo(width * 0.5, height * 0.75) // 시작점: 하트의 아래쪽 끝
+      // 왼쪽 반원 (왼쪽 상단)
+      ..cubicTo(width * 0.2, height * 0.75, 0, height * 0.5, width * 0.5, height * 0.3)
+      // 오른쪽 반원 (오른쪽 상단)
+      ..cubicTo(width, height * 0.5, width * 0.8, height * 0.75, width * 0.5, height * 0.75)
+      ..close();
+
+    return path;
   }
 }

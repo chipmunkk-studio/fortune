@@ -13,6 +13,8 @@ enum IngredientType {
   normal,
   coin,
   unique,
+  epic,
+  rare,
 }
 
 enum AlarmFeedType {
@@ -25,6 +27,7 @@ enum AlarmRewardType {
   level,
   event,
   relay,
+  grade,
   none,
 }
 
@@ -42,6 +45,10 @@ getIngredientType(String type) {
     return IngredientType.normal;
   } else if (IngredientType.unique.name == type) {
     return IngredientType.unique;
+  } else if (IngredientType.rare.name == type) {
+    return IngredientType.rare;
+  } else if (IngredientType.epic.name == type) {
+    return IngredientType.epic;
   } else {
     return IngredientType.normal;
   }
@@ -64,6 +71,8 @@ getEventRewardType(String type) {
     return AlarmRewardType.event;
   } else if (AlarmRewardType.relay.name == type) {
     return AlarmRewardType.relay;
+  } else if (AlarmRewardType.grade.name == type) {
+    return AlarmRewardType.grade;
   } else {
     return AlarmRewardType.none;
   }
@@ -135,6 +144,15 @@ assignLevel(int markerCount) {
   return level;
 }
 
+assignDebugLevel(int markerCount) {
+  int level = 1;
+  while (markerCount >= level * 2) {
+    markerCount -= level * 2;
+    level++;
+  }
+  return level;
+}
+
 calculateWithdrawalDays(String withdrawalAt) {
   if (withdrawalAt.isEmpty) {
     return true;
@@ -165,8 +183,10 @@ calculateLevelInfo(int markerCount) {
     nextGradeLevel = 90;
   } else if (level < 120) {
     nextGradeLevel = 120;
+  } else if (level < 999) {
+    nextGradeLevel = 999;
   } else {
-    nextGradeLevel = level;
+    nextGradeLevel = 999;
   }
 
   int totalMarkersForNextGrade = 0;
@@ -191,13 +211,13 @@ calculateLevelInfo(int markerCount) {
 // 등급 할당.
 assignGrade(int level) {
   if (level >= 120) {
-    return 5;
+    return 5; // 21420
   } else if (level >= 90) {
-    return 4;
+    return 4; // 12015
   } else if (level >= 60) {
-    return 3;
+    return 3; // 5310
   } else if (level >= 30) {
-    return 2;
+    return 2; // 1305
   } else {
     return 1;
   }

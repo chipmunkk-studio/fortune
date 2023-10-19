@@ -139,6 +139,14 @@ class $AssetsIconsGen {
   SvgGenImage get icInventory =>
       const SvgGenImage('assets/icons/ic_inventory.svg');
 
+  /// File path: assets/icons/ic_location_hold.svg
+  SvgGenImage get icLocationHold =>
+      const SvgGenImage('assets/icons/ic_location_hold.svg');
+
+  /// File path: assets/icons/ic_location_rotate.svg
+  SvgGenImage get icLocationRotate =>
+      const SvgGenImage('assets/icons/ic_location_rotate.svg');
+
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
@@ -225,6 +233,8 @@ class $AssetsIconsGen {
         icInfo,
         icIngredientBag,
         icInventory,
+        icLocationHold,
+        icLocationRotate,
         icLock,
         icLogo20,
         icMappin,
