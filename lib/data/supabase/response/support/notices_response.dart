@@ -28,7 +28,7 @@ class NoticesResponse extends NoticesEntity {
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           createdAt: FortuneDateExtension.formattedDate(createdAt_),
-          isNew: !FortuneDateExtension.isTwoWeeksPassed(createdAt_),
+          isNew: !FortuneDateExtension.isThreeDaysPassed(createdAt_),
         );
 
   factory NoticesResponse.fromJson(Map<String, dynamic> json) => _$NoticesResponseFromJson(json);

@@ -30,6 +30,7 @@ abstract class FortuneTr {
   static String msgLevelUpContents(String level) => tr('msgLevelUpContents', args: [level]);
 
   static String msgAchievedGrade(String grade) => tr('msgAchievedGrade', args: [grade]);
+
   static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
 
   static String msgAcquireMarker(
@@ -105,6 +106,7 @@ abstract class FortuneTr {
   static final msgNicknameExists = tr('msgNicknameExists');
   static final msgVerifyCode = tr('msgVerifyCode');
   static final msgAcquireCoin = tr('msgAcquireCoin');
+  static final msgReceiveRewardCompleted = tr('msgReceiveRewardCompleted');
   static final msgRewardExhausted = tr('msgRewardExhausted');
   static final msgRemainingReward = tr('msgRemainingReward');
   static final msgUnknownUser = tr('msgUnknownUser');
