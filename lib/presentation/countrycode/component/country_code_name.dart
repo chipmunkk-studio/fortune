@@ -45,7 +45,7 @@ class CountryCodeName extends StatelessWidget {
                   "${country.name} (+${country.phoneCode})",
                   style: isSelected
                       ? FortuneTextStyle.body1Semibold(
-                          fontColor: ColorName.white,
+                          color: ColorName.white,
                         )
                       : FortuneTextStyle.body1Light(
                           color: ColorName.grey600,
