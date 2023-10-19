@@ -68,13 +68,17 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body1Semibold({Color? fontColor}) {
+  static TextStyle body1Semibold({
+    Color? color,
+    double? height,
+  }) {
     return TextStyle(
       fontSize: 18.spMin,
+      height: height ?? 1.0,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
@@ -122,7 +126,7 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body3Light({Color? color,double? height}) {
+  static TextStyle body3Light({Color? color, double? height}) {
     return TextStyle(
       fontSize: 15.spMin,
       height: height ?? 1.0,
