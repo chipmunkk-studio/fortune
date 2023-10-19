@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,6 +19,7 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
@@ -73,6 +77,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final router = serviceLocator<FortuneAppRouter>().router;
   late StreamSubscription<Position> locationChangeSubscription;
   late Function(GlobalKey) runAddToCartAnimation;
+  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
   Position? myLocation;
   bool _detectPermission = false;
   FToast fToast = FToast();
@@ -129,6 +134,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           // 내 위치 잡고 최초에 한번만 다시 그림.
           if (myLocation == null) {
             setState(() {
+              FlutterCompass.events?.listen((data) {
+                _bloc.add(MainMapRotate(data));
+              });
               myLocation = sideEffect.myLocation;
             });
           }
@@ -198,6 +206,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               ),
             ),
           );
+        } else if (sideEffect is MainShowAppUpdate) {
+          dialogService.showFortuneDialog(
+            context,
+            title: sideEffect.entity.title,
+            subTitle: sideEffect.entity.content,
+            btnOkText: FortuneTr.confirm,
+            btnOkPressed: () => _bloc.add(MainInit()),
+          );
+        } else if (sideEffect is MainRotateEffect) {
+          _animateCameraRotate(sideEffect.prevData, sideEffect.nextData);
         }
       },
       child: FortuneScaffold(
@@ -205,7 +223,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         child: UpgradeAlert(
           upgrader: Upgrader(
             dialogStyle: Platform.isIOS ? UpgradeDialogStyle.cupertino : UpgradeDialogStyle.material,
-            durationUntilAlertAgain: const Duration(days: 1),
+            durationUntilAlertAgain: const Duration(hours: 1),
             canDismissDialog: true,
             shouldPopScope: () => true,
           ),
@@ -237,13 +255,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 child: Bounceable(
                   onTap: _onMyBagClick,
                   child: Container(
-                    padding: const EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       color: ColorName.grey700,
                       borderRadius: BorderRadius.circular(50.r),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Assets.icons.icInventory.svg(),
                     ),
                   ),
@@ -265,15 +282,37 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   left: 20,
                   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     const SizedBox(height: 10),
-                    TopLocationArea(
-                      onProfileTap: () => router.navigateTo(
-                        context,
-                        AppRoutes.myPageRoute,
-                      ),
-                      onHistoryTap: () => router.navigateTo(
-                        context,
-                        AppRoutes.obtainHistoryRoute,
-                      ),
+                    BlocBuilder<MainBloc, MainState>(
+                      buildWhen: (previous, current) => previous.hasNewAlarm != current.hasNewAlarm,
+                      builder: (context, state) {
+                        return TopLocationArea(
+                          hasNewAlarm: state.hasNewAlarm,
+                          onProfileTap: () {
+                            tracker.trackEvent('메인_프로필_클릭');
+                            router.navigateTo(
+                              context,
+                              AppRoutes.myPageRoute,
+                            );
+                          },
+                          onHistoryTap: () {
+                            tracker.trackEvent('메인_히스토리_클릭');
+                            router.navigateTo(
+                              context,
+                              AppRoutes.obtainHistoryRoute,
+                            );
+                          },
+                          onAlarmClick: () {
+                            tracker.trackEvent('메인_알림_클릭');
+                            if (state.hasNewAlarm) {
+                              _bloc.add(MainAlarmRead());
+                            }
+                            router.navigateTo(
+                              context,
+                              AppRoutes.alarmFeedRoute,
+                            );
+                          },
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
@@ -282,11 +321,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     const SizedBox(height: 10),
                     TopInformationArea(
                       cartKey,
-                      onInventoryTap: () => context.showBottomSheet(
-                        isDismissible: true,
-                        content: (context) => const MyIngredientsPage(),
-                      ),
-                      onGradeAreaTap: () => router.navigateTo(context, AppRoutes.gradeGuideRoute),
+                      onInventoryTap: () {
+                        tracker.trackEvent('메인_인벤토리_클릭');
+                        context.showBottomSheet(
+                          isDismissible: true,
+                          content: (context) => const MyIngredientsPage(),
+                        );
+                      },
+                      onGradeAreaTap: () {
+                        tracker.trackEvent('메인_레벨_클릭');
+                        router.navigateTo(context, AppRoutes.gradeGuideRoute);
+                      },
                       onCoinTap: _showCoinDialog,
                     ),
                   ]),
@@ -371,14 +416,57 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       controller.forward();
 
       if (newLoc != null) {
-        FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}");
-        _bloc
-          ..add(MainMyLocationChange(newLoc))
-          ..add(Main());
+        FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}, 회전방향:${newLoc.heading}");
+        if (kReleaseMode) {
+          _bloc
+            ..add(MainMyLocationChange(newLoc))
+            ..add(Main());
+        } else {
+          _bloc.add(MainMyLocationChange(newLoc));
+        }
       }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
     }
+  }
+
+  _animateCameraRotate(
+    double prevData,
+    double nextData,
+  ) {
+    final controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    final rotationTween = Tween<double>(
+      begin: prevData,
+      end: nextData,
+    );
+
+    final Animation<double> animation = rotationTween.animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
+
+    controller.addListener(() {
+      try {
+        _mapController.rotate(animation.value);
+      } catch (e) {
+        // 에러 처리
+      }
+    });
+
+    animation.addStatusListener(
+      (status) {
+        if (status == AnimationStatus.completed) {
+          controller.dispose();
+        }
+      },
+    );
+    controller.forward();
   }
 
   // 광고 로드

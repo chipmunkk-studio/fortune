@@ -1,12 +1,17 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
+import 'package:fortune/core/widgets/painter/grid_painter.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -25,6 +30,9 @@ class MainMap extends StatelessWidget {
   final FortuneRemoteConfig remoteConfigArgs;
   final Position? myLocation;
   final Function0 onZoomChanged;
+
+  static const accessToken = 'accessToken';
+  static const mapStyleId = 'mapStyleId';
 
   const MainMap(
     this._bloc, {
@@ -47,12 +55,14 @@ class MainMap extends StatelessWidget {
               FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  center: LatLng(
+                  initialCenter: LatLng(
                     myLocation!.latitude,
                     myLocation!.longitude,
                   ),
                   initialZoom: _bloc.state.zoomThreshold,
-                  interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
+                  minZoom: 16.0,
+                  maxZoom: 18.0,
+                  interactiveFlags: InteractiveFlag.pinchZoom,
                   onPositionChanged: (mapPosition, boolHasGesture) {
                     if (boolHasGesture) {
                       onZoomChanged();
@@ -73,13 +83,21 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  TileLayer(
-                    urlTemplate: remoteConfigArgs.mapUrlTemplate,
-                    additionalOptions: {
-                      'accessToken': remoteConfigArgs.mapAccessToken,
-                      'mapStyleId': remoteConfigArgs.mapStyleId,
-                    },
-                  ),
+                  if (remoteConfigArgs.enableMapBox)
+                    TileLayer(
+                      tileSize: 512,
+                      zoomOffset: -1,
+                      urlTemplate: remoteConfigArgs.mapUrlTemplate,
+                      additionalOptions: {
+                        accessToken: remoteConfigArgs.mapAccessToken,
+                        mapStyleId: remoteConfigArgs.mapStyleId,
+                      },
+                    )
+                  else
+                    CustomPaint(
+                      painter: GridPainter(gridSpacing: 40),
+                      child: Container(), // 이 부분을 적절한 자식 위젯으로 교체 가능
+                    ),
                   // 마커 목록.
                   BlocBuilder<MainBloc, MainState>(
                     buildWhen: (previous, current) => previous.markers != current.markers,
@@ -135,6 +153,31 @@ class MainMap extends StatelessWidget {
                       },
                     ),
                   ),
+                ),
+              ),
+              // 좌측 하단 로테이션.
+              Positioned(
+                bottom: 16,
+                left: 16,
+                child: BlocBuilder<MainBloc, MainState>(
+                  buildWhen: (previous, current) => previous.isRotatable != current.isRotatable,
+                  builder: (context, state) {
+                    return Bounceable(
+                      onTap: () => _bloc.add(MainTabCompass()),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorName.grey700,
+                          borderRadius: BorderRadius.circular(50.r),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: state.isRotatable
+                              ? Assets.icons.icLocationRotate.svg()
+                              : Assets.icons.icLocationHold.svg(),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               // 로딩 뷰.

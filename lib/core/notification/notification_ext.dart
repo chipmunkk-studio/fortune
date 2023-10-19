@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/core/notification/notification_response.dart';
 
 import 'notification_manager.dart';
 
@@ -27,12 +26,12 @@ const initializeSettings = InitializationSettings(
 );
 
 AndroidNotificationDetails androidNotificationDetails = const AndroidNotificationDetails(
-  channelId,
-  channelName,
-  channelDescription: channelDescription,
-  importance: Importance.defaultImportance,
-  priority: Priority.defaultPriority,
-  color: ColorName.grey800
+    channelId,
+    channelName,
+    channelDescription: channelDescription,
+    importance: Importance.defaultImportance,
+    priority: Priority.defaultPriority,
+    color: ColorName.grey800
 );
 
 NotificationDetails platformChannelSpecifics(AndroidNotificationDetails details) =>

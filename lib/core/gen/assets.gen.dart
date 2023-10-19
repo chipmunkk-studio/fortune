@@ -139,6 +139,14 @@ class $AssetsIconsGen {
   SvgGenImage get icInventory =>
       const SvgGenImage('assets/icons/ic_inventory.svg');
 
+  /// File path: assets/icons/ic_location_hold.svg
+  SvgGenImage get icLocationHold =>
+      const SvgGenImage('assets/icons/ic_location_hold.svg');
+
+  /// File path: assets/icons/ic_location_rotate.svg
+  SvgGenImage get icLocationRotate =>
+      const SvgGenImage('assets/icons/ic_location_rotate.svg');
+
   /// File path: assets/icons/ic_lock.svg
   SvgGenImage get icLock => const SvgGenImage('assets/icons/ic_lock.svg');
 
@@ -154,10 +162,6 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_note_24.svg
   SvgGenImage get icNote24 => const SvgGenImage('assets/icons/ic_note_24.svg');
-
-  /// File path: assets/icons/ic_onboarding.svg
-  SvgGenImage get icOnboarding =>
-      const SvgGenImage('assets/icons/ic_onboarding.svg');
 
   /// File path: assets/icons/ic_pencil.svg
   SvgGenImage get icPencil => const SvgGenImage('assets/icons/ic_pencil.svg');
@@ -229,12 +233,13 @@ class $AssetsIconsGen {
         icInfo,
         icIngredientBag,
         icInventory,
+        icLocationHold,
+        icLocationRotate,
         icLock,
         icLogo20,
         icMappin,
         icMegaphone,
         icNote24,
-        icOnboarding,
         icPencil,
         icPhone,
         icPlus,

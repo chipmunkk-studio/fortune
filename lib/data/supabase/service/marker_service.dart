@@ -51,7 +51,6 @@ class MarkerService {
           .lte('latitude', maxLat)
           .gte('longitude', minLng)
           .lte('longitude', maxLng)
-          .filter('is_reward', 'eq', false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

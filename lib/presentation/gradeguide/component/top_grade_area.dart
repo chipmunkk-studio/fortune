@@ -5,7 +5,7 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
 class TopGradeArea extends StatelessWidget {
-  final String grade;
+  final FortuneUserGradeEntity grade;
 
   const TopGradeArea({
     super.key,
@@ -18,8 +18,8 @@ class TopGradeArea extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _MyGradeInfo(grade: grade),
-        getUserGradeIconInfo(1).icon.svg(width: 72, height: 72),
+        _MyGradeInfo(grade: grade.name),
+        getUserGradeIconInfo(grade.id).icon.svg(width: 72, height: 72),
       ],
     );
   }

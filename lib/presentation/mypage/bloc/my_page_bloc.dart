@@ -33,6 +33,7 @@ class MyPageBloc extends Bloc<MyPageEvent, MyPageState>
             state.copyWith(
               user: r.user,
               isAllowPushAlarm: r.isAllowPushAlarm,
+              hasNewNotice: r.hasNewNotice,
               isLoading: false,
             ),
           );

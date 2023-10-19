@@ -29,4 +29,17 @@ abstract class FortuneDateExtension {
       return '';
     }
   }
+
+  static bool isTwoWeeksPassed(
+    String? time,
+  ) {
+    if (time != null) {
+      DateTime serverTime = DateTime.parse(time);
+      DateTime currentTime = DateTime.now();
+      Duration duration = currentTime.difference(serverTime);
+      return duration.inDays >= 14;
+    } else {
+      return true;
+    }
+  }
 }

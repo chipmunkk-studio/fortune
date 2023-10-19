@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_compass/flutter_compass.dart';
+import 'package:fortune/domain/supabase/entity/support/app_update_view_entity.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -85,4 +87,28 @@ class MainSchemeLandingPage extends MainSideEffect {
 
   @override
   List<Object?> get props => [landingRoute];
+}
+
+class MainShowAppUpdate extends MainSideEffect {
+  final AppUpdateViewEntity entity;
+
+  MainShowAppUpdate({
+    required this.entity,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainRotateEffect extends MainSideEffect {
+  final double nextData;
+  final double prevData;
+
+  MainRotateEffect({
+    required this.prevData,
+    required this.nextData,
+  });
+
+  @override
+  List<Object?> get props => [];
 }

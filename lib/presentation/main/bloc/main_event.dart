@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -100,4 +101,27 @@ class MainRequireInCircleMetersEvent extends MainEvent {
 
   @override
   List<Object?> get props => throw UnimplementedError();
+}
+
+class MainAlarmRead extends MainEvent {
+  MainAlarmRead();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainMapRotate extends MainEvent {
+  final CompassEvent data;
+
+  MainMapRotate(this.data);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainTabCompass extends MainEvent {
+  MainTabCompass();
+
+  @override
+  List<Object?> get props => [];
 }

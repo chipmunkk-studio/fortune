@@ -21,11 +21,14 @@ class MainState with _$MainState {
     required List<AlarmFeedsEntity> notices,
     required int haveCount,
     required bool isObtainProcessing,
+    required bool hasNewAlarm,
     required RewardedAd? rewardAd,
     required String locationName,
     required bool isLoading,
     required double clickableRadiusLength,
     required double zoomThreshold,
+    required double headings,
+    required bool isRotatable,
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
@@ -39,8 +42,11 @@ class MainState with _$MainState {
         notices: List.empty(),
         haveCount: 0,
         isObtainProcessing: false,
+        hasNewAlarm: false,
         isLoading: true,
+        isRotatable: false,
         rewardAd: null,
+        headings: 0,
         clickableRadiusLength: 60,
         zoomThreshold: 18,
       );

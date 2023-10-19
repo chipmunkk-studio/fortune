@@ -11,11 +11,11 @@ import 'package:fortune/domain/supabase/repository/alarm_reward_repository.dart'
 
 class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   final AlarmRewardHistoryService rewardsService;
-  final AlarmRewardInfoService eventRewardInfoService;
+  final AlarmRewardInfoService alarmRewardInfoService;
 
   AlarmRewardRepositoryImpl({
     required this.rewardsService,
-    required this.eventRewardInfoService,
+    required this.alarmRewardInfoService,
   });
 
   @override
@@ -43,8 +43,8 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   @override
   Future<AlarmRewardInfoEntity> findRewardInfoByType(AlarmRewardType type) async {
     try {
-      final result = await eventRewardInfoService.findEventRewardsByType(type.name);
-      return result;
+      final rewardInfo = await alarmRewardInfoService.findEventRewardsByType(type.name);
+      return rewardInfo;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: '이벤트 리워드를 찾을 수 없습니다',

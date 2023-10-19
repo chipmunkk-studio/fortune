@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
@@ -36,6 +37,14 @@ class _GradeGuidePage extends StatefulWidget {
 }
 
 class _GradeGuidePageState extends State<_GradeGuidePage> {
+
+  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
+
+  @override
+  void initState() {
+    super.initState();
+    tracker.trackEvent('등급가이드_랜딩');
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GradeGuideBloc, GradeGuideState>(
@@ -48,7 +57,7 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
               reBounceDepth: 10,
               children: [
                 TopGradeArea(
-                  grade: state.user.grade.name,
+                  grade: state.user.grade,
                 ),
                 const SizedBox(height: 24),
                 MiddlePercentage(
@@ -61,15 +70,30 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                   remainCount: state.user.nextLevelInfo.nextLevelMarkerCount.toString(),
                 ),
                 const SizedBox(height: 40),
-                ItemGrade(getUserGradeIconInfo(1)),
+                ItemGrade(
+                  getUserGradeIconInfo(1),
+                  rewardGuideText: FortuneTr.msgCoinReward,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(2)),
+                ItemGrade(
+                  getUserGradeIconInfo(2),
+                  rewardGuideText: FortuneTr.msgFortuneCookieReward,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(3)),
+                ItemGrade(
+                  getUserGradeIconInfo(3),
+                  rewardGuideText: FortuneTr.msgFortuneCookieReward,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(4)),
+                ItemGrade(
+                  getUserGradeIconInfo(4),
+                  rewardGuideText: FortuneTr.msgFortuneCookieReward,
+                ),
                 const SizedBox(height: 12),
-                ItemGrade(getUserGradeIconInfo(5)),
+                ItemGrade(
+                  getUserGradeIconInfo(5),
+                  rewardGuideText: FortuneTr.msgFortuneCookieReward,
+                ),
                 const SizedBox(height: 12),
                 Text(
                   "· ${FortuneTr.msgRewardInProgress}",

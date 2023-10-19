@@ -21,7 +21,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final List<String> _titles = [
     FortuneTr.msgOnboardingTitle1,
     FortuneTr.msgOnboardingTitle2,
-    FortuneTr.msgOnboardingTitle3,
+    FortuneTr.msgReceiveReward,
   ];
   final List<String> _descriptions = [
     FortuneTr.msgOnboarding1,
