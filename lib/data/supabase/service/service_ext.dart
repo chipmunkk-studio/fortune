@@ -123,7 +123,7 @@ getLocationName(
       if (isDetailStreet) {
         return pos1.street ?? unknownLocation;
       } else {
-        return nonDetailStreet.isEmpty ? unknownLocation : nonDetailStreet;
+        return administrativeArea == null && subLocality == null ? unknownLocation : nonDetailStreet;
       }
     } else {
       return unknownLocation;

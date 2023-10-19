@@ -4,6 +4,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
@@ -72,14 +73,16 @@ class ItemAlarmFeed extends StatelessWidget {
                 onTap: () => onReceive(item),
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: ColorName.white),
+                    border: Border.all(color: item.isReceive ? ColorName.grey600 : ColorName.grey100),
                     borderRadius: BorderRadius.circular(100.r),
-                    color: Colors.transparent,
+                    color: item.isReceive ? ColorName.grey600 : ColorName.grey100,
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   child: Text(
-                    item.isReceive ? '보상완료' : '보상받기',
-                    style: FortuneTextStyle.caption1SemiBold(),
+                    item.isReceive ? FortuneTr.msgReceiveRewardCompleted : FortuneTr.msgReceiveReward,
+                    style: FortuneTextStyle.caption1SemiBold(
+                      color: item.isReceive ? ColorName.grey400 : ColorName.grey900,
+                    ),
                   ),
                 ),
               ),

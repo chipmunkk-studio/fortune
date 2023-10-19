@@ -30,14 +30,14 @@ abstract class FortuneDateExtension {
     }
   }
 
-  static bool isTwoWeeksPassed(
+  static bool isThreeDaysPassed(
     String? time,
   ) {
     if (time != null) {
       DateTime serverTime = DateTime.parse(time);
       DateTime currentTime = DateTime.now();
       Duration duration = currentTime.difference(serverTime);
-      return duration.inDays >= 14;
+      return duration.inDays >= 3;
     } else {
       return true;
     }
