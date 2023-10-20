@@ -10,8 +10,8 @@ import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histor
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MissionClearUserHistoriesService {
-  static const _tableName = TableName.missionClearUser;
-  static const _tableHistoriesName = TableName.missionClearUserHistories;
+  static const _tableClearUserName = TableName.missionClearUser;
+  static const _tableClearUserHistoriesName = TableName.missionClearUserHistories;
 
   final SupabaseClient _client = Supabase.instance.client;
 
@@ -28,7 +28,7 @@ class MissionClearUserHistoriesService {
   }) async {
     try {
       final response = await _client
-          .from(_tableHistoriesName)
+          .from(_tableClearUserHistoriesName)
           .select(
             _fullSelectQuery,
           )
@@ -46,10 +46,32 @@ class MissionClearUserHistoriesService {
     }
   }
 
+  Future<List<MissionClearUserHistoriesEntity>> findAllMissionClearUserByUserId(int userId) async {
+    try {
+      final response = await _client
+          .from(_tableClearUserHistoriesName)
+          .select(
+            _fullSelectQuery,
+          )
+          .filter(TableName.users, 'eq', userId)
+          .order('created_at', ascending: false)
+          .toSelect();
+      if (response.isEmpty) {
+        return List.empty();
+      } else {
+        final users = response.map((e) => MissionClearUserHistoriesResponse.fromJson(e)).toList();
+        return users;
+      }
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
   // 아이디로 미션 클리어한 유저 조회.
   Future<MissionClearUserHistoriesEntity> findAllMissionClearUserById(int id) async {
     try {
-      final response = await _client.from(_tableHistoriesName).select(_fullSelectQuery).eq('id', id).toSelect();
+      final response =
+          await _client.from(_tableClearUserHistoriesName).select(_fullSelectQuery).eq('id', id).toSelect();
       if (response.isEmpty) {
         throw CommonFailure(errorMessage: '미션클리어 사용자가 존재하지 않습니다.');
       } else {
@@ -69,7 +91,7 @@ class MissionClearUserHistoriesService {
       // 미션 클리어 히스토리 테이블에 또 한번 저장.
       // 클리어 유저랑 별도로 히스토리 관리용으로 생성.
       await _client
-          .from(_tableHistoriesName)
+          .from(_tableClearUserHistoriesName)
           .insert(
             RequestMissionClearUserHistories(
               mission: request.mission,
@@ -78,7 +100,7 @@ class MissionClearUserHistoriesService {
           )
           .select(_fullSelectQuery);
       final insertUser = await _client
-          .from(_tableName)
+          .from(_tableClearUserName)
           .insert(
             request.toJson(),
           )

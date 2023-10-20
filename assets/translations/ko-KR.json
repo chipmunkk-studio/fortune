@@ -94,6 +94,7 @@
   "msgRevokeWithdrawal": "탈퇴를 철회 하시겠습니까?",
   "msgAlreadyWithdrawn": "이미 탈퇴 처리 된 회원입니다.",
   "msgUnableToLoadMissionCard": "현재 미션 카드를 불러 올 수 없습니다",
+  "msgMissionHistory": "미션 내역",
   "msgMissionCompleted": "미션 달성을 축하드려요!",
   "msgPaymentDelay": "지급까지 시간이 다소 소요될 수 있어요.",
   "msgConfirmWithdrawal": "탈퇴하시겠어요?",

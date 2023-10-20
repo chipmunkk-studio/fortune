@@ -96,13 +96,13 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body2Semibold({Color? fontColor}) {
+  static TextStyle body2Semibold({Color? color}) {
     return TextStyle(
       fontSize: 16.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/date.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
@@ -26,7 +27,7 @@ class MissionClearUserHistoriesResponse extends MissionClearUserHistoriesEntity 
   }) : super(
           mission: mission_,
           user: user_ ?? FortuneUserEntity.empty(),
-          createdAt: createdAt_,
+          createdAt: FortuneDateExtension.formattedDate(createdAt_),
         );
 
   factory MissionClearUserHistoriesResponse.fromJson(Map<String, dynamic> json) =>

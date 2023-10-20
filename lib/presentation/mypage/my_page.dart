@@ -106,6 +106,14 @@ class _MyPageState extends State<_MyPage> {
                       },
                     ),
                     InfoMenu(
+                      FortuneTr.msgMissionHistory,
+                      icon: Assets.icons.icChecklist24.svg(),
+                      onTap: () {
+                        _tracker.trackEvent('마이페이지_미션내역_클릭');
+                        return _router.navigateTo(context, AppRoutes.myMissionsRoutes);
+                      },
+                    ),
+                    InfoMenu(
                       FortuneTr.faq,
                       icon: Assets.icons.icQuestion.svg(),
                       onTap: () {

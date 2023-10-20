@@ -74,6 +74,7 @@ abstract class FortuneTr {
   static final myBag = tr('myBag');
   static final msgNumberItems = tr('msgNumberItems');
   static final msgUseNextTime = tr('msgUseNextTime');
+  static final msgMissionHistory = tr('msgMissionHistory');
   static final msgRevokeWithdrawal = tr('msgRevokeWithdrawal');
   static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
   static final msgMissionCompleted = tr('msgMissionCompleted');

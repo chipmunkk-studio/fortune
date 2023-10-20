@@ -9,6 +9,7 @@ import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
+import 'package:fortune/presentation/mymissions/my_missions.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
 import 'package:fortune/presentation/support/faqs/faqs_page.dart';
 import 'package:fortune/presentation/support/notices/notices_page.dart';
@@ -58,7 +59,13 @@ class FortuneAppRouter {
 
   static var onBoardingHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return OnBoardingPage();
+      return const OnBoardingPage();
+    },
+  );
+
+  static var myMissionsHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const MyMissionsPage();
     },
   );
 
@@ -273,6 +280,13 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 내 미션 완료 목록.
+      ..define(
+        AppRoutes.myMissionsRoutes,
+        handler: myMissionsHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         AppRoutes.obtainHistoryRoute,
@@ -300,4 +314,5 @@ class AppRoutes {
   static const String nickNameRoute = 'nickName';
   static const String noticesRoutes = 'notices';
   static const String privacyPolicyRoutes = 'privacyPolicy';
+  static const String myMissionsRoutes = 'myMissions';
 }

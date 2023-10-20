@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 
 @immutable
-abstract class AlarmFeedSideEffect extends Equatable {}
+abstract class MyMissionsSideEffect extends Equatable {}
 
-class AlarmFeedError extends AlarmFeedSideEffect {
+class MyMissionsError extends MyMissionsSideEffect {
   final FortuneFailure error;
 
-  AlarmFeedError(this.error);
+  MyMissionsError(this.error);
 
   @override
   List<Object?> get props => [];

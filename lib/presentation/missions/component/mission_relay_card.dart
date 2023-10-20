@@ -41,7 +41,7 @@ class MissionRelayCard extends StatelessWidget {
                       child: Text(
                         item.mission.content,
                         style: FortuneTextStyle.body2Semibold(
-                          fontColor: ColorName.grey200,
+                          color: ColorName.grey200,
                         ),
                         maxLines: 2,
                       ),
@@ -72,7 +72,7 @@ class MissionRelayCard extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: "/${item.requiredTotalCount} ${item.isRelayMissionCleared}",
-                                style: FortuneTextStyle.body2Semibold(fontColor: ColorName.grey700),
+                                style: FortuneTextStyle.body2Semibold(color: ColorName.grey700),
                               ),
                             ],
                           ),
