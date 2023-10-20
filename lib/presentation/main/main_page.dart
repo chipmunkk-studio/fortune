@@ -223,7 +223,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         child: UpgradeAlert(
           upgrader: Upgrader(
             dialogStyle: Platform.isIOS ? UpgradeDialogStyle.cupertino : UpgradeDialogStyle.material,
-            durationUntilAlertAgain: const Duration(hours: 1),
+            durationUntilAlertAgain: const Duration(days: 1),
             canDismissDialog: true,
             shouldPopScope: () => true,
           ),
