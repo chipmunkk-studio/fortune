@@ -11,6 +11,10 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
+def flutterNdkVersion = localProperties.getProperty('fluuter.ndkVersion')
+if (flutterNdkVersion == null) {
+    flutterCompileSdkVersion = '25.1.8937393'
+}
 def flutterCompileSdkVersion = localProperties.getProperty('flutter.flutterCompileSdkVersion')
 if (flutterCompileSdkVersion == null) {
     flutterCompileSdkVersion = '33'
@@ -69,7 +73,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion flutterCompileSdkVersion.toInteger()
-    ndkVersion flutter.ndkVersion
+    ndkVersion flutterNdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
