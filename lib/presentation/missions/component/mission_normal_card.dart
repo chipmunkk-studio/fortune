@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MissionNormalCard extends StatelessWidget {
   const MissionNormalCard(this.item, {super.key});
@@ -85,9 +85,11 @@ class MissionNormalCard extends StatelessWidget {
               SizedBox.square(
                 dimension: 84,
                 child: ClipOval(
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: item.mission.missionImage,
+                  child: FortuneCachedNetworkImage(
+                    imageUrl: item.mission.missionImage,
+                    placeholder: Container(),
+                    errorWidget: const Icon(Icons.error_outline),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

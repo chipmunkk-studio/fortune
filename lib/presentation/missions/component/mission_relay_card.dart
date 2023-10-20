@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MissionRelayCard extends StatelessWidget {
   const MissionRelayCard(this.item, {super.key});
@@ -86,9 +86,11 @@ class MissionRelayCard extends StatelessWidget {
               SizedBox.square(
                 dimension: 84,
                 child: ClipOval(
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: item.mission.missionReward.rewardImage,
+                  child: FortuneCachedNetworkImage(
+                    imageUrl: item.mission.missionReward.rewardImage,
+                    placeholder: Container(),
+                    errorWidget: const Icon(Icons.error_outline),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

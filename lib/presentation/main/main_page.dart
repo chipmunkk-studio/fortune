@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_compass/flutter_compass.dart';
@@ -472,6 +472,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   // 광고 로드
   void _loadRewardedAd() async {
     try {
+      await CachedNetworkImage.evictFromCache(
+          'https://vsxczbrqaodxzjsisivw.supabase.co/storage/v1/object/public/ingredients/fortune_cookie.webp');
       RewardedAd.load(
         adUnitId: AdHelper.rewardedAdUnitId,
         request: const AdRequest(),
