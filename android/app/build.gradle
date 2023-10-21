@@ -13,7 +13,7 @@ if (flutterRoot == null) {
 
 def flutterNdkVersion = localProperties.getProperty('fluuter.ndkVersion')
 if (flutterNdkVersion == null) {
-    flutterCompileSdkVersion = '25.1.8937393'
+    flutterNdkVersion = '25.1.8937393'
 }
 def flutterCompileSdkVersion = localProperties.getProperty('flutter.flutterCompileSdkVersion')
 if (flutterCompileSdkVersion == null) {

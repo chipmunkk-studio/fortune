@@ -16,6 +16,7 @@
   "msgNotUpdateUser": "Failed to update user.",
   "msgMissionHistory": "Mission History",
   "msgRenewAuthInfo": "Refreshing authentication...",
+  "msgNoCompletedMissions": "You haven't completed any missions yet.",
   "msgCompletedMissions": "Missions Completed So Far",
   "msgVerifyCode": "Please enter the verification code.",
   "msgConfirmNetworkConnection": "Check your internet connection.",
