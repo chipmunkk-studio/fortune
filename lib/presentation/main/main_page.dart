@@ -76,6 +76,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
   final router = serviceLocator<FortuneAppRouter>().router;
   late StreamSubscription<Position> locationChangeSubscription;
+  late StreamSubscription<CompassEvent>? rotateChangeEvent;
   late Function(GlobalKey) runAddToCartAnimation;
   final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
   Position? myLocation;
@@ -88,6 +89,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     fToast.init(context);
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
+    _listenRotate();
     _loadRewardedAd();
   }
 
@@ -134,9 +136,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           // 내 위치 잡고 최초에 한번만 다시 그림.
           if (myLocation == null) {
             setState(() {
-              FlutterCompass.events?.listen((data) {
-                _bloc.add(MainMapRotate(data));
-              });
               myLocation = sideEffect.myLocation;
             });
           }
@@ -566,4 +565,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         btnOkPressed: () {},
         subTitle: FortuneTr.msgCollectWithCoin,
       );
+
+  // 회전감지
+  _listenRotate() {
+    rotateChangeEvent = FlutterCompass.events?.listen((data) {
+      if (_bloc.state.isRotatable) {
+        _bloc.add(MainMapRotate(data));
+      }
+    });
+  }
 }

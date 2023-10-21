@@ -103,33 +103,29 @@ getLocationName(
   bool isDetailStreet = true,
 }) async {
   final unknownLocation = FortuneTr.msgUnknownLocation;
+
   try {
-    // 영어
     List<Placemark> placemarks = await placemarkFromCoordinates(
       latitude,
       longitude,
       localeIdentifier: localeIdentifier,
     );
 
-    if (placemarks.isNotEmpty) {
-      final Placemark pos1 = placemarks[0];
-      String? name = pos1.name;
-      String? subLocality = pos1.subLocality ?? '';
-      String? locality = pos1.locality;
-      String? administrativeArea = pos1.administrativeArea ?? '';
-      String? postalCode = pos1.postalCode;
-      String? country = pos1.country;
-      String nonDetailStreet = "$administrativeArea $subLocality";
-      if (isDetailStreet) {
-        return pos1.street ?? unknownLocation;
-      } else {
-        return administrativeArea.isNotEmpty || subLocality.isNotEmpty ? nonDetailStreet : unknownLocation;
-      }
-    } else {
-      return unknownLocation;
-    }
+    // 장소가 없을 경우.
+    if (placemarks.isEmpty) return unknownLocation;
+
+    final pos1 = placemarks.first;
+    // 상세 주소일 경우.
+    if (isDetailStreet) return pos1.street ?? unknownLocation;
+
+    final nonDetailStreet = [
+      pos1.administrativeArea,
+      pos1.subLocality,
+    ].where((e) => e != null && e.isNotEmpty).join(' ');
+
+    // 공백을 제거 하고 비교.
+    return nonDetailStreet.trim().isEmpty ? unknownLocation : nonDetailStreet;
   } catch (e) {
-    FortuneLogger.error(message: e.toString());
     return unknownLocation;
   }
 }
