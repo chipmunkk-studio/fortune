@@ -114,16 +114,16 @@ getLocationName(
     if (placemarks.isNotEmpty) {
       final Placemark pos1 = placemarks[0];
       String? name = pos1.name;
-      String? subLocality = pos1.subLocality;
+      String? subLocality = pos1.subLocality ?? '';
       String? locality = pos1.locality;
-      String? administrativeArea = pos1.administrativeArea;
+      String? administrativeArea = pos1.administrativeArea ?? '';
       String? postalCode = pos1.postalCode;
       String? country = pos1.country;
       String nonDetailStreet = "$administrativeArea $subLocality";
       if (isDetailStreet) {
         return pos1.street ?? unknownLocation;
       } else {
-        return administrativeArea == null && subLocality == null ? unknownLocation : nonDetailStreet;
+        return administrativeArea.isNotEmpty || subLocality.isNotEmpty ? nonDetailStreet : unknownLocation;
       }
     } else {
       return unknownLocation;
