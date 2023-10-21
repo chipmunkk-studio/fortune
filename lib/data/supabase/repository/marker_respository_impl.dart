@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -29,7 +30,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       return markers;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '새로운 마커 정보를 갱신합니다\n${e.message}',
+        description: FortuneTr.msgUpdateMarkerInfo,
       );
     }
   }
