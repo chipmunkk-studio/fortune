@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/my_missions.dart';
@@ -40,12 +38,14 @@ class _MyMissionsPage extends StatefulWidget {
 
 class _MyMissionsPageState extends State<_MyMissionsPage> {
   final _router = serviceLocator<FortuneAppRouter>().router;
+  final _tracker = serviceLocator<MixpanelTracker>();
   late MyMissionsBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<MyMissionsBloc>(context);
+    _tracker.trackEvent('미션내역_랜딩');
   }
 
   @override
@@ -64,7 +64,6 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
       },
       child: BlocBuilder<MyMissionsBloc, MyMissionsState>(
         builder: (context, state) {
-          final count = state.missions.length;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -86,19 +85,23 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
                           return ItemMyMissionReward(item: item);
                         },
                       )
-                    : Padding(
-                        padding: const EdgeInsets.only(bottom: 60),
-                        child: Center(
-                          child: Text(
-                            FortuneTr.msgNoCompletedMissions,
-                            style: FortuneTextStyle.body1Light(color: ColorName.grey200),
-                          ),
-                        ),
-                      ),
+                    : _buildMissionEmpty(),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Padding _buildMissionEmpty() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 60),
+      child: Center(
+        child: Text(
+          FortuneTr.msgNoCompletedMissions,
+          style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+        ),
       ),
     );
   }
