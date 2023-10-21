@@ -4,6 +4,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -33,9 +34,10 @@ class ExchangeBottom extends StatelessWidget {
           SizedBox.square(
             dimension: 128,
             child: ClipOval(
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: entity.rewardImage,
+              child: FortuneCachedNetworkImage(
+                imageUrl: entity.rewardImage,
+                placeholder: Container(),
+                fit: BoxFit.fill,
               ),
             ),
           ),

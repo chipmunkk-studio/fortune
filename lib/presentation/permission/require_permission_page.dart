@@ -154,7 +154,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
               const SizedBox(height: 4),
               Text(
                 permissionItem.subTitle,
-                style: FortuneTextStyle.body2Light(fontColor: ColorName.grey200),
+                style: FortuneTextStyle.body2Light(color: ColorName.grey200),
               ),
             ],
           ),

@@ -7,6 +7,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
@@ -14,7 +15,6 @@ import 'package:fortune/presentation/alarmfeed/component/alarm_feed_skeleton.dar
 import 'package:fortune/presentation/alarmfeed/component/item_alarm_feed.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class AlarmFeedPage extends StatelessWidget {
   const AlarmFeedPage({Key? key}) : super(key: key);
@@ -79,9 +79,10 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
             topContent: SizedBox.square(
               dimension: 84,
               child: ClipOval(
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: reward.ingredients.imageUrl,
+                child: FortuneCachedNetworkImage(
+                  imageUrl: reward.ingredients.imageUrl,
+                  placeholder: Container(),
+                  fit: BoxFit.fill,
                 ),
               ),
             ),

@@ -83,7 +83,7 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
         hintText: widget.hint,
         contentPadding: EdgeInsets.fromLTRB(prefixIcon == null ? 16 : 0, 16, suffixIcon == null ? 16 : 0, 16),
         counterText: "",
-        hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
+        hintStyle: FortuneTextStyle.subTitle2Medium(color: ColorName.grey500),
         errorText: widget.errorText,
         errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
         suffixIcon: focusNode.hasFocus ? suffixIcon : null,

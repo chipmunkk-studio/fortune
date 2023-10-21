@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/fortune_ext.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 
 import 'main_location_data.dart';
 
@@ -29,9 +29,10 @@ class ObtainLoadingView extends StatelessWidget {
                   children: [
                     SizedBox.square(
                       dimension: 92,
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: processingMarker?.ingredient.imageUrl ?? transparentImageUrl,
+                      child: FortuneCachedNetworkImage(
+                        imageUrl: processingMarker?.ingredient.imageUrl ?? transparentImageUrl,
+                        placeholder: Container(),
+                        fit: BoxFit.fill,
                       ),
                     ),
                     const SizedBox(height: 16),

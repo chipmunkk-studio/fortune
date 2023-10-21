@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import 'bloc/my_ingredients.dart';
 import 'component/my_ingredients_list.dart';
@@ -121,11 +121,10 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
             runAlignment: WrapAlignment.center,
             direction: Axis.vertical,
             children: [
-              FadeInImage.memoryNetwork(
-                width: 200,
-                height: 200,
-                placeholder: kTransparentImage,
-                image: selectedItem.ingredient.imageUrl,
+              FortuneCachedNetworkImage(
+                imageUrl: selectedItem.ingredient.imageUrl,
+                placeholder: Container(),
+                fit: BoxFit.fill,
               ),
               Text(
                 "${selectedItem.ingredient.type}",
