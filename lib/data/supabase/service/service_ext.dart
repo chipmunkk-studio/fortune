@@ -124,7 +124,7 @@ getLocationName(
     ].where((e) => e != null && e.isNotEmpty).join(' ');
 
     // 공백을 제거 하고 비교.
-    return nonDetailStreet.trim().isEmpty ? unknownLocation : nonDetailStreet;
+    return nonDetailStreet.isEmpty ? unknownLocation : nonDetailStreet;
   } catch (e) {
     return unknownLocation;
   }
