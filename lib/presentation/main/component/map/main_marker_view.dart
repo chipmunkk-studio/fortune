@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MainMarkerView extends StatefulWidget {
   final MainLocationData marker;
@@ -34,10 +34,10 @@ class _MainMarkerViewState extends State<MainMarkerView> {
         },
         child: Container(
           key: widget.marker.globalKey,
-          // 획득 유저가 있고, 소멸성 인 경우 >  쓰레기 마커.
-          child: FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image: widget.marker.ingredient.imageUrl,
+          child: FortuneCachedNetworkImage(
+            imageUrl: widget.marker.ingredient.imageUrl,
+            placeholder: Container(),
+            fit: BoxFit.fill,
           ),
         ),
       ),

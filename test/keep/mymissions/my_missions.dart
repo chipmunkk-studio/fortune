@@ -1,42 +1,42 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:fortune/core/navigation/fortune_app_router.dart';
 // import 'package:fortune/core/widgets/fortune_scaffold.dart';
 // import 'package:fortune/di.dart';
-// import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
-// import 'package:fortune/presentation/fortune_app_router.dart';
 // import 'package:side_effect_bloc/side_effect_bloc.dart';
 //
-// class AlarmFeedPage extends StatelessWidget {
-//   const AlarmFeedPage({Key? key}) : super(key: key);
+// import 'bloc/my_missions.dart';
+//
+// class MyMissionsPage extends StatelessWidget {
+//   const MyMissionsPage({Key? key}) : super(key: key);
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return BlocProvider(
-//       create: (context) => serviceLocator<NickNameBloc>()..add(NickNameInit()),
+//       create: (context) => serviceLocator<MyMissionsBloc>()..add(MyMissionsInit()),
 //       child: FortuneScaffold(
 //         appBar: FortuneCustomAppBar.leadingAppBar(context, title: ''),
-//         child: const _AlarmFeedPage(),
+//         child: const _MyMissionsPage(),
 //       ),
 //     );
 //   }
 // }
 //
-// class _AlarmFeedPage extends StatefulWidget {
-//   const _AlarmFeedPage({Key? key}) : super(key: key);
+// class _MyMissionsPage extends StatefulWidget {
+//   const _MyMissionsPage({Key? key}) : super(key: key);
 //
 //   @override
-//   State<_AlarmFeedPage> createState() => _AlarmFeedPageState();
+//   State<_MyMissionsPage> createState() => _MyMissionsPageState();
 // }
 //
-// class _AlarmFeedPageState extends State<_AlarmFeedPage> {
-//
-//   final _router = serviceLocator<FortuneRouter>().router;
-//   late NickNameBloc _bloc;
+// class _MyMissionsPageState extends State<_MyMissionsPage> {
+//   final _router = serviceLocator<FortuneAppRouter>().router;
+//   late MyMissionsBloc _bloc;
 //
 //   @override
 //   void initState() {
 //     super.initState();
-//     _bloc = BlocProvider.of<NickNameBloc>(context);
+//     _bloc = BlocProvider.of<MyMissionsBloc>(context);
 //   }
 //
 //   @override
@@ -47,9 +47,9 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return BlocSideEffectListener<NickNameBloc, AlarmFeedSideEffect>(
+//     return BlocSideEffectListener<MyMissionsBloc, MyMissionsSideEffect>(
 //       listener: (context, sideEffect) async {
-//         if (sideEffect is AlarmFeedError) {
+//         if (sideEffect is MyMissionsError) {
 //           dialogService.showErrorDialog(context, sideEffect.error);
 //         }
 //       },

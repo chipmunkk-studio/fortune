@@ -38,33 +38,33 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle subTitle1Medium({Color? fontColor}) {
+  static TextStyle subTitle1Medium({Color? color}) {
     return TextStyle(
       fontSize: 22.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
-  static TextStyle subTitle2SemiBold({Color? fontColor}) {
+  static TextStyle subTitle2SemiBold({Color? color}) {
     return TextStyle(
       fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
-  static TextStyle subTitle2Medium({Color? fontColor}) {
+  static TextStyle subTitle2Medium({Color? color}) {
     return TextStyle(
       fontSize: 20.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
@@ -96,23 +96,27 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body2Semibold({Color? fontColor}) {
+  static TextStyle body2Semibold({
+    Color? color,
+    double? height,
+  }) {
     return TextStyle(
       fontSize: 16.spMin,
+      height: height ?? 1.0,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
-  static TextStyle body2Light({Color? fontColor}) {
+  static TextStyle body2Light({Color? color}) {
     return TextStyle(
       fontSize: 16.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 

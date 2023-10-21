@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class MissionRelayCard extends StatelessWidget {
   const MissionRelayCard(this.item, {super.key});
@@ -41,7 +41,7 @@ class MissionRelayCard extends StatelessWidget {
                       child: Text(
                         item.mission.content,
                         style: FortuneTextStyle.body2Semibold(
-                          fontColor: ColorName.grey200,
+                          color: ColorName.grey200,
                         ),
                         maxLines: 2,
                       ),
@@ -72,7 +72,7 @@ class MissionRelayCard extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: "/${item.requiredTotalCount} ${item.isRelayMissionCleared}",
-                                style: FortuneTextStyle.body2Semibold(fontColor: ColorName.grey700),
+                                style: FortuneTextStyle.body2Semibold(color: ColorName.grey700),
                               ),
                             ],
                           ),
@@ -86,9 +86,10 @@ class MissionRelayCard extends StatelessWidget {
               SizedBox.square(
                 dimension: 84,
                 child: ClipOval(
-                  child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: item.mission.missionReward.rewardImage,
+                  child: FortuneCachedNetworkImage(
+                    imageUrl: item.mission.missionReward.rewardImage,
+                    placeholder: Container(),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

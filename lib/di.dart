@@ -74,6 +74,7 @@ import 'package:fortune/presentation/login/bloc/login_bloc.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/bloc/missions.dart';
 import 'package:fortune/presentation/myingredients/bloc/my_ingredients.dart';
+import 'package:fortune/presentation/mymissions/bloc/my_missions.dart';
 import 'package:fortune/presentation/mypage/bloc/my_page.dart';
 import 'package:fortune/presentation/nickname/bloc/nick_name.dart';
 import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
@@ -106,6 +107,7 @@ import 'domain/supabase/usecase/get_country_info_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
+import 'domain/supabase/usecase/my_missions_use_case.dart';
 import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
@@ -499,6 +501,12 @@ _initUseCase() async {
         supportRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<MyMissionsUseCase>(
+      () => MyMissionsUseCase(
+        missionsRepository: serviceLocator(),
+        userRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<NickNameUseCase>(
       () => NickNameUseCase(
         userRepository: serviceLocator(),
@@ -601,6 +609,11 @@ _initAppBloc() {
     ..registerFactory(
       () => ObtainHistoryBloc(
         getObtainHistoriesUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MyMissionsBloc(
+        missionsUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

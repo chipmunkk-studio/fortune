@@ -87,6 +87,10 @@ class $AssetsIconsGen {
   SvgGenImage get icCheckCircleFill24 =>
       const SvgGenImage('assets/icons/ic_check_circle_fill_24.svg');
 
+  /// File path: assets/icons/ic_checklist_24.svg
+  SvgGenImage get icChecklist24 =>
+      const SvgGenImage('assets/icons/ic_checklist_24.svg');
+
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
 
@@ -219,6 +223,7 @@ class $AssetsIconsGen {
         icCancel,
         icCancelCircle,
         icCheckCircleFill24,
+        icChecklist24,
         icClock,
         icFortuneMoney,
         icFortuneMoneyPlus,

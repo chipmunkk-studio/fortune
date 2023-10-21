@@ -36,4 +36,7 @@ abstract class MissionsRepository {
     int start = 0,
     int end = 20,
   });
+
+
+  Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsersByUserId(int userId);
 }

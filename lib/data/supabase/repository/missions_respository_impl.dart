@@ -165,4 +165,18 @@ class MissionsRepositoryImpl extends MissionsRepository {
       );
     }
   }
+
+  @override
+  Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsersByUserId(int userId) async {
+    try {
+      final result = await missionClearUserService.findAllMissionClearUserByUserId(
+          userId
+      );
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: e.message,
+      );
+    }
+  }
 }
