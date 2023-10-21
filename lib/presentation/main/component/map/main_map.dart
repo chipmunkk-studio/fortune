@@ -83,7 +83,7 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  if (remoteConfigArgs.enableMapBox)
+                  if (remoteConfigArgs.enableMapBox && kReleaseMode)
                     TileLayer(
                       tileSize: 512,
                       zoomOffset: -1,
