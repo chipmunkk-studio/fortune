@@ -95,7 +95,7 @@ class MainMap extends StatelessWidget {
                     )
                   else
                     CustomPaint(
-                      painter: GridPainter(gridSpacing: 40),
+                      painter: GridPainter(gridSpacing: 50),
                       child: Container(), // 이 부분을 적절한 자식 위젯으로 교체 가능
                     ),
                   // 마커 목록.
