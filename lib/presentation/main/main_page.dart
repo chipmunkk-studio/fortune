@@ -98,6 +98,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
     locationChangeSubscription.cancel();
+    rotateChangeEvent?.cancel();
     _bloc.close();
   }
 
