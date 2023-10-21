@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 
 class FortuneCachedNetworkImage extends StatelessWidget {
   final String imageUrl;
@@ -27,8 +28,8 @@ class FortuneCachedNetworkImage extends StatelessWidget {
     required this.imageUrl,
     this.fit = BoxFit.cover,
     this.placeholder = const CircularProgressIndicator(),
-    this.errorWidget = const Icon(Icons.error),
-  });
+    Widget? errorWidget,
+  }) : errorWidget = errorWidget ?? const Icon(Icons.error_outline_sharp, color: ColorName.grey400);
 
   @override
   Widget build(BuildContext context) {

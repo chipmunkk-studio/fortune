@@ -89,7 +89,6 @@ class IngredientLayout extends StatelessWidget {
                             height: 68,
                             imageUrl: item.ingredient.imageUrl,
                             placeholder: Container(),
-                            errorWidget: const Icon(Icons.error_outline),
                             fit: BoxFit.fill,
                           ),
                         ),

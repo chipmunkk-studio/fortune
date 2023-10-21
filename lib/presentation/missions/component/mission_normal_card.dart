@@ -42,7 +42,7 @@ class MissionNormalCard extends StatelessWidget {
                     Text(
                       item.mission.content,
                       style: FortuneTextStyle.body2Light(
-                        fontColor: ColorName.grey200,
+                        color: ColorName.grey200,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -88,7 +88,6 @@ class MissionNormalCard extends StatelessWidget {
                   child: FortuneCachedNetworkImage(
                     imageUrl: item.mission.missionImage,
                     placeholder: Container(),
-                    errorWidget: const Icon(Icons.error_outline),
                     fit: BoxFit.fill,
                   ),
                 ),

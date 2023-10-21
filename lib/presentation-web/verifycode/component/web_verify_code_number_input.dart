@@ -109,7 +109,7 @@ class _WebVerifyCodeNumberInputState extends State<WebVerifyCodeNumberInput> {
                               return Text(
                                 state.verifyTime != 180 ? displayTime : '',
                                 style: FortuneTextStyle.body2Light(
-                                  fontColor: ColorName.grey200,
+                                  color: ColorName.grey200,
                                 ),
                               );
                             }()

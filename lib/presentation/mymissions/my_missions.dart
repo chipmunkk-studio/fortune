@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'bloc/my_missions.dart';
+import 'component/item_my_mission_reward.dart';
+import 'component/top_area.dart';
 
 class MyMissionsPage extends StatelessWidget {
   const MyMissionsPage({Key? key}) : super(key: key);
@@ -16,6 +23,7 @@ class MyMissionsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => serviceLocator<MyMissionsBloc>()..add(MyMissionsInit()),
       child: FortuneScaffold(
+        padding: EdgeInsets.zero,
         appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.msgMissionHistory),
         child: const _MyMissionsPage(),
       ),
@@ -54,9 +62,33 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
           dialogService.showErrorDialog(context, sideEffect.error);
         }
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [],
+      child: BlocBuilder<MyMissionsBloc, MyMissionsState>(
+        builder: (context, state) {
+          final count = state.missions.length;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TopArea(count: state.missions.length),
+              const SizedBox(height: 20),
+              Expanded(
+                child: ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.missions.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  separatorBuilder: (context, index) => const Divider(
+                    height: 40,
+                    color: ColorName.grey800,
+                  ),
+                  itemBuilder: (context, index) {
+                    final item = state.missions[index];
+                    return ItemMyMissionReward(item: item);
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

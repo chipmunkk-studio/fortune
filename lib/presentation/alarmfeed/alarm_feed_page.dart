@@ -82,7 +82,6 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                 child: FortuneCachedNetworkImage(
                   imageUrl: reward.ingredients.imageUrl,
                   placeholder: Container(),
-                  errorWidget: const Icon(Icons.error_outline),
                   fit: BoxFit.fill,
                 ),
               ),

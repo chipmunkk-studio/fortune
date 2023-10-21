@@ -42,7 +42,6 @@ class ItemObtainHistory extends StatelessWidget {
                           height: 24,
                           imageUrl: item.ingredient.imageUrl,
                           placeholder: Container(),
-                          errorWidget: const Icon(Icons.error_outline),
                           fit: BoxFit.fill,
                         ),
                 ),

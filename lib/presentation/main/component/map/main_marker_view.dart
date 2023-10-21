@@ -37,7 +37,6 @@ class _MainMarkerViewState extends State<MainMarkerView> {
           child: FortuneCachedNetworkImage(
             imageUrl: widget.marker.ingredient.imageUrl,
             placeholder: Container(),
-            errorWidget: const Icon(Icons.error_outline),
             fit: BoxFit.fill,
           ),
         ),

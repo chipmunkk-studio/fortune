@@ -32,7 +32,6 @@ class ObtainLoadingView extends StatelessWidget {
                       child: FortuneCachedNetworkImage(
                         imageUrl: processingMarker?.ingredient.imageUrl ?? transparentImageUrl,
                         placeholder: Container(),
-                        errorWidget: const Icon(Icons.error_outline),
                         fit: BoxFit.fill,
                       ),
                     ),

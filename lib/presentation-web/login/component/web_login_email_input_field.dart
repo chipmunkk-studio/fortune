@@ -36,7 +36,7 @@ class WebLoginEmailInputField extends StatelessWidget {
         hintText: FortuneTr.msgInputEmail,
         contentPadding: const EdgeInsets.all(16),
         counterText: "",
-        hintStyle: FortuneTextStyle.subTitle2Medium(fontColor: ColorName.grey500),
+        hintStyle: FortuneTextStyle.subTitle2Medium(color: ColorName.grey500),
         errorText: FortuneValidator.isValidEmail(_email) || _email.isEmpty ? null : FortuneTr.msgInputEmailNotValid,
         errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
       ),

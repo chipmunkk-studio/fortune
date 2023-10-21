@@ -124,7 +124,6 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
               FortuneCachedNetworkImage(
                 imageUrl: selectedItem.ingredient.imageUrl,
                 placeholder: Container(),
-                errorWidget: const Icon(Icons.error_outline),
                 fit: BoxFit.fill,
               ),
               Text(

@@ -37,7 +37,6 @@ class ExchangeBottom extends StatelessWidget {
               child: FortuneCachedNetworkImage(
                 imageUrl: entity.rewardImage,
                 placeholder: Container(),
-                errorWidget: const Icon(Icons.error_outline),
                 fit: BoxFit.fill,
               ),
             ),

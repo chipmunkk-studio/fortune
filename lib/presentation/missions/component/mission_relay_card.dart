@@ -89,7 +89,6 @@ class MissionRelayCard extends StatelessWidget {
                   child: FortuneCachedNetworkImage(
                     imageUrl: item.mission.missionReward.rewardImage,
                     placeholder: Container(),
-                    errorWidget: const Icon(Icons.error_outline),
                     fit: BoxFit.fill,
                   ),
                 ),
