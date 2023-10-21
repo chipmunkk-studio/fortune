@@ -71,20 +71,30 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
               TopArea(count: state.missions.length),
               const SizedBox(height: 20),
               Expanded(
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: state.missions.length,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  separatorBuilder: (context, index) => const Divider(
-                    height: 40,
-                    color: ColorName.grey800,
-                  ),
-                  itemBuilder: (context, index) {
-                    final item = state.missions[index];
-                    return ItemMyMissionReward(item: item);
-                  },
-                ),
+                child: state.missions.isNotEmpty
+                    ? ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: state.missions.length,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        separatorBuilder: (context, index) => const Divider(
+                          height: 40,
+                          color: ColorName.grey800,
+                        ),
+                        itemBuilder: (context, index) {
+                          final item = state.missions[index];
+                          return ItemMyMissionReward(item: item);
+                        },
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 60),
+                        child: Center(
+                          child: Text(
+                            FortuneTr.msgNoCompletedMissions,
+                            style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+                          ),
+                        ),
+                      ),
               ),
             ],
           );
