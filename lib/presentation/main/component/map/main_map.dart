@@ -47,6 +47,7 @@ class MainMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final enableMapBox = remoteConfigArgs.enableMapBox && kReleaseMode;
     return myLocation == null
         ? const Center(child: CircularProgressIndicator(backgroundColor: ColorName.primary))
         : Stack(
@@ -83,7 +84,7 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  if (remoteConfigArgs.enableMapBox && kReleaseMode)
+                  if (enableMapBox)
                     TileLayer(
                       tileSize: 512,
                       zoomOffset: -1,
@@ -96,7 +97,7 @@ class MainMap extends StatelessWidget {
                   else
                     CustomPaint(
                       painter: GridPainter(gridSpacing: 50),
-                      child: Container(), // 이 부분을 적절한 자식 위젯으로 교체 가능
+                      child: Container(),
                     ),
                   // 마커 목록.
                   BlocBuilder<MainBloc, MainState>(
@@ -120,7 +121,9 @@ class MainMap extends StatelessWidget {
                                 state.myLocation!.latitude,
                                 state.myLocation!.longitude,
                               ),
-                              color: ColorName.secondary.withOpacity(0.1),
+                              color: enableMapBox
+                                  ? ColorName.secondary.withOpacity(0.1)
+                                  : ColorName.primary.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
                               radius: state.clickableRadiusLength * 2,
@@ -135,7 +138,7 @@ class MainMap extends StatelessWidget {
               Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
-                    glowColor: ColorName.secondary.withOpacity(0.5),
+                    glowColor: enableMapBox ? ColorName.secondary.withOpacity(0.5) : ColorName.primary.withOpacity(0.5),
                     duration: const Duration(milliseconds: 2000),
                     repeat: true,
                     showTwoGlows: true,
@@ -147,7 +150,9 @@ class MainMap extends StatelessWidget {
                         return ScaleAnimation(
                           child: CenterProfile(
                             imageUrl: state.user?.profileImage ?? "",
-                            backgroundColor: ColorName.secondary.withOpacity(1.0),
+                            backgroundColor: enableMapBox
+                                ? ColorName.secondary.withOpacity(1.0)
+                                : ColorName.primary.withOpacity(1.0),
                           ),
                         );
                       },
