@@ -50,11 +50,12 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 내가 보유한 마커 수.
       final haveCounts = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 
-      // 내 주변 마커 리스트.(티켓 X)
+      // 내 주변 마커 리스트.(티켓 X, 노말O, 스페셜 O)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) =>
-                element.ingredient.type != IngredientType.coin && element.ingredient.type == IngredientType.normal,
+                element.ingredient.type != IngredientType.coin &&
+                (element.ingredient.type == IngredientType.normal || element.ingredient.type == IngredientType.special),
           )
           .toList();
 
@@ -64,31 +65,31 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
-      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 1;
+      final keepMarkerCount = remoteConfig.markerCount;
+      final keepTicketCount = remoteConfig.ticketCount;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
           : 0;
 
-      final isTicketEmpty = markersNearByMe
+      final coins = markersNearByMe
           .where(
             (element) => element.ingredient.type == IngredientType.coin,
           )
           .toList();
 
-      // 티켓이 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
-      final ticketCount = isTicketEmpty.length < keepTicketCount ? keepTicketCount - isTicketEmpty.length : 0;
+      // 코인 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
+      final coinCounts = coins.length < keepTicketCount ? keepTicketCount - coins.length : 0;
 
       FortuneLogger.info(
-          "마커 로드 >> markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $ticketCount");
+          "마커 로드 >> markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $coinCounts,");
 
       // 주변에 마커가 없다면, 필요한 개수 만큼 내 위치를 중심으로 랜덤 생성.
       final result = await markerRepository.getRandomMarkers(
         latitude: param.latitude,
         longitude: param.longitude,
         ingredients: ingredients,
-        ticketCount: ticketCount,
+        coinCounts: coinCounts,
         markerCount: markerCount,
       );
 

@@ -10,11 +10,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 
 enum IngredientType {
-  normal,
-  coin,
-  unique,
-  epic,
-  rare,
+  normal, // 일반
+  coin, // 코인
+  unique, // 레벨 업 시
+  epic, // 등급 업.
+  rare, // 릴레이 미션.
+  special, // 서버 컨트롤.
 }
 
 enum AlarmFeedType {
@@ -25,7 +26,6 @@ enum AlarmFeedType {
 
 enum AlarmRewardType {
   level,
-  event,
   relay,
   grade,
   none,
@@ -49,6 +49,8 @@ getIngredientType(String type) {
     return IngredientType.rare;
   } else if (IngredientType.epic.name == type) {
     return IngredientType.epic;
+  } else if (IngredientType.special.name == type) {
+    return IngredientType.special;
   } else {
     return IngredientType.normal;
   }
@@ -67,8 +69,6 @@ getEventNoticeType(String type) {
 getEventRewardType(String type) {
   if (AlarmRewardType.level.name == type) {
     return AlarmRewardType.level;
-  } else if (AlarmRewardType.event.name == type) {
-    return AlarmRewardType.event;
   } else if (AlarmRewardType.relay.name == type) {
     return AlarmRewardType.relay;
   } else if (AlarmRewardType.grade.name == type) {

@@ -417,13 +417,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
       if (newLoc != null) {
         FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}, 회전방향:${newLoc.heading}");
-        if (kReleaseMode) {
-          _bloc
-            ..add(MainMyLocationChange(newLoc))
-            ..add(Main());
-        } else {
-          _bloc.add(MainMyLocationChange(newLoc));
-        }
+        _bloc
+          ..add(MainMyLocationChange(newLoc))
+          ..add(Main());
       }
     } catch (e) {
       FortuneLogger.error(message: e.toString());

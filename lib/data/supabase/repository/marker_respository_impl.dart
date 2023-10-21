@@ -64,7 +64,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required double latitude,
     required double longitude,
     required List<IngredientEntity> ingredients,
-    required int ticketCount,
+    required int coinCounts,
     required int markerCount,
   }) async {
     try {
@@ -86,7 +86,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
 
       // 재료 N개 / 티켓 N개 랜덤 픽.
       final collectedMarkerList = nonTicketAndUniqueIngredients.take(markerCount).toList();
-      final collectedTicketList = ticketIngredients.take(ticketCount).toList();
+      final collectedTicketList = ticketIngredients.take(coinCounts).toList();
 
       // 현재 위치를 기준으로 마커 N개 생성.
       for (var element in collectedMarkerList) {

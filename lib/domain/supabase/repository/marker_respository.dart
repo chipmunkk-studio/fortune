@@ -22,7 +22,7 @@ abstract class MarkerRepository {
     required double latitude,
     required double longitude,
     required List<IngredientEntity> ingredients,
-    required int ticketCount,
+    required int coinCounts,
     required int markerCount,
   });
 
