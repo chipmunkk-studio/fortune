@@ -136,7 +136,7 @@ class UserService {
           .eq('email', email)
           .toSelect();
       if (response.isEmpty) {
-        throw CommonFailure(errorMessage: FortuneTr.notExistUser);
+        throw CommonFailure(errorMessage: FortuneTr.msgNotExistUser);
       } else {
         final user = response.map((e) => FortuneUserResponse.fromJson(e)).toList();
         return user.single;

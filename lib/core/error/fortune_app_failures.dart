@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -51,6 +52,13 @@ extension FortuneExceptionX on Exception {
           postgrestException.message.contains("JWT") ||
           postgrestException.message.contains("JWSError") ||
           postgrestException.message.contains("Invalid API")) {
+        // 크래실리틱스 전송.
+        FirebaseCrashlytics.instance.recordError(
+          this,
+          StackTrace.current,
+          reason: "[${postgrestException.code}] ${postgrestException.message}",
+          fatal: true,
+        );
         return AuthFailure(
           errorCode: postgrestException.code,
           errorMessage: postgrestException.message,
@@ -62,6 +70,13 @@ extension FortuneExceptionX on Exception {
       }
     } else if (this is AuthException) {
       final authException = this as AuthException;
+      // 크래실리틱스 전송.
+      FirebaseCrashlytics.instance.recordError(
+        this,
+        StackTrace.current,
+        reason: "[${authException.statusCode}] ${authException.message}",
+        fatal: true,
+      );
       return AuthFailure(
         errorCode: authException.statusCode,
         errorMessage: authException.message,
@@ -83,12 +98,12 @@ extension FortuneFailureX on FortuneFailure {
     if (this is CustomFailure) {
       return this;
     }
-    FortuneLogger.error(
-      code: code,
-      message: message,
-      description: description,
+
+    FortuneLogger.error(code: code, message: message, description: description);
+
+    return copyWith(
+      description: description ?? FortuneTr.msgUpdateUserInfo,
     );
-    return copyWith(description: description);
   }
 
   Map<String, dynamic> toJsonMap() {

@@ -32,9 +32,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findAllMissions();
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -47,9 +45,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       }
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 클리어 조건 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -82,9 +78,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
         ),
       );
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 클리어 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -94,9 +88,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionById(missionId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -106,9 +98,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -118,9 +108,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -130,9 +118,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionClearConditionsService.findMissionClearConditionOrNullByMarkerId(markerId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '미션 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -142,9 +128,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionRewardService.findMissionRewardNullableById(markerId) ?? MissionRewardEntity.empty();
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: e.message,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -160,9 +144,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       );
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notFoundUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -172,9 +154,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionClearUserService.findAllMissionClearUserByUserId(userId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notFoundUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

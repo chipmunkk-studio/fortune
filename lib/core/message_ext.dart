@@ -41,11 +41,11 @@ abstract class FortuneTr {
       tr('msgAcquireMarker', args: [nickname, location, ingredientName]);
 
   // 사용자
-  static final notExistUser = tr('msgNotExistUser');
-  static final notExistTerms = tr('msgNotExistTerms');
-  static final notFoundUser = tr('msgNotFoundUser');
-  static final notUpdateUser = tr('msgNotUpdateUser');
-  static final renewAuthInfo = tr('msgRenewAuthInfo');
+  static final msgNotExistUser = tr('msgNotExistUser');
+  static final msgNotExistTerms = tr('msgNotExistTerms');
+  static final msgUpdateUserInfo = tr('msgUpdateUserInfo');
+  static final msgNotUpdateUser = tr('msgNotUpdateUser');
+  static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');
 
@@ -80,6 +80,7 @@ abstract class FortuneTr {
   static final msgCompletedMissions = tr('msgCompletedMissions');
   static final msgRevokeWithdrawal = tr('msgRevokeWithdrawal');
   static final msgHallOfFame = tr('msgHallOfFame');
+  static final msgRetryLater = tr('msgRetryLater');
   static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
   static final msgMissionCompleted = tr('msgMissionCompleted');
   static final msgPaymentDelay = tr('msgPaymentDelay');

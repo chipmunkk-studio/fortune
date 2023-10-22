@@ -173,7 +173,7 @@ class AuthService {
           await client.from(_termsTableName).select("*").filter('index', 'eq', index).toSelect();
       final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
       if (terms.isEmpty) {
-        throw CommonFailure(errorMessage: FortuneTr.notExistTerms);
+        throw CommonFailure(errorMessage: FortuneTr.msgNotExistTerms);
       } else {
         final terms = response.map((e) => AgreeTermsResponse.fromJson(e)).toList();
         return terms.single;
