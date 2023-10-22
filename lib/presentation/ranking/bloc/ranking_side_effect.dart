@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 
 @immutable
-abstract class MyMissionsSideEffect extends Equatable {}
+abstract class RankingSideEffect extends Equatable {}
 
-class MyMissionsError extends MyMissionsSideEffect {
+class RankingError extends RankingSideEffect {
   final FortuneFailure error;
 
-  MyMissionsError(this.error);
+  RankingError(this.error);
 
   @override
   List<Object?> get props => [];

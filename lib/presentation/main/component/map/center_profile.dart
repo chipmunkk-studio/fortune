@@ -20,7 +20,7 @@ class CenterProfile extends StatelessWidget {
         width: 48,
         height: 53,
         child: CustomPaint(
-          painter: _CenterProfileBackgroundPainter(),
+          painter: _CenterProfileBackgroundPainter(backgroundColor),
         ),
       ),
       Positioned(
@@ -41,6 +41,10 @@ class CenterProfile extends StatelessWidget {
 }
 
 class _CenterProfileBackgroundPainter extends CustomPainter {
+  final Color backgroundColor;
+
+  _CenterProfileBackgroundPainter(this.backgroundColor);
+
   @override
   void paint(Canvas canvas, Size size) {
     Path path_0 = Path();
@@ -53,9 +57,9 @@ class _CenterProfileBackgroundPainter extends CustomPainter {
         size.width * 0.1250000, size.height * 0.9000000, 0, size.height * 0.7875000, 0, size.height * 0.4500000);
     path_0.close();
 
-    Paint paint_0_fill = Paint()..style = PaintingStyle.fill;
-    paint_0_fill.color = Color(0xff7367FF).withOpacity(1.0);
-    canvas.drawPath(path_0, paint_0_fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = backgroundColor.withOpacity(1.0);
+    canvas.drawPath(path_0, paint0Fill);
 
     Path path_1 = Path();
     path_1.moveTo(size.width * 0.5622019, size.height * 0.9122133);
@@ -80,7 +84,7 @@ class _CenterProfileBackgroundPainter extends CustomPainter {
     path_1.close();
 
     Paint paint1 = Paint()..style = PaintingStyle.fill;
-    paint1.color = const Color(0xff7367FF).withOpacity(1.0);
+    paint1.color = backgroundColor.withOpacity(1.0);
     canvas.drawPath(path_1, paint1);
   }
 

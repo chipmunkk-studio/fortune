@@ -8,7 +8,7 @@ description: fortune flutter
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
-version: 1.2.4+9
+version: 1.2.5+10
 
 # 3.0.0 이상을 지원하면서, 4.0.0미만에 버전도 작동하도록 함
 environment:
@@ -17,20 +17,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.17.0
-  firebase_remote_config: ^4.2.7
-  firebase_analytics: ^10.5.1
-  firebase_crashlytics: ^3.3.7
-  firebase_messaging: ^14.6.9
+  firebase_core: ^2.19.0
+  firebase_remote_config: ^4.3.1
+  firebase_analytics: ^10.6.1
+  firebase_crashlytics: ^3.4.1
+  firebase_messaging: ^14.7.1
   supabase: ^1.11.9
   supabase_flutter: ^1.10.22
   app_settings: ^5.1.1
   mixpanel_flutter: ^2.1.1
-  package_info_plus: ^4.1.0
+  package_info_plus: ^4.2.0
   flutter_local_notifications: ^16.1.0
   flutter_launcher_icons: ^0.13.1
-  google_mobile_ads: ^3.0.0
-  upgrader: ^8.1.0
+  google_mobile_ads: ^3.1.0
+  upgrader: ^8.2.0
   google_fonts: ^6.1.0
   webview_flutter: ^4.4.1
   flutter_cache_manager: ^3.3.1
@@ -38,7 +38,7 @@ dependencies:
   # ui
   cupertino_icons: ^1.0.6
   flutter_svg: ^2.0.7
-  lottie: ^2.6.0
+  lottie: ^2.7.0
   material_dialogs: ^1.1.4
   page_view_indicators: ^2.0.0
   image_picker: ^1.0.4
@@ -110,7 +110,7 @@ dev_dependencies:
   build_runner:
   # Resource Generator
   flutter_gen_runner:
-  flutter_native_splash: ^2.3.3
+  flutter_native_splash: ^2.3.4
   flutter_lints: ^2.0.3
   # 패키지명변경: flutter pub run change_app_package_name:main com.new.package.name
   change_app_package_name: ^1.1.0

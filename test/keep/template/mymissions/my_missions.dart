@@ -6,7 +6,7 @@
 // import 'package:fortune/di.dart';
 // import 'package:side_effect_bloc/side_effect_bloc.dart';
 //
-// import 'bloc/my_missions.dart';
+// import 'bloc/ranking.dart';
 //
 // class MyMissionsPage extends StatelessWidget {
 //   const MyMissionsPage({Key? key}) : super(key: key);
