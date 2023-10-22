@@ -1,9 +1,9 @@
 import 'fortune_user_entity.dart';
 
-class NIckNameViewEntity {
+class NickNameViewEntity {
   final FortuneUserEntity user;
 
-  NIckNameViewEntity({
+  NickNameViewEntity({
     required this.user,
   });
 }

@@ -4,7 +4,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
-import 'package:fortune/core/util/strings.dart';
+import 'package:fortune/core/util/ints.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
@@ -64,7 +64,7 @@ class MyIngredientList extends StatelessWidget {
                                 const Shadow(offset: Offset(-1.0, 1.0), color: ColorName.grey700),
                               ],
                             ),
-                            text: item.histories.length.toString().toFormatThousandNumber(),
+                            text: item.histories.length.toFormatThousandNumber(),
                           ),
                         ),
                       ),

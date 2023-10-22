@@ -9,8 +9,9 @@ import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
-import 'package:fortune/presentation/mymissions/my_missions.dart';
+import 'package:fortune/presentation/mymissions/my_missions_page.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';
+import 'package:fortune/presentation/ranking/ranking_page.dart';
 import 'package:fortune/presentation/support/faqs/faqs_page.dart';
 import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
@@ -66,6 +67,12 @@ class FortuneAppRouter {
   static var myMissionsHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const MyMissionsPage();
+    },
+  );
+
+  static var rankingHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const RankingPage();
     },
   );
 
@@ -287,6 +294,13 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 랭킹.
+      ..define(
+        AppRoutes.rankingRoutes,
+        handler: rankingHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         AppRoutes.obtainHistoryRoute,
@@ -315,4 +329,5 @@ class AppRoutes {
   static const String noticesRoutes = 'notices';
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
+  static const String rankingRoutes = 'ranking';
 }

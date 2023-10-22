@@ -79,6 +79,7 @@ abstract class FortuneTr {
   static final msgNoCompletedMissions = tr('msgNoCompletedMissions');
   static final msgCompletedMissions = tr('msgCompletedMissions');
   static final msgRevokeWithdrawal = tr('msgRevokeWithdrawal');
+  static final msgHallOfFame = tr('msgHallOfFame');
   static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
   static final msgMissionCompleted = tr('msgMissionCompleted');
   static final msgPaymentDelay = tr('msgPaymentDelay');

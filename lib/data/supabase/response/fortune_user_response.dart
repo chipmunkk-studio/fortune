@@ -1,3 +1,4 @@
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,17 +9,17 @@ class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'id')
   final double id_;
   @JsonKey(name: 'email')
-  final String email_;
+  final String? email_;
   @JsonKey(name: 'nickname')
-  final String nickname_;
+  final String? nickname_;
   @JsonKey(name: 'profileImage')
   final String? profileImage_;
   @JsonKey(name: 'ticket')
-  final int ticket_;
+  final int? ticket_;
   @JsonKey(name: 'marker_obtain_count')
-  final int markerObtainCount_;
+  final int? markerObtainCount_;
   @JsonKey(name: 'level')
-  final int level_;
+  final int? level_;
   @JsonKey(name: 'is_withdrawal')
   final bool? isWithdrawal_;
   @JsonKey(name: 'push_token')
@@ -26,7 +27,7 @@ class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'withdrawal_at')
   final String? withdrawalAt_;
   @JsonKey(name: 'created_at')
-  final String createdAt_;
+  final String? createdAt_;
 
   FortuneUserResponse({
     required this.id_,
@@ -42,16 +43,16 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.createdAt_,
   }) : super(
           id: id_.toInt(),
-          nickname: nickname_,
-          email: email_,
-          ticket: ticket_,
+          nickname: nickname_ ?? FortuneTr.msgUnknownUser,
+          email: email_ ?? '',
+          ticket: ticket_ ?? 0,
           profileImage: profileImage_ ?? "",
-          markerObtainCount: markerObtainCount_,
-          level: level_,
+          markerObtainCount: markerObtainCount_ ?? 0,
+          level: level_ ?? 0,
           isWithdrawal: isWithdrawal_ ?? false,
           pushToken: pushToken_ ?? '',
           withdrawalAt: withdrawalAt_ ?? '',
-          createdAt: createdAt_,
+          createdAt: createdAt_ ?? '',
         );
 
   factory FortuneUserResponse.fromJson(Map<String, dynamic> json) => _$FortuneUserResponseFromJson(json);
