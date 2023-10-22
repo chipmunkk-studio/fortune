@@ -52,6 +52,7 @@ import 'package:fortune/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
@@ -79,6 +80,7 @@ import 'package:fortune/presentation/mypage/bloc/my_page.dart';
 import 'package:fortune/presentation/nickname/bloc/nick_name.dart';
 import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
 import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
+import 'package:fortune/presentation/ranking/bloc/ranking.dart';
 import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
 import 'package:fortune/presentation/support/notices/bloc/notices.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
@@ -295,7 +297,6 @@ _initRepository() {
     ..registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
         serviceLocator<UserService>(),
-        serviceLocator<LocalDataSource>(),
         serviceLocator<MixpanelTracker>(),
       ),
     )
@@ -466,6 +467,11 @@ _initUseCase() async {
         authRepository: serviceLocator<AuthRepository>(),
       ),
     )
+    ..registerLazySingleton<RankingUseCase>(
+      () => RankingUseCase(
+        userRepository: serviceLocator<UserRepository>(),
+      ),
+    )
     ..registerLazySingleton<GetAlarmFeedUseCase>(
       () => GetAlarmFeedUseCase(
         userRepository: serviceLocator(),
@@ -614,6 +620,11 @@ _initAppBloc() {
     ..registerFactory(
       () => MyMissionsBloc(
         missionsUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => RankingBloc(
+        rankingUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

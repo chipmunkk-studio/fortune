@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
@@ -17,7 +18,10 @@ class AlarmFeedBloc extends Bloc<AlarmFeedEvent, AlarmFeedState>
     required this.receiveAlarmRewardUseCase,
   }) : super(AlarmFeedState.initial()) {
     on<AlarmRewardInit>(init);
-    on<AlarmRewardReceive>(_receive);
+    on<AlarmRewardReceive>(
+      _receive,
+      transformer: throttle(const Duration(seconds: 3)),
+    );
   }
 
   FutureOr<void> init(AlarmRewardInit event, Emitter<AlarmFeedState> emit) async {

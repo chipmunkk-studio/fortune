@@ -30,12 +30,21 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
           )
           .toList()
         ..sort((a, b) {
-          if (a.type == IngredientType.unique && b.type != IngredientType.unique) {
-            return 1; // unique는 뒤로 가도록
-          } else if (a.type != IngredientType.unique && b.type == IngredientType.unique) {
-            return -1; // non-unique는 앞으로 가도록
-          }
-          return 0; // 같으면 순서 변경 없음
+          var order = [
+            IngredientType.normal,
+            IngredientType.unique,
+            IngredientType.rare,
+            IngredientType.epic,
+            IngredientType.special,
+          ];
+
+          int indexA = order.indexOf(a.type);
+          int indexB = order.indexOf(b.type);
+
+          if (indexA == -1) indexA = order.length;
+          if (indexB == -1) indexB = order.length;
+
+          return indexA.compareTo(indexB);
         });
 
       final historiesFutures = sortedIngredients.map((e) async {

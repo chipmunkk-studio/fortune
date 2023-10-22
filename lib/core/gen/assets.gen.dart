@@ -188,6 +188,18 @@ class $AssetsIconsGen {
   SvgGenImage get icQuestion =>
       const SvgGenImage('assets/icons/ic_question.svg');
 
+  /// File path: assets/icons/ic_ranking_1.svg
+  SvgGenImage get icRanking1 =>
+      const SvgGenImage('assets/icons/ic_ranking_1.svg');
+
+  /// File path: assets/icons/ic_ranking_2.svg
+  SvgGenImage get icRanking2 =>
+      const SvgGenImage('assets/icons/ic_ranking_2.svg');
+
+  /// File path: assets/icons/ic_ranking_3.svg
+  SvgGenImage get icRanking3 =>
+      const SvgGenImage('assets/icons/ic_ranking_3.svg');
+
   /// File path: assets/icons/ic_recycle.svg
   SvgGenImage get icRecycle => const SvgGenImage('assets/icons/ic_recycle.svg');
 
@@ -251,6 +263,9 @@ class $AssetsIconsGen {
         icProfileSetting,
         icPushAlarm,
         icQuestion,
+        icRanking1,
+        icRanking2,
+        icRanking3,
         icRecycle,
         icSearch24,
         icTimer,

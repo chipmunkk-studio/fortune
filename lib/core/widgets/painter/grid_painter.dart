@@ -9,7 +9,7 @@ class GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint gridPaint = Paint()
-      ..color = ColorName.grey500
+      ..color = ColorName.primary
       ..style = PaintingStyle.stroke;
 
     final Paint backgroundPaint = Paint()

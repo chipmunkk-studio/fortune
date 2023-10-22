@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -29,7 +30,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       return markers;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '새로운 마커 정보를 갱신합니다\n${e.message}',
+        description: FortuneTr.msgUpdateMarkerInfo,
       );
     }
   }
@@ -64,7 +65,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required double latitude,
     required double longitude,
     required List<IngredientEntity> ingredients,
-    required int ticketCount,
+    required int coinCounts,
     required int markerCount,
   }) async {
     try {
@@ -86,7 +87,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
 
       // 재료 N개 / 티켓 N개 랜덤 픽.
       final collectedMarkerList = nonTicketAndUniqueIngredients.take(markerCount).toList();
-      final collectedTicketList = ticketIngredients.take(ticketCount).toList();
+      final collectedTicketList = ticketIngredients.take(coinCounts).toList();
 
       // 현재 위치를 기준으로 마커 N개 생성.
       for (var element in collectedMarkerList) {

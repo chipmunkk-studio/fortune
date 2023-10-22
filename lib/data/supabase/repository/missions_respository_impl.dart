@@ -161,7 +161,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: e.message,
+        description: FortuneTr.notFoundUser,
       );
     }
   }
@@ -169,13 +169,11 @@ class MissionsRepositoryImpl extends MissionsRepository {
   @override
   Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsersByUserId(int userId) async {
     try {
-      final result = await missionClearUserService.findAllMissionClearUserByUserId(
-          userId
-      );
+      final result = await missionClearUserService.findAllMissionClearUserByUserId(userId);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: e.message,
+        description: FortuneTr.notFoundUser,
       );
     }
   }

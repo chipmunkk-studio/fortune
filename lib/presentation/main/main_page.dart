@@ -72,22 +72,24 @@ class _MainPage extends StatefulWidget {
 class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, TickerProviderStateMixin {
   final MapController _mapController = MapController();
   late MainBloc _bloc;
-  final GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
-  final FortuneRemoteConfig environment = serviceLocator<Environment>().remoteConfig;
-  final router = serviceLocator<FortuneAppRouter>().router;
-  late StreamSubscription<Position> locationChangeSubscription;
-  late Function(GlobalKey) runAddToCartAnimation;
-  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
-  Position? myLocation;
+  final GlobalKey<CartIconKey> _cartKey = GlobalKey<CartIconKey>();
+  final FortuneRemoteConfig _remoteConfig = serviceLocator<Environment>().remoteConfig;
+  final _router = serviceLocator<FortuneAppRouter>().router;
+  late StreamSubscription<Position> _locationChangeSubscription;
+  late StreamSubscription<CompassEvent>? _rotateChangeEvent;
+  late Function(GlobalKey) _runAddToCartAnimation;
+  final MixpanelTracker _tracker = serviceLocator<MixpanelTracker>();
+  Position? _myLocation;
   bool _detectPermission = false;
-  FToast fToast = FToast();
+  FToast _fToast = FToast();
 
   @override
   void initState() {
     super.initState();
-    fToast.init(context);
+    _fToast.init(context);
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
+    _listenRotate();
     _loadRewardedAd();
   }
 
@@ -95,7 +97,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   void dispose() {
     super.dispose();
     WidgetsBinding.instance.removeObserver(this);
-    locationChangeSubscription.cancel();
+    _locationChangeSubscription.cancel();
+    _rotateChangeEvent?.cancel();
     _bloc.close();
   }
 
@@ -130,14 +133,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     return BlocSideEffectListener<MainBloc, MainSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is MainLocationChangeListenSideEffect) {
-          locationChangeSubscription = await listenLocationChange(sideEffect.myLocation);
+          _locationChangeSubscription = await listenLocationChange(sideEffect.myLocation);
           // 내 위치 잡고 최초에 한번만 다시 그림.
-          if (myLocation == null) {
+          if (_myLocation == null) {
             setState(() {
-              FlutterCompass.events?.listen((data) {
-                _bloc.add(MainMapRotate(data));
-              });
-              myLocation = sideEffect.myLocation;
+              _myLocation = sideEffect.myLocation;
             });
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
@@ -145,7 +145,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             if (sideEffect.isAnimation) {
               await _startAnimation(sideEffect.key);
             }
-            fToast.showToast(
+            _fToast.showToast(
               child: fortuneToastContent(
                 icon: Assets.icons.icCheckCircleFill24.svg(),
                 content: FortuneTr.msgObtainMarkerSuccess(sideEffect.data.ingredient.exposureName),
@@ -175,7 +175,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             _bloc.add(Main());
           }
         } else if (sideEffect is MainRequireInCircleMeters) {
-          fToast.showToast(
+          _fToast.showToast(
             child: fortuneToastContent(
               icon: Assets.icons.icWarningCircle24.svg(),
               content: FortuneTr.msgRequireMarkerObtainDistance(
@@ -197,7 +197,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             sideEffect.isShowAd,
           );
         } else if (sideEffect is MainSchemeLandingPage) {
-          router.navigateTo(
+          _router.navigateTo(
             context,
             sideEffect.landingRoute,
             routeSettings: RouteSettings(
@@ -232,11 +232,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
               // 메인 맵.
               MainMap(
                 _bloc,
-                router: router,
+                router: _router,
                 context: context,
-                remoteConfigArgs: environment,
+                remoteConfigArgs: _remoteConfig,
                 mapController: _mapController,
-                myLocation: myLocation,
+                myLocation: _myLocation,
                 onZoomChanged: () {
                   _animatedMapMove(
                     LatLng(
@@ -267,14 +267,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ),
               ),
               AddToCartAnimation(
-                cartKey: cartKey,
+                cartKey: _cartKey,
                 opacity: 0.85,
                 dragAnimation: const DragToCartAnimationOptions(
                   rotation: true,
                 ),
                 jumpAnimation: const JumpAnimationOptions(),
                 createAddToCartAnimation: (runAddToCartAnimation) {
-                  this.runAddToCartAnimation = runAddToCartAnimation;
+                  _runAddToCartAnimation = runAddToCartAnimation;
                 },
                 child: Positioned(
                   top: 13,
@@ -288,25 +288,25 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         return TopLocationArea(
                           hasNewAlarm: state.hasNewAlarm,
                           onProfileTap: () {
-                            tracker.trackEvent('메인_프로필_클릭');
-                            router.navigateTo(
+                            _tracker.trackEvent('메인_프로필_클릭');
+                            _router.navigateTo(
                               context,
                               AppRoutes.myPageRoute,
                             );
                           },
                           onHistoryTap: () {
-                            tracker.trackEvent('메인_히스토리_클릭');
-                            router.navigateTo(
+                            _tracker.trackEvent('메인_히스토리_클릭');
+                            _router.navigateTo(
                               context,
                               AppRoutes.obtainHistoryRoute,
                             );
                           },
                           onAlarmClick: () {
-                            tracker.trackEvent('메인_알림_클릭');
+                            _tracker.trackEvent('메인_알림_클릭');
                             if (state.hasNewAlarm) {
                               _bloc.add(MainAlarmRead());
                             }
-                            router.navigateTo(
+                            _router.navigateTo(
                               context,
                               AppRoutes.alarmFeedRoute,
                             );
@@ -316,21 +316,24 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {},
+                      onTap: (){
+                        // todo 작업해야 됨.
+                        // _router.navigateTo(context, AppRoutes.rankingRoutes)
+                      },
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
-                      cartKey,
+                      _cartKey,
                       onInventoryTap: () {
-                        tracker.trackEvent('메인_인벤토리_클릭');
+                        _tracker.trackEvent('메인_인벤토리_클릭');
                         context.showBottomSheet(
                           isDismissible: true,
                           content: (context) => const MyIngredientsPage(),
                         );
                       },
                       onGradeAreaTap: () {
-                        tracker.trackEvent('메인_레벨_클릭');
-                        router.navigateTo(context, AppRoutes.gradeGuideRoute);
+                        _tracker.trackEvent('메인_레벨_클릭');
+                        _router.navigateTo(context, AppRoutes.gradeGuideRoute);
                       },
                       onCoinTap: _showCoinDialog,
                     ),
@@ -366,7 +369,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   // 위치변경감지.
   Future<StreamSubscription<Position>> listenLocationChange(Position myLocation) async {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     ).listen((Position? position) {
       _animatedMapMove(
         LatLng(
@@ -417,13 +420,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 
       if (newLoc != null) {
         FortuneLogger.info("내 위치 변경: ${newLoc.latitude}, ${newLoc.longitude}, 회전방향:${newLoc.heading}");
-        if (kReleaseMode) {
-          _bloc
-            ..add(MainMyLocationChange(newLoc))
-            ..add(Main());
-        } else {
-          _bloc.add(MainMyLocationChange(newLoc));
-        }
+        _bloc
+          ..add(MainMyLocationChange(newLoc))
+          ..add(Main());
       }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -524,7 +523,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       onDismissCallback: (type) => _bloc.add(MainScreenFreeze(flag: false, data: data)),
       btnCancelPressed: () => _bloc.add(MainScreenFreeze(flag: false, data: data)),
       btnOkPressed: () async {
-        final markerActionResult = await router.navigateTo(
+        final markerActionResult = await _router.navigateTo(
           context,
           AppRoutes.ingredientActionRoute,
           routeSettings: RouteSettings(
@@ -546,8 +545,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   // 마커 트랜지션.
   _startAnimation(GlobalKey key) async {
     try {
-      await runAddToCartAnimation(key);
-      await cartKey.currentState!.runCartAnimation();
+      await _runAddToCartAnimation(key);
+      await _cartKey.currentState!.runCartAnimation();
     } catch (e) {
       // do nothing.
     }
@@ -570,4 +569,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         btnOkPressed: () {},
         subTitle: FortuneTr.msgCollectWithCoin,
       );
+
+  // 회전감지
+  _listenRotate() {
+    _rotateChangeEvent = FlutterCompass.events?.listen((data) {
+      if (_bloc.state.isRotatable) {
+        _bloc.add(MainMapRotate(data));
+      }
+    });
+  }
 }

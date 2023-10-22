@@ -2,22 +2,20 @@ import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/mixpanel.dart';
-import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/domain/supabase/request/request_get_all_users_param.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserService _userService;
-  final LocalDataSource _localDataSource;
   final MixpanelTracker _mixpanelTracker;
   final _supabaseClient = Supabase.instance.client;
 
   UserRepositoryImpl(
     this._userService,
-    this._localDataSource,
     this._mixpanelTracker,
   );
 
@@ -143,6 +141,33 @@ class UserRepositoryImpl extends UserRepository {
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.notUpdateUser,
+      );
+    }
+  }
+
+  @override
+  Future<List<FortuneUserEntity>> getAllUsers(RequestRankingParam param) async {
+    try {
+      final List<FortuneUserEntity> users = await _userService.getAllUsersByTicketCountOrder(
+        start: param.start,
+        end: param.end,
+      );
+      return users;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '사용자 정보 불러오기 실패',
+      );
+    }
+  }
+
+  @override
+  Future<String> getUserRanking(FortuneUserEntity user) async {
+    try {
+      final String ranking = await _userService.getUserRanking(user);
+      return ranking;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '랭킹 정보를 불러오지 못했습니다.',
       );
     }
   }
