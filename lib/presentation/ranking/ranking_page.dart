@@ -88,7 +88,7 @@ class _RankingPageState extends State<_RankingPage> {
                               itemCount: state.rankingItems.length - 3,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              padding: EdgeInsets.symmetric(vertical: 20.h),
                               separatorBuilder: (context, index) => Divider(
                                 height: 21.h,
                                 color: ColorName.grey800,
@@ -101,10 +101,10 @@ class _RankingPageState extends State<_RankingPage> {
                                     index: (index + 4).toString(),
                                   );
                                 } else {
-                                  return const Center(
+                                  return Center(
                                     child: SizedBox.square(
-                                      dimension: 32,
-                                      child: CircularProgressIndicator(
+                                      dimension: 32.h,
+                                      child: const CircularProgressIndicator(
                                         color: ColorName.primary,
                                       ),
                                     ),
@@ -117,7 +117,7 @@ class _RankingPageState extends State<_RankingPage> {
                         ],
                       ),
                       Positioned(
-                        bottom: -1,
+                        bottom: -1.h,
                         left: 0,
                         right: 0,
                         child: BlocBuilder<RankingBloc, RankingState>(
