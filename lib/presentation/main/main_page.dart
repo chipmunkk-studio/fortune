@@ -318,6 +318,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     TopNotice(
                       onTap: () {
                         // todo 작업해야 됨.
+                        _router.navigateTo(context, AppRoutes.communityRoutes);
                         // _router.navigateTo(context, AppRoutes.rankingRoutes)
                       },
                     ),

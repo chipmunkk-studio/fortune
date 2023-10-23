@@ -6,6 +6,7 @@ import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
+import 'package:fortune/presentation/community/community_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
@@ -84,6 +85,12 @@ class FortuneAppRouter {
         data = int.tryParse(paramValue);
       }
       return data != null ? TermsDetailPage(data) : null;
+    },
+  );
+
+  static var communityHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const CommunityPage();
     },
   );
 
@@ -301,6 +308,13 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 커뮤니티.
+      ..define(
+        AppRoutes.communityRoutes,
+        handler: communityHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 마커 히스토리.
       ..define(
         AppRoutes.obtainHistoryRoute,
@@ -330,4 +344,5 @@ class AppRoutes {
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
   static const String rankingRoutes = 'ranking';
+  static const String communityRoutes = 'community';
 }

@@ -129,8 +129,15 @@ class _UserLevel extends StatelessWidget {
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(100.r),
+                    linearGradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                      colors: [
+                        Color(0xFF45e2aa),
+                        Color(0xFF7367ff),
+                      ],
+                    ),
                     backgroundColor: ColorName.grey500,
-                    progressColor: ColorName.secondary,
                   ),
                 );
               },
