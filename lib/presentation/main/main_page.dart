@@ -316,11 +316,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {
-                        // todo 작업해야 됨.
-                        _router.navigateTo(context, AppRoutes.communityRoutes);
-                        // _router.navigateTo(context, AppRoutes.rankingRoutes)
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
@@ -389,7 +385,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   // 위치변경감지.
   Future<StreamSubscription<Position>> listenLocationChange(Position myLocation) async {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
     ).listen((Position? position) {
       _animatedMapMove(
         LatLng(

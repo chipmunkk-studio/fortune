@@ -33,6 +33,8 @@ abstract class FortuneTr {
 
   static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
 
+  static String msgItemCount(String count) => tr('msgItemCount', args: [count]);
+
   static String msgAcquireMarker(
     String nickname,
     String location,

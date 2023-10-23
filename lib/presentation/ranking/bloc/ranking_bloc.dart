@@ -74,6 +74,7 @@ class RankingBloc extends Bloc<RankingEvent, RankingState>
               rankingItems: List.of(filteredItems)..addAll(r.rankingItems),
               start: r.rankingItems.isEmpty ? state.start : start,
               end: r.rankingItems.isEmpty ? state.end : end,
+              me: r.myRanking,
               isLoading: false,
               isNextPageLoading: false,
             ),

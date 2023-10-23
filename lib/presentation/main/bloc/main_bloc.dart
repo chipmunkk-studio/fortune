@@ -82,7 +82,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           }
 
           final locationData = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high,
+            desiredAccuracy: LocationAccuracy.best,
           );
 
           final latitude = locationData.latitude;
@@ -133,7 +133,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
       final locationData = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.best,
       );
 
       // #1 내 위치먼저 찍음.

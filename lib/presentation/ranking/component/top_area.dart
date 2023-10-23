@@ -20,7 +20,7 @@ class TopArea extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.only(left: 20, right: 20, top: 16),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
           color: Colors.transparent,
@@ -29,35 +29,28 @@ class TopArea extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(),
-            _Top3ViewItem(
-              item: items[1],
-              ranking: 2,
+            Flexible(
+              child: _Top3ViewItem(
+                item: items[1],
+                ranking: 2,
+              ),
             ),
-            Spacer(flex: _getSpacingFlex(context)),
+            SizedBox(width: 20.h),
             _Top3ViewItem(
               item: items[0],
               ranking: 1,
             ),
-            Spacer(flex: _getSpacingFlex(context)),
-            _Top3ViewItem(
-              item: items[2],
-              ranking: 3,
+            SizedBox(width: 20.h),
+            Flexible(
+              child: _Top3ViewItem(
+                item: items[2],
+                ranking: 3,
+              ),
             ),
-            const Spacer(),
           ],
         ),
       ),
     );
-  }
-
-  int _getSpacingFlex(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (screenWidth > 500) {
-      return 2;
-    } else {
-      return 4;
-    }
   }
 }
 
@@ -91,7 +84,10 @@ class _Top3ViewItem extends StatelessWidget {
                 child: FortuneCachedNetworkImage(
                   imageUrl: item.profile,
                   placeholder: Container(),
-                  errorWidget: Assets.images.ivDefaultProfile.svg(width: 24.h, height: 24.h),
+                  errorWidget: Padding(
+                    padding: EdgeInsets.all(ranking == 1 ? 24.0.h : 16.h),
+                    child: Assets.images.ivDefaultProfile.svg(width: 24.h, height: 24.h),
+                  ),
                   width: _getRankingImageSize(ranking),
                   height: _getRankingImageSize(ranking),
                   fit: BoxFit.fill,
@@ -107,9 +103,22 @@ class _Top3ViewItem extends StatelessWidget {
           ],
         ),
         SizedBox(height: 28.h),
-        Text(item.nickName, style: FortuneTextStyle.caption1SemiBold()),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 110.h),
+          child: Text(
+            item.nickName + item.nickName + item.nickName + item.nickName,
+            overflow: TextOverflow.ellipsis,
+            style: FortuneTextStyle.caption1SemiBold(),
+          ),
+        ),
         SizedBox(height: 8.h),
-        Text(item.count, style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary)),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 100.h),
+          child: Text(
+            item.count,
+            style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
+          ),
+        ),
       ],
     );
   }
@@ -130,7 +139,7 @@ class _Top3ViewItem extends StatelessWidget {
   double _getRankingImageSize(int ranking) {
     switch (ranking) {
       case 1:
-        return 96.h;
+        return 104.h;
       default:
         return 72.h;
     }

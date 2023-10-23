@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
 import 'package:fortune/presentation/ranking/component/item_ranking.dart';
+import 'package:fortune/presentation/ranking/component/item_ranking_content.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -39,12 +42,14 @@ class _RankingPage extends StatefulWidget {
 class _RankingPageState extends State<_RankingPage> {
   static const offsetVisibleThreshold = 50.0;
   final _router = serviceLocator<FortuneAppRouter>().router;
+  final _tracker = serviceLocator<MixpanelTracker>();
   late RankingBloc _bloc;
   late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _tracker.trackEvent('랭킹_랜딩');
     _bloc = BlocProvider.of<RankingBloc>(context);
     _scrollController = ScrollController()..addListener(_onScroll);
   }
@@ -70,40 +75,76 @@ class _RankingPageState extends State<_RankingPage> {
             skeleton: Container(),
             isLoading: state.isLoading,
             child: state.rankingItems.isNotEmpty
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ? Stack(
                     children: [
-                      TopArea(items: state.rankingItems.take(3).map((e) => e as RankingPagingViewItemEntity).toList()),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: state.rankingItems.length - 3,
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          separatorBuilder: (context, index) => const Divider(
-                            height: 40,
-                            color: ColorName.grey800,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TopArea(
+                              items: state.rankingItems.take(3).map((e) => e as RankingPagingViewItemEntity).toList()),
+                          Expanded(
+                            child: ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.rankingItems.length - 3,
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              separatorBuilder: (context, index) => Divider(
+                                height: 21.h,
+                                color: ColorName.grey800,
+                              ),
+                              itemBuilder: (context, index) {
+                                final item = state.rankingItems[index + 3];
+                                if (item is RankingPagingViewItemEntity) {
+                                  return ItemRanking(
+                                    item: item,
+                                    index: (index + 4).toString(),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: SizedBox.square(
+                                      dimension: 32,
+                                      child: CircularProgressIndicator(
+                                        color: ColorName.primary,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return Container();
+                              },
+                            ),
                           ),
-                          itemBuilder: (context, index) {
-                            final item = state.rankingItems[index + 3];
-                            if (item is RankingPagingViewItemEntity) {
-                              return ItemRanking(
-                                item: item,
-                                index: index + 1,
-                              );
-                            } else {
-                              return const Center(
-                                child: SizedBox.square(
-                                  dimension: 32,
-                                  child: CircularProgressIndicator(
-                                    color: ColorName.primary,
-                                  ),
+                        ],
+                      ),
+                      Positioned(
+                        bottom: -1,
+                        left: 0,
+                        right: 0,
+                        child: BlocBuilder<RankingBloc, RankingState>(
+                          buildWhen: (previous, current) => previous.me != current.me,
+                          builder: (context, state) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20.h),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(32.r),
+                                  topRight: Radius.circular(32.r),
                                 ),
-                              );
-                            }
-                            return Container();
+                                color: ColorName.grey800,
+                              ),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  ItemRankingContent(
+                                    nickName: state.me.nickName,
+                                    profile: state.me.profile,
+                                    index: state.me.index,
+                                    count: state.me.count,
+                                  ),
+                                  SizedBox(height: 20.h),
+                                ],
+                              ),
+                            );
                           },
                         ),
                       ),

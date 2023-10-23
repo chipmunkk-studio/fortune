@@ -55,12 +55,12 @@ class NormalMission extends StatelessWidget {
                   const Divider(height: 16, thickness: 16, color: ColorName.grey800),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgMissionGuide, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.note,
                       style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
@@ -68,7 +68,7 @@ class NormalMission extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgRewardGuide, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
@@ -81,7 +81,7 @@ class NormalMission extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgCaution, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
