@@ -11,7 +11,7 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
-import 'package:fortune/core/widgets/painter/grid_painter.dart';
+import 'package:fortune/core/widgets/painter/fortune_map_grid_painter.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -84,21 +84,20 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  if (enableMapBox)
-                    TileLayer(
-                      tileSize: 512,
-                      zoomOffset: -1,
-                      urlTemplate: remoteConfigArgs.mapUrlTemplate,
-                      additionalOptions: {
-                        accessToken: remoteConfigArgs.mapAccessToken,
-                        mapStyleId: remoteConfigArgs.mapStyleId,
-                      },
-                    )
-                  else
-                    CustomPaint(
-                      painter: GridPainter(gridSpacing: 50),
-                      child: Container(),
-                    ),
+                  enableMapBox
+                      ? TileLayer(
+                          tileSize: 512,
+                          zoomOffset: -1,
+                          urlTemplate: remoteConfigArgs.mapUrlTemplate,
+                          additionalOptions: {
+                            accessToken: remoteConfigArgs.mapAccessToken,
+                            mapStyleId: remoteConfigArgs.mapStyleId,
+                          },
+                        )
+                      : CustomPaint(
+                          painter: FortuneMapGridPainter(gridSpacing: 23),
+                          child: Container(),
+                        ),
                   // 마커 목록.
                   BlocBuilder<MainBloc, MainState>(
                     buildWhen: (previous, current) => previous.markers != current.markers,

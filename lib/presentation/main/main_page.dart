@@ -316,7 +316,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: (){
+                      onTap: () {
                         // todo 작업해야 됨.
                         // _router.navigateTo(context, AppRoutes.rankingRoutes)
                       },
@@ -354,6 +354,25 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       colors: [
                         ColorName.grey900.withOpacity(1.0),
                         ColorName.grey900.withOpacity(0.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // 상단 그라데이션.
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 12,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        ColorName.grey900.withOpacity(0.0),
+                        ColorName.grey900.withOpacity(1.0),
                       ],
                     ),
                   ),

@@ -42,6 +42,14 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/bg_radar_circle.svg
+  SvgGenImage get bgRadarCircle =>
+      const SvgGenImage('assets/icons/bg_radar_circle.svg');
+
+  /// File path: assets/icons/bg_radar_rectangle.svg
+  SvgGenImage get bgRadarRectangle =>
+      const SvgGenImage('assets/icons/bg_radar_rectangle.svg');
+
   /// File path: assets/icons/ic_arrow_down.svg
   SvgGenImage get icArrowDown =>
       const SvgGenImage('assets/icons/ic_arrow_down.svg');
@@ -223,6 +231,8 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        bgRadarCircle,
+        bgRadarRectangle,
         icArrowDown,
         icArrowLeft,
         icArrowRight12,
