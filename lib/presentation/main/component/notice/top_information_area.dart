@@ -133,8 +133,8 @@ class _UserLevel extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.topRight,
                       colors: [
-                        Color(0xFF45e2aa),
-                        Color(0xFF7367ff),
+                        ColorName.primary,
+                        ColorName.secondary,
                       ],
                     ),
                     backgroundColor: ColorName.grey500,
