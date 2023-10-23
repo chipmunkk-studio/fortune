@@ -38,7 +38,7 @@ class MissionNormalCard extends StatelessWidget {
                       item.mission.title,
                       style: FortuneTextStyle.subTitle2SemiBold(),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 8),
                     Text(
                       item.mission.content,
                       style: FortuneTextStyle.body2Light(
