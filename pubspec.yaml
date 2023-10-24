@@ -17,13 +17,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.19.0
-  firebase_remote_config: ^4.3.1
-  firebase_analytics: ^10.6.1
-  firebase_crashlytics: ^3.4.1
-  firebase_messaging: ^14.7.1
-  supabase: ^1.11.9
-  supabase_flutter: ^1.10.22
+  firebase_core: ^2.20.0
+  firebase_remote_config: ^4.3.2
+  firebase_analytics: ^10.6.2
+  firebase_crashlytics: ^3.4.2
+  firebase_messaging: ^14.7.2
+  supabase: ^1.11.10
+  supabase_flutter: ^1.10.23
   app_settings: ^5.1.1
   mixpanel_flutter: ^2.1.1
   package_info_plus: ^4.2.0
@@ -65,7 +65,7 @@ dependencies:
   cached_network_image: ^3.3.0
 
   # map
-  flutter_map: ^6.0.0
+  flutter_map: ^6.0.1
   latlong2: ^0.9.0
   geolocator: ^10.1.0
   flutter_compass: ^0.8.0
