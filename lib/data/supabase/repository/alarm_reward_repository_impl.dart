@@ -2,7 +2,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:fortune/data/supabase/service/alarm_reward_history_service.dart';
 import 'package:fortune/data/supabase/service/alarm_reward_info_service.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';

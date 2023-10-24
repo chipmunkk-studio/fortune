@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/linear_bounce_animation.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 

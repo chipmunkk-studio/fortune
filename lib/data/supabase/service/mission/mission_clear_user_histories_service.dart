@@ -4,7 +4,7 @@ import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user_histories.dart';
 import 'package:fortune/data/supabase/response/mission/mission_clear_user_histories_response.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

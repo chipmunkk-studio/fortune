@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/permission.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_app_update.dart';

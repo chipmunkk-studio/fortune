@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';

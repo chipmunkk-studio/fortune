@@ -11,7 +11,7 @@ import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
