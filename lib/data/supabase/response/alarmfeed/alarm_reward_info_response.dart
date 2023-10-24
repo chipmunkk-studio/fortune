@@ -1,4 +1,4 @@
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

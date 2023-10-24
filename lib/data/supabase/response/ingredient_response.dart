@@ -1,5 +1,5 @@
 import 'package:fortune/core/util/locale.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

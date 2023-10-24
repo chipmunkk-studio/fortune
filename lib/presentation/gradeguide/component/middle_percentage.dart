@@ -25,7 +25,14 @@ class MiddlePercentage extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       barRadius: Radius.circular(16.r),
       backgroundColor: ColorName.grey700,
-      progressColor: ColorName.secondary,
+      linearGradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.topRight,
+        colors: [
+          ColorName.primary,
+          ColorName.secondary,
+        ],
+      ),
       center: Text(
         FortuneTr.msgCenterLevel(level.toString()),
         style: FortuneTextStyle.caption3Semibold(),

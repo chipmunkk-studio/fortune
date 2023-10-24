@@ -1,4 +1,4 @@
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 
 class AlarmRewardInfoEntity {
   final int id;

@@ -4,7 +4,7 @@ import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/data/supabase/response/mission/missions_response.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

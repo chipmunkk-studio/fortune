@@ -3,7 +3,7 @@ import 'package:fortune/data/supabase/response/support/app_update_response.dart'
 import 'package:fortune/data/supabase/response/support/faqs_response.dart';
 import 'package:fortune/data/supabase/response/support/notices_response.dart';
 import 'package:fortune/data/supabase/response/support/privacy_policy_response.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/support/app_update_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/faq_entity.dart';
