@@ -127,7 +127,7 @@
   "msgWithdrawal": "Deactivate",
   "msgConfirmLogout": "Logging out?",
   "msgVerifyYourself": "Authenticate Email",
-  "msgRewardCollectWinner": "{}\\nYou've won!",
+  "msgRewardCollectWinner": "{}\nYou've won!",
   "msgAcquired": "Mission",
   "msgHelpedBy": " completed",
   "msgAvailableMissions": "Available Missions",

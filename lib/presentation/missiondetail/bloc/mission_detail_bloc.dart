@@ -60,14 +60,18 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
           emit(state.copyWith(isRequestObtaining: false));
           produceSideEffect(MissionDetailError(l));
         },
-        (r) {
+        (r) async {
           emit(
             state.copyWith(
               isRequestObtaining: false,
               isFortuneCookieOpen: currentMission.type == MissionType.grade,
+              isEnableButton: false,
             ),
           );
           produceSideEffect(MissionDetailParticleBurst());
+          if (currentMission.type == MissionType.grade) {
+            await Future.delayed(const Duration(seconds: 1));
+          }
           produceSideEffect(MissionDetailClearSuccess(currentMission));
         },
       ),

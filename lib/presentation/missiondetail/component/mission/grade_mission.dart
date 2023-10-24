@@ -59,10 +59,15 @@ class GradeMission extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
-                    child: FortuneScaleButton(
-                      isEnabled: state.isEnableButton,
-                      text: FortuneTr.msgExchange,
-                      onPress: onExchangeClick,
+                    child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+                      buildWhen: (previous, current) => previous.isEnableButton != current.isEnableButton,
+                      builder: (context, state) {
+                        return FortuneScaleButton(
+                          isEnabled: state.isEnableButton,
+                          text: FortuneTr.msgExchange,
+                          onPress: onExchangeClick,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 40),
