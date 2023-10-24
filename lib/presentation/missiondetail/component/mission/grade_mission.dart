@@ -1,21 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
-import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
-import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:fortune/presentation/missiondetail/bloc/mission_detail_state.dart';
 
-import '../../../core/util/textstyle.dart';
-import 'exchange_bottom.dart';
-import 'ingredient_layout.dart';
+import '../../../../core/util/textstyle.dart';
+import '../../bloc/mission_detail.dart';
 
-class NormalMission extends StatelessWidget {
+class GradeMission extends StatelessWidget {
   final MissionDetailState state;
   final Function0 onExchangeClick;
 
-  const NormalMission(
+  const GradeMission(
     this.state, {
     Key? key,
     required this.onExchangeClick,
@@ -49,18 +48,38 @@ class NormalMission extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 32),
+                  BlocBuilder<MissionDetailBloc, MissionDetailState>(
+                    buildWhen: (previous, current) => previous.isFortuneCookieOpen != current.isFortuneCookieOpen,
+                    builder: (context, state) {
+                      return state.isFortuneCookieOpen
+                          ? Assets.icons.icFortuneCookie2.svg()
+                          : Assets.icons.icFortuneCookie1.svg();
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20, top: 24),
+                    child: BlocBuilder<MissionDetailBloc, MissionDetailState>(
+                      buildWhen: (previous, current) => previous.isEnableButton != current.isEnableButton,
+                      builder: (context, state) {
+                        return FortuneScaleButton(
+                          isEnabled: state.isEnableButton,
+                          text: FortuneTr.msgExchange,
+                          onPress: onExchangeClick,
+                        );
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 40),
-                  IngredientLayout(state.entity.markers),
-                  const SizedBox(height: 44),
                   const Divider(height: 16, thickness: 16, color: ColorName.grey800),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgMissionGuide, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.note,
                       style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
@@ -68,20 +87,20 @@ class NormalMission extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgRewardGuide, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.missionReward.note,
+                      state.entity.mission.reward.note,
                       style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
                   const SizedBox(height: 24),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(FortuneTr.msgCaution, style: FortuneTextStyle.body2Semibold()),
                   ),
                   const SizedBox(height: 12),
@@ -110,18 +129,6 @@ class NormalMission extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16, left: 20, right: 20),
-          child: FortuneScaleButton(
-            isEnabled: true,
-            text: FortuneTr.msgExchange,
-            onPress: () => _showExchangeBottomSheet(
-              context,
-              entity: state.entity,
-              isEnableButton: state.isEnableButton,
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -143,23 +150,6 @@ class NormalMission extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  _showExchangeBottomSheet(
-    BuildContext context, {
-    required MissionDetailEntity entity,
-    required bool isEnableButton,
-  }) {
-    context.showBottomSheet(
-      content: (context) {
-        return ExchangeBottom(
-          onExchangeClick: onExchangeClick,
-          entity: entity.mission.missionReward,
-          isButtonEnabled: isEnableButton,
-          user: entity.user,
-        );
-      },
     );
   }
 }

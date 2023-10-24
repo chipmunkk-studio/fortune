@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
@@ -29,9 +28,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       final List<MarkerEntity> markers = await _markerService.findAllMarkersNearByMyLocation(latitude, longitude);
       return markers;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.msgUpdateMarkerInfo,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -54,9 +51,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       }
       await _markerService.reLocateMarker(marker, user);
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: e.message,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -103,9 +98,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
 
       return await _markerService.insertRandomMarkers(markers: markers);
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '마커 생성 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -115,9 +108,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       final marker = await _markerService.findMarkerById(markerId);
       return marker;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '마커를 찾을 수 없습니다',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -133,9 +124,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       );
       return marker;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '마커를 찾을 수 없습니다',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

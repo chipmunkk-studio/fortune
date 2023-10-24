@@ -94,7 +94,7 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                   getUserGradeIconInfo(5),
                   rewardGuideText: FortuneTr.msgFortuneCookieReward,
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 24),
                 Text(
                   "· ${FortuneTr.msgRewardInProgress}",
                   style: FortuneTextStyle.body3Light(color: ColorName.grey400),

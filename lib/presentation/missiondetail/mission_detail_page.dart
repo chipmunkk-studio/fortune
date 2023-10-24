@@ -11,7 +11,8 @@ import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
-import 'package:fortune/presentation/missiondetail/component/normal_mission.dart';
+import 'package:fortune/presentation/missiondetail/component/mission/grade_mission.dart';
+import 'package:fortune/presentation/missiondetail/component/mission/normal_mission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -71,15 +72,26 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
     return BlocSideEffectListener<MissionDetailBloc, MissionDetailSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MissionDetailClearSuccess) {
-          dialogService.showFortuneDialog(
-            context,
-            title: FortuneTr.msgMissionCompleted,
-            subTitle: FortuneTr.msgPaymentDelay,
-            btnOkText: FortuneTr.confirm,
-            btnOkPressed: () {
-              router.pop(context, true);
-            },
-          );
+          final mission = sideEffect.mission;
+          switch (mission.type) {
+            case MissionType.grade:
+              dialogService.showFortuneDialog(
+                context,
+                title: FortuneTr.msgRewardCollectWinner(mission.reward.name),
+                subTitle: FortuneTr.msgPaymentDelay,
+                btnOkText: FortuneTr.confirm,
+                btnOkPressed: () => router.pop(context, true),
+              );
+              break;
+            default:
+              dialogService.showFortuneDialog(
+                context,
+                title: FortuneTr.msgMissionCompleted,
+                subTitle: FortuneTr.msgPaymentDelay,
+                btnOkText: FortuneTr.confirm,
+                btnOkPressed: () => router.pop(context, true),
+              );
+          }
         } else if (sideEffect is MissionDetailError) {
           dialogService.showErrorDialog(context, sideEffect.error);
         } else if (sideEffect is MissionDetailParticleBurst) {
@@ -100,7 +112,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                       isLoading: state.isLoading,
                       skeleton: const MissionDetailSkeleton(),
                       child: () {
-                        switch (state.entity.mission.missionType) {
+                        switch (state.entity.mission.type) {
                           case MissionType.normal:
                             return NormalMission(
                               state,
@@ -108,6 +120,11 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                                 router.pop(context);
                                 _bloc.add(MissionDetailExchange());
                               },
+                            );
+                          case MissionType.grade:
+                            return GradeMission(
+                              state,
+                              onExchangeClick: () => _bloc.add(MissionDetailExchange()),
                             );
                           default:
                             return Container();
@@ -142,7 +159,12 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
             buildWhen: (previous, current) => previous.isRequestObtaining != current.isRequestObtaining,
             builder: (context, state) {
               return state.isRequestObtaining
-                  ? Container(color: Colors.black.withOpacity(0.5))
+                  ? Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
                   : const SizedBox.shrink();
             },
           )

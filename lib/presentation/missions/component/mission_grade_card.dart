@@ -8,8 +8,8 @@ import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class MissionNormalCard extends StatelessWidget {
-  const MissionNormalCard(this.item, {super.key});
+class MissionGradeCard extends StatelessWidget {
+  const MissionGradeCard(this.item, {super.key});
 
   final MissionViewEntity item;
 
@@ -67,12 +67,8 @@ class MissionNormalCard extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "${item.mission.reward.remainCount}",
+                                text: FortuneTr.msgUnlimited,
                                 style: FortuneTextStyle.body3Semibold(fontColor: Colors.white),
-                              ),
-                              TextSpan(
-                                text: "/${item.mission.reward.totalCount}",
-                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                               ),
                             ],
                           ),

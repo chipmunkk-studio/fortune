@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
+import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
@@ -122,7 +126,24 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
   _buildProcessWidgetOnType(IngredientActionParam entity) {
     switch (entity.ingredient.type) {
       case IngredientType.coin:
-        return Container(color: Colors.black.withOpacity(0.5));
+        return FortuneScaffold(
+          appBar: FortuneCustomAppBar.leadingAppBar(
+            context,
+            backgroundColor: Colors.black.withOpacity(0.5),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.5),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 80.h),
+              child: Text(
+                FortuneTr.msgAdPlaying,
+                style: FortuneTextStyle.body1Light(height: 1.3),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        );
       default:
         return Container(color: Colors.black.withOpacity(0.5));
     }

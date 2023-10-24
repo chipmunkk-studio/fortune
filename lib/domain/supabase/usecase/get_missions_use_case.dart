@@ -46,7 +46,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
 
           // 릴레이마커
           final relayMarker =
-              (e.missionType == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
+              (e.type == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
 
           return MissionViewEntity(
             mission: e,

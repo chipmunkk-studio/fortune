@@ -17,9 +17,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
       final alarms = await alarmFeedsService.findAllAlarmFeeds(userId);
       return alarms;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '이벤트 알림 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -29,9 +27,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
       final result = await alarmFeedsService.insert(content);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '이벤트 알림 추가 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -48,9 +44,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
         );
       }));
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '이벤트 알림 추가 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

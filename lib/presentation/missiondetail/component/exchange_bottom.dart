@@ -7,7 +7,6 @@ import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ExchangeBottom extends StatelessWidget {
   const ExchangeBottom({
@@ -35,7 +34,7 @@ class ExchangeBottom extends StatelessWidget {
             dimension: 128,
             child: ClipOval(
               child: FortuneCachedNetworkImage(
-                imageUrl: entity.rewardImage,
+                imageUrl: entity.image,
                 placeholder: Container(),
                 fit: BoxFit.fill,
               ),
@@ -43,7 +42,7 @@ class ExchangeBottom extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           Text(
-            entity.rewardName,
+            entity.name,
             textAlign: TextAlign.center,
             style: FortuneTextStyle.headLine2(),
           ),

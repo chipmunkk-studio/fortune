@@ -57,7 +57,7 @@ class _MissionsTopContentsState extends State<_MissionsTopContents> {
             final ad = state.ad;
             return ad != null
                 ? Bounceable(
-                    onTap: () => _tracker.trackEvent('배너클릭'),
+                    onTap: () => _tracker.trackEvent('광고_배너_클릭'),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Container(
