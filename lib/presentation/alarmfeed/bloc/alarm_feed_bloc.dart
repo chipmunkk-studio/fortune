@@ -20,7 +20,7 @@ class AlarmFeedBloc extends Bloc<AlarmFeedEvent, AlarmFeedState>
     on<AlarmRewardInit>(init);
     on<AlarmRewardReceive>(
       _receive,
-      transformer: throttle(const Duration(seconds: 3)),
+      transformer: throttle(const Duration(seconds: 1)),
     );
   }
 

@@ -7,15 +7,15 @@ import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:fortune/presentation/missiondetail/bloc/mission_detail_state.dart';
 
-import '../../../core/util/textstyle.dart';
-import 'exchange_bottom.dart';
-import 'ingredient_layout.dart';
+import '../../../../core/util/textstyle.dart';
+import '../exchange_bottom.dart';
+import '../ingredient_layout.dart';
 
-class NormalMission extends StatelessWidget {
+class GradeMission extends StatelessWidget {
   final MissionDetailState state;
   final Function0 onExchangeClick;
 
-  const NormalMission(
+  const GradeMission(
     this.state, {
     Key? key,
     required this.onExchangeClick,

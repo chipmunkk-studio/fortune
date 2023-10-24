@@ -260,7 +260,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             MainMarkerObtainSuccessSideEffect(
               key: event.key,
               data: event.data,
-              isAnimation: event.data.ingredient.type != IngredientType.coin,
+              animationType: () {
+                switch (event.data.ingredient.type) {
+                  case IngredientType.coin:
+                    return MarkerAnimationType.none;
+                  case IngredientType.special:
+                    return MarkerAnimationType.special;
+                  default:
+                    return MarkerAnimationType.normal;
+                }
+              }(),
             ),
           );
 

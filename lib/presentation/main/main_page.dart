@@ -142,9 +142,13 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
           () async {
-            if (sideEffect.isAnimation) {
-              await _startAnimation(sideEffect.key);
+            switch (sideEffect.animationType) {
+              case MarkerAnimationType.normal:
+                await _startAnimation(sideEffect.key);
+                break;
+              default:
             }
+
             _fToast.showToast(
               child: fortuneToastContent(
                 icon: Assets.icons.icCheckCircleFill24.svg(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
@@ -88,6 +89,20 @@ class MissionNormalCard extends StatelessWidget {
                   child: FortuneCachedNetworkImage(
                     imageUrl: item.mission.missionImage,
                     placeholder: Container(),
+                    errorWidget: Container(
+                      decoration: BoxDecoration(
+                        color: ColorName.grey700,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
+                          width: 1.0, // 원하는 테두리 두께
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Assets.images.ivDefaultProfile.svg(),
+                      ),
+                    ),
                     fit: BoxFit.fill,
                   ),
                 ),

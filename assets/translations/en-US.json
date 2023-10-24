@@ -25,6 +25,7 @@
   "msgInputNickNameNotValid": "Nicknames can only be up to 12 characters without spaces",
   "msgNoNotifications": "No notifications.",
   "msgItemCount": "{} items",
+  "msgAdPlaying": "An advertisement is playing.\nIf you see this message, please press the back button",
   "msgHallOfFame": "Hall of Fame",
   "msgRetryLater": "Please try again later.",
   "msgRewardCompleted": "The reward has already been redeemed.",

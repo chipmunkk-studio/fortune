@@ -11,7 +11,8 @@ import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
-import 'package:fortune/presentation/missiondetail/component/normal_mission.dart';
+import 'package:fortune/presentation/missiondetail/component/mission/grade_mission.dart';
+import 'package:fortune/presentation/missiondetail/component/mission/normal_mission.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -103,6 +104,14 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                         switch (state.entity.mission.missionType) {
                           case MissionType.normal:
                             return NormalMission(
+                              state,
+                              onExchangeClick: () {
+                                router.pop(context);
+                                _bloc.add(MissionDetailExchange());
+                              },
+                            );
+                          case MissionType.grade:
+                            return GradeMission(
                               state,
                               onExchangeClick: () {
                                 router.pop(context);

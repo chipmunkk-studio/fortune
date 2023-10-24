@@ -78,6 +78,7 @@
   "msgRequireVerifySixNumberContent": "인증번호는 숫자 6자리입니다.",
   "historyFortuneSpot": "포춘 스팟",
   "msgItemCount": "{}개",
+  "msgAdPlaying": "광고 재생 중입니다.\n이 메시지가 보인다면, 뒤로가기를 눌러주세요",
   "historyFortuneSpotSearchInput": "검색어를 입력하세요",
   "msgRequireMarkerObtainDistance": "현재 위치에서 {}m 더 가야해요",
   "msgInputEmail": "이메일을 입력하세요",

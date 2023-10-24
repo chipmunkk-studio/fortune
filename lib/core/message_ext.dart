@@ -84,6 +84,7 @@ abstract class FortuneTr {
   static final msgHallOfFame = tr('msgHallOfFame');
   static final msgRetryLater = tr('msgRetryLater');
   static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
+  static final msgAdPlaying = tr('msgAdPlaying');
   static final msgMissionCompleted = tr('msgMissionCompleted');
   static final msgPaymentDelay = tr('msgPaymentDelay');
   static final msgConfirmWithdrawal = tr('msgConfirmWithdrawal');
