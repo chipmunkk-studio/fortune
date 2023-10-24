@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/presentation/missions/component/mission_grade_card.dart';
 import 'package:fortune/presentation/missions/component/mission_relay_card.dart';
 
 import 'mission_normal_card.dart';
@@ -31,9 +32,11 @@ class MissionCardList extends StatelessWidget {
         return Bounceable(
           onTap: () => onItemClick(item),
           child: () {
-            switch (item.mission.missionType) {
+            switch (item.mission.type) {
               case MissionType.normal:
                 return MissionNormalCard(item);
+              case MissionType.grade:
+                return MissionGradeCard(item);
               case MissionType.relay:
                 return MissionRelayCard(item);
               default:

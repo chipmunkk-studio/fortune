@@ -1,9 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/data/supabase/supabase_ext.dart';
+import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/data/supabase/response/mission/missions_response.dart';
-import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -29,11 +31,34 @@ class MissionsService {
         return List.empty();
       } else {
         final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
-        return missions;
+        final filteredGradeMissions = modifyListWithRandomGrade(missions);
+        return filteredGradeMissions;
       }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
+  }
+
+  List<MissionsEntity> modifyListWithRandomGrade(List<MissionsEntity> missions) {
+    // missionType이 grade인 항목만 필터링
+    final gradeMissions = missions.where((mission) => mission.type == MissionType.grade).toList();
+
+    if (gradeMissions.isEmpty) {
+      return missions; // grade 미션 항목이 없으면 원래의 리스트를 반환
+    }
+
+    // 무작위로 grade 미션 선택
+    math.Random random = math.Random();
+    int randomIndex = random.nextInt(gradeMissions.length);
+    MissionsEntity selectedMission = gradeMissions[randomIndex];
+
+    // 원래의 리스트에서 모든 grade 미션을 제거
+    missions.removeWhere((mission) => mission.type == MissionType.grade);
+
+    // 무작위로 선택한 grade 미션을 리스트에 추가
+    missions.add(selectedMission);
+
+    return missions;
   }
 
   // 아이디로 미션을 조회.

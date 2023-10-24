@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortune/di.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/di.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/missions/component/mission_card_list.dart';
 import 'package:fortune/presentation/missions/component/missions_skeleton.dart';
@@ -13,13 +13,19 @@ import 'bloc/missions.dart';
 class MissionsBottomContents extends StatelessWidget {
   final MainBloc mainBloc;
 
-  const MissionsBottomContents(this.mainBloc, {Key? key}) : super(key: key);
+  const MissionsBottomContents(this.mainBloc, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<MissionsBloc>()..add(MissionsBottomInit()),
-      child: _MissionsBottomContents(mainBloc),
+      create: (_) =>
+      serviceLocator<MissionsBloc>()
+        ..add(MissionsBottomInit()),
+      child: _MissionsBottomContents(
+        mainBloc,
+      ),
     );
   }
 }
@@ -27,7 +33,7 @@ class MissionsBottomContents extends StatelessWidget {
 class _MissionsBottomContents extends StatefulWidget {
   final MainBloc mainBloc;
 
-  const _MissionsBottomContents(this.mainBloc);
+  const _MissionsBottomContents(this.mainBloc,);
 
   @override
   State<_MissionsBottomContents> createState() => _MissionsBottomContentsState();
@@ -35,7 +41,6 @@ class _MissionsBottomContents extends StatefulWidget {
 
 class _MissionsBottomContentsState extends State<_MissionsBottomContents> {
   final _router = serviceLocator<FortuneAppRouter>().router;
-
   late final MissionsBloc _bloc;
 
   @override

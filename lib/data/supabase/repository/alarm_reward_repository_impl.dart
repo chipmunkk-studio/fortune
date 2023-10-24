@@ -35,7 +35,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
-        description: '이벤트 리워드 추가 실패',
+        description: e.description,
       );
     }
   }
@@ -46,9 +46,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
       final rewardInfo = await alarmRewardInfoService.findEventRewardsByType(type.name);
       return rewardInfo;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '이벤트 리워드를 찾을 수 없습니다',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -58,9 +56,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
       final result = await rewardsService.findRewardHistoryById(id);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '이벤트 리워드를 찾을 수 없습니다',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -73,9 +69,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
       final result = await rewardsService.update(id, request: request);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '알림 리워드 업데이트 실패.',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

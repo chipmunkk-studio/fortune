@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/domain/supabase/entity/support/app_update_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/faq_entity.dart';
@@ -20,9 +21,7 @@ class SupportRepositoryImpl extends SupportRepository {
       List<FaqsEntity> faqs = await supportService.findAllFaqs();
       return faqs;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '${e.description}',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -32,9 +31,7 @@ class SupportRepositoryImpl extends SupportRepository {
       List<NoticesEntity> notices = await supportService.findAllNotices();
       return notices;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '${e.description}',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -44,9 +41,7 @@ class SupportRepositoryImpl extends SupportRepository {
       List<PrivacyPolicyEntity> privacy = await supportService.findPrivacyPolicy();
       return privacy;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '${e.description}',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -56,9 +51,7 @@ class SupportRepositoryImpl extends SupportRepository {
       List<AppUpdateEntity> update = await supportService.findAllAppUpdate();
       return update;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '${e.description}',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

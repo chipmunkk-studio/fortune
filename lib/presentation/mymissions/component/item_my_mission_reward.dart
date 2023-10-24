@@ -22,7 +22,7 @@ class ItemMyMissionReward extends StatelessWidget {
           FortuneCachedNetworkImage(
             width: 44,
             height: 44,
-            imageUrl: item.mission.missionReward.rewardImage,
+            imageUrl: item.mission.reward.image,
             placeholder: Container(),
             fit: BoxFit.fill,
           ),
@@ -49,7 +49,7 @@ class ItemMyMissionReward extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  item.mission.missionReward.rewardName,
+                  item.mission.reward.name,
                   style: FortuneTextStyle.body3Light(color: ColorName.grey100),
                 ),
               ],

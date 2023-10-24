@@ -49,9 +49,9 @@ class MissionsResponse extends MissionsEntity {
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
-          missionType: getMissionType(missionType_),
-          missionImage: missionImage_ ?? '',
-          missionReward: missionReward_ ?? MissionRewardEntity.empty(),
+          type: getMissionType(missionType_),
+          image: missionImage_ ?? '',
+          reward: missionReward_ ?? MissionRewardEntity.empty(),
           isActive: isActive_,
         );
 

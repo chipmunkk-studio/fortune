@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
+import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 
 @immutable
 abstract class MissionDetailSideEffect extends Equatable {}
@@ -14,8 +15,17 @@ class MissionDetailError extends MissionDetailSideEffect {
   List<Object?> get props => [];
 }
 
+class MissionDetailClearNormalSuccess extends MissionDetailSideEffect {
+  MissionDetailClearNormalSuccess();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class MissionDetailClearSuccess extends MissionDetailSideEffect {
-  MissionDetailClearSuccess();
+  final MissionsEntity mission;
+
+  MissionDetailClearSuccess(this.mission);
 
   @override
   List<Object?> get props => [];

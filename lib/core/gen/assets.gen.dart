@@ -94,6 +94,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
 
+  /// File path: assets/icons/ic_fortune_cookie_1.svg
+  SvgGenImage get icFortuneCookie1 =>
+      const SvgGenImage('assets/icons/ic_fortune_cookie_1.svg');
+
+  /// File path: assets/icons/ic_fortune_cookie_2.svg
+  SvgGenImage get icFortuneCookie2 =>
+      const SvgGenImage('assets/icons/ic_fortune_cookie_2.svg');
+
   /// File path: assets/icons/ic_fortune_money.svg
   SvgGenImage get icFortuneMoney =>
       const SvgGenImage('assets/icons/ic_fortune_money.svg');
@@ -237,6 +245,8 @@ class $AssetsIconsGen {
         icCheckCircleFill24,
         icChecklist24,
         icClock,
+        icFortuneCookie1,
+        icFortuneCookie2,
         icFortuneMoney,
         icFortuneMoneyPlus,
         icFortuneTicket,

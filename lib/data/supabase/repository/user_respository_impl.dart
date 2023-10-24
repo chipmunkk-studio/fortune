@@ -26,13 +26,11 @@ class UserRepositoryImpl extends UserRepository {
       final String currentEmail = emailParam ?? Supabase.instance.client.auth.currentUser?.email ?? '';
       final FortuneUserEntity? user = await _userService.findUserByEmail(currentEmail);
       if (user == null) {
-        throw CommonFailure(errorMessage: FortuneTr.notExistUser);
+        throw CommonFailure(errorMessage: FortuneTr.msgNotExistUser);
       }
       return user;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notFoundUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -43,9 +41,7 @@ class UserRepositoryImpl extends UserRepository {
       final FortuneUserEntity? user = await _userService.findUserByEmail(email);
       return user;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: e.description,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -65,9 +61,7 @@ class UserRepositoryImpl extends UserRepository {
         ),
       );
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.msgTicketUpdateFailed,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -98,9 +92,7 @@ class UserRepositoryImpl extends UserRepository {
       final result = await _userService.update(user, request: RequestFortuneUser(profileImage: imagePath));
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notUpdateUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -118,9 +110,7 @@ class UserRepositoryImpl extends UserRepository {
       await _supabaseClient.auth.signOut();
       _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'phone': user.email});
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notUpdateUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -139,9 +129,7 @@ class UserRepositoryImpl extends UserRepository {
       );
       _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'phone': user.email});
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: FortuneTr.notUpdateUser,
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -154,9 +142,7 @@ class UserRepositoryImpl extends UserRepository {
       );
       return users;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '사용자 정보 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -166,9 +152,7 @@ class UserRepositoryImpl extends UserRepository {
       final String ranking = await _userService.getUserRanking(user);
       return ranking;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '랭킹 정보를 불러오지 못했습니다.',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }

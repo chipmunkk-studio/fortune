@@ -28,7 +28,7 @@ class ItemAlarmFeed extends StatelessWidget {
           color: item.type == AlarmFeedType.server ? ColorName.primary : Colors.transparent,
           width: 1,
         ),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
         color: ColorName.grey800,
       ),
       child: Column(

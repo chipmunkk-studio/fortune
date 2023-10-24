@@ -32,6 +32,9 @@ abstract class FortuneTr {
   static String msgAchievedGrade(String grade) => tr('msgAchievedGrade', args: [grade]);
 
   static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
+  static String msgRewardCollectWinner(String reward) => tr('msgRewardCollectWinner', args: [reward]);
+
+  static String msgItemCount(String count) => tr('msgItemCount', args: [count]);
 
   static String msgAcquireMarker(
     String nickname,
@@ -41,11 +44,11 @@ abstract class FortuneTr {
       tr('msgAcquireMarker', args: [nickname, location, ingredientName]);
 
   // 사용자
-  static final notExistUser = tr('msgNotExistUser');
-  static final notExistTerms = tr('msgNotExistTerms');
-  static final notFoundUser = tr('msgNotFoundUser');
-  static final notUpdateUser = tr('msgNotUpdateUser');
-  static final renewAuthInfo = tr('msgRenewAuthInfo');
+  static final msgNotExistUser = tr('msgNotExistUser');
+  static final msgNotExistTerms = tr('msgNotExistTerms');
+  static final msgUpdateUserInfo = tr('msgUpdateUserInfo');
+  static final msgNotUpdateUser = tr('msgNotUpdateUser');
+  static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');
 
@@ -80,7 +83,9 @@ abstract class FortuneTr {
   static final msgCompletedMissions = tr('msgCompletedMissions');
   static final msgRevokeWithdrawal = tr('msgRevokeWithdrawal');
   static final msgHallOfFame = tr('msgHallOfFame');
+  static final msgRetryLater = tr('msgRetryLater');
   static final msgAlreadyWithdrawn = tr('msgAlreadyWithdrawn');
+  static final msgAdPlaying = tr('msgAdPlaying');
   static final msgMissionCompleted = tr('msgMissionCompleted');
   static final msgPaymentDelay = tr('msgPaymentDelay');
   static final msgConfirmWithdrawal = tr('msgConfirmWithdrawal');
@@ -102,6 +107,7 @@ abstract class FortuneTr {
   static final msgNewGradeReached = tr('msgNewGradeReached');
   static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
   static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
+  static final msgUnlimited = tr('msgUnlimited');
   static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');
   static final msgRewardPreparation = tr('msgRewardPreparation');
   static final msgUntilNextLevel = tr('msgUntilNextLevel');

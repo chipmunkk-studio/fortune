@@ -22,9 +22,7 @@ class IngredientRepositoryImpl extends IngredientRepository {
       final List<IngredientEntity> ingredients = await _ingredientService.findAllIngredients();
       return ingredients;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '재료 불러오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 
@@ -56,9 +54,7 @@ class IngredientRepositoryImpl extends IngredientRepository {
         throw const CustomFailure(errorDescription: '생성할 수 있는 재료가 없습니다.');
       }
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure(
-        description: '재료 가져오기 실패',
-      );
+      throw e.handleFortuneFailure();
     }
   }
 }
