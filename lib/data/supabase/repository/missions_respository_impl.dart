@@ -58,15 +58,15 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final mission = await missionNormalService.findMissionById(missionId);
 
       // 리워드가 모두 소진 되었을 경우.
-      if (mission.missionReward.remainCount == 0) {
+      if (mission.reward.remainCount == 0) {
         throw const CustomFailure(errorDescription: "리워드가 모두 소진 되었습니다.");
       }
 
       // 미션 리워드 상태 업데이트.
       await missionRewardService.update(
-        mission.missionReward.id,
+        mission.reward.id,
         request: RequestMissionRewardUpdate(
-          remainCount: mission.missionReward.remainCount - 1,
+          remainCount: mission.reward.remainCount - 1,
         ),
       );
 

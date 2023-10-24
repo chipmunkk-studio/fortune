@@ -23,9 +23,8 @@ import 'center_profile.dart';
 import 'obtain_loading_view.dart';
 
 class MainMap extends StatelessWidget {
-  final BuildContext context;
+  final BuildContext mainContext;
   final MainBloc _bloc;
-  final FluroRouter router;
   final MapController mapController;
   final FortuneRemoteConfig remoteConfigArgs;
   final Position? myLocation;
@@ -37,8 +36,7 @@ class MainMap extends StatelessWidget {
   const MainMap(
     this._bloc, {
     Key? key,
-    required this.context,
-    required this.router,
+    required this.mainContext,
     required this.remoteConfigArgs,
     required this.mapController,
     required this.myLocation,

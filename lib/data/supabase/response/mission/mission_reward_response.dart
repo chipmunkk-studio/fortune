@@ -39,8 +39,8 @@ class MissionRewardResponse extends MissionRewardEntity {
     id: id_.toInt(),
     totalCount: totalCount_ ?? 0,
     remainCount: remainCount_ ?? 0,
-    rewardName: getLocaleContent(en: enRewardName_ ?? '', kr: krRewardName_ ?? ''),
-    rewardImage: rewardImage_ ?? '',
+    name: getLocaleContent(en: enRewardName_ ?? '', kr: krRewardName_ ?? ''),
+    image: rewardImage_ ?? '',
     note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
     createdAt: createdAt_,
   );

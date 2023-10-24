@@ -87,7 +87,7 @@ class MissionRelayCard extends StatelessWidget {
                 dimension: 84,
                 child: ClipOval(
                   child: FortuneCachedNetworkImage(
-                    imageUrl: item.mission.missionReward.rewardImage,
+                    imageUrl: item.mission.reward.image,
                     placeholder: Container(),
                     fit: BoxFit.fill,
                   ),

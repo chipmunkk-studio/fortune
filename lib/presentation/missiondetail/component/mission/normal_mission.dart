@@ -75,7 +75,7 @@ class NormalMission extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      state.entity.mission.missionReward.note,
+                      state.entity.mission.reward.note,
                       style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
@@ -155,7 +155,7 @@ class NormalMission extends StatelessWidget {
       content: (context) {
         return ExchangeBottom(
           onExchangeClick: onExchangeClick,
-          entity: entity.mission.missionReward,
+          entity: entity.mission.reward,
           isButtonEnabled: isEnableButton,
           user: entity.user,
         );

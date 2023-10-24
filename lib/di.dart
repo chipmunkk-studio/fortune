@@ -172,6 +172,9 @@ initRouter(bool kIsWeb) {
   kIsWeb
       ? serviceLocator.registerLazySingleton<FortuneWebRouter>(() => FortuneWebRouter()..init())
       : serviceLocator.registerLazySingleton<FortuneAppRouter>(() => FortuneAppRouter()..init());
+
+  final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+  serviceLocator.registerSingleton<RouteObserver<PageRoute>>(routeObserver);
 }
 
 initSupabase(bool kIsWeb) async {

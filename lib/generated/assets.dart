@@ -22,6 +22,8 @@ class Assets {
   static const String iconsIcCheckCircleFill24 = 'assets/icons/ic_check_circle_fill_24.svg';
   static const String iconsIcChecklist24 = 'assets/icons/ic_checklist_24.svg';
   static const String iconsIcClock = 'assets/icons/ic_clock.svg';
+  static const String iconsIcFortuneCookie1 = 'assets/icons/ic_fortune_cookie_1.svg';
+  static const String iconsIcFortuneCookie2 = 'assets/icons/ic_fortune_cookie_2.svg';
   static const String iconsIcFortuneMoney = 'assets/icons/ic_fortune_money.svg';
   static const String iconsIcFortuneMoneyPlus = 'assets/icons/ic_fortune_money_plus.svg';
   static const String iconsIcFortuneTicket = 'assets/icons/ic_fortune_ticket.svg';

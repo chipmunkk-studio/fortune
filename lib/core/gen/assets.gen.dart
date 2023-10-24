@@ -42,14 +42,6 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/bg_radar_circle.svg
-  SvgGenImage get bgRadarCircle =>
-      const SvgGenImage('assets/icons/bg_radar_circle.svg');
-
-  /// File path: assets/icons/bg_radar_rectangle.svg
-  SvgGenImage get bgRadarRectangle =>
-      const SvgGenImage('assets/icons/bg_radar_rectangle.svg');
-
   /// File path: assets/icons/ic_arrow_down.svg
   SvgGenImage get icArrowDown =>
       const SvgGenImage('assets/icons/ic_arrow_down.svg');
@@ -101,6 +93,14 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
+
+  /// File path: assets/icons/ic_fortune_cookie_1.svg
+  SvgGenImage get icFortuneCookie1 =>
+      const SvgGenImage('assets/icons/ic_fortune_cookie_1.svg');
+
+  /// File path: assets/icons/ic_fortune_cookie_2.svg
+  SvgGenImage get icFortuneCookie2 =>
+      const SvgGenImage('assets/icons/ic_fortune_cookie_2.svg');
 
   /// File path: assets/icons/ic_fortune_money.svg
   SvgGenImage get icFortuneMoney =>
@@ -231,8 +231,6 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
-        bgRadarCircle,
-        bgRadarRectangle,
         icArrowDown,
         icArrowLeft,
         icArrowRight12,
@@ -247,6 +245,8 @@ class $AssetsIconsGen {
         icCheckCircleFill24,
         icChecklist24,
         icClock,
+        icFortuneCookie1,
+        icFortuneCookie2,
         icFortuneMoney,
         icFortuneMoneyPlus,
         icFortuneTicket,

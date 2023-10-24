@@ -72,15 +72,26 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
     return BlocSideEffectListener<MissionDetailBloc, MissionDetailSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MissionDetailClearSuccess) {
-          dialogService.showFortuneDialog(
-            context,
-            title: FortuneTr.msgMissionCompleted,
-            subTitle: FortuneTr.msgPaymentDelay,
-            btnOkText: FortuneTr.confirm,
-            btnOkPressed: () {
-              router.pop(context, true);
-            },
-          );
+          final mission = sideEffect.mission;
+          switch (mission.type) {
+            case MissionType.grade:
+              dialogService.showFortuneDialog(
+                context,
+                title: FortuneTr.msgRewardCollectWinner(mission.reward.name),
+                subTitle: FortuneTr.msgPaymentDelay,
+                btnOkText: FortuneTr.confirm,
+                btnOkPressed: () => router.pop(context, true),
+              );
+              break;
+            default:
+              dialogService.showFortuneDialog(
+                context,
+                title: FortuneTr.msgMissionCompleted,
+                subTitle: FortuneTr.msgPaymentDelay,
+                btnOkText: FortuneTr.confirm,
+                btnOkPressed: () => router.pop(context, true),
+              );
+          }
         } else if (sideEffect is MissionDetailError) {
           dialogService.showErrorDialog(context, sideEffect.error);
         } else if (sideEffect is MissionDetailParticleBurst) {
@@ -101,7 +112,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                       isLoading: state.isLoading,
                       skeleton: const MissionDetailSkeleton(),
                       child: () {
-                        switch (state.entity.mission.missionType) {
+                        switch (state.entity.mission.type) {
                           case MissionType.normal:
                             return NormalMission(
                               state,
@@ -113,10 +124,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                           case MissionType.grade:
                             return GradeMission(
                               state,
-                              onExchangeClick: () {
-                                router.pop(context);
-                                _bloc.add(MissionDetailExchange());
-                              },
+                              onExchangeClick: () => _bloc.add(MissionDetailExchange()),
                             );
                           default:
                             return Container();
@@ -151,7 +159,12 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
             buildWhen: (previous, current) => previous.isRequestObtaining != current.isRequestObtaining,
             builder: (context, state) {
               return state.isRequestObtaining
-                  ? Container(color: Colors.black.withOpacity(0.5))
+                  ? Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
                   : const SizedBox.shrink();
             },
           )

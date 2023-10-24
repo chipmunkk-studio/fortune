@@ -32,6 +32,7 @@ abstract class FortuneTr {
   static String msgAchievedGrade(String grade) => tr('msgAchievedGrade', args: [grade]);
 
   static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
+  static String msgRewardCollectWinner(String reward) => tr('msgRewardCollectWinner', args: [reward]);
 
   static String msgItemCount(String count) => tr('msgItemCount', args: [count]);
 
@@ -106,6 +107,7 @@ abstract class FortuneTr {
   static final msgNewGradeReached = tr('msgNewGradeReached');
   static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
   static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
+  static final msgUnlimited = tr('msgUnlimited');
   static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');
   static final msgRewardPreparation = tr('msgRewardPreparation');
   static final msgUntilNextLevel = tr('msgUntilNextLevel');

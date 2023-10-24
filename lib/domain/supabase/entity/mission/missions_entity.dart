@@ -7,9 +7,9 @@ class MissionsEntity {
   final String title;
   final String content;
   final String note;
-  final String missionImage;
-  final MissionType missionType;
-  final MissionRewardEntity missionReward;
+  final String image;
+  final MissionType type;
+  final MissionRewardEntity reward;
   final bool isActive;
 
   MissionsEntity({
@@ -17,10 +17,10 @@ class MissionsEntity {
     required this.title,
     required this.content,
     required this.note,
-    required this.missionType,
-    required this.missionReward,
+    required this.type,
+    required this.reward,
     required this.isActive,
-    required this.missionImage,
+    required this.image,
   });
 
   factory MissionsEntity.empty() {
@@ -29,9 +29,9 @@ class MissionsEntity {
       title: '',
       content: '',
       note: '',
-      missionType: MissionType.none,
-      missionReward: MissionRewardEntity.empty(),
-      missionImage: '',
+      type: MissionType.none,
+      reward: MissionRewardEntity.empty(),
+      image: '',
       isActive: false,
     );
   }
