@@ -35,14 +35,18 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
   Future<void> readAllAlarm(int userId) async {
     try {
       final allAlarms = await findAllAlarmsByUserId(userId);
-      await Future.wait(allAlarms.map((element) async {
-        await alarmFeedsService.update(
-          element.id,
-          request: RequestAlarmFeeds(
-            isRead: true,
-          ),
-        );
-      }));
+      await Future.wait(
+        allAlarms.map((element) async {
+          if (!element.isRead) {
+            await alarmFeedsService.update(
+              element.id,
+              request: RequestAlarmFeeds(
+                isRead: true,
+              ),
+            );
+          }
+        }),
+      );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }

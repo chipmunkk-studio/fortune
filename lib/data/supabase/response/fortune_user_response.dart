@@ -7,7 +7,7 @@ part 'fortune_user_response.g.dart';
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'id')
-  final double id_;
+  final double? id_;
   @JsonKey(name: 'email')
   final String? email_;
   @JsonKey(name: 'nickname')
@@ -42,7 +42,7 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.withdrawalAt_,
     required this.createdAt_,
   }) : super(
-          id: id_.toInt(),
+          id: id_?.toInt() ?? -1,
           nickname: nickname_ ?? FortuneTr.msgUnknownUser,
           email: email_ ?? '',
           ticket: ticket_ ?? 0,
