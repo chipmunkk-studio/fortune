@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
@@ -65,7 +65,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 2;
       final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 1;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount

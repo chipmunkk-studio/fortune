@@ -2,7 +2,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/response/mission/mission_clear_conditions_response.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:fortune/core/message_ext.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_next_level_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
@@ -133,22 +132,12 @@ getLocationName(
 // 레벨 부여 하기.
 assignLevel(int markerCount) {
   int level = 1;
-  while (markerCount >= level * 3) {
-    markerCount -= level * 3;
+  while (markerCount >= level * 12) {
+    markerCount -= level * 12;
     level++;
   }
   return level;
 }
-
-assignDebugLevel(int markerCount) {
-  int level = 1;
-  while (markerCount >= level * 2) {
-    markerCount -= level * 2;
-    level++;
-  }
-  return level;
-}
-
 calculateWithdrawalDays(String withdrawalAt) {
   if (withdrawalAt.isEmpty) {
     return true;
@@ -160,12 +149,12 @@ calculateWithdrawalDays(String withdrawalAt) {
 calculateLevelInfo(int markerCount) {
   int level = 1;
 
-  while (markerCount >= level * 3) {
-    markerCount -= level * 3;
+  while (markerCount >= level * 12) {
+    markerCount -= level * 12;
     level++;
   }
 
-  int nextLevelRequired = level * 3;
+  int nextLevelRequired = level * 12;
   double progressToNextLevelPercentage = (markerCount / nextLevelRequired);
   int remainingForNextLevel = nextLevelRequired - markerCount;
 
@@ -179,15 +168,15 @@ calculateLevelInfo(int markerCount) {
     nextGradeLevel = 90;
   } else if (level < 120) {
     nextGradeLevel = 120;
-  } else if (level < 999) {
-    nextGradeLevel = 999;
+  } else if (level < 150) {
+    nextGradeLevel = 150;
   } else {
     nextGradeLevel = 999;
   }
 
   int totalMarkersForNextGrade = 0;
   for (int i = level + 1; i <= nextGradeLevel; i++) {
-    totalMarkersForNextGrade += i * 3;
+    totalMarkersForNextGrade += i * 12;
   }
   int remainingForNextGrade = totalMarkersForNextGrade - markerCount;
 

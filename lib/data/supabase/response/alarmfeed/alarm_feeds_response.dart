@@ -1,5 +1,5 @@
 import 'package:fortune/core/util/date.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';

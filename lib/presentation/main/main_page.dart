@@ -21,7 +21,7 @@ import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
-import 'package:fortune/data/supabase/service/service_ext.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
