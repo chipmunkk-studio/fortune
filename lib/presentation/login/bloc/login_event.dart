@@ -37,13 +37,8 @@ class LoginRequestVerifyCode extends LoginEvent {
   List<Object?> get props => [];
 }
 
-class LoginRequestCancelWithdrawal extends LoginEvent {
-  @override
-  List<Object?> get props => [];
-}
-
 class LoginRequestSelectCountry extends LoginEvent {
-  CountryInfoEntity args;
+  final CountryInfoEntity args;
 
   LoginRequestSelectCountry(this.args);
 

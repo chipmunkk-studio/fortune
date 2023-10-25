@@ -47,17 +47,12 @@ class UserService {
   Future<FortuneUserEntity> update(
     String email, {
     required RequestFortuneUser request,
-    bool isCancelWithdrawal = false,
-    required List<UserColumn> columnsToUpdate,
   }) async {
     try {
       Map<String, dynamic> updateMap = request.toJson();
 
-      updateMap.removeWhere(
-        (key, value) => !columnsToUpdate.any(
-          (column) => column.name == key,
-        ),
-      );
+      // null인 필드는 업데이트 대상에서 제외
+      updateMap.removeWhere((key, value) => value == null);
 
       final updateUser = await _client
           .from(_userTableName)
@@ -206,7 +201,7 @@ class UserService {
       final myIndex = rankingUsers.indexWhere(
         (user) =>
             user.ticket == paramTicket &&
-            user.markerObtainCount ==paramMarkerObtainCount &&
+            user.markerObtainCount == paramMarkerObtainCount &&
             user.createdAt == paramCreatedAt,
       );
 

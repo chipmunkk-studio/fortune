@@ -66,10 +66,6 @@ class UserRepositoryImpl extends UserRepository {
           ticket: ticket,
           markerObtainCount: markerObtainCount,
         ),
-        columnsToUpdate: [
-          UserColumn.ticket,
-          UserColumn.markerObtainCount,
-        ],
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
@@ -88,9 +84,6 @@ class UserRepositoryImpl extends UserRepository {
         request: RequestFortuneUser(
           nickname: nickname,
         ),
-        columnsToUpdate: [
-          UserColumn.nickname,
-        ],
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -110,9 +103,6 @@ class UserRepositoryImpl extends UserRepository {
       final result = await _userService.update(
         email,
         request: RequestFortuneUser(profileImage: imagePath),
-        columnsToUpdate: [
-          UserColumn.profileImage,
-        ],
       );
       return result;
     } on FortuneFailure catch (e) {
@@ -129,10 +119,6 @@ class UserRepositoryImpl extends UserRepository {
           withdrawalAt: DateTime.now().toUtc().toIso8601String(),
           isWithdrawal: true,
         ),
-        columnsToUpdate: [
-          UserColumn.withdrawalAt,
-          UserColumn.isWithdrawal,
-        ],
       );
       await _supabaseClient.auth.signOut();
       _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'email': email});
@@ -148,14 +134,9 @@ class UserRepositoryImpl extends UserRepository {
       await _userService.update(
         email,
         request: RequestFortuneUser(
-          withdrawalAt: '',
+          withdrawalAt: DateTime.now().toUtc().toIso8601String(),
           isWithdrawal: false,
         ),
-        isCancelWithdrawal: true,
-        columnsToUpdate: [
-          UserColumn.withdrawalAt,
-          UserColumn.isWithdrawal,
-        ],
       );
       _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'email': email});
     } on FortuneFailure catch (e) {

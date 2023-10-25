@@ -91,22 +91,12 @@ class _LoginPageState extends State<_LoginPage> {
             clearStack: true,
           );
         } else if (sideEffect is LoginWithdrawalUser) {
-          final isReSignIn = sideEffect.isReSignIn;
-          if (isReSignIn) {
-            dialogService.showFortuneDialog(
-              context,
-              subTitle: FortuneTr.msgRevokeWithdrawal,
-              dismissOnBackKeyPress: true,
-              btnOkPressed: () => _bloc.add(LoginRequestCancelWithdrawal()),
-            );
-          } else {
-            dialogService.showFortuneDialog(
-              context,
-              subTitle: FortuneTr.msgAlreadyWithdrawn,
-              dismissOnBackKeyPress: true,
-              btnOkPressed: () {},
-            );
-          }
+          dialogService.showFortuneDialog(
+            context,
+            subTitle: FortuneTr.msgAlreadyWithdrawn,
+            dismissOnBackKeyPress: true,
+            btnOkPressed: () {},
+          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(

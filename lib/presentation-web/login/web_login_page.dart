@@ -87,22 +87,12 @@ class _WebLoginPageState extends State<_WebLoginPage> {
             clearStack: true,
           );
         } else if (sideEffect is WebLoginWithdrawalUser) {
-          final isReSignIn = sideEffect.isReSignIn;
-          if (isReSignIn) {
-            dialogService.showFortuneDialog(
-              context,
-              subTitle: FortuneTr.msgRevokeWithdrawal,
-              dismissOnBackKeyPress: true,
-              btnOkPressed: () => _bloc.add(WebLoginRequestCancelWithdrawal()),
-            );
-          } else {
-            dialogService.showFortuneDialog(
-              context,
-              subTitle: FortuneTr.msgAlreadyWithdrawn,
-              dismissOnBackKeyPress: true,
-              btnOkPressed: () {},
-            );
-          }
+          dialogService.showFortuneDialog(
+            context,
+            subTitle: FortuneTr.msgAlreadyWithdrawn,
+            dismissOnBackKeyPress: true,
+            btnOkPressed: () {},
+          );
         }
       },
       child: BlocBuilder<WebLoginBloc, WebLoginState>(

@@ -45,9 +45,8 @@ class WebLoginLandingRoute extends WebLoginSideEffect {
 }
 
 class WebLoginWithdrawalUser extends WebLoginSideEffect {
-  bool isReSignIn;
 
-  WebLoginWithdrawalUser(this.isReSignIn);
+  WebLoginWithdrawalUser();
 
   @override
   List<Object?> get props => [];

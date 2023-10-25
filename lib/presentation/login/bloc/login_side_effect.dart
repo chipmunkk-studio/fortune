@@ -48,9 +48,7 @@ class LoginLandingRoute extends LoginSideEffect {
 }
 
 class LoginWithdrawalUser extends LoginSideEffect {
-  bool isReSignIn;
-
-  LoginWithdrawalUser(this.isReSignIn);
+  LoginWithdrawalUser();
 
   @override
   List<Object?> get props => [];
