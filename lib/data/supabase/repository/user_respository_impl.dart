@@ -5,6 +5,7 @@ import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/request/request_get_all_users_param.dart';
@@ -65,6 +66,7 @@ class UserRepositoryImpl extends UserRepository {
         request: RequestFortuneUser(
           ticket: ticket,
           markerObtainCount: markerObtainCount,
+          level: assignLevel(markerObtainCount),
         ),
       );
     } on FortuneFailure catch (e) {

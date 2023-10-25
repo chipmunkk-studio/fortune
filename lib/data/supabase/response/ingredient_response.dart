@@ -8,19 +8,19 @@ part 'ingredient_response.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class IngredientResponse extends IngredientEntity {
   @JsonKey(name: 'id')
-  final double id_;
+  final double? id_;
   @JsonKey(name: 'kr_name')
-  final String krName_;
+  final String? krName_;
   @JsonKey(name: 'en_name')
-  final String enName_;
+  final String? enName_;
   @JsonKey(name: 'type')
-  final String type_;
+  final String? type_;
   @JsonKey(name: 'reward_ticket')
-  final int rewardTicket_;
+  final int? rewardTicket_;
   @JsonKey(name: 'image_url')
-  final String imageUrl_;
+  final String? imageUrl_;
   @JsonKey(name: 'distance')
-  final int distance_;
+  final int? distance_;
 
   IngredientResponse({
     required this.id_,
@@ -31,14 +31,14 @@ class IngredientResponse extends IngredientEntity {
     required this.rewardTicket_,
     required this.distance_,
   }) : super(
-          id: id_.toInt(),
+          id: id_?.toInt() ?? -1,
           exposureName: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
           krName: krName_ ?? '',
           enName: enName_ ?? '',
-          imageUrl: imageUrl_,
-          rewardTicket: rewardTicket_,
+          imageUrl: imageUrl_ ?? '',
+          rewardTicket: rewardTicket_ ?? 0,
           type: getIngredientType(type_),
-          distance: distance_,
+          distance: distance_ ?? 500,
         );
 
   factory IngredientResponse.fromJson(Map<String, dynamic> json) => _$IngredientResponseFromJson(json);

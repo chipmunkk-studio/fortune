@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fortune/core/message_ext.dart';
 
 abstract class FortuneDateExtension {
-  static String convertTimeAgo(String timestamp) {
+  static String convertTimeAgo(String? timestamp) {
+    if (timestamp == null) {
+      return FortuneTr.msgJustNow();
+    }
     DateTime dateTime = DateTime.parse(timestamp);
     DateTime now = DateTime.now();
     Duration timeDifference = now.difference(dateTime);

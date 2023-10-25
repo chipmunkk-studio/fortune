@@ -37,7 +37,7 @@ extension SupabaseExt on Future<dynamic> {
   }
 }
 
-getIngredientType(String type) {
+getIngredientType(String? type) {
   if (IngredientType.coin.name == type) {
     return IngredientType.coin;
   } else if (IngredientType.normal.name == type) {
@@ -55,7 +55,7 @@ getIngredientType(String type) {
   }
 }
 
-getEventNoticeType(String type) {
+getEventNoticeType(String? type) {
   if (AlarmFeedType.server.name == type) {
     return AlarmFeedType.server;
   } else if (AlarmFeedType.user.name == type) {
@@ -65,7 +65,7 @@ getEventNoticeType(String type) {
   }
 }
 
-getEventRewardType(String type) {
+getEventRewardType(String? type) {
   if (AlarmRewardType.level.name == type) {
     return AlarmRewardType.level;
   } else if (AlarmRewardType.relay.name == type) {

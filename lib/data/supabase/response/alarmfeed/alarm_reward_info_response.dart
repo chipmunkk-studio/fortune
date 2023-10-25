@@ -7,9 +7,9 @@ part 'alarm_reward_info_response.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class AlarmRewardInfoResponse extends AlarmRewardInfoEntity {
   @JsonKey(name: 'id')
-  final double id_;
+  final double? id_;
   @JsonKey(name: 'type')
-  final String type_;
+  final String? type_;
   @JsonKey(name: 'has_epic_marker')
   final bool? hasEpicMarker_;
   @JsonKey(name: 'has_rare_marker')
@@ -21,7 +21,7 @@ class AlarmRewardInfoResponse extends AlarmRewardInfoEntity {
     required this.hasEpicMarker_,
     required this.hasRareMarker_,
   }) : super(
-          id: id_.toInt(),
+          id: id_?.toInt() ?? -1,
           type: getEventRewardType(type_),
           hasEpicMarker: hasEpicMarker_ ?? false,
           hasRareMarker: hasRareMarker_ ?? false,
