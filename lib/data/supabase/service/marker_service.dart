@@ -66,7 +66,7 @@ class MarkerService {
   // 마커 재배치.
   Future<void> reLocateMarker(
     MarkerEntity marker,
-    FortuneUserEntity user,
+    int userId,
   ) async {
     try {
       final ingredient = marker.ingredient;
@@ -78,7 +78,7 @@ class MarkerService {
       await update(
         marker.id,
         location: randomLocation,
-        lastObtainUser: user.id,
+        lastObtainUser: userId,
         hitCount: marker.hitCount + 1,
       );
     } catch (e) {

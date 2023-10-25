@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/domain/local/local_respository.dart';
+import 'package:fortune/domain/supabase/request/request_profile_update_param.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -43,7 +44,12 @@ class MyPageBloc extends Bloc<MyPageEvent, MyPageState>
   }
 
   FutureOr<void> updateProfile(MyPageUpdateProfile event, Emitter<MyPageState> emit) async {
-    await updateProfileUseCase(event.filePath).then(
+    await updateProfileUseCase(
+      RequestProfileUpdateParam(
+        email: state.user.email,
+        profile: event.filePath,
+      ),
+    ).then(
       (value) => value.fold(
         (l) => produceSideEffect(MyPageError(l)),
         (r) {

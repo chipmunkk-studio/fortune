@@ -3,6 +3,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/request/request_fortune_user.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
@@ -19,12 +20,18 @@ class UserRepositoryImpl extends UserRepository {
     this._mixpanelTracker,
   );
 
-  // 휴대폰 번호로 현재 사용자 찾기.
+  // 이메일로 현재 사용자 찾기.
   @override
-  Future<FortuneUserEntity> findUserByEmailNonNull({String? emailParam}) async {
+  Future<FortuneUserEntity> findUserByEmailNonNull({
+    String? emailParam,
+    required List<UserColumn> columnsToSelect,
+  }) async {
     try {
       final String currentEmail = emailParam ?? Supabase.instance.client.auth.currentUser?.email ?? '';
-      final FortuneUserEntity? user = await _userService.findUserByEmail(currentEmail);
+      final FortuneUserEntity? user = await _userService.findUserByEmail(
+        currentEmail,
+        columnsToSelect: columnsToSelect,
+      );
       if (user == null) {
         throw CommonFailure(errorMessage: FortuneTr.msgNotExistUser);
       }
@@ -38,7 +45,7 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<FortuneUserEntity?> findUserByEmail(email) async {
     try {
-      final FortuneUserEntity? user = await _userService.findUserByEmail(email);
+      final FortuneUserEntity? user = await _userService.findUserByEmail(email, columnsToSelect: []);
       return user;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
@@ -47,18 +54,22 @@ class UserRepositoryImpl extends UserRepository {
 
   // 사용자 업데이트.
   @override
-  Future<FortuneUserEntity> updateUserTicket({
+  Future<FortuneUserEntity> updateUserTicket(
+    String email, {
     required int ticket,
     required int markerObtainCount,
   }) async {
     try {
-      final user = await findUserByEmailNonNull();
       return await _userService.update(
-        user,
+        email,
         request: RequestFortuneUser(
           ticket: ticket,
           markerObtainCount: markerObtainCount,
         ),
+        columnsToUpdate: [
+          UserColumn.ticket,
+          UserColumn.markerObtainCount,
+        ],
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
@@ -67,14 +78,19 @@ class UserRepositoryImpl extends UserRepository {
 
   // 사용자 업데이트.
   @override
-  Future<FortuneUserEntity> updateUserNickName({required String nickname}) async {
+  Future<FortuneUserEntity> updateUserNickName(
+    String email, {
+    required String nickname,
+  }) async {
     try {
-      final user = await findUserByEmailNonNull();
       return await _userService.update(
-        user,
+        email,
         request: RequestFortuneUser(
           nickname: nickname,
         ),
+        columnsToUpdate: [
+          UserColumn.nickname,
+        ],
       );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -84,12 +100,20 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<FortuneUserEntity> updateUserProfile(String filePath) async {
+  Future<FortuneUserEntity> updateUserProfile(
+    String email, {
+    required String filePath,
+  }) async {
     try {
       // 테스트 계정 때문에 아이디 찾아야 됨.
       final imagePath = await _userService.getUpdateProfileFileUrl(filePath: filePath);
-      final user = await findUserByEmailNonNull();
-      final result = await _userService.update(user, request: RequestFortuneUser(profileImage: imagePath));
+      final result = await _userService.update(
+        email,
+        request: RequestFortuneUser(profileImage: imagePath),
+        columnsToUpdate: [
+          UserColumn.profileImage,
+        ],
+      );
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
@@ -97,18 +121,21 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> withdrawal() async {
+  Future<void> withdrawal(String email) async {
     try {
-      final user = await findUserByEmailNonNull();
       await _userService.update(
-        user,
+        email,
         request: RequestFortuneUser(
           withdrawalAt: DateTime.now().toUtc().toIso8601String(),
           isWithdrawal: true,
         ),
+        columnsToUpdate: [
+          UserColumn.withdrawalAt,
+          UserColumn.isWithdrawal,
+        ],
       );
       await _supabaseClient.auth.signOut();
-      _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'phone': user.email});
+      _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'email': email});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }
@@ -118,16 +145,19 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<void> cancelWithdrawal(String email) async {
     try {
-      final user = await findUserByEmailNonNull(emailParam: email);
       await _userService.update(
-        user,
+        email,
         request: RequestFortuneUser(
           withdrawalAt: '',
           isWithdrawal: false,
         ),
         isCancelWithdrawal: true,
+        columnsToUpdate: [
+          UserColumn.withdrawalAt,
+          UserColumn.isWithdrawal,
+        ],
       );
-      _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'phone': user.email});
+      _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'email': email});
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }
@@ -147,9 +177,19 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<String> getUserRanking(FortuneUserEntity user) async {
+  Future<String> getUserRanking(
+    String paramEmail, {
+    required int paramMarkerObtainCount,
+    required int paramTicket,
+    required String paramCreatedAt,
+  }) async {
     try {
-      final String ranking = await _userService.getUserRanking(user);
+      final String ranking = await _userService.getUserRanking(
+        paramEmail,
+        paramMarkerObtainCount: paramMarkerObtainCount,
+        paramTicket: paramTicket,
+        paramCreatedAt: paramCreatedAt,
+      );
       return ranking;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();

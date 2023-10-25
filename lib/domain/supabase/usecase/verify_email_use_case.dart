@@ -19,7 +19,7 @@ class VerifyEmailUseCase implements UseCase1<VerifyPhoneNumberEntity, RequestVer
   Future<FortuneResult<VerifyPhoneNumberEntity>> call(RequestVerifyEmailParam request) async {
     try {
       final authResponse = await authRepository.verifyOTP(request);
-      final userEntity = await userRepository.findUserByEmailNonNull();
+      final userEntity = await userRepository.findUserByEmailNonNull(columnsToSelect: []);
       return Right(
         VerifyPhoneNumberEntity(
           authResponse: authResponse,

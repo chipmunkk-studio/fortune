@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/validators.dart';
+import 'package:fortune/domain/supabase/request/request_nickname_update_param.dart';
+import 'package:fortune/domain/supabase/request/request_profile_update_param.dart';
 import 'package:fortune/domain/supabase/usecase/nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
@@ -56,7 +58,12 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
   }
 
   FutureOr<void> updateProfile(NickNameUpdateProfile event, Emitter<NickNameState> emit) async {
-    await updateProfileUseCase(event.filePath).then(
+    await updateProfileUseCase(
+      RequestProfileUpdateParam(
+        email: state.userEntity.email,
+        profile: event.filePath,
+      ),
+    ).then(
       (value) => value.fold(
         (l) {
           produceSideEffect(NickNameError(l));
@@ -78,7 +85,12 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
   }
 
   FutureOr<void> updateNickName(NickNameUpdateNickName event, Emitter<NickNameState> emit) async {
-    await updateUserNickNameUseCase(state.nickName).then(
+    await updateUserNickNameUseCase(
+      RequestNickNameUpdateParam(
+        email: state.userEntity.email,
+        nickName: state.nickName,
+      ),
+    ).then(
       (value) => value.fold(
         (l) {
           produceSideEffect(NickNameError(l));
@@ -102,7 +114,7 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
 
   FutureOr<void> withdrawal(NickNameWithdrawal event, Emitter<NickNameState> emit) async {
     emit(state.copyWith(isUpdating: true));
-    await withdrawalUseCase().then(
+    await withdrawalUseCase(state.userEntity.email).then(
       (value) => value.fold(
         (l) {
           emit(state.copyWith(isUpdating: false));

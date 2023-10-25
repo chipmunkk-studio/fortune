@@ -5,6 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:fortune/domain/supabase/repository/alarm_reward_repository.dart';
@@ -27,7 +28,10 @@ class ReceiveAlarmRewardUseCase implements UseCase1<List<AlarmFeedsEntity>, Alar
   @override
   Future<FortuneResult<List<AlarmFeedsEntity>>> call(AlarmFeedsEntity param) async {
     try {
-      final user = await userRepository.findUserByEmailNonNull();
+      final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
+        UserColumn.id,
+        UserColumn.nickname,
+      ]);
       final ingredients = param.reward.ingredients;
       // 이미 받은 보상 일 경우.
       if (param.isReceive) {

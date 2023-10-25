@@ -1,9 +1,9 @@
-import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
@@ -38,7 +38,13 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   Future<FortuneResult<MainViewEntity>> call(RequestMainParam param) async {
     try {
       // 유저 정보 가져오기.
-      final user = await userRepository.findUserByEmailNonNull();
+      final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
+        UserColumn.id,
+        UserColumn.markerObtainCount,
+        UserColumn.level,
+        UserColumn.ticket,
+        UserColumn.profileImage,
+      ]);
 
       // 유저 알림 가져오기. (안읽은거 하나라도 있는지.)
       final userAlarms = await userNoticesRepository.findAllAlarmsByUserId(user.id);
