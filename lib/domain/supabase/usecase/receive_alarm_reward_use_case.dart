@@ -5,6 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_reward_history.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
@@ -56,7 +57,16 @@ class ReceiveAlarmRewardUseCase implements UseCase1<List<AlarmFeedsEntity>, Alar
         ),
       );
       // 새로운 피드 리스트 반환.
-      final newAlarms = await alarmFeedsRepository.findAllAlarmsByUserId(user.id);
+      final newAlarms = await alarmFeedsRepository.findAllAlarmsByUserId(
+        user.id,
+        columnsToSelect: [
+          AlarmFeedColumn.createdAt,
+          AlarmFeedColumn.headings,
+          AlarmFeedColumn.content,
+          AlarmFeedColumn.alarmRewards,
+          AlarmFeedColumn.type,
+        ],
+      );
       return Right(newAlarms);
     } on FortuneFailure catch (e) {
       return Left(e);

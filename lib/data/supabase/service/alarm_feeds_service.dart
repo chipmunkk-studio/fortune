@@ -21,27 +21,32 @@ class AlarmFeedsService {
   AlarmFeedsService();
 
   // 모든 알림을 조회.
-  Future<List<AlarmFeedsEntity>> findAllAlarmFeeds(int userId) async {
+  Future<List<AlarmFeedsEntity>> findAllAlarmFeeds(
+    int userId, {
+    required List<AlarmFeedColumn> columnsToSelect,
+  }) async {
+
+    final selectColumns = columnsToSelect.map((column) {
+      if (column == AlarmFeedColumn.alarmRewards) {
+        return '${TableName.alarmRewardHistory}(${AlarmRewardHistoryService.fullSelectQuery})';
+      } else if (column == AlarmFeedColumn.users) {
+        return '${TableName.users}(*)';
+      }
+      return column.name;
+    }).toList();
+
     try {
-      final response = await _client
+      final List<dynamic> response = await _client
           .from(_tableName)
-          .select(
-            fullSelectQuery,
-          )
-          .match({
-            TableName.users: userId,
-          })
-          .order(
-            'created_at',
-            ascending: false,
-          )
+          .select(selectColumns.isEmpty ? fullSelectQuery : selectColumns.join(","))
+          .match({TableName.users: userId})
+          .order(AlarmFeedColumn.createdAt.name, ascending: false)
           .toSelect();
+
       if (response.isEmpty) {
         return List.empty();
-      } else {
-        final notices = response.map((e) => AlarmFeedsResponse.fromJson(e)).toList();
-        return notices;
       }
+      return response.map((e) => AlarmFeedsResponse.fromJson(e)).toList();
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
@@ -47,7 +48,12 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       ]);
 
       // 유저 알림 가져오기. (안읽은거 하나라도 있는지.)
-      final userAlarms = await userNoticesRepository.findAllAlarmsByUserId(user.id);
+      final userAlarms = await userNoticesRepository.findAllAlarmsByUserId(
+        user.id,
+        columnsToSelect: [
+          AlarmFeedColumn.isRead,
+        ],
+      );
       final bool hasNewAlarm = userAlarms.any((element) => !element.isRead);
 
       // 내 주변의 마커를 가져옴.
