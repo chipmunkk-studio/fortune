@@ -4,7 +4,6 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
-import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/env.dart';
@@ -15,12 +14,10 @@ import 'login.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
   final GetUserUseCase getUserUseCase;
   final SignInWithEmailUseCase signInWithEmailUseCase;
-  final CancelWithdrawalUseCase cancelWithdrawalUseCase;
   final Environment env;
 
   LoginBloc({
     required this.getUserUseCase,
-    required this.cancelWithdrawalUseCase,
     required this.signInWithEmailUseCase,
     required this.env,
   }) : super(LoginState.initial()) {
@@ -33,7 +30,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     );
     on<LoginBottomButtonClick>(clickNextButton);
     on<LoginRequestVerifyCode>(requestVerifyCode);
-    on<LoginRequestCancelWithdrawal>(cancelWithdrawal);
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
@@ -68,7 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
         (r) async {
           // 회원 탈퇴 여부.
           if (r != null && r.isWithdrawal) {
-            produceSideEffect(LoginWithdrawalUser(r.isEnableReSignIn));
+            produceSideEffect(LoginWithdrawalUser());
             return;
           }
           // 사용자가 가입되어 있으면 인증번호 전송 로직을 처리
@@ -94,14 +90,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
     produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
   }
 
-  FutureOr<void> cancelWithdrawal(LoginRequestCancelWithdrawal event, Emitter<LoginState> emit) async {
-    await cancelWithdrawalUseCase(state.email).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(LoginError(l)),
-        (r) async {
-          await _processSignInOrUp(emit);
-        },
-      ),
-    );
-  }
 }

@@ -33,10 +33,6 @@ class WebLoginRequestVerifyCode extends WebLoginEvent {
   List<Object?> get props => [];
 }
 
-class WebLoginRequestCancelWithdrawal extends WebLoginEvent {
-  @override
-  List<Object?> get props => [];
-}
 
 class WebLoginRequestSelectCountry extends WebLoginEvent {
   CountryInfoEntity args;

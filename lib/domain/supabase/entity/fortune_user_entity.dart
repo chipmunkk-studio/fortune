@@ -17,7 +17,6 @@ class FortuneUserEntity {
   final bool isWithdrawal;
   final String withdrawalAt;
   final String createdAt;
-  final bool isEnableReSignIn;
   final FortuneUserNextLevelEntity nextLevelInfo;
 
   FortuneUserEntity({
@@ -33,7 +32,6 @@ class FortuneUserEntity {
     required this.withdrawalAt,
     required this.createdAt,
   })  : nextLevelInfo = calculateLevelInfo(markerObtainCount),
-        isEnableReSignIn = calculateWithdrawalDays(withdrawalAt),
         grade = getUserGradeIconInfo(assignGrade(level));
 
   FortuneUserEntity copyWith({

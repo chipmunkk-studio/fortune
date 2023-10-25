@@ -36,7 +36,6 @@ import 'package:fortune/domain/supabase/repository/marker_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
-import 'package:fortune/domain/supabase/usecase/cancel_withdrawal_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
@@ -537,11 +536,6 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<CancelWithdrawalUseCase>(
-      () => CancelWithdrawalUseCase(
-        userRepository: serviceLocator(),
-      ),
-    )
     ..registerLazySingleton<WithdrawalUseCase>(
       () => WithdrawalUseCase(
         userRepository: serviceLocator(),
@@ -588,7 +582,6 @@ _initAppBloc() {
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        cancelWithdrawalUseCase: serviceLocator<CancelWithdrawalUseCase>(),
         signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
         env: serviceLocator<Environment>(),
       ),
@@ -742,7 +735,6 @@ _initWebBloc() {
     ..registerFactory(
       () => WebLoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        cancelWithdrawalUseCase: serviceLocator<CancelWithdrawalUseCase>(),
         signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
         env: serviceLocator<Environment>(),
       ),
