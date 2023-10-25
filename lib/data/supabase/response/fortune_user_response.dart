@@ -4,10 +4,53 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fortune_user_response.g.dart';
 
+enum UserColumn {
+  id,
+  email,
+  nickname,
+  markerObtainCount,
+  ticket,
+  profileImage,
+  level,
+  createdAt,
+  withdrawalAt,
+  isWithdrawal,
+  pushToken,
+}
+
+extension UserColumnExtension on UserColumn {
+  String get name {
+    switch (this) {
+      case UserColumn.id:
+        return 'id';
+      case UserColumn.email:
+        return 'email';
+      case UserColumn.nickname:
+        return 'nickname';
+      case UserColumn.markerObtainCount:
+        return 'marker_obtain_count';
+      case UserColumn.ticket:
+        return 'ticket';
+      case UserColumn.profileImage:
+        return 'profileImage';
+      case UserColumn.level:
+        return 'level';
+      case UserColumn.createdAt:
+        return 'created_at';
+      case UserColumn.withdrawalAt:
+        return 'withdrawal_at';
+      case UserColumn.isWithdrawal:
+        return 'is_withdrawal';
+      case UserColumn.pushToken:
+        return 'push_token';
+    }
+  }
+}
+
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'id')
-  final double id_;
+  final double? id_;
   @JsonKey(name: 'email')
   final String? email_;
   @JsonKey(name: 'nickname')
@@ -42,7 +85,7 @@ class FortuneUserResponse extends FortuneUserEntity {
     required this.withdrawalAt_,
     required this.createdAt_,
   }) : super(
-          id: id_.toInt(),
+          id: id_?.toInt() ?? -1,
           nickname: nickname_ ?? FortuneTr.msgUnknownUser,
           email: email_ ?? '',
           ticket: ticket_ ?? 0,

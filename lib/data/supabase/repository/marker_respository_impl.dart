@@ -1,11 +1,9 @@
 import 'dart:math';
 
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
-import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
@@ -36,7 +34,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
   @override
   Future<void> reLocateMarker({
     required MarkerEntity marker,
-    required FortuneUserEntity user,
+    required int userId,
     required LatLng location,
   }) async {
     try {
@@ -45,11 +43,12 @@ class MarkerRepositoryImpl extends MarkerRepository {
           latitude: location.latitude,
           longitude: location.longitude,
         );
-        if (locationMarker == null) {
-          throw CommonFailure(errorMessage: '이미 누군가 마커를 획득 했어요!');
-        }
+        /// 중복 획득 가능 하게 함.
+        // if (locationMarker == null) {
+        //   throw CommonFailure(errorMessage: '이미 누군가 마커를 획득 했어요!');
+        // }
       }
-      await _markerService.reLocateMarker(marker, user);
+      await _markerService.reLocateMarker(marker, userId);
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }

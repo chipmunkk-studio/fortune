@@ -45,29 +45,27 @@ class UserService {
 
   // 사용자 업데이트.
   Future<FortuneUserEntity> update(
-    FortuneUserEntity user, {
+    String email, {
     required RequestFortuneUser request,
     bool isCancelWithdrawal = false,
+    required List<UserColumn> columnsToUpdate,
   }) async {
     try {
-      final requestToUpdate = RequestFortuneUser(
-        email: request.email ?? user.email,
-        nickname: request.nickname ?? user.nickname,
-        profileImage: request.profileImage ?? user.profileImage,
-        ticket: request.ticket ?? user.ticket,
-        markerObtainCount: request.markerObtainCount ?? user.markerObtainCount,
-        level: assignLevel(request.markerObtainCount ?? user.markerObtainCount),
-        pushToken: request.pushToken ?? user.pushToken,
-        isWithdrawal: request.isWithdrawal ?? user.isWithdrawal,
-        withdrawalAt: isCancelWithdrawal ? null : request.withdrawalAt,
+      Map<String, dynamic> updateMap = request.toJson();
+
+      updateMap.removeWhere(
+        (key, value) => !columnsToUpdate.any(
+          (column) => column.name == key,
+        ),
       );
 
       final updateUser = await _client
           .from(_userTableName)
-          .update(
-            requestToUpdate.toJson(),
+          .update(updateMap)
+          .eq(
+            'email',
+            email,
           )
-          .eq('email', user.email)
           .select();
 
       return updateUser.map((e) => FortuneUserResponse.fromJson(e)).toList().single;
@@ -105,38 +103,22 @@ class UserService {
   }
 
   // 휴대폰 번호로 사용자를 찾음.
-  Future<FortuneUserEntity?> findUserByEmail(String? email) async {
+  Future<FortuneUserEntity?> findUserByEmail(
+    String? email, {
+    required List<UserColumn> columnsToSelect,
+  }) async {
     try {
+      final selectColumns = columnsToSelect.map((column) => column.name).toList();
+
       final List<dynamic> response = await _client
           .from(
             _userTableName,
           )
-          .select(fullSelectQuery)
+          .select(selectColumns.isEmpty ? fullSelectQuery : selectColumns.join(","))
           .eq('email', email)
           .toSelect();
       if (response.isEmpty) {
         return null;
-      } else {
-        final user = response.map((e) => FortuneUserResponse.fromJson(e)).toList();
-        return user.single;
-      }
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
-  }
-
-  // 휴대폰 번호로 사용자를 찾음.
-  Future<FortuneUserEntity> findUserByEmailNonNull(String? email) async {
-    try {
-      final List<dynamic> response = await _client
-          .from(
-            _userTableName,
-          )
-          .select(fullSelectQuery)
-          .eq('email', email)
-          .toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: FortuneTr.msgNotExistUser);
       } else {
         final user = response.map((e) => FortuneUserResponse.fromJson(e)).toList();
         return user.single;
@@ -172,16 +154,19 @@ class UserService {
   }
 
   Future<String> getUserRanking(
-    FortuneUserEntity paramUser,
-  ) async {
+    String paramEmail, {
+    required int paramMarkerObtainCount,
+    required int paramTicket,
+    required String paramCreatedAt,
+  }) async {
     const rankingColumn = 'marker_obtain_count, ticket, created_at';
     try {
       // #1 마커 카운트로 가져옴.
       final selectUsers = await _client
           .from(_userTableName)
           .select(rankingColumn)
-          .filter('email', 'neq', paramUser.email)
-          .filter('marker_obtain_count', 'gte', paramUser.markerObtainCount)
+          .filter('email', 'neq', paramEmail)
+          .filter('marker_obtain_count', 'gte', paramMarkerObtainCount)
           .filter('is_withdrawal', 'eq', false)
           .toSelect();
 
@@ -193,9 +178,9 @@ class UserService {
           selectUsers.map((e) => FortuneUserRankingResponse.fromJson(e)).toList();
 
       final addedUser = FortuneUserRankingResponse(
-        ticket_: paramUser.ticket,
-        markerObtainCount_: paramUser.markerObtainCount,
-        createdAt_: paramUser.createdAt,
+        ticket_: paramTicket,
+        markerObtainCount_: paramMarkerObtainCount,
+        createdAt_: paramCreatedAt,
       );
 
       // 현재 사용자 추가.
@@ -220,9 +205,9 @@ class UserService {
       // 인덱스로 랭킹 알 수 있음.
       final myIndex = rankingUsers.indexWhere(
         (user) =>
-            user.ticket == paramUser.ticket &&
-            user.markerObtainCount == paramUser.markerObtainCount &&
-            user.createdAt == paramUser.createdAt,
+            user.ticket == paramTicket &&
+            user.markerObtainCount ==paramMarkerObtainCount &&
+            user.createdAt == paramCreatedAt,
       );
 
       return (myIndex + 1).toFormatThousandNumber();

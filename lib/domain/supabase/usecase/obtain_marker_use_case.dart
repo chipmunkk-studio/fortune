@@ -5,6 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_obtain_entity.dart';
@@ -40,7 +41,16 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
       final ingredient = param.marker.ingredient;
-      final currentUser = await userRepository.findUserByEmailNonNull();
+      final currentUser = await userRepository.findUserByEmailNonNull(
+        columnsToSelect: [
+          UserColumn.id,
+          UserColumn.email,
+          UserColumn.level,
+          UserColumn.nickname,
+          UserColumn.ticket,
+          UserColumn.markerObtainCount,
+        ],
+      );
       final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
@@ -54,7 +64,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       // 마커 재배치.
       await markerRepository.reLocateMarker(
         marker: marker,
-        user: currentUser,
+        userId: currentUser.id,
         location: param.marker.location,
       );
 
@@ -68,6 +78,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 사용자 티켓 정보 업데이트.
       final updateUser = await userRepository.updateUserTicket(
+        currentUser.email,
         ticket: updatedTicket < 0 ? 0 : updatedTicket,
         markerObtainCount: markerObtainCount,
       );
