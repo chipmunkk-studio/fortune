@@ -4,6 +4,49 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fortune_user_response.g.dart';
 
+enum UserColumn {
+  id,
+  email,
+  nickname,
+  markerObtainCount,
+  ticket,
+  profileImage,
+  level,
+  createdAt,
+  withdrawalAt,
+  isWithdrawal,
+  pushToken,
+}
+
+extension UserColumnExtension on UserColumn {
+  String get name {
+    switch (this) {
+      case UserColumn.id:
+        return 'id';
+      case UserColumn.email:
+        return 'email';
+      case UserColumn.nickname:
+        return 'nickname';
+      case UserColumn.markerObtainCount:
+        return 'marker_obtain_count';
+      case UserColumn.ticket:
+        return 'ticket';
+      case UserColumn.profileImage:
+        return 'profileImage';
+      case UserColumn.level:
+        return 'level';
+      case UserColumn.createdAt:
+        return 'created_at';
+      case UserColumn.withdrawalAt:
+        return 'withdrawal_at';
+      case UserColumn.isWithdrawal:
+        return 'is_withdrawal';
+      case UserColumn.pushToken:
+        return 'push_token';
+    }
+  }
+}
+
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class FortuneUserResponse extends FortuneUserEntity {
   @JsonKey(name: 'id')

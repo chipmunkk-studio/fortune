@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -21,7 +22,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
   @override
   Future<FortuneResult<void>> call(RequestPostNormalMissionClear request) async {
     try {
-      final user = await userRepository.findUserByEmailNonNull();
+      final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(request.missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
 

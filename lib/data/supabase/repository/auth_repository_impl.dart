@@ -1,6 +1,7 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/mixpanel.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service/auth_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
@@ -53,7 +54,12 @@ class AuthRepositoryImpl extends AuthRepository {
         email: param.email,
         otpCode: param.verifyCode,
       );
-      final user = await _userService.findUserByEmail(param.email);
+      final user = await _userService.findUserByEmail(
+        param.email,
+        columnsToSelect: [
+          UserColumn.id,
+        ],
+      );
       if (user == null) {
         // 회원이 없을 경우 추가.
         await _userService.insert(email: param.email);
