@@ -47,7 +47,7 @@ class MainState with _$MainState {
         isRotatable: false,
         rewardAd: null,
         headings: 0,
-        clickableRadiusLength: 30,
+        clickableRadiusLength: 60,
         zoomThreshold: 18,
       );
 }

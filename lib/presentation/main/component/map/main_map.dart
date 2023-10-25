@@ -123,7 +123,7 @@ class MainMap extends StatelessWidget {
                                   : ColorName.primary.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
-                              radius: state.clickableRadiusLength * 2,
+                              radius: state.clickableRadiusLength,
                             ),
                           ],
                         );
