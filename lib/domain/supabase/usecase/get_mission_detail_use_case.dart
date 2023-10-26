@@ -22,7 +22,12 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
   @override
   Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
     try {
-      final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
+      final user = await userRepository.findUserByEmailNonNull(
+        columnsToSelect: [
+          UserColumn.id,
+          UserColumn.email,
+        ],
+      );
       final mission = await missionRepository.getMissionById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(missionId);
       final userHistories = await obtainHistoryRepository.getHistoriesByUser(
