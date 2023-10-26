@@ -77,7 +77,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 2;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 1;
       final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 1;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount

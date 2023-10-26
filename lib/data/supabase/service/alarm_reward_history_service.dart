@@ -1,6 +1,7 @@
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_alarm_reward_history.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
@@ -67,21 +68,16 @@ class AlarmRewardHistoryService {
     required RequestAlarmRewardHistory request,
   }) async {
     try {
-      AlarmRewardHistoryEntity history = await findRewardHistoryById(id);
+      Map<String, dynamic> updateMap = request.toJson();
 
-      final requestToUpdate = RequestAlarmRewardHistory(
-        alarmRewardInfo: request.alarmRewardInfo ?? history.alarmRewardInfo.id,
-        user: request.user ?? history.user.id,
-        ingredients: request.ingredients ?? history.ingredients.id,
-        isReceive: request.isReceive ?? history.isReceive,
-      );
+      updateMap.removeWhere((key, value) => value == null);
 
       final updateHistory = await _client
           .from(_tableName)
           .update(
-            requestToUpdate.toJson(),
+            updateMap,
           )
-          .eq('id', id)
+          .eq(AlarmFeedColumn.id.name, id)
           .select(fullSelectQuery);
 
       return updateHistory.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;

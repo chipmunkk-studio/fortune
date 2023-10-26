@@ -66,7 +66,10 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
     required RequestAlarmRewardHistory request,
   }) async {
     try {
-      final result = await rewardsService.update(id, request: request);
+      final result = await rewardsService.update(
+        id,
+        request: request,
+      );
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();

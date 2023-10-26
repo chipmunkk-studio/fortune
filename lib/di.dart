@@ -110,7 +110,6 @@ import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/my_missions_use_case.dart';
 import 'domain/supabase/usecase/nick_name_use_case.dart';
-import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
@@ -488,13 +487,6 @@ _initUseCase() async {
     ..registerLazySingleton<GetAlarmRewardUseCase>(
       () => GetAlarmRewardUseCase(
         alarmRewardRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<ObtainAlarmRewardUseCase>(
-      () => ObtainAlarmRewardUseCase(
-        userRepository: serviceLocator(),
-        obtainHistoryRepository: serviceLocator(),
-        rewardRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MyPageUseCase>(
