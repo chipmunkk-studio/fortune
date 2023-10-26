@@ -475,7 +475,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     double nextData,
   ) {
     final controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
 
@@ -487,7 +487,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     final Animation<double> animation = rotationTween.animate(
       CurvedAnimation(
         parent: controller,
-        curve: Curves.fastOutSlowIn,
+        curve: Curves.fastEaseInToSlowEaseOut,
       ),
     );
 

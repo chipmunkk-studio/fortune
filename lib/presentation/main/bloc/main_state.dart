@@ -35,7 +35,7 @@ class MainState with _$MainState {
   factory MainState.initial() => MainState(
         markers: List.empty(),
         missionClearUsers: List.empty(),
-        locationName: FortuneTr.callMyLocation,
+        locationName: FortuneTr.msgUnknownLocation,
         user: null,
         myLocation: null,
         processingMarker: null,
