@@ -18,6 +18,10 @@ abstract class MissionsRepository {
     required int userId,
   });
 
+
+  // 미션 아이디로 조회.
+  Future<MissionsEntity> getMissionById(int missionId);
+
   // 미션 클리어 유저 조회.
   Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsers({
     int start = 0,
