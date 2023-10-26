@@ -8,7 +8,6 @@ import 'package:fortune/data/supabase/response/marker_response.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
-import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 import 'package:fortune/env.dart';
 import 'package:latlong2/latlong.dart';
@@ -27,8 +26,9 @@ class MarkerService {
   // 내 근처에 있는 마커들 모두 가져오기.
   Future<List<MarkerEntity>> findAllMarkersNearByMyLocation(
     double? latitude,
-    double? longitude,
-  ) async {
+    double? longitude, {
+    required List<MarkerColumn> columnsToSelect,
+  }) async {
     try {
       // 위도와 경도 1도당 대략적인 거리 (km)
       const double oneDegOfLatInKm = 111.0;
@@ -44,13 +44,20 @@ class MarkerService {
       double minLng = longitude! - (lngDiff / 2);
       double maxLng = longitude + (lngDiff / 2);
 
+      final selectColumns = columnsToSelect.map((column) {
+        if (column == MarkerColumn.ingredients) {
+          return '${TableName.ingredients}(${IngredientService.fullSelectQuery})';
+        }
+        return column.name;
+      }).toList();
+
       final response = await _client
           .from(TableName.markers)
-          .select(fullSelectQuery)
-          .gte('latitude', minLat)
-          .lte('latitude', maxLat)
-          .gte('longitude', minLng)
-          .lte('longitude', maxLng)
+          .select(selectColumns.join(","))
+          .gte(MarkerColumn.latitude.name, minLat)
+          .lte(MarkerColumn.latitude.name, maxLat)
+          .gte(MarkerColumn.longitude.name, minLng)
+          .lte(MarkerColumn.longitude.name, maxLng)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
