@@ -51,16 +51,6 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   }
 
   @override
-  Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id) async {
-    try {
-      final result = await rewardsService.findRewardHistoryById(id);
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure();
-    }
-  }
-
-  @override
   Future<AlarmRewardHistoryEntity> update(
     int id, {
     required RequestAlarmRewardHistory request,

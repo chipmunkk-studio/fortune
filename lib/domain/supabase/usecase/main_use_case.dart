@@ -5,6 +5,7 @@ import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/main_view_entity.dart';
 import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
@@ -60,7 +61,12 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       var markersNearByMe = (await markerRepository.getAllMarkers(param.latitude, param.longitude)).toList();
 
       // 내가 보유한 마커 수.
-      final haveCounts = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+      final haveCounts = await obtainHistoryRepository.getHistoriesByUser(
+        user.id,
+        columnsToSelect: [
+          ObtainHistoryColumn.id,
+        ],
+      );
 
       // 내 주변 마커 리스트.(티켓 X, 노말O, 스페셜 O)
       final markersNearsByMeWithNotTicket = markersNearByMe

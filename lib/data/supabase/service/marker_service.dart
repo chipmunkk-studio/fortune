@@ -84,9 +84,12 @@ class MarkerService {
       );
       await update(
         marker.id,
-        location: randomLocation,
-        lastObtainUser: userId,
-        hitCount: marker.hitCount + 1,
+        request: RequestMarkerUpdate(
+          latitude: randomLocation.latitude,
+          longitude: randomLocation.longitude,
+          lastObtainUser: userId,
+          hitCount: marker.hitCount + 1,
+        ),
       );
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
@@ -128,8 +131,8 @@ class MarkerService {
           )
           .select(fullSelectQuery)
           .match({
-        'latitude': latitude,
-        'longitude': longitude,
+        MarkerColumn.latitude.name: latitude,
+        MarkerColumn.longitude.name: longitude,
       }).toSelect();
       if (response.isEmpty) {
         return null;
@@ -145,26 +148,19 @@ class MarkerService {
   // 마커 업데이트.
   Future<MarkerResponse> update(
     int id, {
-    LatLng? location,
-    int? lastObtainUser,
-    int? hitCount,
+    required RequestMarkerUpdate request,
   }) async {
     try {
-      MarkerEntity marker = await findMarkerById(id);
+      Map<String, dynamic> updateMap = request.toJson();
 
-      final requestToUpdate = RequestMarkerUpdate(
-        latitude: location?.latitude ?? marker.latitude,
-        longitude: location?.longitude ?? marker.longitude,
-        lastObtainUser: lastObtainUser ?? marker.lastObtainUser,
-        hitCount: hitCount ?? marker.hitCount,
-      );
+      updateMap.removeWhere((key, value) => value == null);
 
       final updateMarker = await _client
           .from(TableName.markers)
           .update(
-            requestToUpdate.toJson(),
+            updateMap,
           )
-          .eq("id", id)
+          .eq(MarkerColumn.id.name, id)
           .select(fullSelectQuery);
       return updateMarker.map((e) => MarkerResponse.fromJson(e)).toList().single;
     } catch (e) {

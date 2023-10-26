@@ -1,9 +1,6 @@
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/request/request_mission_reward_update.dart';
 import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
-import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,54 +11,22 @@ class MissionRewardService {
 
   MissionRewardService();
 
-  // 아이디로 미션 리워드를 조회.
-  Future<MissionRewardResponse> findMissionRewardNonNullById(int id) async {
-    try {
-      final response =
-          await _client.from(TableName.missionReward).select(fullSelectQuery).filter('id', 'eq', id).toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '리워드가 존재하지 않습니다');
-      } else {
-        final missions = response.map((e) => MissionRewardResponse.fromJson(e)).toList();
-        return missions.single;
-      }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
-  // 아이디로 미션 리워드를 조회.
-  Future<MissionRewardResponse?> findMissionRewardNullableById(int id) async {
-    try {
-      final response =
-          await _client.from(TableName.missionReward).select(fullSelectQuery).filter('id', 'eq', id).toSelect();
-      final missions = response.map((e) => MissionRewardResponse.fromJson(e)).toList();
-      return missions.singleOrNull;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
   // 미션 리워드 업데이트.
   Future<MissionRewardResponse> update(
     int id, {
     required RequestMissionRewardUpdate request,
   }) async {
     try {
-      MissionRewardResponse missionReward = await findMissionRewardNonNullById(id);
+      Map<String, dynamic> updateMap = request.toJson();
 
-      final requestToUpdate = RequestMissionRewardUpdate(
-        totalCount: request.totalCount ?? missionReward.totalCount_,
-        remainCount: request.remainCount ?? missionReward.remainCount_,
-        rewardImage: request.rewardImage ?? missionReward.rewardImage_,
-      );
+      updateMap.removeWhere((key, value) => value == null);
 
       final updateMission = await _client
           .from(TableName.missionReward)
           .update(
-            requestToUpdate.toJson(),
+            updateMap,
           )
-          .eq('id', id)
+          .eq(MissionRewardColumn.id.name, id)
           .select(fullSelectQuery);
       return updateMission.map((e) => MissionRewardResponse.fromJson(e)).toList().single;
     } catch (e) {

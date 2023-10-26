@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
@@ -46,13 +45,13 @@ class MissionsService {
             TableName.missions,
           )
           .select(selectColumns.join(","))
-          .filter('is_active', 'eq', true)
+          .filter(MissionsColumn.isActive.name, 'eq', true)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
         final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
-        final filteredGradeMissions = modifyListWithRandomGrade(missions);
+        final filteredGradeMissions = _modifyListWithRandomGrade(missions);
         return filteredGradeMissions;
       }
     } on Exception catch (e) {
@@ -60,7 +59,7 @@ class MissionsService {
     }
   }
 
-  List<MissionsEntity> modifyListWithRandomGrade(List<MissionsEntity> missions) {
+  List<MissionsEntity> _modifyListWithRandomGrade(List<MissionsEntity> missions) {
     // missionType이 grade인 항목만 필터링
     final gradeMissions = missions.where((mission) => mission.type == MissionType.grade).toList();
 
@@ -88,51 +87,11 @@ class MissionsService {
       final response = await _client
           .from(TableName.missions)
           .select(fullSelectQuery)
-          .filter('is_active', 'eq', true)
-          .filter('id', 'eq', missionId)
+          .filter(MissionsColumn.isActive.name, 'eq', true)
+          .filter(MissionsColumn.id.name, 'eq', missionId)
           .single();
       final missions = MissionsResponse.fromJson(response);
       return missions;
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
-  // 마커 아이디로 미션을 조회.
-  Future<MissionsEntity> findMissionByMarkerId(int markerId) async {
-    try {
-      final response = await _client
-          .from(TableName.missions)
-          .select(fullSelectQuery)
-          .filter('is_active', 'eq', true)
-          .filter('markers', 'eq', markerId)
-          .toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '미션이 존재 하지 않습니다');
-      } else {
-        final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
-        return missions.single;
-      }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
-  // 마커 아이디로 미션을 조회.
-  Future<MissionsEntity?> findMissionOrNullByMarkerId(int markerId) async {
-    try {
-      final response = await _client
-          .from(TableName.missions)
-          .select(fullSelectQuery)
-          .filter('is_active', 'eq', true)
-          .filter('markers', 'eq', markerId)
-          .toSelect();
-      if (response.isEmpty) {
-        return null;
-      } else {
-        final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
-        return missions.single;
-      }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

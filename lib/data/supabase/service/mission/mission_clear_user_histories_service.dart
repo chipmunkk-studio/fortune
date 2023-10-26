@@ -54,7 +54,7 @@ class MissionClearUserHistoriesService {
       final response = await _client
           .from(_tableClearUserHistoriesName)
           .select(selectColumns.join(","))
-          .order('created_at', ascending: false)
+          .order(MissionClearUserHistoriesColumn.createdAt.name, ascending: false)
           .range(start, end)
           .toSelect();
       if (response.isEmpty) {
@@ -105,7 +105,7 @@ class MissionClearUserHistoriesService {
           .from(_tableClearUserHistoriesName)
           .select(selectColumns.join(","))
           .filter(TableName.users, 'eq', userId)
-          .order('created_at', ascending: false)
+          .order(MissionClearUserHistoriesColumn.createdAt.name, ascending: false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

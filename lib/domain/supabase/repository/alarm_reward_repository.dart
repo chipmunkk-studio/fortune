@@ -18,9 +18,6 @@ abstract class AlarmRewardRepository {
     AlarmRewardType type,
   );
 
-  // 사용자 리워드 조회.
-  Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id);
-
   // 리워드 정보 업데이트.
   Future<AlarmRewardHistoryEntity> update(
     int id, {

@@ -1,5 +1,6 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/data/supabase/service/obtain_history_service.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -59,10 +60,14 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
   }
 
   @override
-  Future<List<ObtainHistoryEntity>> getHistoriesByUser({required int userId}) async {
+  Future<List<ObtainHistoryEntity>> getHistoriesByUser(
+    userId, {
+    required List<ObtainHistoryColumn> columnsToSelect,
+  }) async {
     try {
       final List<ObtainHistoryEntity> histories = await _obtainHistoryService.findObtainHistoryByUser(
-        userId: userId,
+        userId,
+        columnsToSelect: columnsToSelect,
       );
       return histories;
     } on FortuneFailure catch (e) {
