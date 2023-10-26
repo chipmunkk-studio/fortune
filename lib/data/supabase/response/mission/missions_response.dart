@@ -7,30 +7,74 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'missions_response.g.dart';
 
+
+enum MissionsColumn {
+  id,
+  krTitle,
+  krContent,
+  krNote,
+  enTitle,
+  enContent,
+  missionImage,
+  missionType,
+  missionReward,
+  enNote,
+  isActive,
+}
+
+extension MissionsColumnExtension on MissionsColumn {
+  String get name {
+    switch (this) {
+      case MissionsColumn.id:
+        return 'id';
+      case MissionsColumn.krTitle:
+        return 'kr_title';
+      case MissionsColumn.krContent:
+        return 'kr_content';
+      case MissionsColumn.krNote:
+        return 'kr_note';
+      case MissionsColumn.enTitle:
+        return 'en_title';
+      case MissionsColumn.enContent:
+        return 'en_content';
+      case MissionsColumn.enNote:
+        return 'en_note';
+      case MissionsColumn.missionImage:
+        return 'mission_image';
+      case MissionsColumn.missionType:
+        return 'mission_type';
+      case MissionsColumn.missionReward:
+        return 'mission_reward';
+      case MissionsColumn.isActive:
+        return 'is_active';
+    }
+  }
+}
+
 @JsonSerializable(ignoreUnannotated: false)
 class MissionsResponse extends MissionsEntity {
   @JsonKey(name: 'id')
-  final double id_;
+  final double? id_;
   @JsonKey(name: 'kr_title')
-  final String krTitle_;
+  final String? krTitle_;
   @JsonKey(name: 'kr_content')
-  final String krContent_;
+  final String? krContent_;
   @JsonKey(name: 'kr_note')
-  final String krNote_;
+  final String? krNote_;
   @JsonKey(name: 'en_title')
-  final String enTitle_;
+  final String? enTitle_;
   @JsonKey(name: 'en_content')
-  final String enContent_;
+  final String? enContent_;
   @JsonKey(name: 'en_note')
-  final String enNote_;
+  final String? enNote_;
   @JsonKey(name: 'mission_image')
-  final String missionImage_;
+  final String? missionImage_;
   @JsonKey(name: 'mission_type')
-  final String missionType_;
+  final String? missionType_;
   @JsonKey(name: 'mission_reward')
   final MissionRewardResponse? missionReward_;
   @JsonKey(name: 'is_active')
-  final bool isActive_;
+  final bool? isActive_;
 
   MissionsResponse({
     required this.id_,
@@ -45,14 +89,14 @@ class MissionsResponse extends MissionsEntity {
     required this.missionImage_,
     required this.isActive_,
   }) : super(
-          id: id_.toInt(),
+          id: id_?.toInt() ?? -1,
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
           type: getMissionType(missionType_),
           image: missionImage_ ?? '',
           reward: missionReward_ ?? MissionRewardEntity.empty(),
-          isActive: isActive_,
+          isActive: isActive_ ?? false,
         );
 
   factory MissionsResponse.fromJson(Map<String, dynamic> json) => _$MissionsResponseFromJson(json);

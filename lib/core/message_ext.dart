@@ -112,6 +112,7 @@ abstract class FortuneTr {
   static final msgRewardPreparation = tr('msgRewardPreparation');
   static final msgUntilNextLevel = tr('msgUntilNextLevel');
   static final msgNumberPrefix = tr('msgNumberPrefix');
+  static final msgInvalidMission = tr('msgInvalidMission');
   static final msgMarkerRequirement = tr('msgMarkerRequirement');
   static final msgTicketUpdateFailed = tr('msgTicketUpdateFailed');
   static final msgNicknameExists = tr('msgNicknameExists');

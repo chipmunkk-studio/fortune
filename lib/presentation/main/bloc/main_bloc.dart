@@ -51,7 +51,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainLandingPage>(landingPage);
     on<Main>(
       main,
-      transformer: throttle(const Duration(seconds: 3)),
+      transformer: throttle(const Duration(seconds: 5)),
     );
     on<MainMarkerClick>(onMarkerClicked);
     on<MainRequireInCircleMetersEvent>(

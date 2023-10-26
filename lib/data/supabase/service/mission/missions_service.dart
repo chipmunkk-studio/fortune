@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
+import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
 import 'package:fortune/data/supabase/response/mission/missions_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
@@ -19,12 +20,32 @@ class MissionsService {
 
   // 진행 가능 한 모든 미션을 조회.
   Future<List<MissionsEntity>> findAllMissions() async {
+    // 조회 해야 할 컬럼.
+    final columnsToSelect = [
+      MissionsColumn.id,
+      MissionsColumn.missionReward,
+      MissionsColumn.missionType,
+      MissionsColumn.missionImage,
+      MissionsColumn.isActive,
+      MissionsColumn.enTitle,
+      MissionsColumn.enContent,
+      MissionsColumn.krTitle,
+      MissionsColumn.krContent,
+    ];
+
+    final selectColumns = columnsToSelect.map((column) {
+      if (column == MissionsColumn.missionReward) {
+        return '${TableName.missionReward}(${MissionRewardColumn.remainCount.name},${MissionRewardColumn.totalCount.name})';
+      }
+      return column.name;
+    }).toList();
+
     try {
       final response = await _client
           .from(
             TableName.missions,
           )
-          .select(fullSelectQuery)
+          .select(selectColumns.join(","))
           .filter('is_active', 'eq', true)
           .toSelect();
       if (response.isEmpty) {
@@ -69,13 +90,9 @@ class MissionsService {
           .select(fullSelectQuery)
           .filter('is_active', 'eq', true)
           .filter('id', 'eq', missionId)
-          .toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '미션이 존재하지 않습니다');
-      } else {
-        final missions = response.map((e) => MissionsResponse.fromJson(e)).toList();
-        return missions.single;
-      }
+          .single();
+      final missions = MissionsResponse.fromJson(response);
+      return missions;
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }

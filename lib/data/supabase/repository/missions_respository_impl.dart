@@ -9,7 +9,6 @@ import 'package:fortune/data/supabase/service/mission/mission_reward_service.dar
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
-import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 
@@ -88,27 +87,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
       final result = await missionNormalService.findMissionById(missionId);
       return result;
     } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure();
-    }
-  }
-
-  @override
-  Future<MissionsEntity> getMissionByMarkerId(int markerId) async {
-    try {
-      final result = await missionNormalService.findMissionByMarkerId(markerId);
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure();
-    }
-  }
-
-  @override
-  Future<MissionsEntity?> getMissionOrNullByMarkerId(int markerId) async {
-    try {
-      final result = await missionNormalService.findMissionOrNullByMarkerId(markerId);
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure();
+      throw e.handleFortuneFailure(description: FortuneTr.msgInvalidMission);
     }
   }
 
@@ -116,16 +95,6 @@ class MissionsRepositoryImpl extends MissionsRepository {
   Future<MissionClearConditionEntity?> getMissionClearConditionsOrNullByMarkerId(int markerId) async {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionOrNullByMarkerId(markerId);
-      return result;
-    } on FortuneFailure catch (e) {
-      throw e.handleFortuneFailure();
-    }
-  }
-
-  @override
-  Future<MissionRewardEntity> getMissionRewardById(int markerId) async {
-    try {
-      final result = await missionRewardService.findMissionRewardNullableById(markerId) ?? MissionRewardEntity.empty();
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
