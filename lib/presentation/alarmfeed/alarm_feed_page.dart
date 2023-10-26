@@ -43,12 +43,12 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
     ),
   );
   late AlarmFeedBloc _bloc;
-  final MixpanelTracker tracker = serviceLocator<MixpanelTracker>();
+  final MixpanelTracker _tracker = serviceLocator<MixpanelTracker>();
 
   @override
   void initState() {
     super.initState();
-    tracker.trackEvent('알림_랜딩');
+    _tracker.trackEvent('알림_랜딩');
     _bloc = BlocProvider.of<AlarmFeedBloc>(context);
   }
 
@@ -112,6 +112,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                                   onTap: () => _bloc.add(AlarmRewardReceive(item)),
                                   child: ItemAlarmFeed(
                                     item,
+                                    tracker: _tracker,
                                     onReceive: (feed) => _bloc.add(AlarmRewardReceive(item)),
                                   ),
                                 );
