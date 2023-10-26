@@ -65,7 +65,7 @@ class ItemObtainHistory extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      FortuneTr.msgAcquireMarker(item.user.nickname, item.locationName, item.ingredientName),
+                      FortuneTr.msgAcquireMarker(item.nickName, item.locationName, item.ingredientName),
                       style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
                     ),
                   ],

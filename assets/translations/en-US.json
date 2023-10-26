@@ -18,6 +18,7 @@
   "msgRenewAuthInfo": "Refreshing authentication...",
   "msgNoCompletedMissions": "You haven't completed any missions yet.",
   "msgUpdateMarkerInfo": "Updating the new marker information.",
+  "msgInvalidMission": "The mission does not exist",
   "msgCompletedMissions": "Missions Completed So Far",
   "msgVerifyCode": "Please enter the verification code.",
   "msgConfirmNetworkConnection": "Check your internet connection.",

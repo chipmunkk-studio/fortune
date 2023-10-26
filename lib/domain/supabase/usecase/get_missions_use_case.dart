@@ -59,7 +59,6 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
 
       missionViewItems.sort((a, b) {
-
         // 1순위: mission.type이 MissionType.grade인 경우를 맨 뒤로
         if (a.mission.type == MissionType.grade && b.mission.type != MissionType.grade) {
           return 1; // a를 뒤로

@@ -1,4 +1,3 @@
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
@@ -52,48 +51,20 @@ class AlarmFeedsService {
     }
   }
 
-  // 아이디로 알림을 조회
-  Future<AlarmFeedsEntity> findNoticeById(int noticeId) async {
-    try {
-      final response = await _client
-          .from(_tableName)
-          .select(
-            fullSelectQuery,
-          )
-          .filter('id', 'eq', noticeId)
-          .toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '알림이 존재 하지 않습니다');
-      } else {
-        final alarm = response.map((e) => AlarmFeedsResponse.fromJson(e)).toList();
-        return alarm.single;
-      }
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
-  }
-
   // 알림 업데이트.
   Future<void> update(
     int alarmId, {
     required RequestAlarmFeeds request,
   }) async {
-    AlarmFeedsEntity eventNotice = await findNoticeById(alarmId);
+    Map<String, dynamic> updateMap = request.toJson();
 
-    final requestToUpdate = RequestAlarmFeeds(
-      users: request.users ?? eventNotice.user.id,
-      alarmRewardHistory: request.alarmRewardHistory ?? eventNotice.reward.id,
-      type: request.type ?? eventNotice.type.name,
-      isRead: request.isRead ?? eventNotice.isRead,
-      headings: request.headings ?? eventNotice.headings,
-      content: request.content ?? eventNotice.content,
-    );
+    updateMap.removeWhere((key, value) => value == null);
 
     try {
       final updateResponse = await _client
           .from(_tableName)
           .update(
-            requestToUpdate.toJson(),
+            updateMap,
           )
           .eq('id', alarmId)
           .select(fullSelectQuery);

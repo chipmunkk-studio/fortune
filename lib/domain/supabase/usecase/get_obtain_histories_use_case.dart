@@ -25,7 +25,6 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingView
             (e) => ObtainHistoryContentViewItem(
               id: e.id,
               markerId: e.markerId,
-              user: e.user,
               ingredient: e.ingredient,
               createdAt: FortuneDateExtension.convertTimeAgo(e.createdAt),
               ingredientName: e.ingredientName,

@@ -2,7 +2,10 @@ import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user_histories.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/response/mission/mission_clear_user_histories_response.dart';
+import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
+import 'package:fortune/data/supabase/response/mission/missions_response.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
@@ -26,13 +29,32 @@ class MissionClearUserHistoriesService {
     required int start,
     required int end,
   }) async {
+    // 조회 해야 할 컬럼.
+    final columnsToSelect = [
+      MissionClearUserHistoriesColumn.users,
+      MissionClearUserHistoriesColumn.missions,
+      MissionClearUserHistoriesColumn.createdAt,
+    ];
+
+    final selectColumns = columnsToSelect.map((column) {
+      if (column == MissionClearUserHistoriesColumn.users) {
+        return '${TableName.users}('
+            '${UserColumn.nickname.name},'
+            '${UserColumn.profileImage.name}'
+            ')';
+      } else if (column == MissionClearUserHistoriesColumn.missions) {
+        return '${TableName.missions}('
+            '${MissionsColumn.krTitle.name},'
+            '${MissionsColumn.enTitle.name}'
+            ')';
+      }
+      return column.name;
+    }).toList();
     try {
       final response = await _client
           .from(_tableClearUserHistoriesName)
-          .select(
-            _fullSelectQuery,
-          )
-          .order('created_at', ascending: false)
+          .select(selectColumns.join(","))
+          .order(MissionClearUserHistoriesColumn.createdAt.name, ascending: false)
           .range(start, end)
           .toSelect();
       if (response.isEmpty) {
@@ -48,35 +70,48 @@ class MissionClearUserHistoriesService {
 
   Future<List<MissionClearUserHistoriesEntity>> findAllMissionClearUserByUserId(int userId) async {
     try {
+      // 조회 해야 할 컬럼.
+      final columnsToSelect = [
+        MissionClearUserHistoriesColumn.users,
+        MissionClearUserHistoriesColumn.missions,
+        MissionClearUserHistoriesColumn.createdAt,
+      ];
+
+      final selectColumns = columnsToSelect.map((column) {
+        if (column == MissionClearUserHistoriesColumn.users) {
+          return '${TableName.users}('
+              '${UserColumn.nickname.name},'
+              '${UserColumn.profileImage.name}'
+              ')';
+        } else if (column == MissionClearUserHistoriesColumn.missions) {
+          // 리워드 컬럼.
+          final rewardColumn = "${TableName.missionReward}("
+              "${MissionRewardColumn.rewardImage.name},"
+              "${MissionRewardColumn.enRewardName.name},"
+              "${MissionRewardColumn.krRewardName.name},"
+              "${MissionRewardColumn.createdAt.name}"
+              ")";
+
+          return "${TableName.missions}("
+              '${MissionsColumn.krTitle.name},'
+              '${MissionsColumn.enTitle.name},'
+              '$rewardColumn'
+              ")";
+        }
+        return column.name;
+      }).toList();
+
       final response = await _client
           .from(_tableClearUserHistoriesName)
-          .select(
-            _fullSelectQuery,
-          )
+          .select(selectColumns.join(","))
           .filter(TableName.users, 'eq', userId)
-          .order('created_at', ascending: false)
+          .order(MissionClearUserHistoriesColumn.createdAt.name, ascending: false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
         final users = response.map((e) => MissionClearUserHistoriesResponse.fromJson(e)).toList();
         return users;
-      }
-    } on Exception catch (e) {
-      throw (e.handleException()); // using extension method here
-    }
-  }
-
-  // 아이디로 미션 클리어한 유저 조회.
-  Future<MissionClearUserHistoriesEntity> findAllMissionClearUserById(int id) async {
-    try {
-      final response =
-          await _client.from(_tableClearUserHistoriesName).select(_fullSelectQuery).eq('id', id).toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '미션클리어 사용자가 존재하지 않습니다.');
-      } else {
-        final users = response.map((e) => MissionClearUserHistoriesResponse.fromJson(e)).toList();
-        return users.single;
       }
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here

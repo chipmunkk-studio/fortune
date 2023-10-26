@@ -14,7 +14,7 @@ enum MissionRewardType {
   S,
 }
 
-getMissionType(String type) {
+getMissionType(String? type) {
   if (MissionType.relay.name == type) {
     return MissionType.relay;
   } else if (MissionType.normal.name == type) {
