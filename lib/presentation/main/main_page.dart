@@ -411,7 +411,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 // 위치변경감지.
   Future<StreamSubscription<Position>> listenLocationChange() async {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.medium),
     ).listen((Position? position) {
       _animatedMapMove(
         LatLng(
