@@ -1,4 +1,5 @@
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 
 abstract class ObtainHistoryRepository {
@@ -21,8 +22,9 @@ abstract class ObtainHistoryRepository {
   });
 
   // 사용자 아이디로 조회.
-  Future<List<ObtainHistoryEntity>> getHistoriesByUser({
-    required int userId,
+  Future<List<ObtainHistoryEntity>> getHistoriesByUser(
+    userId, {
+    required List<ObtainHistoryColumn> columnsToSelect,
   });
 
   // 히스토리 삭제.

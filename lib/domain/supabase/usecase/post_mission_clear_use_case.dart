@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -24,10 +25,16 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(request.missionId);
-      final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+      final userHistories = await obtainHistoryRepository.getHistoriesByUser(
+        user.id,
+        columnsToSelect: [
+          ObtainHistoryColumn.id,
+          ObtainHistoryColumn.ingredient,
+        ],
+      );
 
       // 미션 클리어.
-      final missions = await missionRepository.postMissionClear(
+      await missionRepository.postMissionClear(
         missionId: request.missionId,
         userId: user.id,
       );
@@ -43,7 +50,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
       // 히스토리에서 삭제.
       await obtainHistoryRepository.delete(histories: filteredUserHistories);
 
-      return Right(missions);
+      return const Right(null);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

@@ -78,7 +78,7 @@ getEventRewardType(String? type) {
 }
 
 // 랜덤 위치 받아옴.
-getRandomLocation(double lat, double lon, int radiusInMeters) {
+LatLng getRandomLocation(double lat, double lon, int radiusInMeters) {
   Random random = Random();
 
   double radiusInDegrees = radiusInMeters / 111000; // roughly 111km per degree

@@ -37,7 +37,6 @@ import 'package:fortune/domain/supabase/repository/obtain_history_repository.dar
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
@@ -110,7 +109,6 @@ import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/my_missions_use_case.dart';
 import 'domain/supabase/usecase/nick_name_use_case.dart';
-import 'domain/supabase/usecase/obtain_alarm_reward_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
@@ -483,18 +481,6 @@ _initUseCase() async {
     ..registerLazySingleton<CheckVerifySmsTimeUseCase>(
       () => CheckVerifySmsTimeUseCase(
         localRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<GetAlarmRewardUseCase>(
-      () => GetAlarmRewardUseCase(
-        alarmRewardRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<ObtainAlarmRewardUseCase>(
-      () => ObtainAlarmRewardUseCase(
-        userRepository: serviceLocator(),
-        obtainHistoryRepository: serviceLocator(),
-        rewardRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<MyPageUseCase>(

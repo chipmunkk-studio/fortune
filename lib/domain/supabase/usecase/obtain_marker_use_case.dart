@@ -6,6 +6,7 @@ import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_obtain_entity.dart';
@@ -116,7 +117,12 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       }
 
       // 히스토리 수.
-      final histories = await obtainHistoryRepository.getHistoriesByUser(userId: currentUser.id);
+      final histories = await obtainHistoryRepository.getHistoriesByUser(
+        currentUser.id,
+        columnsToSelect: [
+          ObtainHistoryColumn.id,
+        ],
+      );
 
       return Right(
         MarkerObtainEntity(

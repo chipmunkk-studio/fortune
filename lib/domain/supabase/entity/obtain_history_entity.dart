@@ -30,7 +30,6 @@ abstract class ObtainHistoryPagingViewItem {}
 class ObtainHistoryContentViewItem extends ObtainHistoryPagingViewItem {
   final int id;
   final String markerId;
-  final FortuneUserEntity user;
   final IngredientEntity ingredient;
   final String nickName;
   final String ingredientName;
@@ -40,7 +39,6 @@ class ObtainHistoryContentViewItem extends ObtainHistoryPagingViewItem {
   ObtainHistoryContentViewItem({
     required this.id,
     required this.markerId,
-    required this.user,
     required this.ingredient,
     required this.createdAt,
     required this.ingredientName,

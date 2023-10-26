@@ -5,6 +5,37 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ingredient_response.g.dart';
 
+enum IngredientColumn {
+  id,
+  krName,
+  enName,
+  type,
+  rewardTicket,
+  imageUrl,
+  distance,
+}
+
+extension IngredientColumnExtension on IngredientColumn {
+  String get name {
+    switch (this) {
+      case IngredientColumn.id:
+        return 'id';
+      case IngredientColumn.krName:
+        return 'kr_name';
+      case IngredientColumn.enName:
+        return 'en_name';
+      case IngredientColumn.type:
+        return 'type';
+      case IngredientColumn.rewardTicket:
+        return 'reward_ticket';
+      case IngredientColumn.imageUrl:
+        return 'image_url';
+      case IngredientColumn.distance:
+        return 'distance';
+    }
+  }
+}
+
 @JsonSerializable(ignoreUnannotated: false)
 class IngredientResponse extends IngredientEntity {
   @JsonKey(name: 'id')

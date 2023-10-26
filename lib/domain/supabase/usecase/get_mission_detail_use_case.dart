@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
@@ -24,7 +25,12 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final mission = await missionRepository.getMissionById(missionId);
       final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(missionId);
-      final userHistories = await obtainHistoryRepository.getHistoriesByUser(userId: user.id);
+      final userHistories = await obtainHistoryRepository.getHistoriesByUser(
+        user.id,
+        columnsToSelect: [
+          ObtainHistoryColumn.ingredient,
+        ],
+      );
 
       // 재료가 있는 것 끼리만 추스림.
       final filteredUserHistories = userHistories

@@ -1,12 +1,15 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_obtain_history.dart';
+import 'package:fortune/data/supabase/response/fortune_user_response.dart';
+import 'package:fortune/data/supabase/response/ingredient_response.dart';
 import 'package:fortune/data/supabase/response/obtain_history_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
+import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ObtainHistoryService {
   static const _obtainHistoryTableName = "obtain_histories";
-  static const _fullSelectQuery = '*,ingredient(*),user(*)';
+  static const _fullSelectQuery = '*,ingredient(*),user(*)'; // 여기서만 ingredient로 잘못쓰고있음.
 
   final SupabaseClient _client = Supabase.instance.client;
 
@@ -18,19 +21,38 @@ class ObtainHistoryService {
     required String query,
   }) async {
     try {
+      final columnsToSelect = [
+        ObtainHistoryColumn.createdAt,
+        ObtainHistoryColumn.nickName,
+        ObtainHistoryColumn.locationName,
+        ObtainHistoryColumn.krIngredientName,
+        ObtainHistoryColumn.enIngredientName,
+        ObtainHistoryColumn.ingredient,
+        ObtainHistoryColumn.users,
+      ];
+
+      final selectColumns = columnsToSelect.map((column) {
+        if (column == ObtainHistoryColumn.ingredient) {
+          return '${ObtainHistoryColumn.ingredient.name}(${IngredientColumn.imageUrl.name})';
+        } else if (column == ObtainHistoryColumn.users) {
+          return '${TableName.users}(${UserColumn.nickname.name})';
+        }
+        return column.name;
+      }).toList();
+
       final convertedQuery = '%$query%';
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select(_fullSelectQuery)
+          .select(selectColumns.join(","))
           .or(
-            'location_name.ilike.$convertedQuery, '
-            'kr_ingredient_name.ilike.$convertedQuery, '
-            'en_ingredient_name.ilike.$convertedQuery, '
-            'marker_id.ilike.$convertedQuery, '
-            'nickname.ilike.$convertedQuery',
+            '${ObtainHistoryColumn.locationName.name}.ilike.$convertedQuery, '
+            '${ObtainHistoryColumn.krIngredientName.name}.ilike.$convertedQuery, '
+            '${ObtainHistoryColumn.enIngredientName.name}.ilike.$convertedQuery, '
+            '${ObtainHistoryColumn.markerId.name}.ilike.$convertedQuery, '
+            '${ObtainHistoryColumn.nickName.name}.ilike.$convertedQuery',
           )
-          .filter('is_reward', 'eq', false)
-          .order('created_at', ascending: false)
+          .filter(ObtainHistoryColumn.isReward.name, 'eq', false)
+          .order(ObtainHistoryColumn.createdAt.name, ascending: false)
           .range(start, end)
           .toSelect();
       if (response.isEmpty) {
@@ -48,13 +70,30 @@ class ObtainHistoryService {
     required int userId,
     required int ingredientId,
   }) async {
+    final columnsToSelect = [
+      ObtainHistoryColumn.ingredient,
+    ];
+
+    final selectColumns = columnsToSelect.map((column) {
+      if (column == ObtainHistoryColumn.ingredient) {
+        return '${ObtainHistoryColumn.ingredient.name}('
+            '${IngredientColumn.imageUrl.name},'
+            '${IngredientColumn.krName.name},'
+            '${IngredientColumn.enName.name},'
+            '${IngredientColumn.rewardTicket.name},'
+            '${IngredientColumn.type.name}'
+            ')';
+      }
+      return column.name;
+    }).toList();
+
     try {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select(_fullSelectQuery)
-          .eq('user', userId)
-          .eq('ingredient', ingredientId)
-          .order('created_at', ascending: false)
+          .select(selectColumns.join(","))
+          .eq(ObtainHistoryColumn.users.name, userId)
+          .eq(ObtainHistoryColumn.ingredient.name, ingredientId)
+          .order(ObtainHistoryColumn.createdAt.name, ascending: false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
@@ -67,15 +106,30 @@ class ObtainHistoryService {
     }
   }
 
-  Future<List<ObtainHistoryResponse>> findObtainHistoryByUser({
-    required int userId,
+  Future<List<ObtainHistoryResponse>> findObtainHistoryByUser(
+    userId, {
+    required List<ObtainHistoryColumn> columnsToSelect,
   }) async {
+    final selectColumns = columnsToSelect.map((column) {
+      if (column == ObtainHistoryColumn.ingredient) {
+        return '${ObtainHistoryColumn.ingredient.name}('
+            '${IngredientColumn.id.name},'
+            '${IngredientColumn.imageUrl.name},'
+            '${IngredientColumn.krName.name},'
+            '${IngredientColumn.enName.name},'
+            '${IngredientColumn.rewardTicket.name},'
+            '${IngredientColumn.type.name}'
+            ')';
+      }
+      return column.name;
+    }).toList();
+
     try {
       final List<dynamic> response = await _client
           .from(_obtainHistoryTableName)
-          .select(_fullSelectQuery)
+          .select(selectColumns.join(","))
           .eq(
-            'user',
+            ObtainHistoryColumn.users.name,
             userId,
           )
           .toSelect();

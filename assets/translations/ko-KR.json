@@ -18,6 +18,7 @@
   "msgConfirmNetworkConnection": "네트워크 연결 상태를 확인해주세요",
   "msgNoNotifications": "알림이 없습니다",
   "msgRewardCompleted": "이미 보상 완료된 리워드입니다",
+  "msgInvalidMission": "존재하지 않는 미션입니다",
   "msgHallOfFame": "명예의 전당",
   "msgRetryLater": "잠시 후 다시 이용 해 주세요",
   "msgVerifyCode": "인증 번호를 확인해주세요",
