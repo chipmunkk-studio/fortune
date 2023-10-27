@@ -110,7 +110,8 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                               return Center(
                                 child: Text(
                                   FortuneTr.msgRecentNotifications,
-                                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                                  textAlign: TextAlign.center,
+                                  style: FortuneTextStyle.body3Light(color: ColorName.grey400, height: 1.3),
                                 ),
                               );
                             } else {
