@@ -10,6 +10,34 @@ import 'alarm_reward_info_response.dart';
 
 part 'alarm_reward_history_response.g.dart';
 
+enum AlarmRewardHistoryColumn {
+  id,
+  users,
+  alarmRewardInfo,
+  ingredients,
+  createdAt,
+  isReceive,
+}
+
+extension AlarmRewardHistoryColumnExtension on AlarmRewardHistoryColumn {
+  String get name {
+    switch (this) {
+      case AlarmRewardHistoryColumn.id:
+        return 'id';
+      case AlarmRewardHistoryColumn.users:
+        return 'users';
+      case AlarmRewardHistoryColumn.alarmRewardInfo:
+        return 'alarm_reward_info';
+      case AlarmRewardHistoryColumn.ingredients:
+        return 'ingredients';
+      case AlarmRewardHistoryColumn.createdAt:
+        return 'created_at';
+      case AlarmRewardHistoryColumn.isReceive:
+        return 'is_receive';
+    }
+  }
+}
+
 @JsonSerializable(ignoreUnannotated: false)
 class AlarmRewardHistoryResponse extends AlarmRewardHistoryEntity {
   @JsonKey(name: 'id')
