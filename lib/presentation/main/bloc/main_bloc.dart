@@ -131,7 +131,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-      final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: mapLocationAccuracy);
+      // 처음에 리젝 맞아서 안됨.
+      final locationData = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.lowest,
+      );
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));
