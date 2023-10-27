@@ -50,6 +50,8 @@ class IngredientResponse extends IngredientEntity {
   final int? rewardTicket_;
   @JsonKey(name: 'image_url')
   final String? imageUrl_;
+  @JsonKey(name: 'description')
+  final String? desc_;
   @JsonKey(name: 'distance')
   final int? distance_;
 
@@ -61,6 +63,7 @@ class IngredientResponse extends IngredientEntity {
     required this.imageUrl_,
     required this.rewardTicket_,
     required this.distance_,
+    required this.desc_,
   }) : super(
           id: id_?.toInt() ?? -1,
           exposureName: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
@@ -70,6 +73,7 @@ class IngredientResponse extends IngredientEntity {
           rewardTicket: rewardTicket_ ?? 0,
           type: getIngredientType(type_),
           distance: distance_ ?? 500,
+          desc: desc_ ?? '',
         );
 
   factory IngredientResponse.fromJson(Map<String, dynamic> json) => _$IngredientResponseFromJson(json);

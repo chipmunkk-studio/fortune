@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/ints.dart';
 import 'package:fortune/core/util/logger.dart';

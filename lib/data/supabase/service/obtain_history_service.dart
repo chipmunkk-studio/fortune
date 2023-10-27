@@ -76,12 +76,9 @@ class ObtainHistoryService {
 
     final selectColumns = columnsToSelect.map((column) {
       if (column == ObtainHistoryColumn.ingredient) {
-        return '${ObtainHistoryColumn.ingredient.name}('
-            '${IngredientColumn.imageUrl.name},'
-            '${IngredientColumn.krName.name},'
-            '${IngredientColumn.enName.name},'
-            '${IngredientColumn.rewardTicket.name},'
-            '${IngredientColumn.type.name}'
+        return '${ObtainHistoryColumn.createdAt.name},'
+            '${ObtainHistoryColumn.ingredient.name}('
+            '${IngredientColumn.id.name}'
             ')';
       }
       return column.name;

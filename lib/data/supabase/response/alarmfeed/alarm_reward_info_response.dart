@@ -4,6 +4,28 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'alarm_reward_info_response.g.dart';
 
+enum AlarmRewardInfoColumn {
+  id,
+  type,
+  hasEpicMarker,
+  hasRareMarker,
+}
+
+extension AlarmRewardInfoColumnExtension on AlarmRewardInfoColumn {
+  String get name {
+    switch (this) {
+      case AlarmRewardInfoColumn.id:
+        return 'id';
+      case AlarmRewardInfoColumn.type:
+        return 'type';
+      case AlarmRewardInfoColumn.hasEpicMarker:
+        return 'has_epic_marker';
+      case AlarmRewardInfoColumn.hasRareMarker:
+        return 'has_rare_marker';
+    }
+  }
+}
+
 @JsonSerializable(ignoreUnannotated: false)
 class AlarmRewardInfoResponse extends AlarmRewardInfoEntity {
   @JsonKey(name: 'id')
