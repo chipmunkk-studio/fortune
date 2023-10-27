@@ -12,6 +12,8 @@ import 'package:latlong2/latlong.dart';
 import 'component/map/main_location_data.dart';
 import 'component/map/main_marker_view.dart';
 
+const LocationAccuracy mapLocationAccuracy = LocationAccuracy.high;
+
 class MainLandingArgs {
   // 히스토리 검색.
   final String text;
