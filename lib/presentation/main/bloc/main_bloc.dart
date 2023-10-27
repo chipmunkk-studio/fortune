@@ -18,6 +18,7 @@ import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -80,9 +81,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             return produceSideEffect(MainSchemeLandingPage(landingPage, searchText: searchText));
           }
 
-          final locationData = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high,
-          );
+          final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: mapLocationAccuracy);
 
           final latitude = locationData.latitude;
           final longitude = locationData.longitude;
@@ -131,9 +130,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-      final locationData = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
+      final locationData = await Geolocator.getCurrentPosition(desiredAccuracy: mapLocationAccuracy);
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));

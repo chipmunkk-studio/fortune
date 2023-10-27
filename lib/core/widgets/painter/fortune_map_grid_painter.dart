@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 
@@ -9,14 +11,14 @@ class FortuneMapGridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint gridPaint = Paint()
-      ..color = ColorName.primary
+      ..color = ColorName.primary.withOpacity(0.5)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.1;
+      ..strokeWidth = Platform.isIOS ? 0.3 : 0.1;
 
     final Paint thickCrossPaint = Paint()
-      ..color = ColorName.primary
+      ..color = ColorName.primary.withOpacity(0.5)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.2;  // 십자 부분을 좀 더 굵게 그리기 위해
+      ..strokeWidth = Platform.isIOS  ? 0.6: 0.2;  // 십자 부분을 좀 더 굵게 그리기 위해
 
     final Paint backgroundPaint = Paint()
       ..color = ColorName.grey900
