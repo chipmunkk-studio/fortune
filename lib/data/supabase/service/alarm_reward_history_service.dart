@@ -41,27 +41,6 @@ class AlarmRewardHistoryService {
     }
   }
 
-  // 리워드 타입으로 리워드 정보 검색.
-  Future<AlarmRewardHistoryEntity> findRewardHistoryById(int id) async {
-    try {
-      final response = await _client
-          .from(_tableName)
-          .select(
-            fullSelectQuery,
-          )
-          .filter('id', 'eq', id)
-          .toSelect();
-      if (response.isEmpty) {
-        throw CommonFailure(errorMessage: '등록된 리워드 정보가 없습니다');
-      } else {
-        final reward = response.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
-        return reward;
-      }
-    } catch (e) {
-      throw (e is Exception) ? e.handleException() : e;
-    }
-  }
-
   // 알림 리워드 업데이트.
   Future<AlarmRewardHistoryEntity> update(
     int id, {

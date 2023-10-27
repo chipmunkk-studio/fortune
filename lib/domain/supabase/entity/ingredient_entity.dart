@@ -9,6 +9,7 @@ class IngredientEntity {
   final int rewardTicket;
   final IngredientType type;
   final int distance;
+  final String desc;
 
   IngredientEntity({
     required this.id,
@@ -19,6 +20,7 @@ class IngredientEntity {
     required this.distance,
     required this.krName,
     required this.enName,
+    required this.desc,
   });
 
   factory IngredientEntity.empty() {
@@ -32,6 +34,7 @@ class IngredientEntity {
       type: IngredientType.coin,
       // assuming 'undefined' is a valid enum value for IngredientType
       distance: 0,
+      desc: '',
     );
   }
 }
