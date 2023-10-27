@@ -149,14 +149,8 @@ Future<void> init() async {
   /// FCM todo 나중에 작업할 때 다시 활성화.
   await initFCM();
 
-  /// 파이어베이스 analytics.
-  final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
-
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
-
-  /// 파이어베이스 애널리틱스.
-  serviceLocator.registerLazySingleton<FortuneAnalytics>(() => fortuneAnalytics);
 
   /// Router.
   initRouter(kIsWeb);
