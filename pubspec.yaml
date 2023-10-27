@@ -130,7 +130,7 @@ dev_dependencies:
   test: any
   # navigation testing
   bloc_test: ^9.1.4
-  analyzer: ^6.3.0
+  analyzer: ^5.13.0
 
 flutter_native_splash:
   color: "#1b1c24"
