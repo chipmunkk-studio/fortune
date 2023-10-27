@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/logger.dart';
@@ -215,7 +216,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final isShowAd = await getShowAdUseCase().then((value) => value.getOrElse(() => false));
 
     // 거리가 모자랄 경우
-    if (event.distance > 0) {
+    if (event.distance > 0 && kReleaseMode) {
       add(MainRequireInCircleMetersEvent(distance));
       return;
     }

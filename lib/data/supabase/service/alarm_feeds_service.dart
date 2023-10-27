@@ -1,6 +1,9 @@
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
+import 'package:fortune/data/supabase/response/alarmfeed/alarm_reward_info_response.dart';
+import 'package:fortune/data/supabase/response/ingredient_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
@@ -24,10 +27,22 @@ class AlarmFeedsService {
     int userId, {
     required List<AlarmFeedColumn> columnsToSelect,
   }) async {
-
     final selectColumns = columnsToSelect.map((column) {
       if (column == AlarmFeedColumn.alarmRewards) {
-        return '${TableName.alarmRewardHistory}(${AlarmRewardHistoryService.fullSelectQuery})';
+        return '${TableName.alarmRewardHistory}('
+            '${AlarmRewardHistoryColumn.id.name},'
+            '${AlarmRewardHistoryColumn.isReceive.name},'
+            '${AlarmRewardHistoryColumn.createdAt.name},'
+            '${TableName.ingredients}('
+            '${IngredientColumn.krName.name},'
+            '${IngredientColumn.id.name},'
+            '${IngredientColumn.enName.name},'
+            '${IngredientColumn.imageUrl.name}),'
+            '${TableName.alarmRewardInfo}('
+            '${AlarmRewardInfoColumn.id.name},'
+            '${AlarmRewardInfoColumn.type.name})'
+            ')'
+            ')';
       } else if (column == AlarmFeedColumn.users) {
         return '${TableName.users}(*)';
       }

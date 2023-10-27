@@ -196,13 +196,13 @@ calculateLevelInfo(int markerCount) {
 // 등급 할당.
 assignGrade(int level) {
   if (level >= 120) {
-    return 5; // 21420
+    return 5; // 85680
   } else if (level >= 90) {
-    return 4; // 12015
+    return 4; // 48060
   } else if (level >= 60) {
-    return 3; // 5310
+    return 3; // 21240
   } else if (level >= 30) {
-    return 2; // 1305
+    return 2; // 5220
   } else {
     return 1;
   }
