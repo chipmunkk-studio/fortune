@@ -38,6 +38,10 @@ class ReceiveAlarmRewardUseCase implements UseCase1<List<AlarmFeedsEntity>, Alar
       if (param.isReceive) {
         throw CommonFailure(errorMessage: FortuneTr.msgRewardCompleted);
       }
+
+      // 오래된 히스토리 삭제.
+      await rewardRepository.deleteOldHistory(user.id);
+
       // 마커 획득 히스토리 추가.
       await historyRepository.insertObtainHistory(
         request: RequestObtainHistory.insert(

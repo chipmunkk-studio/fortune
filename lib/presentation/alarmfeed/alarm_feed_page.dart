@@ -17,7 +17,7 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 class AlarmFeedPage extends StatelessWidget {
-  const AlarmFeedPage({Key? key}) : super(key: key);
+  const AlarmFeedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class AlarmFeedPage extends StatelessWidget {
 }
 
 class _AlarmFeedPage extends StatefulWidget {
-  const _AlarmFeedPage({Key? key}) : super(key: key);
+  const _AlarmFeedPage();
 
   @override
   State<_AlarmFeedPage> createState() => _AlarmFeedPageState();
@@ -100,25 +100,31 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                   skeleton: const AlarmFeedSkeleton(),
                   isLoading: state.isLoading,
                   child: state.feeds.isNotEmpty
-                      ? Stack(
-                          children: [
-                            ListView.separated(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: state.feeds.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: 20),
-                              itemBuilder: (context, index) {
-                                final item = state.feeds[index];
-                                return Bounceable(
-                                  onTap: () => _bloc.add(AlarmRewardReceive(item)),
-                                  child: ItemAlarmFeed(
-                                    item,
-                                    tracker: _tracker,
-                                    onReceive: (feed) => _bloc.add(AlarmRewardReceive(item)),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
+                      ? ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: state.feeds.length + 1,
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => const SizedBox(height: 20),
+                          itemBuilder: (context, index) {
+                            if (index == state.feeds.length) {
+                              return Center(
+                                child: Text(
+                                  FortuneTr.msgRecentNotifications,
+                                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                                ),
+                              );
+                            } else {
+                              final item = state.feeds[index];
+                              return Bounceable(
+                                onTap: () => _bloc.add(AlarmRewardReceive(item)),
+                                child: ItemAlarmFeed(
+                                  item,
+                                  tracker: _tracker,
+                                  onReceive: (feed) => _bloc.add(AlarmRewardReceive(item)),
+                                ),
+                              );
+                            }
+                          },
                         )
                       : Center(
                           child: Text(

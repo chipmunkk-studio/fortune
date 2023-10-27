@@ -65,4 +65,13 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
       throw e.handleFortuneFailure();
     }
   }
+
+  @override
+  Future<void> deleteOldHistory(int userId) async {
+    try {
+      return await rewardsService.deleteOldData(userId);
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure();
+    }
+  }
 }
