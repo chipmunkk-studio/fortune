@@ -12,8 +12,8 @@ class TermsDetailPage extends StatelessWidget {
 
   const TermsDetailPage(
     this.index, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

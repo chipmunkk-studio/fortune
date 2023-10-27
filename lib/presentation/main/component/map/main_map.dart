@@ -93,7 +93,7 @@ class MainMap extends StatelessWidget {
                           },
                         )
                       : CustomPaint(
-                          painter: FortuneMapGridPainter(gridSpacing: 23),
+                          painter: FortuneMapGridPainter(gridSpacing: 26),
                           child: Container(),
                         ),
                   // 마커 목록.

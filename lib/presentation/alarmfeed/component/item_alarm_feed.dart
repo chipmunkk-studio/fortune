@@ -5,17 +5,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.dart';
 
 class ItemAlarmFeed extends StatelessWidget {
-  AlarmFeedsEntity item;
-  Function1<AlarmFeedsEntity, void> onReceive;
+  final AlarmFeedsEntity item;
+  final Function1<AlarmFeedsEntity, void> onReceive;
+  final MixpanelTracker tracker;
 
-  ItemAlarmFeed(
+  const ItemAlarmFeed(
     this.item, {
     super.key,
+    required this.tracker,
     required this.onReceive,
   });
 
@@ -70,7 +73,10 @@ class ItemAlarmFeed extends StatelessWidget {
             Align(
               alignment: Alignment.topRight,
               child: Bounceable(
-                onTap: () => onReceive(item),
+                onTap: () {
+                  tracker.trackEvent('알림_받기_클릭');
+                  onReceive(item);
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: item.isReceive ? ColorName.grey600 : ColorName.grey100),

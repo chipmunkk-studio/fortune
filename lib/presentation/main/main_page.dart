@@ -411,7 +411,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
 // 위치변경감지.
   Future<StreamSubscription<Position>> listenLocationChange() async {
     return Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.best),
+      locationSettings: const LocationSettings(accuracy: mapLocationAccuracy),
     ).listen((Position? position) {
       _animatedMapMove(
         LatLng(
@@ -475,7 +475,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     double nextData,
   ) {
     final controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
 
@@ -487,7 +487,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     final Animation<double> animation = rotationTween.animate(
       CurvedAnimation(
         parent: controller,
-        curve: Curves.fastOutSlowIn,
+        curve: Curves.fastEaseInToSlowEaseOut,
       ),
     );
 

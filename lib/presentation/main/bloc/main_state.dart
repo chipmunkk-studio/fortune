@@ -32,10 +32,11 @@ class MainState with _$MainState {
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
-  factory MainState.initial() => MainState(
+  factory MainState.initial() =>
+      MainState(
         markers: List.empty(),
         missionClearUsers: List.empty(),
-        locationName: FortuneTr.callMyLocation,
+        locationName: FortuneTr.msgUnknownLocation,
         user: null,
         myLocation: null,
         processingMarker: null,
@@ -51,3 +52,4 @@ class MainState with _$MainState {
         zoomThreshold: 18,
       );
 }
+
