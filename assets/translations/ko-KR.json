@@ -117,7 +117,7 @@
   "msgUnknownUser": "낯선 사람",
   "msgUnknownError": "알 수 없는 에러",
   "msgAcquired": "미션을 완료했어요!",
-  "msgRewardExhausted": "리워드가 모두 소진 되었습니다.",
+  "msgRewardExhausted": "리워드가 잠시 소진되었습니다.\n현재 재고를 보충하고 있으니\n잠시 후 다시 확인해 주세요.\n재고가 보충되더라도\n푸시 알림은 전송되지 않습니다.",
   "msgRemainingReward": "남은 리워드",
   "msgExchange": "리워드 신청하기",
   "msgRewardRedemptionNotice": "리워드 신청 시 마커가 차감되며\n회원 정보에 등록된 이메일로\n모바일 교환권이 발송됩니다.",

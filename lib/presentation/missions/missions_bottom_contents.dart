@@ -13,16 +13,15 @@ import 'bloc/missions.dart';
 class MissionsBottomContents extends StatelessWidget {
   final MainBloc mainBloc;
 
-  const MissionsBottomContents(this.mainBloc, {
-    Key? key,
-  }) : super(key: key);
+  const MissionsBottomContents(
+    this.mainBloc, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-      serviceLocator<MissionsBloc>()
-        ..add(MissionsBottomInit()),
+      create: (_) => serviceLocator<MissionsBloc>()..add(MissionsBottomInit()),
       child: _MissionsBottomContents(
         mainBloc,
       ),
@@ -33,7 +32,9 @@ class MissionsBottomContents extends StatelessWidget {
 class _MissionsBottomContents extends StatefulWidget {
   final MainBloc mainBloc;
 
-  const _MissionsBottomContents(this.mainBloc,);
+  const _MissionsBottomContents(
+    this.mainBloc,
+  );
 
   @override
   State<_MissionsBottomContents> createState() => _MissionsBottomContentsState();

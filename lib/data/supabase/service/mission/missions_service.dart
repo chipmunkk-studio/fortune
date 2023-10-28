@@ -30,6 +30,7 @@ class MissionsService {
       MissionsColumn.enContent,
       MissionsColumn.krTitle,
       MissionsColumn.krContent,
+      MissionsColumn.deadline,
     ];
 
     final selectColumns = columnsToSelect.map((column) {

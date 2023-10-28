@@ -28,6 +28,7 @@ class FaqsResponse extends FaqsEntity {
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           createdAt: FortuneDateExtension.formattedDate(createdAt_),
+          isNew: !FortuneDateExtension.isDaysPassed(createdAt_, passDay: 7),
         );
 
   factory FaqsResponse.fromJson(Map<String, dynamic> json) => _$FaqsResponseFromJson(json);

@@ -17,7 +17,7 @@ import 'package:skeletons/skeletons.dart';
 import 'component/my_page_skeleton.dart';
 
 class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
+  const MyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MyPage extends StatelessWidget {
 }
 
 class _MyPage extends StatefulWidget {
-  const _MyPage({Key? key}) : super(key: key);
+  const _MyPage();
 
   @override
   State<_MyPage> createState() => _MyPageState();
@@ -116,6 +116,7 @@ class _MyPageState extends State<_MyPage> {
                     InfoMenu(
                       FortuneTr.faq,
                       icon: Assets.icons.icQuestion.svg(),
+                      hasNew: state.hasNewFaq,
                       onTap: () {
                         _tracker.trackEvent('마이페이지_FAQ_클릭');
                         return _router.navigateTo(context, AppRoutes.faqsRoute);
