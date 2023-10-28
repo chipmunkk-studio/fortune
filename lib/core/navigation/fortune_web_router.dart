@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/presentation-web/app_ads_txt_page.dart';
 import 'package:fortune/presentation-web/login/web_login_page.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
@@ -39,6 +40,12 @@ class FortuneWebRouter {
     },
   );
 
+  static var appAdsTxtHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const AppAdsTxtPage();
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -46,6 +53,13 @@ class FortuneWebRouter {
       ..define(
         WebRoutes.loginRoute,
         handler: loginHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
+      /// 페이스북 > 광고 게시할때 필요함.
+      ..define(
+        WebRoutes.appAdsTxt,
+        handler: appAdsTxtHandler,
         transitionType: TransitionType.fadeIn,
       )
 
@@ -77,4 +91,5 @@ class WebRoutes {
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String termsDetailRoute = 'termsDetail';
   static const String loginRoute = 'login';
+  static const String appAdsTxt = 'app-ads.txt';
 }
