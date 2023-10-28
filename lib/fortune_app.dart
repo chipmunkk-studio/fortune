@@ -15,8 +15,8 @@ class FortuneApp extends StatelessWidget {
 
   const FortuneApp(
     this.startRoute, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => ScreenUtilInit(
