@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dartz/dartz.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
+const webMainUrl = "https://chipmunk-studio.com";
 
 // 샘플 이미지.
 String getSampleNetworkImageUrl({

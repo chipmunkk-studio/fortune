@@ -339,7 +339,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {},
+                      onTap: () {
+                        // _router.navigateTo(context, AppRoutes.communityRoutes);
+                      },
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
