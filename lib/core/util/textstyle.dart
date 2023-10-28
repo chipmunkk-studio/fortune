@@ -18,9 +18,12 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle headLine2({Color? fontColor}) {
+  static TextStyle headLine2({
+    Color? fontColor,
+    bool isSpMax = false,
+  }) {
     return TextStyle(
-      fontSize: 24.spMin,
+      fontSize: isSpMax ? 24.spMax : 24.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -151,9 +154,12 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle caption1SemiBold({Color? color}) {
+  static TextStyle caption1SemiBold({
+    Color? color,
+    bool isSpMax = false,
+  }) {
     return TextStyle(
-      fontSize: 14.spMin,
+      fontSize: isSpMax ? 14.spMax : 14.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
