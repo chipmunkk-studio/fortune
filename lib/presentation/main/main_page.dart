@@ -599,6 +599,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _locationChangeSubscription.pause();
     context
         .showFullBottomSheet(
+          heightFactor: 0.93,
           topContent: (context) => const MissionsTopContents(),
           scrollContent: (context) => MissionsBottomContents(_bloc),
         )
