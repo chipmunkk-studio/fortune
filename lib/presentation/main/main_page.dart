@@ -475,7 +475,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     double nextData,
   ) {
     final controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
