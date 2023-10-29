@@ -82,7 +82,7 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  !enableMapBox
+                  enableMapBox
                       ? TileLayer(
                           tileSize: 512,
                           zoomOffset: -1,
