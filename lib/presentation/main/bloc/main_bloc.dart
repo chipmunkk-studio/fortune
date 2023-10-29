@@ -26,6 +26,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'main.dart';
 
@@ -121,7 +122,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
             // 실제 기기가 아니거나 테스트 계정일 경우 테스트 로케이션을 보여줌.
             final isRealDevice = await SafeDevice.isRealDevice;
-            final isTestAccount = state.user?.email == remoteConfig.testSignInEmail;
+            final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
+            final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
             emit(state.copyWith(isShowTestLocation: !isRealDevice || isTestAccount));
 
             // 마커 목록들을 받아옴.
