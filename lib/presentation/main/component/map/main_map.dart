@@ -35,13 +35,13 @@ class MainMap extends StatelessWidget {
 
   const MainMap(
     this._bloc, {
-    Key? key,
+    super.key,
     required this.mainContext,
     required this.remoteConfigArgs,
     required this.mapController,
     required this.myLocation,
     required this.onZoomChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

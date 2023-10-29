@@ -26,6 +26,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'main.dart';
 
@@ -118,9 +119,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               produceSideEffect(MainRequireLocationPermission());
               return;
             }
-            // 실제 기기인지 체크.
+
+            // 실제 기기가 아니거나 테스트 계정일 경우 테스트 로케이션을 보여줌.
             final isRealDevice = await SafeDevice.isRealDevice;
-            emit(state.copyWith(isRealDevice: isRealDevice));
+            final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
+            final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
+            emit(state.copyWith(isShowTestLocation: !isRealDevice || isTestAccount));
 
             // 마커 목록들을 받아옴.
             add(Main());
@@ -137,12 +141,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-
-      final locationData = state.isRealDevice
-          ? await Geolocator.getCurrentPosition(
+      final locationData = state.isShowTestLocation
+          ? simulatorLocation
+          : await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.lowest,
-            )
-          : simulatorLocation;
+            );
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));
