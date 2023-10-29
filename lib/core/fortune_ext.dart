@@ -2,9 +2,22 @@
 import 'dart:math';
 
 import 'package:dartz/dartz.dart';
+import 'package:geolocator/geolocator.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
 const webMainUrl = "https://chipmunk-studio.com";
+Position simulatorLocation = Position(
+  latitude: 37.785834,
+  longitude: -122.406417,
+  timestamp: DateTime.now(),
+  accuracy: 5.0,
+  altitude: 0.0,
+  altitudeAccuracy: 0.0,
+  heading: 90.0,
+  headingAccuracy: 0.0,
+  speed: 0.0,
+  speedAccuracy: 0.0,
+);
 
 // 샘플 이미지.
 String getSampleNetworkImageUrl({
