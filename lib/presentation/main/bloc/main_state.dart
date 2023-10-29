@@ -29,6 +29,7 @@ class MainState with _$MainState {
     required double zoomThreshold,
     required double headings,
     required bool isRotatable,
+    required bool isRealDevice,
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
@@ -48,6 +49,7 @@ class MainState with _$MainState {
         isRotatable: false,
         rewardAd: null,
         headings: 0,
+        isRealDevice: true,
         clickableRadiusLength: 60,
         zoomThreshold: 18,
       );

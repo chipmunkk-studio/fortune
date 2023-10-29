@@ -5,6 +5,7 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
@@ -23,6 +24,7 @@ import 'package:fortune/presentation/main/main_ext.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:safe_device/safe_device.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'main.dart';
@@ -116,6 +118,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               produceSideEffect(MainRequireLocationPermission());
               return;
             }
+            // 실제 기기인지 체크.
+            final isRealDevice = await SafeDevice.isRealDevice;
+            emit(state.copyWith(isRealDevice: isRealDevice));
+
             // 마커 목록들을 받아옴.
             add(Main());
 
@@ -131,10 +137,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-      // 처음에 리젝 맞아서 안됨.
-      final locationData = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.lowest,
-      );
+
+      final locationData = state.isRealDevice
+          ? await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.lowest,
+            )
+          : simulatorLocation;
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));
