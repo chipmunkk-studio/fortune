@@ -124,7 +124,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             final isRealDevice = await SafeDevice.isRealDevice;
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
-            emit(state.copyWith(isShowTestLocation: !isRealDevice || isTestAccount));
+            emit(state.copyWith(isShowTestLocation: isRealDevice ? false : isTestAccount));
 
             // 마커 목록들을 받아옴.
             add(Main());
