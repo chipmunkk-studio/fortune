@@ -30,15 +30,18 @@ class MyPageUseCase implements UseCase0<MyPageViewEntity> {
           UserColumn.email,
         ],
       );
-      final notices = await supportRepository.getNotices();
+      final notices = await supportRepository.getNotices(onlyCount: true);
+      final faqs = await supportRepository.getFaqs(onlyCount: true);
       final isAllowPushAlarm = await localRepository.getAllowPushAlarm();
 
       final bool hasNewNotice = notices.any((element) => element.isNew == true);
+      final bool hasNewFaqs = faqs.any((element) => element.isNew == true);
 
       final entity = MyPageViewEntity(
         user: user,
         isAllowPushAlarm: isAllowPushAlarm,
         hasNewNotice: hasNewNotice,
+        hasNewFaq: hasNewFaqs,
       );
       return Right(entity);
     } on FortuneFailure catch (e) {

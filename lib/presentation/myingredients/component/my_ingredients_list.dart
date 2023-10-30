@@ -25,11 +25,12 @@ class MyIngredientList extends StatelessWidget {
     return entities.histories.isNotEmpty
         ? GridView.builder(
             padding: const EdgeInsets.only(left: 29, right: 29, top: 0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            physics: const BouncingScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 5, // 한 줄에 아이템 5개
               childAspectRatio: 1.0, // 아이템의 가로/세로 비율 (1.0은 정사각형)
-              crossAxisSpacing: 8, // 아이템 간의 가로 간격
-              mainAxisSpacing: 8, // 아이템 간의 세로 간격
+              crossAxisSpacing: 8.h, // 아이템 간의 가로 간격
+              mainAxisSpacing: 8.h, // 아이템 간의 세로 간격
             ),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
@@ -39,11 +40,11 @@ class MyIngredientList extends StatelessWidget {
                 child: Stack(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8.h),
                       decoration: BoxDecoration(color: ColorName.grey700, borderRadius: BorderRadius.circular(16.r)),
                       child: FortuneCachedNetworkImage(
-                        width: 60,
-                        height: 60,
+                        width: getImageSize(context),
+                        height: getImageSize(context),
                         imageUrl: item.ingredient.imageUrl,
                         placeholder: Container(),
                         fit: BoxFit.fill,
@@ -57,6 +58,7 @@ class MyIngredientList extends StatelessWidget {
                         child: Text.rich(
                           TextSpan(
                             style: FortuneTextStyle.caption3Semibold().copyWith(
+                              fontSize: 11.spMax,
                               shadows: [
                                 const Shadow(offset: Offset(-1.0, -1.0), color: ColorName.grey700),
                                 const Shadow(offset: Offset(1.0, -1.0), color: ColorName.grey700),
@@ -90,5 +92,11 @@ class MyIngredientList extends StatelessWidget {
               ),
             ],
           );
+  }
+
+  static getImageSize(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageSize = (screenWidth - 2 * 29 - 4 * 8) / 5;
+    return imageSize;
   }
 }

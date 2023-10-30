@@ -58,7 +58,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
 
       // 리워드가 모두 소진 되었을 경우.
       if (mission.reward.remainCount == 0) {
-        throw const CustomFailure(errorDescription: "리워드가 모두 소진 되었습니다.");
+        throw CustomFailure(errorDescription: FortuneTr.msgRewardExhausted);
       }
 
       // 미션 리워드 상태 업데이트.

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 
 class MixpanelTracker {
@@ -7,7 +6,7 @@ class MixpanelTracker {
   MixpanelTracker(this._mixpanel);
 
   factory MixpanelTracker.init(Mixpanel? mixpanel) {
-    return MixpanelTracker(kIsWeb ? null : mixpanel);
+    return MixpanelTracker(mixpanel);
   }
 
   void trackEvent(

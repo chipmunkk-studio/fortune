@@ -33,16 +33,42 @@ abstract class FortuneDateExtension {
     }
   }
 
-  static bool isThreeDaysPassed(
-    String? time,
-  ) {
+  static bool isDaysPassed(
+    String? serverTime, {
+    required int passDay,
+  }) {
+    final time = serverTime;
     if (time != null) {
       DateTime serverTime = DateTime.parse(time);
       DateTime currentTime = DateTime.now();
       Duration duration = currentTime.difference(serverTime);
-      return duration.inDays >= 3;
+      return duration.inDays >= passDay;
     } else {
       return true;
     }
+  }
+
+  static bool isDeadlinePassed(String? deadline) {
+    if (deadline == null || deadline.isEmpty) {
+      return true;
+    }
+
+    DateTime? deadlineDate = DateTime.parse(deadline);
+    DateTime currentDate = DateTime.now();
+
+    return currentDate.isAfter(deadlineDate);
+  }
+
+  static String getDaysUntilDeadline(String? deadline) {
+    if (deadline == null || deadline.isEmpty) {
+      return 'D-99';
+    }
+
+    DateTime? endTime = DateTime.parse(deadline);
+    DateTime currentTime = DateTime.now();
+
+    int difference = endTime.difference(currentTime).inDays;
+
+    return 'D-$difference';
   }
 }

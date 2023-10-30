@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
-import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/mixpanel.dart';
-import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
@@ -76,7 +74,7 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
                 ),
                 const SizedBox(height: 32),
                 SizedBox(
-                  height: 420,
+                  height: 420.h,
                   child: BlocBuilder<MyIngredientsBloc, MyIngredientsState>(
                     buildWhen: (previous, current) => previous.entities != current.entities,
                     builder: (context, state) => MyIngredientList(
@@ -109,14 +107,14 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
         children: [
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20.r),
               color: ColorName.grey700,
             ),
             child: FortuneCachedNetworkImage(
-              width: 76,
-              height: 76,
+              width: 76.h,
+              height: 76.h,
               imageUrl: ingredient.imageUrl,
               placeholder: Container(),
               fit: BoxFit.fill,

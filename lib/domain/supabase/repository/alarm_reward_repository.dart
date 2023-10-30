@@ -23,4 +23,6 @@ abstract class AlarmRewardRepository {
     int id, {
     required RequestAlarmRewardHistory request,
   });
+
+  Future<void> deleteOldHistory(int userId);
 }

@@ -68,7 +68,7 @@ class MissionNormalCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "${item.mission.reward.remainCount}",
-                                style: FortuneTextStyle.body3Semibold(fontColor: Colors.white),
+                                style: FortuneTextStyle.body3Semibold(color: Colors.white),
                               ),
                               TextSpan(
                                 text: "/${item.mission.reward.totalCount}",

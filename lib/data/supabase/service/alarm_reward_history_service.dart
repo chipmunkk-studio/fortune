@@ -4,7 +4,6 @@ import 'package:fortune/data/supabase/request/request_alarm_reward_history.dart'
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_reward_history_response.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
-import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/eventnotice/alarm_rewards_history_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -60,6 +59,21 @@ class AlarmRewardHistoryService {
           .select(fullSelectQuery);
 
       return updateHistory.map((e) => AlarmRewardHistoryResponse.fromJson(e)).toList().single;
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  Future<void> deleteOldData(int userId) async {
+    final DateTime boundaryDate = DateTime.now().subtract(const Duration(days: 21));
+    try {
+      await _client
+          .from(_tableName)
+          .delete()
+          .lte(AlarmRewardHistoryColumn.createdAt.name, boundaryDate.toUtc())
+          .eq(AlarmRewardHistoryColumn.users.name, userId)
+          .eq(AlarmRewardHistoryColumn.isReceive.name, true)
+          .execute();
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

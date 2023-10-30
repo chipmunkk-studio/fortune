@@ -68,7 +68,7 @@ class MissionGradeCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: FortuneTr.msgUnlimited,
-                                style: FortuneTextStyle.body3Semibold(fontColor: Colors.white),
+                                style: FortuneTextStyle.body3Semibold(color: Colors.white),
                               ),
                             ],
                           ),
