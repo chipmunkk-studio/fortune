@@ -45,16 +45,36 @@ class SupportService {
     }
   }
 
+  Future<List<FaqsEntity>> findAllFaqCount() async {
+    try {
+      final PostgrestResponse response = await _client
+          .from(
+            _faqsTableName,
+          )
+          .select(
+            'created_at',
+            const FetchOptions(count: CountOption.exact),
+          );
+
+      if (response.data == null || (response.data as List).isEmpty) {
+        return List.empty();
+      }
+
+      final dataList = response.data as List<dynamic>;
+      return dataList.map((e) => FaqsResponse.fromJson(e)).toList();
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
   // 공지 사항.
   Future<List<NoticesEntity>> findAllNotices() async {
     try {
       final List<dynamic> response = await _client
           .from(_noticesTableName)
           .select("*")
-          .order(
-            'created_at',
-            ascending: false,
-          )
+          .order('is_pin', ascending: false)
+          .order('created_at', ascending: false)
           .toSelect();
       if (response.isEmpty) {
         return List.empty();
@@ -62,6 +82,30 @@ class SupportService {
         final faqs = response.map((e) => NoticesResponse.fromJson(e)).toList();
         return faqs;
       }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
+
+  Future<List<NoticesEntity>> findAllNoticesCount() async {
+    try {
+      final PostgrestResponse response = await _client
+          .from(
+            _noticesTableName,
+          )
+          .select(
+            'created_at',
+            const FetchOptions(
+              count: CountOption.exact,
+            ),
+          );
+
+      if (response.data == null || (response.data as List).isEmpty) {
+        return List.empty();
+      }
+
+      final dataList = response.data as List<dynamic>;
+      return dataList.map((e) => NoticesResponse.fromJson(e)).toList();
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

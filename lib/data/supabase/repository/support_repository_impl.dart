@@ -14,9 +14,9 @@ class SupportRepositoryImpl extends SupportRepository {
   });
 
   @override
-  Future<List<FaqsEntity>> getFaqs() async {
+  Future<List<FaqsEntity>> getFaqs({bool onlyCount = false}) async {
     try {
-      List<FaqsEntity> faqs = await supportService.findAllFaqs();
+      List<FaqsEntity> faqs = onlyCount ? await supportService.findAllFaqCount() : await supportService.findAllFaqs();
       return faqs;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
@@ -24,9 +24,10 @@ class SupportRepositoryImpl extends SupportRepository {
   }
 
   @override
-  Future<List<NoticesEntity>> getNotices() async {
+  Future<List<NoticesEntity>> getNotices({bool onlyCount = false}) async {
     try {
-      List<NoticesEntity> notices = await supportService.findAllNotices();
+      List<NoticesEntity> notices =
+          onlyCount ? await supportService.findAllNoticesCount() : await supportService.findAllNotices();
       return notices;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 
 class FortuneCachedNetworkImage extends StatelessWidget {
@@ -34,7 +36,7 @@ class FortuneCachedNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: kReleaseMode ? imageUrl : getSampleNetworkImageUrl(width: 92, height: 92),
       width: width,
       height: height,
       cacheManager: cacheManager,

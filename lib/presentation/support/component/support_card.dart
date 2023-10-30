@@ -6,17 +6,19 @@ import 'package:fortune/core/util/textstyle.dart';
 
 class SupportCard extends StatefulWidget {
   const SupportCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     required this.date,
     this.isShowDate = false,
-  }) : super(key: key);
+    this.isPin = false,
+  });
 
   final String title;
   final String content;
   final String date;
   final bool isShowDate;
+  final bool isPin;
 
   @override
   State<SupportCard> createState() => _SupportCardState();
@@ -33,6 +35,10 @@ class _SupportCardState extends State<SupportCard> {
       color: ColorName.grey800,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.r),
+        side: BorderSide(
+          color: widget.isPin ? ColorName.primary : Colors.transparent,
+          width: 1,
+        ),
       ),
       child: ExpansionTile(
         expandedCrossAxisAlignment: CrossAxisAlignment.start,

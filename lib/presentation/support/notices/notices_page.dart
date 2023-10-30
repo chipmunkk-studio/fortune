@@ -31,7 +31,7 @@ class NoticesPage extends StatelessWidget {
 }
 
 class _NoticesPage extends StatefulWidget {
-  const _NoticesPage({Key? key}) : super(key: key);
+  const _NoticesPage();
 
   @override
   State<_NoticesPage> createState() => _NoticesPageState();
@@ -76,6 +76,7 @@ class _NoticesPageState extends State<_NoticesPage> {
                   title: item.title,
                   content: item.content,
                   date: item.createdAt,
+                  isPin: item.isPin,
                   isShowDate: true,
                 );
               },

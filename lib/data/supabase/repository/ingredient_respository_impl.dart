@@ -48,7 +48,6 @@ class IngredientRepositoryImpl extends IngredientRepository {
       if (outputIngredients.isNotEmpty) {
         final random = Random();
         final ingredient = outputIngredients[random.nextInt(outputIngredients.length)];
-        // 코인 빼고 unique 마커들만 가져옴.
         return ingredient;
       } else {
         throw const CustomFailure(errorDescription: '생성할 수 있는 재료가 없습니다.');

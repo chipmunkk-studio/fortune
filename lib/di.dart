@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
-import 'package:fortune/core/util/analytics.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
@@ -146,23 +144,37 @@ Future<void> init() async {
     debug: false,
   );
 
+  /// 믹스 패널.
+  await initMixPanel();
+
   /// FCM todo 나중에 작업할 때 다시 활성화.
   await initFCM();
 
-  /// 파이어베이스 analytics.
-  final fortuneAnalytics = FortuneAnalytics(FirebaseAnalytics.instance);
-
   /// 다국어 설정.
   await EasyLocalization.ensureInitialized();
-
-  /// 파이어베이스 애널리틱스.
-  serviceLocator.registerLazySingleton<FortuneAnalytics>(() => fortuneAnalytics);
 
   /// Router.
   initRouter(kIsWeb);
 
   /// Supabase
   await initSupabase(kIsWeb);
+}
+
+initMixPanel() async {
+  final remoteConfig = serviceLocator<Environment>().remoteConfig;
+  final currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
+
+  /// 믹스 패널 추가 > 웹이 아닐 경우 에만 지원.
+  Mixpanel? mixpanel;
+  if (!kIsWeb && currentEmail != remoteConfig.testSignInEmail) {
+    mixpanel = await Mixpanel.init(
+      kReleaseMode ? remoteConfig.mixpanelReleaseToken : remoteConfig.mixpanelDevelopToken,
+      trackAutomaticEvents: false,
+    );
+    mixpanel.setLoggingEnabled(true);
+  }
+
+  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker.init(mixpanel));
 }
 
 initRouter(bool kIsWeb) {
@@ -193,18 +205,6 @@ initEnvironment(bool kIsWeb) async {
   final Environment environment = Environment.create(
     remoteConfig: await getRemoteConfigArgs(),
   )..init(kIsWeb);
-
-  /// 믹스패널 추가 > 웹이 아닐 경우에만 지원.
-  Mixpanel? mixpanel;
-  if (!kIsWeb) {
-    mixpanel = await Mixpanel.init(
-      kReleaseMode ? environment.remoteConfig.mixpanelReleaseToken : environment.remoteConfig.mixpanelDevelopToken,
-      trackAutomaticEvents: false,
-    );
-    mixpanel.setLoggingEnabled(true);
-  }
-
-  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker(mixpanel));
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
 

@@ -10,6 +10,7 @@ class MissionsEntity {
   final String image;
   final MissionType type;
   final MissionRewardEntity reward;
+  final String deadline;
   final bool isActive;
 
   MissionsEntity({
@@ -21,6 +22,7 @@ class MissionsEntity {
     required this.reward,
     required this.isActive,
     required this.image,
+    required this.deadline,
   });
 
   factory MissionsEntity.empty() {
@@ -31,6 +33,7 @@ class MissionsEntity {
       note: '',
       type: MissionType.none,
       reward: MissionRewardEntity.empty(),
+      deadline: '',
       image: '',
       isActive: false,
     );

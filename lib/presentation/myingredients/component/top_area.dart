@@ -18,21 +18,21 @@ class TopArea extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(width: 24),
+        SizedBox(width: 24.h),
         Text(
           FortuneTr.myBag,
-          style: FortuneTextStyle.headLine2(),
+          style: FortuneTextStyle.headLine2(isSpMax: false),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8.h),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
             color: ColorName.primary.withOpacity(0.1),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 5.h),
           child: Text(
             '$count ${FortuneTr.msgNumberItems}',
-            style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
+            style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary, isSpMax: false),
           ),
         )
       ],

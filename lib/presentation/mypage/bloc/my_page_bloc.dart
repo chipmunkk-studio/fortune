@@ -35,6 +35,7 @@ class MyPageBloc extends Bloc<MyPageEvent, MyPageState>
               user: r.user,
               isAllowPushAlarm: r.isAllowPushAlarm,
               hasNewNotice: r.hasNewNotice,
+              hasNewFaq: r.hasNewFaq,
               isLoading: false,
             ),
           );

@@ -17,6 +17,8 @@ class NoticesResponse extends NoticesEntity {
   final String? enContent_;
   @JsonKey(name: 'created_at')
   final String? createdAt_;
+  @JsonKey(name: 'is_pin')
+  final bool? isPin_;
 
   NoticesResponse({
     this.krTitle_,
@@ -24,11 +26,13 @@ class NoticesResponse extends NoticesEntity {
     this.enTitle_,
     this.enContent_,
     this.createdAt_,
+    this.isPin_,
   }) : super(
           title: getLocaleContent(en: enTitle_ ?? '', kr: krTitle_ ?? ''),
           content: getLocaleContent(en: enContent_ ?? '', kr: krContent_ ?? ''),
           createdAt: FortuneDateExtension.formattedDate(createdAt_),
-          isNew: !FortuneDateExtension.isThreeDaysPassed(createdAt_),
+          isNew: !FortuneDateExtension.isDaysPassed(createdAt_, passDay: 3),
+          isPin: isPin_ ?? false,
         );
 
   factory NoticesResponse.fromJson(Map<String, dynamic> json) => _$NoticesResponseFromJson(json);

@@ -17,7 +17,7 @@ import 'bloc/ranking.dart';
 import 'component/top_area.dart';
 
 class RankingPage extends StatelessWidget {
-  const RankingPage({Key? key}) : super(key: key);
+  const RankingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class RankingPage extends StatelessWidget {
 }
 
 class _RankingPage extends StatefulWidget {
-  const _RankingPage({Key? key}) : super(key: key);
+  const _RankingPage();
 
   @override
   State<_RankingPage> createState() => _RankingPageState();
@@ -81,14 +81,20 @@ class _RankingPageState extends State<_RankingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TopArea(
-                              items: state.rankingItems.take(3).map((e) => e as RankingPagingViewItemEntity).toList()),
+                            items: state.rankingItems
+                                .take(3)
+                                .map(
+                                  (e) => e as RankingPagingViewItemEntity,
+                                )
+                                .toList(),
+                          ),
                           Expanded(
                             child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.rankingItems.length - 3,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(vertical: 20.h),
+                              padding: EdgeInsets.symmetric(vertical: 44.h),
                               separatorBuilder: (context, index) => Divider(
                                 height: 21.h,
                                 color: ColorName.grey800,

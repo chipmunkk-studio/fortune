@@ -1,3 +1,4 @@
+import 'package:fortune/core/util/date.dart';
 import 'package:fortune/core/util/locale.dart';
 import 'package:fortune/data/supabase/response/mission/mission_ext.dart';
 import 'package:fortune/data/supabase/response/mission/mission_reward_response.dart';
@@ -6,7 +7,6 @@ import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'missions_response.g.dart';
-
 
 enum MissionsColumn {
   id,
@@ -18,6 +18,7 @@ enum MissionsColumn {
   missionImage,
   missionType,
   missionReward,
+  deadline,
   enNote,
   isActive,
 }
@@ -45,6 +46,8 @@ extension MissionsColumnExtension on MissionsColumn {
         return 'mission_type';
       case MissionsColumn.missionReward:
         return 'mission_reward';
+      case MissionsColumn.deadline:
+        return 'deadline';
       case MissionsColumn.isActive:
         return 'is_active';
     }
@@ -71,6 +74,8 @@ class MissionsResponse extends MissionsEntity {
   final String? missionImage_;
   @JsonKey(name: 'mission_type')
   final String? missionType_;
+  @JsonKey(name: 'deadline')
+  final String? deadline_;
   @JsonKey(name: 'mission_reward')
   final MissionRewardResponse? missionReward_;
   @JsonKey(name: 'is_active')
@@ -87,6 +92,7 @@ class MissionsResponse extends MissionsEntity {
     required this.missionType_,
     required this.missionReward_,
     required this.missionImage_,
+    required this.deadline_,
     required this.isActive_,
   }) : super(
           id: id_?.toInt() ?? -1,
@@ -96,7 +102,8 @@ class MissionsResponse extends MissionsEntity {
           type: getMissionType(missionType_),
           image: missionImage_ ?? '',
           reward: missionReward_ ?? MissionRewardEntity.empty(),
-          isActive: isActive_ ?? false,
+          deadline: deadline_ ?? '',
+          isActive: isActive_ == null ? false : isActive_ && !FortuneDateExtension.isDeadlinePassed(deadline_),
         );
 
   factory MissionsResponse.fromJson(Map<String, dynamic> json) => _$MissionsResponseFromJson(json);

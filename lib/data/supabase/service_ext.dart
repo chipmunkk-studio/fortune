@@ -9,6 +9,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
 
 enum IngredientType {
+  none, // 사용하지 않음.
   normal, // 일반
   coin, // 코인
   unique, // 레벨 업 시
@@ -40,6 +41,8 @@ extension SupabaseExt on Future<dynamic> {
 getIngredientType(String? type) {
   if (IngredientType.coin.name == type) {
     return IngredientType.coin;
+  } else if (IngredientType.none.name == type) {
+    return IngredientType.none;
   } else if (IngredientType.normal.name == type) {
     return IngredientType.normal;
   } else if (IngredientType.unique.name == type) {
@@ -51,7 +54,7 @@ getIngredientType(String? type) {
   } else if (IngredientType.special.name == type) {
     return IngredientType.special;
   } else {
-    return IngredientType.normal;
+    return IngredientType.none;
   }
 }
 
@@ -138,6 +141,7 @@ assignLevel(int markerCount) {
   }
   return level;
 }
+
 calculateWithdrawalDays(String withdrawalAt) {
   if (withdrawalAt.isEmpty) {
     return true;

@@ -106,9 +106,6 @@ class _TopNoticeState extends State<TopNotice> {
                                           style: FortuneTextStyle.body3Light(),
                                           overflow: TextOverflow.ellipsis,
                                         ),
-                                        const SizedBox(
-                                          width: 40,
-                                        ),
                                       ],
                                     ),
                                   ),

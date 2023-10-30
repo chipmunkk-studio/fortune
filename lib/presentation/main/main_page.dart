@@ -339,7 +339,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {},
+                      onTap: () {
+                        // _router.navigateTo(context, AppRoutes.communityRoutes);
+                      },
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
@@ -475,7 +477,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     double nextData,
   ) {
     final controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -597,6 +599,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _locationChangeSubscription.pause();
     context
         .showFullBottomSheet(
+          heightFactor: 0.93,
           topContent: (context) => const MissionsTopContents(),
           scrollContent: (context) => MissionsBottomContents(_bloc),
         )
