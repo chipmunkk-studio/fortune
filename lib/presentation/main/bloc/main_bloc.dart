@@ -124,7 +124,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             final isRealDevice = await SafeDevice.isRealDevice;
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
-            emit(state.copyWith(isShowTestLocation: isRealDevice ? false : isTestAccount));
+            final isShowTestLocation = isRealDevice ? false : isTestAccount;
+
+            emit(
+              state.copyWith(
+                myLocation: isShowTestLocation ? simulatorLocation : null,
+                isShowTestLocation: isShowTestLocation,
+              ),
+            );
 
             // 마커 목록들을 받아옴.
             add(Main());
@@ -141,11 +148,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 정보 초기화.
   FutureOr<void> main(Main event, Emitter<MainState> emit) async {
     try {
-      final locationData = state.isShowTestLocation
-          ? simulatorLocation
-          : await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.lowest,
-            );
+      final isShowTestLocation = state.isShowTestLocation;
+      final nextLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.lowest,
+      );
+      final prevLocation = state.myLocation ?? nextLocation;
+
+      // #0 테스트 디바이스 일 경우 고정된 현재 위치를 보여줌.
+      final locationData = isShowTestLocation ? prevLocation : nextLocation;
 
       // #1 내 위치먼저 찍음.
       emit(state.copyWith(myLocation: locationData));
