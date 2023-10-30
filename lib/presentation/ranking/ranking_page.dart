@@ -81,14 +81,20 @@ class _RankingPageState extends State<_RankingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TopArea(
-                              items: state.rankingItems.take(3).map((e) => e as RankingPagingViewItemEntity).toList()),
+                            items: state.rankingItems
+                                .take(3)
+                                .map(
+                                  (e) => e as RankingPagingViewItemEntity,
+                                )
+                                .toList(),
+                          ),
                           Expanded(
                             child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.rankingItems.length - 3,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(vertical: 20.h),
+                              padding: EdgeInsets.symmetric(vertical: 44.h),
                               separatorBuilder: (context, index) => Divider(
                                 height: 21.h,
                                 color: ColorName.grey800,

@@ -54,7 +54,9 @@ class ItemRankingContent extends StatelessWidget {
         Expanded(
           child: Text(
             nickName,
-            style: FortuneTextStyle.body2Semibold(color: ColorName.white, height: 1.3),
+            style: FortuneTextStyle.body3Semibold(
+              color: ColorName.white,
+            ),
           ),
         ),
         const SizedBox(width: 8),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
@@ -106,7 +107,7 @@ class _Top3ViewItem extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 110.h),
           child: Text(
-            item.nickName + item.nickName + item.nickName + item.nickName,
+            item.nickName,
             overflow: TextOverflow.ellipsis,
             style: FortuneTextStyle.caption1SemiBold(),
           ),
@@ -115,7 +116,7 @@ class _Top3ViewItem extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 100.h),
           child: Text(
-            item.count,
+            FortuneTr.msgItemCount(item.count),
             style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
           ),
         ),

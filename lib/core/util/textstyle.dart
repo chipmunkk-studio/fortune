@@ -6,12 +6,12 @@ import 'package:fortune/core/gen/fonts.gen.dart';
 abstract class FortuneTextStyle {
   static TextStyle headLine1({
     Color? fontColor,
-    double? height,
+    double height = 1.0,
   }) {
     return TextStyle(
       fontSize: 28.spMin,
       letterSpacing: -0.06,
-      height: height ?? 1.0,
+      height: height,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
       color: fontColor ?? ColorName.white,
@@ -73,11 +73,11 @@ abstract class FortuneTextStyle {
 
   static TextStyle body1Semibold({
     Color? color,
-    double? height,
+    double height = 1.0,
   }) {
     return TextStyle(
       fontSize: 18.spMin,
-      height: height ?? 1.0,
+      height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -87,11 +87,11 @@ abstract class FortuneTextStyle {
 
   static TextStyle body1Light({
     Color? color,
-    double? height,
+    double height = 1.0,
   }) {
     return TextStyle(
       fontSize: 18.spMin,
-      height: height ?? 1.0,
+      height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
@@ -101,11 +101,11 @@ abstract class FortuneTextStyle {
 
   static TextStyle body2Semibold({
     Color? color,
-    double? height,
+    double height = 1.0,
   }) {
     return TextStyle(
       fontSize: 16.spMin,
-      height: height ?? 1.0,
+      height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
@@ -123,20 +123,23 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body3Semibold({Color? fontColor}) {
+  static TextStyle body3Semibold({Color? color}) {
     return TextStyle(
       fontSize: 15.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
-  static TextStyle body3Light({Color? color, double? height}) {
+  static TextStyle body3Light({
+    Color? color,
+    double height = 1.0,
+  }) {
     return TextStyle(
       fontSize: 15.spMin,
-      height: height ?? 1.0,
+      height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardLight,
@@ -156,10 +159,12 @@ abstract class FortuneTextStyle {
 
   static TextStyle caption1SemiBold({
     Color? color,
+    double height = 1.0,
     bool isSpMax = false,
   }) {
     return TextStyle(
       fontSize: isSpMax ? 14.spMax : 14.spMin,
+      height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardSemiBold,
