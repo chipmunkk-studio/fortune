@@ -130,6 +130,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
               state.copyWith(
                 myLocation: isShowTestLocation ? simulatorLocation : null,
                 isShowTestLocation: isShowTestLocation,
+                locationName: isShowTestLocation
+                    ? await getLocationName(
+                        simulatorLocation.latitude,
+                        simulatorLocation.longitude,
+                        isDetailStreet: false,
+                      )
+                    : state.locationName,
               ),
             );
 
