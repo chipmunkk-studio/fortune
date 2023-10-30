@@ -156,7 +156,7 @@ class Environment {
 }
 
 // baseUrl 가져옴.
-getRemoteConfigArgs() async {
+Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
 
   /// 0초을 사용하여 서버에서 강제로 가져옵니다.

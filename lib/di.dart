@@ -144,6 +144,9 @@ Future<void> init() async {
     debug: false,
   );
 
+  /// 믹스 패널.
+  await initMixPanel();
+
   /// FCM todo 나중에 작업할 때 다시 활성화.
   await initFCM();
 
@@ -155,6 +158,23 @@ Future<void> init() async {
 
   /// Supabase
   await initSupabase(kIsWeb);
+}
+
+initMixPanel() async {
+  final remoteConfig = serviceLocator<Environment>().remoteConfig;
+  final currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
+
+  /// 믹스 패널 추가 > 웹이 아닐 경우 에만 지원.
+  Mixpanel? mixpanel;
+  if (!kIsWeb && currentEmail != remoteConfig.testSignInEmail) {
+    mixpanel = await Mixpanel.init(
+      kReleaseMode ? remoteConfig.mixpanelReleaseToken : remoteConfig.mixpanelDevelopToken,
+      trackAutomaticEvents: false,
+    );
+    mixpanel.setLoggingEnabled(true);
+  }
+
+  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker.init(mixpanel));
 }
 
 initRouter(bool kIsWeb) {
@@ -185,18 +205,6 @@ initEnvironment(bool kIsWeb) async {
   final Environment environment = Environment.create(
     remoteConfig: await getRemoteConfigArgs(),
   )..init(kIsWeb);
-
-  /// 믹스패널 추가 > 웹이 아닐 경우에만 지원.
-  Mixpanel? mixpanel;
-  if (!kIsWeb) {
-    mixpanel = await Mixpanel.init(
-      kReleaseMode ? environment.remoteConfig.mixpanelReleaseToken : environment.remoteConfig.mixpanelDevelopToken,
-      trackAutomaticEvents: false,
-    );
-    mixpanel.setLoggingEnabled(true);
-  }
-
-  serviceLocator.registerLazySingleton<MixpanelTracker>(() => MixpanelTracker(mixpanel));
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
 
