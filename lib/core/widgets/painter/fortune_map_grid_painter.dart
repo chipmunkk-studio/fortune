@@ -5,8 +5,11 @@ import 'package:fortune/core/gen/colors.gen.dart';
 
 class FortuneMapGridPainter extends CustomPainter {
   final double gridSpacing;
-
-  FortuneMapGridPainter({required this.gridSpacing});
+  final Color backgroundColor;
+  FortuneMapGridPainter({
+    required this.gridSpacing,
+    this.backgroundColor = ColorName.grey900,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -21,7 +24,7 @@ class FortuneMapGridPainter extends CustomPainter {
       ..strokeWidth = Platform.isIOS ? 0.6 : 0.2; // 십자 부분을 좀 더 굵게 그리기 위해
 
     final Paint backgroundPaint = Paint()
-      ..color = ColorName.grey900
+      ..color = backgroundColor
       ..style = PaintingStyle.fill;
 
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);

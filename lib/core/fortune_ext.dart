@@ -1,7 +1,9 @@
 // 투명 이미지.
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dartz/dartz.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:geolocator/geolocator.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
@@ -25,6 +27,20 @@ String getSampleNetworkImageUrl({
   required int height,
 }) {
   return "https://source.unsplash.com/user/max_duz/${width}x$height";
+}
+
+Future<bool> getPhysicalDevice() async {
+  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  if (Platform.isIOS) {
+    final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    return iosInfo.isPhysicalDevice;
+  } else if (Platform.isAndroid) {
+    final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo.isPhysicalDevice;
+  }
+
+  throw Exception("Platform not supported");
 }
 
 void reportRandomTimes({
