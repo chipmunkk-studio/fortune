@@ -8,7 +8,7 @@ class FortuneMapGridPainter extends CustomPainter {
   final Color backgroundColor;
   FortuneMapGridPainter({
     required this.gridSpacing,
-    required this.backgroundColor,
+    this.backgroundColor = ColorName.grey900,
   });
 
   @override
