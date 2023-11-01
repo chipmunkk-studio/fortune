@@ -29,7 +29,7 @@ String getSampleNetworkImageUrl({
   return "https://source.unsplash.com/user/max_duz/${width}x$height";
 }
 
-Future<bool> getRealDeviceFlag() async {
+Future<bool> getPhysicalDevice() async {
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   if (Platform.isIOS) {
