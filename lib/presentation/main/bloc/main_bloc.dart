@@ -122,10 +122,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             }
 
             // 실제 기기가 아니거나 테스트 계정일 경우 테스트 로케이션을 보여줌.
-            final isRealDevice = await getRealDeviceFlag();
+            final isPhysicalDevice = await getPhysicalDevice();
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
-            final isShowTestLocation = isRealDevice ? false : isTestAccount;
+            final isShowTestLocation = isPhysicalDevice ? false : isTestAccount;
 
             emit(
               state.copyWith(
@@ -158,7 +158,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     try {
       final isShowTestLocation = state.isShowTestLocation;
       final nextLocation = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: isShowTestLocation ? LocationAccuracy.lowest : LocationAccuracy.high,
       );
       final prevLocation = state.myLocation ?? nextLocation;
 
