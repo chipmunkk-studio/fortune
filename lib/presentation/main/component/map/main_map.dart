@@ -1,16 +1,14 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
+import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_map_grid_painter.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
@@ -45,7 +43,7 @@ class MainMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enableMapBox = remoteConfigArgs.enableMapBox && kReleaseMode;
+    final enableMapBox = remoteConfigArgs.enableMapBox;
     return myLocation == null
         ? const Center(child: CircularProgressIndicator(backgroundColor: ColorName.primary))
         : Stack(
@@ -86,7 +84,7 @@ class MainMap extends StatelessWidget {
                       ? TileLayer(
                           tileSize: 512,
                           zoomOffset: -1,
-                          urlTemplate: remoteConfigArgs.mapUrlTemplate,
+                          urlTemplate: kReleaseMode ? remoteConfigArgs.mapUrlTemplate : openStreetMap,
                           additionalOptions: {
                             accessToken: remoteConfigArgs.mapAccessToken,
                             mapStyleId: remoteConfigArgs.mapStyleId,
@@ -133,6 +131,24 @@ class MainMap extends StatelessWidget {
                 ],
               ),
               Positioned.fill(
+                child: BlocBuilder<MainBloc, MainState>(
+                  buildWhen: (previous, current) => previous.turns != current.turns,
+                  builder: (context, state) {
+                    return AnimatedRotation(
+                      turns: state.turns,
+                      duration: const Duration(milliseconds: 250),
+                      child: SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: CustomPaint(
+                          painter: DirectionPainter(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
                     glowColor: enableMapBox ? ColorName.secondary.withOpacity(0.5) : ColorName.primary.withOpacity(0.5),
@@ -157,31 +173,7 @@ class MainMap extends StatelessWidget {
                   ),
                 ),
               ),
-              // 좌측 하단 로테이션.
-              Positioned(
-                bottom: 16,
-                left: 16,
-                child: BlocBuilder<MainBloc, MainState>(
-                  buildWhen: (previous, current) => previous.isRotatable != current.isRotatable,
-                  builder: (context, state) {
-                    return Bounceable(
-                      onTap: () => _bloc.add(MainTabCompass()),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ColorName.grey700,
-                          borderRadius: BorderRadius.circular(50.r),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: state.isRotatable
-                              ? Assets.icons.icLocationRotate.svg()
-                              : Assets.icons.icLocationHold.svg(),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+
               // 로딩 뷰.
               Positioned.fill(
                 child: BlocBuilder<MainBloc, MainState>(

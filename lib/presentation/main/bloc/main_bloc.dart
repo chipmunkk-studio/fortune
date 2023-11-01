@@ -67,8 +67,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainSetRewardAd>(setRewardAd);
     on<MainScreenFreeze>(_screenFreeze);
     on<MainAlarmRead>(_readAlarm);
-    on<MainMapRotate>(_rotate);
-    on<MainTabCompass>(_tabCompass);
+    on<MainMapRotate>(
+      _rotate,
+      transformer: sequential(),
+    );
     on<MainMarkerObtain>(
       _markerObtain,
       transformer: sequential(),
@@ -352,19 +354,27 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> _rotate(MainMapRotate event, Emitter<MainState> emit) async {
-    if (state.isRotatable) {
-      produceSideEffect(
-        MainRotateEffect(
-          prevData: state.headings,
-          nextData: event.data.heading ?? 0,
-        ),
-      );
-      emit(state.copyWith(headings: event.data.heading ?? 0));
-    }
-  }
+    double direction = event.data.heading ?? 0;
+    var prevHeadings = state.prevHeadings;
+    var turns = state.turns;
 
-  FutureOr<void> _tabCompass(MainTabCompass event, Emitter<MainState> emit) {
-    final prevState = state.isRotatable;
-    emit(state.copyWith(isRotatable: !prevState));
+    direction = direction < 0 ? (360 + direction) : direction;
+    double diff = direction - prevHeadings;
+    if (diff.abs() > 180) {
+      if (prevHeadings > direction) {
+        diff = 360 - (direction - prevHeadings).abs();
+      } else {
+        diff = 360 - (prevHeadings - direction).abs();
+        diff = diff * -1;
+      }
+    }
+    turns += (diff / 360);
+    prevHeadings = direction;
+    emit(
+      state.copyWith(
+        turns: turns,
+        prevHeadings: prevHeadings,
+      ),
+    );
   }
 }

@@ -1,6 +1,6 @@
 // 투명 이미지.
 import 'dart:io';
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
 const webMainUrl = "https://chipmunk-studio.com";
+const openStreetMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
 Position simulatorLocation = Position(
   latitude: 37.785834,
   longitude: -122.406417,
@@ -48,7 +50,7 @@ void reportRandomTimes({
   required int max,
   required Function0 func,
 }) {
-  var rng = Random();
+  var rng = math.Random();
   int n = rng.nextInt(max - min + 1) + min; // min부터 max까지의 랜덤한 숫자를 생성합니다.
 
   for (int i = 0; i < n; i++) {

@@ -92,7 +92,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     });
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
-    _listenRotate();
     _loadRewardedAd();
     _listeningLocationChange();
   }
@@ -158,6 +157,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           if (_myLocation == null) {
             setState(() {
               _myLocation = sideEffect.myLocation;
+              _listenRotate(sideEffect.myLocation);
             });
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
@@ -620,11 +620,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       );
 
 // 회전감지
-  _listenRotate() {
+  _listenRotate(Position myLocation) {
     _rotateChangeEvent = FlutterCompass.events?.listen((data) {
-      if (_bloc.state.isRotatable) {
-        _bloc.add(MainMapRotate(data));
-      }
+      _bloc.add(MainMapRotate(data));
     });
   }
 

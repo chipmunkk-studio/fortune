@@ -27,14 +27,13 @@ class MainState with _$MainState {
     required bool isLoading,
     required double clickableRadiusLength,
     required double zoomThreshold,
-    required double headings,
-    required bool isRotatable,
+    required double turns,
+    required double prevHeadings,
     required bool isShowTestLocation,
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
-  factory MainState.initial() =>
-      MainState(
+  factory MainState.initial() => MainState(
         markers: List.empty(),
         missionClearUsers: List.empty(),
         locationName: FortuneTr.msgUnknownLocation,
@@ -46,12 +45,11 @@ class MainState with _$MainState {
         isObtainProcessing: false,
         hasNewAlarm: false,
         isLoading: true,
-        isRotatable: false,
         rewardAd: null,
-        headings: 0,
+        turns: 0,
+        prevHeadings: 0,
         isShowTestLocation: false,
         clickableRadiusLength: 60,
         zoomThreshold: 18,
       );
 }
-
