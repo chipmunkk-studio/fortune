@@ -173,7 +173,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
   }
 
   void launchScheme() async {
-    final url = Uri.parse(kReleaseMode ? webMainUrl : webMainDebugUrl);
+    final url = Uri.parse(kReleaseMode ? webMainUrl : webMainDebugUrl + WebRoutes.mainRoute);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
