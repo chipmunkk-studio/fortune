@@ -47,8 +47,10 @@ class _CommunityPageState extends State<_CommunityPage> {
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
+            } else if (request.url.startsWith(kReleaseMode ? webMainUrl : webMainDebugUrl)) {
+              return NavigationDecision.navigate;
             }
-            return NavigationDecision.navigate;
+            return NavigationDecision.prevent;
           },
         ),
       )
