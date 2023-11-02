@@ -85,7 +85,7 @@ class UserService {
           fullName,
           uploadFile,
           fileOptions: const FileOptions(
-            cacheControl: '3600',
+            cacheControl: '86400',
             upsert: false,
           ),
         );

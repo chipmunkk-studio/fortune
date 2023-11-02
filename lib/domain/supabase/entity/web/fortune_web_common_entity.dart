@@ -1,10 +1,11 @@
+import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'fortune_web_common_entity.g.dart';
 
 const fortuneWebChannel = "fortuneWebChannel";
 
-@JsonSerializable(nullable: false, ignoreUnannotated: false)
+@JsonSerializable(ignoreUnannotated: false)
 class FortuneWebCommonEntity {
   @JsonKey(name: 'command')
   final WebCommand? command;
@@ -18,17 +19,3 @@ class FortuneWebCommonEntity {
   Map<String, dynamic> toJson() => _$FortuneWebCommonEntityToJson(this);
 }
 
-extension WebCommandParser on String {
-  WebCommand toWebCommand() {
-    for (WebCommand command in WebCommand.values) {
-      if (this == command.name) {
-        return command;
-      }
-    }
-    throw Exception('Unknown command: $this');
-  }
-}
-
-enum WebCommand {
-  close,
-}

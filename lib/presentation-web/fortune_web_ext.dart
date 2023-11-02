@@ -28,8 +28,10 @@ abstract class FortuneWebExtension {
       FortuneWebCommonEntity? param;
 
       if (dataStr != null) {
-        final jsonMap = jsonDecode(dataStr);
+        final decodedData = Uri.decodeComponent(dataStr);
+        final jsonMap = jsonDecode(decodedData);
         final WebCommand webCommand = (jsonMap['command'] as String).toWebCommand();
+
         switch (webCommand) {
           case WebCommand.close:
             param = FortuneWebCloseEntity.fromJson(jsonMap);
@@ -38,6 +40,7 @@ abstract class FortuneWebExtension {
             param = null;
         }
       }
+
       return FortuneWebResponse(
         routes,
         data: param,
@@ -61,12 +64,29 @@ abstract class FortuneWebExtension {
     const url = kReleaseMode ? webMainUrl : webMainDebugUrl;
     final uri = Uri.parse(url + route);
     if (queryParam != null) {
+      final content = Uri.encodeComponent(jsonEncode(queryParam.toJson()));
       return uri.replace(queryParameters: {
-        'data': queryParam.toJson(),
+        'data': content,
       });
     }
+
     return uri.toString();
   }
 
   static getMainWebUrl() => kReleaseMode ? webMainUrl : webMainDebugUrl;
+}
+
+extension WebCommandParser on String {
+  WebCommand toWebCommand() {
+    for (WebCommand command in WebCommand.values) {
+      if (this == command.name) {
+        return command;
+      }
+    }
+    throw Exception('Unknown command: $this');
+  }
+}
+
+enum WebCommand {
+  close,
 }
