@@ -33,7 +33,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
@@ -94,32 +93,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     });
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
-    initUniLinks();
     _loadRewardedAd();
     _listeningLocationChange();
-  }
-
-  Future<void> initUniLinks() async {
-    // 앱이 이미 시작된 상태에서 스킴 링크를 받는 경우
-    String? initialLink;
-    try {
-      initialLink = await getInitialLink();
-      if (initialLink != null) {
-        FortuneLogger.info('initialLink:: $initialLink');
-      }
-    } catch (e) {
-      print('Failed to get initial link: $e');
-    }
-
-    // 앱이 실행 중일 때 스킴 링크를 받는 경우
-    uriLinkStream.listen(
-      (Uri? uri) {
-        FortuneLogger.info('uriLinkStream:: $initialLink');
-      },
-      onError: (err) {
-        print('Failed to get stream link: $err');
-      },
-    );
   }
 
   @override
