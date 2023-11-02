@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
@@ -51,7 +52,7 @@ class _CommunityPageState extends State<_CommunityPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(webMainUrl));
+      ..loadRequest(Uri.parse(kReleaseMode ? webMainUrl : webMainDebugUrl));
   }
 
   @override

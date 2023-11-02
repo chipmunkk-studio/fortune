@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
-import 'package:fortune/di.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
+import 'package:fortune/di.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'core/util/theme.dart';
