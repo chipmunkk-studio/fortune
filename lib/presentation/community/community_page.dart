@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fortune/core/fortune_ext.dart';
-import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/// TODO 나중에 웹 만들 때.
 class CommunityPage extends StatelessWidget {
   const CommunityPage({super.key});
 
@@ -15,7 +20,7 @@ class CommunityPage extends StatelessWidget {
 }
 
 class _CommunityPage extends StatefulWidget {
-  const _CommunityPage({Key? key}) : super(key: key);
+  const _CommunityPage();
 
   @override
   State<_CommunityPage> createState() => _CommunityPageState();
@@ -23,6 +28,7 @@ class _CommunityPage extends StatefulWidget {
 
 class _CommunityPageState extends State<_CommunityPage> {
   late WebViewController controller;
+  final _appRouter = serviceLocator<FortuneAppRouter>().router;
 
   @override
   void initState() {
@@ -30,6 +36,7 @@ class _CommunityPageState extends State<_CommunityPage> {
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
+      ..addJavaScriptChannel(fortuneWebChannel, onMessageReceived: _onMessageReceived)
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {},
@@ -56,8 +63,37 @@ class _CommunityPageState extends State<_CommunityPage> {
   Widget build(BuildContext context) {
     return FortuneScaffold(
       padding: EdgeInsets.zero,
-      appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.msgMissionHistory),
       child: WebViewWidget(controller: controller),
     );
+  }
+
+  FortuneWebCommonEntity parseWebEntity(String jsonString) {
+    try {
+      final Map<String, dynamic> jsonData = json.decode(jsonString);
+      final WebCommand webCommand = (jsonData['command'] as String).toWebCommand();
+
+      // 'command' 키를 기반으로 어떤 엔터티인지 판단합니다.
+      switch (webCommand) {
+        case WebCommand.close:
+          // 예제에서는 단순히 'close' 커맨드를 사용했지만 실제로는 각 엔터티마다 명확한 커맨드를 할당해야 합니다.
+          return FortuneWebCloseEntity.fromJson(jsonData);
+        default:
+          throw Exception('Unknown command: ${jsonData['command']}');
+      }
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+      rethrow;
+    }
+  }
+
+  _onMessageReceived(JavaScriptMessage message) {
+    try {
+      final entity = parseWebEntity(message.message);
+      if (entity is FortuneWebCloseEntity) {
+        _appRouter.pop(context);
+      }
+    } catch (e) {
+      FortuneLogger.error(message: e.toString());
+    }
   }
 }

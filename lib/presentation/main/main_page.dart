@@ -289,6 +289,24 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   ),
                 ),
               ),
+              // 카트.
+              Positioned(
+                bottom: 16,
+                left: 16,
+                child: Bounceable(
+                  onTap: _onCommunityClick,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorName.secondary,
+                      borderRadius: BorderRadius.circular(50.r),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Assets.icons.icGift.svg(),
+                    ),
+                  ),
+                ),
+              ),
               AddToCartAnimation(
                 cartKey: _cartKey,
                 opacity: 0.85,
@@ -339,9 +357,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {
-                        // _router.navigateTo(context, AppRoutes.communityRoutes);
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
@@ -626,7 +642,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     });
   }
 
-  void _listeningLocationChange() async {
+  _listeningLocationChange() async {
     _locationChangeSubscription = await listenLocationChange();
+  }
+
+  _onCommunityClick() {
+    _router.navigateTo(context, AppRoutes.communityRoutes);
   }
 }
