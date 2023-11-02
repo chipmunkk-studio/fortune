@@ -17,8 +17,8 @@ class FortuneWebResponse {
 }
 
 abstract class FortuneWebExtension {
-  static const webMainUrl = "https://chipmunk-studio.com/#";
-  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app/#";
+  static const webMainUrl = "https://chipmunk-studio.com/";
+  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app/";
 
   static FortuneWebResponse parseAndGetUrlWithQueryParam(String url) {
     try {
@@ -61,16 +61,18 @@ abstract class FortuneWebExtension {
   }
 
   static makeWebUrl({String route = '', FortuneWebCommonEntity? queryParam}) {
-    const url = kReleaseMode ? webMainUrl : webMainDebugUrl;
-    final uri = Uri.parse(url + route);
+    final baseUrl = getMainWebUrl();
+
+    // 기본 URL에 route를 추가합니다.
+    String fullUrl = baseUrl + '#$route';
+
+    // queryParam이 있을 경우 인코딩하여 URL에 추가합니다.
     if (queryParam != null) {
       final content = Uri.encodeComponent(jsonEncode(queryParam.toJson()));
-      return uri.replace(queryParameters: {
-        'data': content,
-      });
+      fullUrl += '?data=$content';
     }
 
-    return uri.toString();
+    return fullUrl;
   }
 
   static getMainWebUrl() => kReleaseMode ? webMainUrl : webMainDebugUrl;
