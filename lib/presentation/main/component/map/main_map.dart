@@ -43,7 +43,6 @@ class MainMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enableMapBox = remoteConfigArgs.enableMapBox;
     return myLocation == null
         ? const Center(child: CircularProgressIndicator(backgroundColor: ColorName.primary))
         : Stack(
@@ -80,20 +79,7 @@ class MainMap extends StatelessWidget {
                   },
                 ),
                 children: [
-                  enableMapBox
-                      ? TileLayer(
-                          tileSize: 512,
-                          zoomOffset: -1,
-                          urlTemplate: kReleaseMode ? remoteConfigArgs.mapUrlTemplate : openStreetMap,
-                          additionalOptions: {
-                            accessToken: remoteConfigArgs.mapAccessToken,
-                            mapStyleId: remoteConfigArgs.mapStyleId,
-                          },
-                        )
-                      : CustomPaint(
-                          painter: FortuneMapGridPainter(gridSpacing: 26),
-                          child: Container(),
-                        ),
+                  _getLayerByMapType(remoteConfigArgs),
                   // 마커 목록.
                   BlocBuilder<MainBloc, MainState>(
                     buildWhen: (previous, current) => previous.markers != current.markers,
@@ -116,9 +102,9 @@ class MainMap extends StatelessWidget {
                                 state.myLocation!.latitude,
                                 state.myLocation!.longitude,
                               ),
-                              color: enableMapBox
-                                  ? ColorName.secondary.withOpacity(0.1)
-                                  : ColorName.primary.withOpacity(0.1),
+                              color: _isOpenStreetMap()
+                                  ? ColorName.primary.withOpacity(0.25)
+                                  : ColorName.secondary.withOpacity(0.1),
                               borderStrokeWidth: 0,
                               useRadiusInMeter: true,
                               radius: state.clickableRadiusLength,
@@ -131,27 +117,28 @@ class MainMap extends StatelessWidget {
                 ],
               ),
               Positioned.fill(
-                child: BlocBuilder<MainBloc, MainState>(
-                  buildWhen: (previous, current) => previous.turns != current.turns,
-                  builder: (context, state) {
-                    return AnimatedRotation(
-                      turns: state.turns,
-                      duration: const Duration(milliseconds: 250),
-                      child: SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: CustomPaint(
-                          painter: DirectionPainter(),
+                child: IgnorePointer(
+                  child: BlocBuilder<MainBloc, MainState>(
+                    buildWhen: (previous, current) => previous.turns != current.turns,
+                    builder: (context, state) {
+                      return AnimatedRotation(
+                        turns: state.turns,
+                        duration: const Duration(milliseconds: 250),
+                        child: SizedBox.square(
+                          dimension: 100,
+                          child: CustomPaint(
+                            painter: DirectionPainter(_isOpenStreetMap()),
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
               Positioned.fill(
                 child: IgnorePointer(
                   child: AvatarGlow(
-                    glowColor: enableMapBox ? ColorName.secondary.withOpacity(0.5) : ColorName.primary.withOpacity(0.5),
+                    glowColor: _isOpenStreetMap() ? ColorName.primary : ColorName.secondary.withOpacity(0.5),
                     duration: const Duration(milliseconds: 2000),
                     repeat: true,
                     showTwoGlows: true,
@@ -163,9 +150,9 @@ class MainMap extends StatelessWidget {
                         return ScaleAnimation(
                           child: CenterProfile(
                             imageUrl: state.user?.profileImage ?? "",
-                            backgroundColor: enableMapBox
-                                ? ColorName.secondary.withOpacity(1.0)
-                                : ColorName.primary.withOpacity(1.0),
+                            backgroundColor: _isOpenStreetMap()
+                                ? ColorName.primary.withOpacity(0.5)
+                                : ColorName.secondary.withOpacity(1.0),
                           ),
                         );
                       },
@@ -190,6 +177,34 @@ class MainMap extends StatelessWidget {
               ),
             ],
           );
+  }
+
+  _isOpenStreetMap() => remoteConfigArgs.mapType == MapType.openStreet;
+
+  _getLayerByMapType(FortuneRemoteConfig remoteConfigArgs) {
+    switch (remoteConfigArgs.mapType) {
+      case MapType.openStreet:
+        return TileLayer(
+          tileSize: 512,
+          zoomOffset: -1,
+          urlTemplate: openStreetMap,
+        );
+      case MapType.mapBox:
+        return TileLayer(
+          tileSize: 512,
+          zoomOffset: -1,
+          urlTemplate: remoteConfigArgs.mapUrlTemplate,
+          additionalOptions: {
+            accessToken: remoteConfigArgs.mapAccessToken,
+            mapStyleId: remoteConfigArgs.mapStyleId,
+          },
+        );
+      default:
+        return CustomPaint(
+          painter: FortuneMapGridPainter(gridSpacing: 26),
+          child: Container(),
+        );
+    }
   }
 
   // 마커를 클릭했을 경우.

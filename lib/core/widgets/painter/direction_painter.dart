@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import '../../gen/colors.gen.dart';
 
 class DirectionPainter extends CustomPainter {
+  final bool isOpenStreetMap;
+
+  DirectionPainter(this.isOpenStreetMap);
+
   @override
   void paint(Canvas canvas, Size size) {
     final double centerX = size.width / 2;
@@ -12,11 +16,11 @@ class DirectionPainter extends CustomPainter {
 
     final gradient = LinearGradient(
       colors: [
-        ColorName.white.withOpacity(0.0),
-        ColorName.white.withOpacity(0.1),
-        ColorName.white.withOpacity(0.6),
-        ColorName.white.withOpacity(0.8),
-        ColorName.white.withOpacity(0.9),
+        isOpenStreetMap ? ColorName.secondary.withOpacity(0.2) : ColorName.white.withOpacity(0.0),
+        isOpenStreetMap ? ColorName.secondary.withOpacity(0.1) : ColorName.white.withOpacity(0.1),
+        isOpenStreetMap ? ColorName.secondary.withOpacity(0.6) : ColorName.white.withOpacity(0.6),
+        isOpenStreetMap ? ColorName.secondary.withOpacity(0.8) : ColorName.white.withOpacity(0.8),
+        isOpenStreetMap ? ColorName.secondary.withOpacity(0.9) : ColorName.white.withOpacity(0.9),
       ],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
