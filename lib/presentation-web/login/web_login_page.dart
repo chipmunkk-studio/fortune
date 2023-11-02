@@ -102,14 +102,16 @@ class _WebLoginPageState extends State<_WebLoginPage> {
           return KeyboardVisibilityBuilder(
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Scaffold(
-                appBar: FortuneCustomAppBar.leadingAppBar(
-                  context,
-                  leadingIcon: Assets.icons.icWebCi.svg(),
-                  onPressed: () => FortuneWebExtension.launchWebRoutes(
+                appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
+                    onPressed: () async {
+                  await FortuneWebExtension.launchWebRoutes(
                     WebRoutes.exitRoute,
-                    queryParam: FortuneWebCloseEntity(command: WebCommand.close),
-                  ),
-                ),
+                    queryParam: FortuneWebCloseEntity(
+                      command: WebCommand.close,
+                      sample: '테스트',
+                    ),
+                  );
+                }),
                 body: SafeArea(
                   bottom: true,
                   child: Column(
