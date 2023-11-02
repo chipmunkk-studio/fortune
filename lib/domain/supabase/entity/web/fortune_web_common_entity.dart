@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fortune_web_common_entity.g.dart';
 
-const fortuneWebChannel = "FORTUNE_WEB_CHANNEL";
+const fortuneWebChannel = "fortuneWebChannel";
 
 @JsonSerializable(nullable: false, ignoreUnannotated: false)
 class FortuneWebCommonEntity {

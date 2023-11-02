@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -10,9 +8,8 @@ import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../agreeterms/web_agree_terms_bottom_sheet.dart';
 import '../verifycode/web_verify_code_bottom_sheet.dart';
@@ -105,9 +102,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                   leadingIcon: Assets.icons.icWebCi.svg(),
                   onPressed: () {
                     try {
-                      js.context.callMethod('sendMessageToApp', [
-                        jsonEncode(FortuneWebCloseEntity(command: WebCommand.close).toJson()),
-                      ]);
+                      launchScheme();
                     } catch (e) {
                       FortuneLogger.error(message: e.toString());
                     }
@@ -173,5 +168,14 @@ class _WebLoginPageState extends State<_WebLoginPage> {
         },
       ),
     );
+  }
+
+  void launchScheme() async {
+    final url = Uri.parse('fortuneradar://main?param=value');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }

@@ -62,21 +62,6 @@
         }
       });
     });
-
-         window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
-                window.flutter_inappwebview.callHandler('FORTUNE_WEB_CHANNEL')
-                  .then(function(result) {
-                    console.log(JSON.stringify(result));
-                });
-            });
-
-    function sendMessageToApp(arg1) {
-       if (window.FORTUNE_WEB_CHANNEL) {
-         window.FORTUNE_WEB_CHANNEL.postMessage(arg1);
-         console.log(JSON.stringify(arg1));
-       }
-    }
-
 </script>
 </body>
 </html>
