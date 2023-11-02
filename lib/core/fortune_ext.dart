@@ -7,8 +7,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:geolocator/geolocator.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
-const webMainUrl = "https://chipmunk-studio.com";
-const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app";
+const webMainUrl = "https://chipmunk-studio.com/#";
+const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app/#";
 const openStreetMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 Position simulatorLocation = Position(
