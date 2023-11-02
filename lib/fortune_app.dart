@@ -45,7 +45,6 @@ class FortuneApp extends StatelessWidget {
                 // 기본적으로 필요한 언어 설정
                 debugShowCheckedModeBanner: false,
                 navigatorObservers: [serviceLocator<RouteObserver<PageRoute>>()],
-                title: "Fortune",
                 theme: theme(),
                 onGenerateRoute: _getRouter(),
                 initialRoute: startRoute,

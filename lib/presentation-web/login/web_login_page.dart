@@ -10,6 +10,9 @@ import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
+import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -102,13 +105,10 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                 appBar: FortuneCustomAppBar.leadingAppBar(
                   context,
                   leadingIcon: Assets.icons.icWebCi.svg(),
-                  onPressed: () {
-                    try {
-                      launchScheme();
-                    } catch (e) {
-                      FortuneLogger.error(message: e.toString());
-                    }
-                  },
+                  onPressed: () => FortuneWebExtension.launchWebRoutes(
+                    WebRoutes.exitRoute,
+                    queryParam: FortuneWebCloseEntity(command: WebCommand.close),
+                  ),
                 ),
                 body: SafeArea(
                   bottom: true,
@@ -170,14 +170,5 @@ class _WebLoginPageState extends State<_WebLoginPage> {
         },
       ),
     );
-  }
-
-  void launchScheme() async {
-    final url = Uri.parse(kReleaseMode ? webMainUrl : webMainDebugUrl + WebRoutes.mainRoute);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      print('Could not launch $url');
-    }
   }
 }

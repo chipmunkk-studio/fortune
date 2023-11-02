@@ -74,6 +74,8 @@ class FortuneWebRouter {
 
 class WebRoutes {
   static const String mainRoute = 'main';
+
+  static const String exitRoute = 'exit';
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String termsDetailRoute = 'termsDetail';
   static const String loginRoute = 'login';
