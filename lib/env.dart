@@ -35,7 +35,20 @@ enum EnvKey {
   iosGoogleClientId,
   testSignInEmail,
   testSignInPassword,
-  enableMapBox,
+  mapType,
+}
+
+enum MapType {
+  mapBox,
+  openStreet,
+  radar,
+}
+
+extension MapTypeExtension on String {
+  MapType toMapType() {
+    return MapType.values
+        .firstWhere((e) => describeEnum(e) == this, orElse: () => throw ArgumentError('Unknown map type: $this'));
+  }
 }
 
 class FortuneRemoteConfig {
@@ -52,7 +65,7 @@ class FortuneRemoteConfig {
   final int refreshTime;
   final int markerCount;
   final int ticketCount;
-  final bool enableMapBox;
+  final MapType mapType;
 
   FortuneRemoteConfig({
     required this.baseUrl,
@@ -68,7 +81,7 @@ class FortuneRemoteConfig {
     required this.testSignInEmail,
     required this.testSignInPassword,
     required this.refreshTime,
-    required this.enableMapBox,
+    required this.mapType,
   });
 
   @override
@@ -85,7 +98,7 @@ class FortuneRemoteConfig {
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
         "randomDistance: $randomDistance\n"
-        "enableMapBox: $enableMapBox\n"
+        "mapType: $mapType\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
@@ -180,7 +193,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
     final testSignInPassword = remoteConfig.getString(describeEnum(EnvKey.testSignInPassword));
     final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
-    final enableMapBox = remoteConfig.getBool(describeEnum(EnvKey.enableMapBox));
+    final mapType = remoteConfig.getString(describeEnum(EnvKey.mapType)).toMapType();
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
@@ -218,7 +231,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       ticketCount: ticketCount,
       testSignInEmail: testSignInEmail,
       testSignInPassword: testSignInPassword,
-      enableMapBox: enableMapBox,
+      mapType: mapType,
     );
   } catch (e) {
     throw (e is Exception) ? e.handleException() : e;
