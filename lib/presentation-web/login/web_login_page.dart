@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
@@ -171,7 +173,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
   }
 
   void launchScheme() async {
-    final url = Uri.parse('fortuneradar://main?param=value');
+    final url = Uri.parse(kReleaseMode ? webMainUrl : webMainDebugUrl);
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
