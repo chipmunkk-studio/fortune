@@ -31,14 +31,7 @@ abstract class FortuneWebExtension {
         final decodedData = Uri.decodeComponent(dataStr);
         final jsonMap = jsonDecode(decodedData);
         final WebCommand webCommand = (jsonMap['command'] as String).toWebCommand();
-
-        switch (webCommand) {
-          case WebCommand.close:
-            param = FortuneWebCloseEntity.fromJson(jsonMap);
-            break;
-          default:
-            param = null;
-        }
+        param = _getParam(webCommand, jsonMap);
       }
 
       return FortuneWebResponse(
@@ -73,6 +66,15 @@ abstract class FortuneWebExtension {
   }
 
   static getMainWebUrl() => kReleaseMode ? webMainUrl : webMainDebugUrl;
+
+  static FortuneWebCommonEntity? _getParam(WebCommand webCommand, dynamic jsonMap) {
+    switch (webCommand) {
+      case WebCommand.close:
+        return FortuneWebCloseEntity.fromJson(jsonMap);
+      default:
+        return null;
+    }
+  }
 }
 
 extension WebCommandParser on String {

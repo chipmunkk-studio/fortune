@@ -32,12 +32,11 @@ class ExchangeBottom extends StatelessWidget {
         children: [
           SizedBox.square(
             dimension: 128,
-            child: ClipOval(
-              child: FortuneCachedNetworkImage(
-                imageUrl: entity.image,
-                placeholder: Container(),
-                fit: BoxFit.fill,
-              ),
+            child: FortuneCachedNetworkImage(
+              imageUrl: entity.image,
+              placeholder: Container(),
+              fit: BoxFit.fill,
+              imageShape: ImageShape.circle,
             ),
           ),
           const SizedBox(height: 32),

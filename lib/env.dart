@@ -46,8 +46,10 @@ enum MapType {
 
 extension MapTypeExtension on String {
   MapType toMapType() {
-    return MapType.values
-        .firstWhere((e) => describeEnum(e) == this, orElse: () => throw ArgumentError('Unknown map type: $this'));
+    return MapType.values.firstWhere(
+      (e) => describeEnum(e) == this,
+      orElse: () => throw ArgumentError('Unknown map type: $this'),
+    );
   }
 }
 

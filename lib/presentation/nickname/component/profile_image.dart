@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 
 class ProfileImage extends StatelessWidget {
@@ -20,11 +21,12 @@ class ProfileImage extends StatelessWidget {
       onTap: onProfileTap,
       child: Stack(
         children: [
-          SquircleNetworkImageView(
+          FortuneCachedNetworkImage(
             imageUrl: profileUrl,
-            size: 92,
-            placeHolder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
-            placeHolderPadding: const EdgeInsets.all(16),
+            width: 92,
+            height: 92,
+            placeholder: CustomPaint(child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover)),
+            imageShape: ImageShape.squircle,
           ),
           Positioned(
             bottom: 0,

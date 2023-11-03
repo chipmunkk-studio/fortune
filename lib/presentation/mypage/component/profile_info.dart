@@ -6,6 +6,7 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
@@ -71,11 +72,12 @@ class _ProfileImage extends StatelessWidget {
       onTap: onProfileTap,
       child: Stack(
         children: [
-          SquircleNetworkImageView(
+          FortuneCachedNetworkImage(
             imageUrl: profileUrl,
-            size: 84,
-            placeHolder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
-            placeHolderPadding: const EdgeInsets.all(16),
+            width: 84,
+            height: 84,
+            placeholder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
+            imageShape: ImageShape.squircle,
           ),
           Positioned(
             bottom: 0,

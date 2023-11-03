@@ -81,18 +81,17 @@ class _Top3ViewItem extends StatelessWidget {
                   width: 3.0, // 테두리 두께
                 ),
               ),
-              child: ClipOval(
-                child: FortuneCachedNetworkImage(
-                  imageUrl: item.profile,
-                  placeholder: Container(),
-                  errorWidget: Padding(
-                    padding: EdgeInsets.all(ranking == 1 ? 24.0.h : 16.h),
-                    child: Assets.images.ivDefaultProfile.svg(width: 24.h, height: 24.h),
-                  ),
-                  width: _getRankingImageSize(ranking),
-                  height: _getRankingImageSize(ranking),
-                  fit: BoxFit.fill,
+              child: FortuneCachedNetworkImage(
+                imageUrl: item.profile,
+                placeholder: Container(),
+                errorWidget: Padding(
+                  padding: EdgeInsets.all(ranking == 1 ? 24.0.h : 16.h),
+                  child: Assets.images.ivDefaultProfile.svg(width: 24.h, height: 24.h),
                 ),
+                width: _getRankingImageSize(ranking),
+                height: _getRankingImageSize(ranking),
+                imageShape: ImageShape.circle,
+                fit: BoxFit.fill,
               ),
             ),
             Positioned(
