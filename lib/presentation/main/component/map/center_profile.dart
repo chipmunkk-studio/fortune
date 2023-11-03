@@ -35,6 +35,10 @@ class CenterProfile extends StatelessWidget {
             painter: SquirclePainter(),
             child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
           ),
+          errorWidget: CustomPaint(
+            painter: SquirclePainter(),
+            child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
+          ),
           imageShape: ImageShape.squircle,
         ),
       ),

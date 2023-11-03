@@ -202,9 +202,9 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
         case true:
           return describeEnum(EnvKey.productUrl);
         case false:
-          return describeEnum(EnvKey.devUrl);
+          return describeEnum(EnvKey.productUrl);
         default:
-          return describeEnum(EnvKey.devUrl);
+          return describeEnum(EnvKey.productUrl);
       }
     }());
 
@@ -213,9 +213,9 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
         case true:
           return describeEnum(EnvKey.productAnonKey);
         case false:
-          return describeEnum(EnvKey.devAnonKey);
+          return describeEnum(EnvKey.productAnonKey);
         default:
-          return describeEnum(EnvKey.devAnonKey);
+          return describeEnum(EnvKey.productAnonKey);
       }
     }());
 
