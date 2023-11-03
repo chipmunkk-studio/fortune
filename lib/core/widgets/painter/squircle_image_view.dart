@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,7 +31,7 @@ class SquircleNetworkImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ui.Image?>(
-      future: getImage(imageUrl),
+      future: getImage(kReleaseMode ? imageUrl : getSampleNetworkImageUrl(width: 92, height: 92)),
       builder: (context, snapshot) {
         return snapshot.hasData
             ? CustomPaint(
@@ -55,8 +58,9 @@ class SquircleNetworkImageView extends StatelessWidget {
 
   Future<ui.Image?> getImage(String imageUrl) async {
     if (imageUrl.isEmpty) return null;
-    final http.Response response = await http.get(Uri.parse(imageUrl));
-    final Uint8List bytes = response.bodyBytes;
+    final file =
+        await FortuneCachedNetworkImage.cacheManager.getSingleFile(imageUrl); // Use cacheManager to get the file
+    final bytes = await file.readAsBytes();
     final ui.Codec codec = await ui.instantiateImageCodec(bytes);
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     return frameInfo.image;

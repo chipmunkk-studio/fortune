@@ -19,7 +19,7 @@ class FortuneCachedNetworkImage extends StatelessWidget {
   static CacheManager cacheManager = CacheManager(
     Config(
       _cacheKey,
-      stalePeriod: const Duration(days: 31),
+      stalePeriod: const Duration(days: 100),
     ),
   );
 
