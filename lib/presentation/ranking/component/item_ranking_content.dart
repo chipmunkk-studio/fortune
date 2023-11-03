@@ -27,28 +27,27 @@ class ItemRankingContent extends StatelessWidget {
       children: [
         Text(index, style: FortuneTextStyle.body3Semibold()),
         SizedBox(width: 22.h),
-        ClipOval(
-          child: FortuneCachedNetworkImage(
-            width: 40.h,
-            height: 40.h,
-            imageUrl: profile,
-            errorWidget: Container(
-              decoration: BoxDecoration(
-                color: ColorName.grey700,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
-                  width: 1.0, // 원하는 테두리 두께
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(8.0.h),
-                child: Assets.images.ivDefaultProfile.svg(),
+        FortuneCachedNetworkImage(
+          width: 40.h,
+          height: 40.h,
+          imageUrl: profile,
+          errorWidget: Container(
+            decoration: BoxDecoration(
+              color: ColorName.grey700,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
+                width: 1.0, // 원하는 테두리 두께
               ),
             ),
-            placeholder: Container(),
-            fit: BoxFit.fill,
+            child: Padding(
+              padding: EdgeInsets.all(8.0.h),
+              child: Assets.images.ivDefaultProfile.svg(),
+            ),
           ),
+          placeholder: Container(),
+          imageShape: ImageShape.circle,
+          fit: BoxFit.fill,
         ),
         SizedBox(width: 16.h),
         Expanded(

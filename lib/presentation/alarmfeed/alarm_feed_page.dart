@@ -78,12 +78,11 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
             btnOkPressed: () {},
             topContent: SizedBox.square(
               dimension: 84,
-              child: ClipOval(
-                child: FortuneCachedNetworkImage(
-                  imageUrl: reward.ingredients.imageUrl,
-                  placeholder: Container(),
-                  fit: BoxFit.fill,
-                ),
+              child: FortuneCachedNetworkImage(
+                imageUrl: reward.ingredients.imageUrl,
+                placeholder: Container(),
+                fit: BoxFit.fill,
+                imageShape: ImageShape.circle,
               ),
             ),
           );
