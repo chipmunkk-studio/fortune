@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
+import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 
 class CenterProfile extends StatelessWidget {
   final String imageUrl;
   final Color backgroundColor;
 
   const CenterProfile({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,15 @@ class CenterProfile extends StatelessWidget {
         left: 3,
         right: 3,
         top: 3,
-        child: SquircleNetworkImageView(
+        child: FortuneCachedNetworkImage(
           imageUrl: imageUrl,
-          size: 42,
-          backgroundColor: ColorName.grey700,
-          placeHolder: Assets.images.ivDefaultProfile.svg(
-            fit: BoxFit.none,
+          width: 42,
+          height: 42,
+          placeholder: CustomPaint(
+            painter: SquirclePainter(),
+            child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
           ),
+          imageShape: ImageShape.squircle,
         ),
       ),
     ]);

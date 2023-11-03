@@ -1,5 +1,6 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -189,15 +190,20 @@ class MainMap extends StatelessWidget {
           urlTemplate: openStreetMap,
         );
       case MapType.mapBox:
-        return TileLayer(
-          tileSize: 512,
-          zoomOffset: -1,
-          urlTemplate: remoteConfigArgs.mapUrlTemplate,
-          additionalOptions: {
-            accessToken: remoteConfigArgs.mapAccessToken,
-            mapStyleId: remoteConfigArgs.mapStyleId,
-          },
-        );
+        return kReleaseMode
+            ? TileLayer(
+                tileSize: 512,
+                zoomOffset: -1,
+                urlTemplate: remoteConfigArgs.mapUrlTemplate,
+                additionalOptions: {
+                  accessToken: remoteConfigArgs.mapAccessToken,
+                  mapStyleId: remoteConfigArgs.mapStyleId,
+                },
+              )
+            : CustomPaint(
+                painter: FortuneMapGridPainter(gridSpacing: 26),
+                child: Container(),
+              );
       default:
         return CustomPaint(
           painter: FortuneMapGridPainter(gridSpacing: 26),

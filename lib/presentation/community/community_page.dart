@@ -39,14 +39,13 @@ class _CommunityPageState extends State<_CommunityPage> {
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              return NavigationDecision.prevent;
-            } else if (request.url.startsWith(FortuneWebExtension.getMainWebUrl())) {
+            if (request.url.startsWith(FortuneWebExtension.getMainWebUrl())) {
               final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
               if (response.routes == WebRoutes.exitRoute) {
                 _appRouter.pop(context);
                 return NavigationDecision.prevent;
               }
+              return NavigationDecision.navigate;
             }
             return NavigationDecision.prevent;
           },

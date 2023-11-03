@@ -17,8 +17,8 @@ class FortuneWebResponse {
 }
 
 abstract class FortuneWebExtension {
-  static const webMainUrl = "https://chipmunk-studio.com/#";
-  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app/#";
+  static const webMainUrl = "https://chipmunk-studio.com";
+  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app";
 
   static FortuneWebResponse parseAndGetUrlWithQueryParam(String url) {
     try {
@@ -31,14 +31,7 @@ abstract class FortuneWebExtension {
         final decodedData = Uri.decodeComponent(dataStr);
         final jsonMap = jsonDecode(decodedData);
         final WebCommand webCommand = (jsonMap['command'] as String).toWebCommand();
-
-        switch (webCommand) {
-          case WebCommand.close:
-            param = FortuneWebCloseEntity.fromJson(jsonMap);
-            break;
-          default:
-            param = null;
-        }
+        param = _getParam(webCommand, jsonMap);
       }
 
       return FortuneWebResponse(
@@ -61,7 +54,7 @@ abstract class FortuneWebExtension {
   }
 
   static makeWebUrl({String route = '', FortuneWebCommonEntity? queryParam}) {
-    final uri = Uri.parse(getMainWebUrl() + route);
+    final uri = Uri.parse(getMainWebUrl() + "#$route");
     if (queryParam != null) {
       final content = Uri.encodeComponent(jsonEncode(queryParam.toJson()));
       return uri.replace(queryParameters: {
@@ -73,6 +66,15 @@ abstract class FortuneWebExtension {
   }
 
   static getMainWebUrl() => kReleaseMode ? webMainUrl : webMainDebugUrl;
+
+  static FortuneWebCommonEntity? _getParam(WebCommand webCommand, dynamic jsonMap) {
+    switch (webCommand) {
+      case WebCommand.close:
+        return FortuneWebCloseEntity.fromJson(jsonMap);
+      default:
+        return null;
+    }
+  }
 }
 
 extension WebCommandParser on String {

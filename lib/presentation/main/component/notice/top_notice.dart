@@ -60,28 +60,27 @@ class _TopNoticeState extends State<TopNotice> {
                         return Row(
                           children: [
                             const SizedBox(width: 12),
-                            ClipOval(
-                              child: FortuneCachedNetworkImage(
-                                width: 40.h,
-                                height: 40.h,
-                                imageUrl: e.user.profileImage,
-                                errorWidget: Container(
-                                  decoration: BoxDecoration(
+                            FortuneCachedNetworkImage(
+                              width: 40.h,
+                              height: 40.h,
+                              imageUrl: e.user.profileImage,
+                              errorWidget: Container(
+                                decoration: BoxDecoration(
+                                  color: ColorName.grey700,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
                                     color: ColorName.grey700,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: ColorName.grey700,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0.h),
-                                    child: Assets.images.ivDefaultProfile.svg(),
+                                    width: 1.0,
                                   ),
                                 ),
-                                placeholder: Container(),
-                                fit: BoxFit.fill,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0.h),
+                                  child: Assets.images.ivDefaultProfile.svg(),
+                                ),
                               ),
+                              imageShape: ImageShape.squircle,
+                              placeholder: Container(),
+                              fit: BoxFit.fill,
                             ),
                             const SizedBox(width: 12),
                             Flexible(
