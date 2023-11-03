@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fortune/core/fortune_ext.dart';
-import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/// TODO 나중에 웹 만들 때.
 class CommunityPage extends StatelessWidget {
   const CommunityPage({super.key});
 
@@ -15,7 +16,7 @@ class CommunityPage extends StatelessWidget {
 }
 
 class _CommunityPage extends StatefulWidget {
-  const _CommunityPage({Key? key}) : super(key: key);
+  const _CommunityPage();
 
   @override
   State<_CommunityPage> createState() => _CommunityPageState();
@@ -23,6 +24,7 @@ class _CommunityPage extends StatefulWidget {
 
 class _CommunityPageState extends State<_CommunityPage> {
   late WebViewController controller;
+  final _appRouter = serviceLocator<FortuneAppRouter>().router;
 
   @override
   void initState() {
@@ -39,12 +41,18 @@ class _CommunityPageState extends State<_CommunityPage> {
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://www.youtube.com/')) {
               return NavigationDecision.prevent;
+            } else if (request.url.startsWith(FortuneWebExtension.getMainWebUrl())) {
+              final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
+              if (response.routes == WebRoutes.exitRoute) {
+                _appRouter.pop(context);
+                return NavigationDecision.prevent;
+              }
             }
-            return NavigationDecision.navigate;
+            return NavigationDecision.prevent;
           },
         ),
       )
-      ..loadRequest(Uri.parse(webMainUrl));
+      ..loadRequest(Uri.parse(FortuneWebExtension.getMainWebUrl()));
   }
 
   @override
@@ -56,7 +64,6 @@ class _CommunityPageState extends State<_CommunityPage> {
   Widget build(BuildContext context) {
     return FortuneScaffold(
       padding: EdgeInsets.zero,
-      appBar: FortuneCustomAppBar.leadingAppBar(context, title: FortuneTr.msgMissionHistory),
       child: WebViewWidget(controller: controller),
     );
   }

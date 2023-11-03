@@ -61,7 +61,7 @@ class MainPage extends StatelessWidget {
 }
 
 class _MainPage extends StatefulWidget {
-  const _MainPage({Key? key}) : super(key: key);
+  const _MainPage();
 
   @override
   State<_MainPage> createState() => _MainPageState();
@@ -82,6 +82,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final FToast _fToast = FToast();
 
   final _routeObserver = serviceLocator<RouteObserver<PageRoute>>();
+  late String _link;
 
   @override
   void initState() {
@@ -92,7 +93,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     });
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
-    _listenRotate();
     _loadRewardedAd();
     _listeningLocationChange();
   }
@@ -158,6 +158,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           if (_myLocation == null) {
             setState(() {
               _myLocation = sideEffect.myLocation;
+              _listenRotate(sideEffect.myLocation);
             });
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
@@ -289,6 +290,24 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   ),
                 ),
               ),
+              // 카트.
+              // Positioned(
+              //   bottom: 16,
+              //   left: 16,
+              //   child: Bounceable(
+              //     onTap: _onCommunityClick,
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: ColorName.secondary,
+              //         borderRadius: BorderRadius.circular(50.r),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(16.0),
+              //         child: Assets.icons.icGift.svg(),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               AddToCartAnimation(
                 cartKey: _cartKey,
                 opacity: 0.85,
@@ -339,9 +358,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                     const SizedBox(height: 16),
                     TopNotice(
-                      onTap: () {
-                        // _router.navigateTo(context, AppRoutes.communityRoutes);
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(height: 10),
                     TopInformationArea(
@@ -358,7 +375,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       },
                       onGradeAreaTap: () {
                         _tracker.trackEvent('메인_레벨_클릭');
-                        _router.navigateTo(context, AppRoutes.gradeGuideRoute);
+                        _router.navigateTo(context, AppRoutes.rankingRoutes);
                       },
                       onCoinTap: _showCoinDialog,
                     ),
@@ -620,15 +637,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       );
 
 // 회전감지
-  _listenRotate() {
+  _listenRotate(Position myLocation) {
     _rotateChangeEvent = FlutterCompass.events?.listen((data) {
-      if (_bloc.state.isRotatable) {
-        _bloc.add(MainMapRotate(data));
-      }
+      _bloc.add(MainMapRotate(data));
     });
   }
 
-  void _listeningLocationChange() async {
+  _listeningLocationChange() async {
     _locationChangeSubscription = await listenLocationChange();
+  }
+
+  _onCommunityClick() {
+    _router.navigateTo(context, AppRoutes.communityRoutes);
   }
 }

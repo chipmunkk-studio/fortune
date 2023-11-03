@@ -118,10 +118,3 @@ class MainMapRotate extends MainEvent {
   @override
   List<Object?> get props => [];
 }
-
-class MainTabCompass extends MainEvent {
-  MainTabCompass();
-
-  @override
-  List<Object?> get props => [];
-}

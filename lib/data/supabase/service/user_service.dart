@@ -75,7 +75,7 @@ class UserService {
     final dynamic uploadFile = File(filePath);
     final now = DateTime.now();
     final timestamp = '${now.year}${now.month}${now.day}_${now.hour}${now.minute}${now.second}';
-    final fullName = "${_client.auth.currentUser?.email}/$timestamp.jpg";
+    final fullName = "${_client.auth.currentUser?.email}/$timestamp.webp";
 
     final String path = await storage
         .from(
@@ -85,12 +85,16 @@ class UserService {
           fullName,
           uploadFile,
           fileOptions: const FileOptions(
-            cacheControl: '3600',
+            cacheControl: '86400',
             upsert: false,
           ),
         );
 
-    final String imagePath = storage.from(BucketName.userProfile).getPublicUrl(fullName);
+    final String imagePath = storage
+        .from(
+          BucketName.userProfile,
+        )
+        .getPublicUrl(fullName);
 
     return imagePath;
   }

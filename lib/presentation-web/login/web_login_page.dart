@@ -1,12 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:fortune/core/fortune_ext.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
+import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../agreeterms/web_agree_terms_bottom_sheet.dart';
 import '../verifycode/web_verify_code_bottom_sheet.dart';
@@ -16,26 +24,20 @@ import 'component/web_login_email_input_field.dart';
 
 class WebLoginPage extends StatelessWidget {
   const WebLoginPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<WebLoginBloc>()..add(WebLoginInit()),
-      child: Scaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context),
-        body: const SafeArea(
-          bottom: true,
-          child: _WebLoginPage(),
-        ),
-      ),
+      child: const _WebLoginPage(),
     );
   }
 }
 
 class _WebLoginPage extends StatefulWidget {
-  const _WebLoginPage({Key? key}) : super(key: key);
+  const _WebLoginPage();
 
   @override
   State<_WebLoginPage> createState() => _WebLoginPageState();
@@ -99,56 +101,71 @@ class _WebLoginPageState extends State<_WebLoginPage> {
         builder: (context, state) {
           return KeyboardVisibilityBuilder(
             builder: (BuildContext context, bool isKeyboardVisible) {
-              return Column(
-                children: <Widget>[
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 28),
-                            // 로그인 상태.
-                            BlocBuilder<WebLoginBloc, WebLoginState>(
-                              buildWhen: (previous, current) => previous.email != current.email,
-                              builder: (context, state) {
-                                return WebLoginEmailInputField(
-                                  email: state.email,
-                                  emailController: _phoneNumberController,
-                                  onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                );
-                              },
+              return Scaffold(
+                appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
+                    onPressed: () async {
+                  await FortuneWebExtension.launchWebRoutes(
+                    WebRoutes.exitRoute,
+                    queryParam: FortuneWebCloseEntity(
+                      command: WebCommand.close,
+                      sample: '테스트',
+                    ),
+                  );
+                }),
+                body: SafeArea(
+                  bottom: true,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 28),
+                                // 로그인 상태.
+                                BlocBuilder<WebLoginBloc, WebLoginState>(
+                                  buildWhen: (previous, current) => previous.email != current.email,
+                                  builder: (context, state) {
+                                    return WebLoginEmailInputField(
+                                      email: state.email,
+                                      emailController: _phoneNumberController,
+                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+                              ],
                             ),
-                            const SizedBox(height: 20),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    padding: EdgeInsets.only(
-                      left: isKeyboardVisible ? 0 : 20,
-                      right: isKeyboardVisible ? 0 : 20,
-                      bottom: isKeyboardVisible ? 0 : 20,
-                    ),
-                    curve: Curves.easeInOut,
-                    child: BlocBuilder<WebLoginBloc, WebLoginState>(
-                      buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                      builder: (context, state) {
-                        return WebLoginButton(
-                          text: FortuneTr.msgVerifyYourself,
-                          isKeyboardVisible: isKeyboardVisible,
-                          isEnabled: state.isButtonEnabled,
-                          onPressed: () {
-                            _bloc.add(WebLoginBottomButtonClick());
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        padding: EdgeInsets.only(
+                          left: isKeyboardVisible ? 0 : 20,
+                          right: isKeyboardVisible ? 0 : 20,
+                          bottom: isKeyboardVisible ? 0 : 20,
+                        ),
+                        curve: Curves.easeInOut,
+                        child: BlocBuilder<WebLoginBloc, WebLoginState>(
+                          buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+                          builder: (context, state) {
+                            return WebLoginButton(
+                              text: FortuneTr.msgVerifyYourself,
+                              isKeyboardVisible: isKeyboardVisible,
+                              isEnabled: state.isButtonEnabled,
+                              onPressed: () {
+                                _bloc.add(WebLoginBottomButtonClick());
+                              },
+                            );
                           },
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             },
           );

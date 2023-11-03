@@ -63,6 +63,7 @@ abstract class FortuneCustomAppBar {
     BuildContext context, {
     String title = "",
     Function0? onPressed,
+    Widget? leadingIcon,
     Color? backgroundColor = ColorName.grey900,
     bool centerTitle = false,
     bool leftAlignTitle = true,
@@ -70,7 +71,7 @@ abstract class FortuneCustomAppBar {
       AppBar(
         backgroundColor: backgroundColor,
         leading: IconButton(
-          icon: Assets.icons.icArrowLeft.svg(),
+          icon: leadingIcon ?? Assets.icons.icArrowLeft.svg(),
           onPressed: onPressed ?? () => Navigator.pop(context),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
