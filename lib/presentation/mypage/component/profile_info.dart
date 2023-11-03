@@ -7,7 +7,6 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
-import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 
