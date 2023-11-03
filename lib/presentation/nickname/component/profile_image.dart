@@ -25,7 +25,11 @@ class ProfileImage extends StatelessWidget {
             imageUrl: profileUrl,
             width: 92,
             height: 92,
-            placeholder: CustomPaint(child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover)),
+            placeholder: Container(
+              color: ColorName.grey600,
+              padding: const EdgeInsets.all(16.0),
+              child: CustomPaint(child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover)),
+            ),
             errorWidget: Container(
               color: ColorName.grey600,
               padding: const EdgeInsets.all(16.0),
