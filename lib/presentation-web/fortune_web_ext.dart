@@ -17,8 +17,8 @@ class FortuneWebResponse {
 }
 
 abstract class FortuneWebExtension {
-  static const webMainUrl = "https://chipmunk-studio.com/#";
-  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app/#";
+  static const webMainUrl = "https://chipmunk-studio.com";
+  static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app";
 
   static FortuneWebResponse parseAndGetUrlWithQueryParam(String url) {
     try {
@@ -61,7 +61,7 @@ abstract class FortuneWebExtension {
   }
 
   static makeWebUrl({String route = '', FortuneWebCommonEntity? queryParam}) {
-    final uri = Uri.parse(getMainWebUrl() + route);
+    final uri = Uri.parse(getMainWebUrl() + "#$route");
     if (queryParam != null) {
       final content = Uri.encodeComponent(jsonEncode(queryParam.toJson()));
       return uri.replace(queryParameters: {
