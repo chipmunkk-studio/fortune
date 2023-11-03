@@ -10,7 +10,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/painter/squircle_image_view.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
@@ -60,12 +60,27 @@ class _TopNoticeState extends State<TopNotice> {
                         return Row(
                           children: [
                             const SizedBox(width: 12),
-                            SquircleNetworkImageView(
-                              imageUrl: e.user.profileImage,
-                              size: 42,
-                              backgroundColor: ColorName.grey600,
-                              placeHolder: Assets.images.ivDefaultProfile.svg(
-                                fit: BoxFit.none,
+                            ClipOval(
+                              child: FortuneCachedNetworkImage(
+                                width: 40.h,
+                                height: 40.h,
+                                imageUrl: e.user.profileImage,
+                                errorWidget: Container(
+                                  decoration: BoxDecoration(
+                                    color: ColorName.grey700,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: ColorName.grey700,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0.h),
+                                    child: Assets.images.ivDefaultProfile.svg(),
+                                  ),
+                                ),
+                                placeholder: Container(),
+                                fit: BoxFit.fill,
                               ),
                             ),
                             const SizedBox(width: 12),

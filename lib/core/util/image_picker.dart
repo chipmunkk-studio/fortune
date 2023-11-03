@@ -42,13 +42,15 @@ class FortuneImagePicker {
   _cropImageAndGetFilePath(String imagePath) async {
     CroppedFile? croppedImage = await ImageCropper().cropImage(
       sourcePath: imagePath,
-      maxWidth: 1920,
-      maxHeight: 1080,
-      compressQuality: 75,
+      cropStyle: CropStyle.circle,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressFormat: ImageCompressFormat.jpg,
+      compressQuality: 10,
     );
 
     if (croppedImage != null) {
-      String targetPath = "${croppedImage.path}.webp";
+      String pathWithoutExtension = removeFileExtension(croppedImage.path);
+      String targetPath = "$pathWithoutExtension.webp";
       XFile? compressedImage = await compressAndGetFile(
         File(croppedImage.path),
         targetPath,
@@ -64,7 +66,7 @@ class FortuneImagePicker {
       file.absolute.path,
       targetPath,
       format: CompressFormat.webp,
-      quality: 75, // 원하는 압축 품질로 조정
+      quality: 10, // 원하는 압축 품질로 조정
     );
 
     if (result != null) {
@@ -72,5 +74,9 @@ class FortuneImagePicker {
     }
 
     return null;
+  }
+
+  String removeFileExtension(String path) {
+    return path.replaceAllMapped(RegExp(r'\.[0-9a-z]+$', caseSensitive: false), (match) => '');
   }
 }

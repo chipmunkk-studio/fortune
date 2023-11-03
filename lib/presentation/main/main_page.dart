@@ -61,7 +61,7 @@ class MainPage extends StatelessWidget {
 }
 
 class _MainPage extends StatefulWidget {
-  const _MainPage({Key? key}) : super(key: key);
+  const _MainPage();
 
   @override
   State<_MainPage> createState() => _MainPageState();
@@ -291,23 +291,23 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ),
               ),
               // 카트.
-              Positioned(
-                bottom: 16,
-                left: 16,
-                child: Bounceable(
-                  onTap: _onCommunityClick,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorName.secondary,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Assets.icons.icGift.svg(),
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   bottom: 16,
+              //   left: 16,
+              //   child: Bounceable(
+              //     onTap: _onCommunityClick,
+              //     child: Container(
+              //       decoration: BoxDecoration(
+              //         color: ColorName.secondary,
+              //         borderRadius: BorderRadius.circular(50.r),
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(16.0),
+              //         child: Assets.icons.icGift.svg(),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               AddToCartAnimation(
                 cartKey: _cartKey,
                 opacity: 0.85,
@@ -375,7 +375,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                       },
                       onGradeAreaTap: () {
                         _tracker.trackEvent('메인_레벨_클릭');
-                        _router.navigateTo(context, AppRoutes.gradeGuideRoute);
+                        _router.navigateTo(context, AppRoutes.rankingRoutes);
                       },
                       onCoinTap: _showCoinDialog,
                     ),
