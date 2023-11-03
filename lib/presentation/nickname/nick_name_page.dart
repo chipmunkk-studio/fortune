@@ -37,7 +37,7 @@ class NickNamePage extends StatelessWidget {
 }
 
 class _NickNamePage extends StatefulWidget {
-  const _NickNamePage({Key? key}) : super(key: key);
+  const _NickNamePage();
 
   @override
   State<_NickNamePage> createState() => _NickNamePageState();

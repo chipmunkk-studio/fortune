@@ -76,6 +76,11 @@ class _ProfileImage extends StatelessWidget {
             width: 84,
             height: 84,
             placeholder: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
+            errorWidget: Container(
+              color: ColorName.grey600,
+              padding: const EdgeInsets.all(16.0),
+              child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover),
+            ),
             imageShape: ImageShape.squircle,
           ),
           Positioned(

@@ -44,7 +44,7 @@ class FortuneCachedNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget imageWidget = CachedNetworkImage(
-      imageUrl: kReleaseMode ? imageUrl : getSampleNetworkImageUrl(width: 92, height: 92),
+      imageUrl: imageUrl,
       width: width,
       height: height,
       cacheManager: cacheManager,

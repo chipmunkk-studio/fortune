@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 
 class ProfileImage extends StatelessWidget {
@@ -25,6 +26,11 @@ class ProfileImage extends StatelessWidget {
             width: 92,
             height: 92,
             placeholder: CustomPaint(child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover)),
+            errorWidget: Container(
+              color: ColorName.grey600,
+              padding: const EdgeInsets.all(16.0),
+              child: CustomPaint(child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.cover)),
+            ),
             imageShape: ImageShape.squircle,
           ),
           Positioned(
