@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_nickname_update_param.dart';
 import 'package:fortune/domain/supabase/request/request_profile_update_param.dart';
@@ -40,21 +41,27 @@ class NickNameBloc extends Bloc<NickNameEvent, NickNameState>
   }
 
   FutureOr<void> init(NickNameInit event, Emitter<NickNameState> emit) async {
-    await nickNameUseCase().then(
-      (value) => value.fold(
-        (l) => produceSideEffect(NickNameError(l)),
-        (r) {
-          emit(
-            state.copyWith(
-              userEntity: r.user,
-              isLoading: false,
-              nickName: r.user.nickname,
-            ),
-          );
-          produceSideEffect(NickNameUserInfoInit(r.user));
-        },
-      ),
-    );
+    await nickNameUseCase()
+        .then(
+          (value) => value.fold(
+            (l) => produceSideEffect(NickNameError(l)),
+            (r) {
+              emit(
+                state.copyWith(
+                  userEntity: r.user,
+                  isLoading: false,
+                  nickName: r.user.nickname,
+                ),
+              );
+              produceSideEffect(NickNameUserInfoInit(r.user));
+            },
+          ),
+        )
+        .onError(
+          (error, stackTrace) => FortuneLogger.error(
+            message: error.toString(),
+          ),
+        );
   }
 
   FutureOr<void> updateProfile(NickNameUpdateProfile event, Emitter<NickNameState> emit) async {

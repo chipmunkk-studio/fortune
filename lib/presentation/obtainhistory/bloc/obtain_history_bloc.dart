@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_histories_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
@@ -39,7 +40,6 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
       emit,
       query: event.searchText,
     );
-    produceSideEffect(ObtainHistoryInitSearchText(event.searchText));
   }
 
   FutureOr<void> nextPage(ObtainHistoryNextPage event, Emitter<ObtainHistoryState> emit) async {
@@ -105,19 +105,26 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
         end: 19,
         query: query,
       ),
-    ).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(ObtainHistoryError(l)),
-        (r) {
-          emit(
-            state.copyWith(
-              isLoading: false,
-              histories: r,
-              query: query,
-            ),
-          );
-        },
-      ),
-    );
+    )
+        .then(
+          (value) => value.fold(
+            (l) => produceSideEffect(ObtainHistoryError(l)),
+            (r) {
+              emit(
+                state.copyWith(
+                  isLoading: false,
+                  histories: r,
+                  query: query,
+                ),
+              );
+              produceSideEffect(ObtainHistoryInitSearchText(query));
+            },
+          ),
+        )
+        .onError(
+          (error, stackTrace) => FortuneLogger.error(
+            message: error.toString(),
+          ),
+        );
   }
 }

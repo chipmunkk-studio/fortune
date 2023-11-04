@@ -62,23 +62,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
         (r) async {
-          // 회원 탈퇴 여부.
-          if (r != null && r.isWithdrawal) {
-            produceSideEffect(LoginWithdrawalUser());
-            return;
-          }
-          // 사용자가 가입되어 있으면 인증번호 전송 로직을 처리
-          if (r != null) {
-            // 인증번호 전송
-            emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
-            produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
-          } else {
-            // 약관 바텀 시트 표시
-            produceSideEffect(
-              LoginShowTermsBottomSheet(
-                state.email,
-              ),
-            );
+          try {
+            if (r != null && r.isWithdrawal) {
+              produceSideEffect(LoginWithdrawalUser());
+              return;
+            }
+            // 사용자가 가입되어 있으면 인증번호 전송 로직을 처리
+            if (r != null) {
+              // 인증번호 전송
+              emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
+              produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
+            } else {
+              // 약관 바텀 시트 표시
+              produceSideEffect(
+                LoginShowTermsBottomSheet(
+                  state.email,
+                ),
+              );
+            }
+          } catch (e) {
+            FortuneLogger.error(message: e.toString());
           }
         },
       ),
@@ -89,5 +92,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
     produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
   }
-
 }
