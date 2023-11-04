@@ -10,6 +10,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -107,7 +108,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                       command: WebCommand.close,
                       sample: '테스트',
                     ),
-                    queryParams: {'테스트데이터': '데이터'},
+                    queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
                   );
                 }),
                 body: SafeArea(
