@@ -1,20 +1,17 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../agreeterms/web_agree_terms_bottom_sheet.dart';
 import '../verifycode/web_verify_code_bottom_sheet.dart';
@@ -45,7 +42,7 @@ class _WebLoginPage extends StatefulWidget {
 
 class _WebLoginPageState extends State<_WebLoginPage> {
   late WebLoginBloc _bloc;
-  final router = serviceLocator<FortuneWebRouter>().router;
+  final webRouter = serviceLocator<FortuneWebRouter>().router;
   final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
@@ -83,7 +80,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
             ),
           );
         } else if (sideEffect is WebLoginLandingRoute) {
-          router.navigateTo(
+          webRouter.navigateTo(
             context,
             sideEffect.route,
             clearStack: true,
@@ -104,12 +101,13 @@ class _WebLoginPageState extends State<_WebLoginPage> {
               return Scaffold(
                 appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
                     onPressed: () async {
-                  await FortuneWebExtension.launchWebRoutes(
+                  await launchWebRoutes(
                     WebRoutes.exitRoute,
-                    queryParam: FortuneWebCloseEntity(
+                    entity: FortuneWebCommandClose(
                       command: WebCommand.close,
                       sample: '테스트',
                     ),
+                    queryParams: {'테스트데이터': '데이터'},
                   );
                 }),
                 body: SafeArea(
@@ -136,6 +134,12 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                                   },
                                 ),
                                 const SizedBox(height: 20),
+                                FortuneTextButton(
+                                  onPress: () {
+                                    webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                                  },
+                                  text: '테스트 랜딩(개인정보처리방침)',
+                                ),
                               ],
                             ),
                           ),

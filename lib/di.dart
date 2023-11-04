@@ -111,6 +111,7 @@ import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
+import 'package:universal_html/html.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
@@ -202,8 +203,12 @@ initSupabase(bool kIsWeb) async {
 
 /// 환경설정.
 initEnvironment(bool kIsWeb) async {
+  Uri uri = Uri.parse(window.location.href);
+  String source = uri.queryParameters['source'] ?? 'web';
+
   final Environment environment = Environment.create(
     remoteConfig: await getRemoteConfigArgs(),
+    source: source,
   )..init(kIsWeb);
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
