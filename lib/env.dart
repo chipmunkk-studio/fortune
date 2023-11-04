@@ -111,9 +111,11 @@ class Environment {
 
   late BuildType buildType;
   final FortuneRemoteConfig remoteConfig;
+  final String source;
 
   Environment.create({
     required this.remoteConfig,
+    required this.source,
   });
 
   /// 앱에서 지원하는 언어 리스트 변수

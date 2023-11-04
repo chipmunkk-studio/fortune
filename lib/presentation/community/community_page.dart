@@ -51,7 +51,9 @@ class _CommunityPageState extends State<_CommunityPage> {
           },
         ),
       )
-      ..loadRequest(Uri.parse(FortuneWebExtension.getMainWebUrl()));
+      ..loadRequest(
+        Uri.parse(FortuneWebExtension.getMainWebUrl(queryParams: {'source': 'app'})),
+      );
   }
 
   @override
