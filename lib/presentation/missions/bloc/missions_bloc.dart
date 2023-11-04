@@ -23,19 +23,21 @@ class MissionsBloc extends Bloc<MissionsEvent, MissionsState>
   }
 
   FutureOr<void> bottomInit(MissionsBottomInit event, Emitter<MissionsState> emit) async {
-    await getAllMissionsUseCase().then(
-      (value) => value.fold(
-        (l) => produceSideEffect(MissionsError(l)),
-        (r) {
-          emit(
-            state.copyWith(
-              missions: r,
-              isLoading: false,
-            ),
-          );
-        },
-      ),
-    );
+    await getAllMissionsUseCase()
+        .then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MissionsError(l)),
+            (r) {
+              emit(
+                state.copyWith(
+                  missions: r,
+                  isLoading: false,
+                ),
+              );
+            },
+          ),
+        )
+        .onError((error, stackTrace) => null);
   }
 
   FutureOr<void> topInit(MissionsTopInit event, Emitter<MissionsState> emit) {
