@@ -28,7 +28,9 @@ abstract class FortuneWebExtension {
     try {
       final uri = Uri.parse(url);
       final dataStr = uri.queryParameters['data'];
-      final queryParams = Map.of(uri.queryParameters)..remove('data');
+      final queryParams = FortuneWebQueryParam.fromJson(
+        Map.of(uri.queryParameters)..remove('data'),
+      );
       final routes = uri.fragment;
       FortuneWebCommand? param;
 
@@ -42,7 +44,7 @@ abstract class FortuneWebExtension {
       return FortuneWebResponse(
         routes,
         data: param,
-        queryParams: FortuneWebQueryParam.fromJson(queryParams),
+        queryParams: queryParams,
       );
     } catch (e) {
       FortuneLogger.error(message: e.toString());

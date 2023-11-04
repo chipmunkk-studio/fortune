@@ -65,7 +65,9 @@ class _CommunityPageState extends State<_CommunityPage> {
   Widget build(BuildContext context) {
     return FortuneScaffold(
       padding: EdgeInsets.zero,
-      child: WebViewWidget(controller: controller),
+      child: WebViewWidget(
+        controller: controller,
+      ),
     );
   }
 }

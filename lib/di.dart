@@ -204,6 +204,8 @@ initSupabase(bool kIsWeb) async {
 /// 환경설정.
 initEnvironment(bool kIsWeb) async {
   Uri uri = Uri.parse(window.location.href);
+  // 현재 웹에서 실행된 웹인건지, 앱에서 실행된 웹인지 결정함.
+  // source가 app이면 앱에서 실행된 웹임.
   String source = uri.queryParameters['source'] ?? 'web';
 
   final Environment environment = Environment.create(
