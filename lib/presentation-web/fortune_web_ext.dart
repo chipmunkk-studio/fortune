@@ -4,16 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
 import 'package:fortune/env.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FortuneWebResponse {
   final String routes;
   final FortuneWebCommand? data;
+  final FortuneWebQueryParam? queryParams;
 
   FortuneWebResponse(
     this.routes, {
     this.data,
+    this.queryParams,
   });
 }
 
@@ -25,6 +28,7 @@ abstract class FortuneWebExtension {
     try {
       final uri = Uri.parse(url);
       final dataStr = uri.queryParameters['data'];
+      final queryParams = Map.of(uri.queryParameters)..remove('data');
       final routes = uri.fragment;
       FortuneWebCommand? param;
 
@@ -38,6 +42,7 @@ abstract class FortuneWebExtension {
       return FortuneWebResponse(
         routes,
         data: param,
+        queryParams: FortuneWebQueryParam.fromJson(queryParams),
       );
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -48,7 +53,7 @@ abstract class FortuneWebExtension {
   static String makeWebUrl({
     String route = '',
     FortuneWebCommand? entity,
-    Map<String, String>? queryParams,
+    Map<String, dynamic>? queryParams,
   }) {
     final uri = Uri.parse("${getMainWebUrl(queryParams: queryParams)}#$route");
 
@@ -90,7 +95,7 @@ abstract class FortuneWebExtension {
 launchWebRoutes(
   String route, {
   FortuneWebCommand? entity,
-  Map<String, String>? queryParams,
+  Map<String, dynamic>? queryParams,
 }) async {
   final url = FortuneWebExtension.makeWebUrl(
     route: route,
