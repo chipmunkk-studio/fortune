@@ -50,9 +50,8 @@ abstract class FortuneWebExtension {
     }
   }
 
-  static String makeRouteUrl({
+  static String makeFortuneWebUrl({
     String? url,
-    String route = '',
     FortuneWebCommand? entity,
     Map<String, dynamic>? queryParams,
   }) {
@@ -63,7 +62,7 @@ abstract class FortuneWebExtension {
       uri = uri.replace(queryParameters: queryParams);
     }
 
-    Uri finalUri = Uri.parse("${uri.toString()}#$route");
+    Uri finalUri = Uri.parse(paramUrl.toString());
 
     if (entity != null) {
       final content = Uri.encodeComponent(jsonEncode(entity.toJson()));
@@ -91,7 +90,7 @@ launchWebRoutes({
   FortuneWebCommand? entity,
   Map<String, dynamic>? queryParams,
 }) async {
-  final url = FortuneWebExtension.makeRouteUrl(
+  final url = FortuneWebExtension.makeFortuneWebUrl(
     entity: entity,
     queryParams: queryParams,
   );
