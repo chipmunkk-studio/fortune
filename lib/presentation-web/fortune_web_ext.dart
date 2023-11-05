@@ -100,9 +100,8 @@ requestWebUrl({
 
   if (await canLaunchUrl(parsedUri)) {
     final sourceIsApp = serviceLocator<Environment>().source == 'app';
-    final commandIsClose = entity?.command == WebCommand.close && sourceIsApp;
 
-    if (!sourceIsApp || commandIsClose) {
+    if (sourceIsApp || entity != null) {
       await launchUrl(parsedUri);
     }
   } else {
