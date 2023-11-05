@@ -24,6 +24,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
+import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
@@ -652,7 +653,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       context,
       AppRoutes.fortuneWebViewRoutes,
       routeSettings: RouteSettings(
-        arguments: FortuneWebViewArgs(),
+        arguments: FortuneWebViewArgs(
+          url: FortuneWebExtension.makeWebUrl(
+            queryParams: {'source': 'app'},
+          ),
+        ),
       ),
     );
   }

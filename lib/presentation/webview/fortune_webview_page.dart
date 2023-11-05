@@ -39,14 +39,18 @@ class _FortuneWebViewPage extends StatefulWidget {
 class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
   late WebViewController controller;
   final _appRouter = serviceLocator<FortuneAppRouter>().router;
-
   late final FortuneWebviewBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<FortuneWebviewBloc>(context);
-    controller = WebViewController()
+    controller = _initializeWebViewController();
+    controller.loadRequest(Uri.parse(widget.args.url));
+  }
+
+  WebViewController _initializeWebViewController() {
+    return WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
@@ -55,47 +59,35 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
           onPageStarted: (String url) {},
           onPageFinished: (String url) {},
           onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith(FortuneWebExtension.baseUrl)) {
-              final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
-              switch (response.data?.command) {
-                case WebCommand.close:
-                  _appRouter.pop(context);
-                  return NavigationDecision.prevent;
-                  break;
-                case WebCommand.newWebPage:
-                  final commandEntity = response.data as FortuneWebCommandNewPage;
-                  _appRouter.navigateTo(
-                    context,
-                    AppRoutes.fortuneWebViewRoutes,
-                    routeSettings: RouteSettings(
-                      arguments: FortuneWebViewArgs(
-                        url: commandEntity.url,
-                      ),
-                    ),
-                  );
-                  return NavigationDecision.prevent;
-                  break;
-                default:
-                  return NavigationDecision.navigate;
-              }
-            }
-            return NavigationDecision.prevent;
-          },
-        ),
-      )
-      ..loadRequest(
-        // 최초에 한번 실행 되고,
-        // 이 후에는 onNavigationRequest로 실행이 됨.
-        Uri.parse(
-          FortuneWebExtension.makeWebUrl(
-            url: widget.args.url,
-            queryParams: {
-              'source': 'app',
-            },
-          ),
+          onNavigationRequest: _handleNavigationRequest,
         ),
       );
+  }
+
+  NavigationDecision _handleNavigationRequest(NavigationRequest request) {
+    if (request.url.startsWith(FortuneWebExtension.baseUrl)) {
+      final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
+      switch (response.data?.command) {
+        case WebCommand.close:
+          _appRouter.pop(context);
+          return NavigationDecision.prevent;
+        case WebCommand.newWebPage:
+          final commandEntity = response.data as FortuneWebCommandNewPage;
+          _appRouter.navigateTo(
+            context,
+            AppRoutes.fortuneWebViewRoutes,
+            routeSettings: RouteSettings(
+              arguments: FortuneWebViewArgs(
+                url: commandEntity.url,
+              ),
+            ),
+          );
+          return NavigationDecision.prevent;
+        default:
+          return NavigationDecision.navigate;
+      }
+    }
+    return NavigationDecision.navigate;
   }
 
   @override
