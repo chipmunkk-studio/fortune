@@ -100,7 +100,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
           return KeyboardVisibilityBuilder(
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Scaffold(
-                resizeToAvoidBottomInset: true,
+                resizeToAvoidBottomInset: false,
                 appBar: FortuneCustomAppBar.leadingAppBar(
                   context,
                   leadingIcon: Assets.icons.icWebCi.svg(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
@@ -8,7 +9,6 @@ import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_n
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:fortune/presentation/webview/bloc/fortune_webview.dart';
 import 'package:fortune/presentation/webview/fortune_webview_args.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class FortuneWebViewPage extends StatelessWidget {
   final FortuneWebViewArgs args;
@@ -37,57 +37,16 @@ class _FortuneWebViewPage extends StatefulWidget {
 }
 
 class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
-  late WebViewController controller;
+  late InAppWebViewController controller;
+
   final _appRouter = serviceLocator<FortuneAppRouter>().router;
+
   late final FortuneWebviewBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<FortuneWebviewBloc>(context);
-    controller = _initializeWebViewController();
-    controller.loadRequest(Uri.parse(widget.args.url));
-  }
-
-  WebViewController _initializeWebViewController() {
-    return WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {},
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
-          onNavigationRequest: _handleNavigationRequest,
-        ),
-      );
-  }
-
-  NavigationDecision _handleNavigationRequest(NavigationRequest request) {
-    if (request.url.startsWith(FortuneWebExtension.baseUrl)) {
-      final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
-      switch (response.data?.command) {
-        case WebCommand.close:
-          _appRouter.pop(context);
-          return NavigationDecision.prevent;
-        case WebCommand.newWebPage:
-          final commandEntity = response.data as FortuneWebCommandNewPage;
-          _appRouter.navigateTo(
-            context,
-            AppRoutes.fortuneWebViewRoutes,
-            routeSettings: RouteSettings(
-              arguments: FortuneWebViewArgs(
-                url: commandEntity.url,
-              ),
-            ),
-          );
-          return NavigationDecision.prevent;
-        default:
-          return NavigationDecision.navigate;
-      }
-    }
-    return NavigationDecision.navigate;
   }
 
   @override
@@ -100,9 +59,49 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
   Widget build(BuildContext context) {
     return FortuneScaffold(
       padding: EdgeInsets.zero,
-      child: WebViewWidget(
-        controller: controller,
+      child: InAppWebView(
+        initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
+        onWebViewCreated: (InAppWebViewController webViewController) {
+          controller = webViewController;
+        },
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            useShouldOverrideUrlLoading: true,
+            javaScriptEnabled: true,
+            transparentBackground: true,
+          ),
+        ),
+        shouldOverrideUrlLoading: (controller, request) async {
+          return _handleNavigationRequest(request);
+        },
       ),
     );
+  }
+
+  NavigationActionPolicy _handleNavigationRequest(NavigationAction action) {
+    final url = action.request.url!.toString();
+    if (url.startsWith(FortuneWebExtension.baseUrl)) {
+      final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(url);
+      switch (response.data?.command) {
+        case WebCommand.close:
+          _appRouter.pop(context);
+          return NavigationActionPolicy.CANCEL;
+        case WebCommand.newWebPage:
+          final commandEntity = response.data as FortuneWebCommandNewPage;
+          _appRouter.navigateTo(
+            context,
+            AppRoutes.fortuneWebViewRoutes,
+            routeSettings: RouteSettings(
+              arguments: FortuneWebViewArgs(
+                url: commandEntity.url,
+              ),
+            ),
+          );
+          return NavigationActionPolicy.CANCEL;
+        default:
+          return NavigationActionPolicy.ALLOW;
+      }
+    }
+    return NavigationActionPolicy.ALLOW;
   }
 }
