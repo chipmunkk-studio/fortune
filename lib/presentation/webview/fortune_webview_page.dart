@@ -71,7 +71,7 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
         // 최초에 한번 실행 되고,
         // 이 후에는 onNavigationRequest로 실행이 됨.
         Uri.parse(
-          FortuneWebExtension.makeFortuneWebUrl(
+          FortuneWebExtension.makeWebUrl(
             url: widget.args.url,
             queryParams: {
               'source': 'app',

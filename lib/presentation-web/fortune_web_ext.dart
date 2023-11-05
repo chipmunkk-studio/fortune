@@ -50,7 +50,7 @@ abstract class FortuneWebExtension {
     }
   }
 
-  static String makeFortuneWebUrl({
+  static String makeWebUrl({
     String? url,
     FortuneWebCommand? entity,
     Map<String, dynamic>? queryParams,
@@ -91,7 +91,7 @@ requestWebUrl({
   FortuneWebCommand? entity,
   Map<String, dynamic>? queryParams,
 }) async {
-  final url = FortuneWebExtension.makeFortuneWebUrl(
+  final url = FortuneWebExtension.makeWebUrl(
     url: paramUrl,
     entity: entity,
     queryParams: queryParams,
@@ -101,7 +101,7 @@ requestWebUrl({
   if (await canLaunchUrl(parsedUri)) {
     final sourceIsApp = serviceLocator<Environment>().source == 'app';
 
-    if (sourceIsApp || entity != null) {
+    if (sourceIsApp || (entity == null && !sourceIsApp)) {
       await launchUrl(parsedUri);
     }
   } else {
