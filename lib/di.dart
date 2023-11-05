@@ -695,6 +695,9 @@ _initAppBloc() {
     //   ),
     // )
     ..registerFactory(
+      () => FortuneWebviewBloc(),
+    )
+    ..registerFactory(
       () => AgreeTermsBloc(
         getTermsUseCase: serviceLocator(),
         tracker: serviceLocator(),
@@ -725,9 +728,6 @@ _initWebBloc() {
       () => TermsDetailBloc(
         getTermsByIndexUseCase: serviceLocator(),
       ),
-    )
-    ..registerFactory(
-      () => FortuneWebviewBloc(),
     )
     ..registerFactory(
       () => WebLoginBloc(
