@@ -15,7 +15,7 @@ class FortuneScaffold extends StatelessWidget {
   final EdgeInsets? padding;
 
   const FortuneScaffold({
-    Key? key,
+    super.key,
     required this.child,
     this.bottom,
     this.top,
@@ -24,7 +24,7 @@ class FortuneScaffold extends StatelessWidget {
     this.backgroundColor = ColorName.grey900,
     this.bottomSheet,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

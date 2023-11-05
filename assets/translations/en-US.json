@@ -19,6 +19,7 @@
   "msgNoCompletedMissions": "You haven't completed any missions yet.",
   "msgUpdateMarkerInfo": "Updating the new marker information.",
   "msgInvalidMission": "The mission does not exist",
+  "msgPressAgainToExit": "Press again to exit",
   "msgCompletedMissions": "Missions Completed So Far",
   "msgRecentNotifications": "Notifications from the last 30 days are displayed.",
   "msgVerifyCode": "Please enter the verification code.",

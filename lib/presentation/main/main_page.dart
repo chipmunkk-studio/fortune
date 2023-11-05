@@ -50,8 +50,8 @@ class MainPage extends StatelessWidget {
 
   const MainPage(
     this.notificationEntity, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +82,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   Position? _myLocation;
   bool _detectPermission = false;
   final FToast _fToast = FToast();
-
   final _routeObserver = serviceLocator<RouteObserver<PageRoute>>();
-  late String _link;
+  DateTime? lastPressed;
 
   @override
   void initState() {
@@ -171,7 +170,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 break;
               default:
             }
-
             _fToast.showToast(
               child: fortuneToastContent(
                 icon: Assets.icons.icCheckCircleFill24.svg(),
@@ -254,174 +252,198 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             canDismissDialog: true,
             shouldPopScope: () => true,
           ),
-          child: Stack(
-            children: [
-              // 메인 맵.
-              MainMap(
-                _bloc,
-                mainContext: context,
-                remoteConfigArgs: _remoteConfig,
-                mapController: _mapController,
-                myLocation: _myLocation,
-                onZoomChanged: () {
-                  _animatedMapMove(
-                    LatLng(
-                      _bloc.state.myLocation!.latitude,
-                      _bloc.state.myLocation!.longitude,
+          child: WillPopScope(
+            onWillPop: () async {
+              final now = DateTime.now();
+              bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+                  lastPressed == null || now.difference(lastPressed!) > const Duration(seconds: 2);
+              if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+                _fToast.showToast(
+                  child: fortuneToastContent(
+                    content: FortuneTr.msgPressAgainToExit,
+                  ),
+                  positionedToastBuilder: (context, child) => Positioned(
+                    bottom: 40,
+                    left: 0,
+                    right: 0,
+                    child: child,
+                  ),
+                  toastDuration: const Duration(seconds: 2),
+                );
+                lastPressed = DateTime.now();
+                return false;
+              }
+              return true;
+            },
+            child: Stack(
+              children: [
+                // 메인 맵.
+                MainMap(
+                  _bloc,
+                  mainContext: context,
+                  remoteConfigArgs: _remoteConfig,
+                  mapController: _mapController,
+                  myLocation: _myLocation,
+                  onZoomChanged: () {
+                    _animatedMapMove(
+                      LatLng(
+                        _bloc.state.myLocation!.latitude,
+                        _bloc.state.myLocation!.longitude,
+                      ),
+                      _bloc.state.zoomThreshold,
+                    );
+                    _bloc.add(Main());
+                  },
+                ),
+                // 카트.
+                Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: Bounceable(
+                    onTap: _onMyBagClick,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorName.grey700,
+                        borderRadius: BorderRadius.circular(50.r),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Assets.icons.icInventory.svg(),
+                      ),
                     ),
-                    _bloc.state.zoomThreshold,
-                  );
-                  _bloc.add(Main());
-                },
-              ),
-              // 카트.
-              Positioned(
-                bottom: 16,
-                right: 16,
-                child: Bounceable(
-                  onTap: _onMyBagClick,
+                  ),
+                ),
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  child: Bounceable(
+                    onTap: _onCommunityClick,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorName.secondary,
+                        borderRadius: BorderRadius.circular(50.r),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Assets.icons.icGift.svg(),
+                      ),
+                    ),
+                  ),
+                ),
+                AddToCartAnimation(
+                  cartKey: _cartKey,
+                  opacity: 0.85,
+                  dragAnimation: const DragToCartAnimationOptions(
+                    rotation: true,
+                  ),
+                  jumpAnimation: const JumpAnimationOptions(),
+                  createAddToCartAnimation: (runAddToCartAnimation) {
+                    _runAddToCartAnimation = runAddToCartAnimation;
+                  },
+                  child: Positioned(
+                    top: 13,
+                    right: 20,
+                    left: 20,
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const SizedBox(height: 10),
+                      BlocBuilder<MainBloc, MainState>(
+                        buildWhen: (previous, current) => previous.hasNewAlarm != current.hasNewAlarm,
+                        builder: (context, state) {
+                          return TopLocationArea(
+                            hasNewAlarm: state.hasNewAlarm,
+                            onProfileTap: () {
+                              _tracker.trackEvent('메인_프로필_클릭');
+                              _router.navigateTo(
+                                context,
+                                AppRoutes.myPageRoute,
+                              );
+                            },
+                            onHistoryTap: () {
+                              _tracker.trackEvent('메인_히스토리_클릭');
+                              _router.navigateTo(
+                                context,
+                                AppRoutes.obtainHistoryRoute,
+                              );
+                            },
+                            onAlarmClick: () {
+                              _tracker.trackEvent('메인_알림_클릭');
+                              if (state.hasNewAlarm) {
+                                _bloc.add(MainAlarmRead());
+                              }
+                              _router.navigateTo(
+                                context,
+                                AppRoutes.alarmFeedRoute,
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      TopNotice(
+                        onTap: () {},
+                      ),
+                      const SizedBox(height: 10),
+                      TopInformationArea(
+                        _cartKey,
+                        onInventoryTap: () {
+                          _tracker.trackEvent('메인_인벤토리_클릭');
+                          _locationChangeSubscription.pause();
+                          context
+                              .showBottomSheet(
+                                isDismissible: true,
+                                content: (context) => const MyIngredientsPage(),
+                              )
+                              .then((value) => _locationChangeSubscription.resume());
+                        },
+                        onGradeAreaTap: () {
+                          _tracker.trackEvent('메인_레벨_클릭');
+                          _router.navigateTo(context, AppRoutes.rankingRoutes);
+                        },
+                        onCoinTap: _showCoinDialog,
+                      ),
+                    ]),
+                  ),
+                ),
+                // 하단 그라데이션.
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   child: Container(
+                    height: 24,
                     decoration: BoxDecoration(
-                      color: ColorName.grey700,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Assets.icons.icInventory.svg(),
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          ColorName.grey900.withOpacity(1.0),
+                          ColorName.grey900.withOpacity(0.0),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 16,
-                left: 16,
-                child: Bounceable(
-                  onTap: _onCommunityClick,
+                // 상단 그라데이션.
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
                   child: Container(
+                    height: 12,
                     decoration: BoxDecoration(
-                      color: ColorName.secondary,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Assets.icons.icGift.svg(),
-                    ),
-                  ),
-                ),
-              ),
-              AddToCartAnimation(
-                cartKey: _cartKey,
-                opacity: 0.85,
-                dragAnimation: const DragToCartAnimationOptions(
-                  rotation: true,
-                ),
-                jumpAnimation: const JumpAnimationOptions(),
-                createAddToCartAnimation: (runAddToCartAnimation) {
-                  _runAddToCartAnimation = runAddToCartAnimation;
-                },
-                child: Positioned(
-                  top: 13,
-                  right: 20,
-                  left: 20,
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    const SizedBox(height: 10),
-                    BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) => previous.hasNewAlarm != current.hasNewAlarm,
-                      builder: (context, state) {
-                        return TopLocationArea(
-                          hasNewAlarm: state.hasNewAlarm,
-                          onProfileTap: () {
-                            _tracker.trackEvent('메인_프로필_클릭');
-                            _router.navigateTo(
-                              context,
-                              AppRoutes.myPageRoute,
-                            );
-                          },
-                          onHistoryTap: () {
-                            _tracker.trackEvent('메인_히스토리_클릭');
-                            _router.navigateTo(
-                              context,
-                              AppRoutes.obtainHistoryRoute,
-                            );
-                          },
-                          onAlarmClick: () {
-                            _tracker.trackEvent('메인_알림_클릭');
-                            if (state.hasNewAlarm) {
-                              _bloc.add(MainAlarmRead());
-                            }
-                            _router.navigateTo(
-                              context,
-                              AppRoutes.alarmFeedRoute,
-                            );
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    TopNotice(
-                      onTap: () {},
-                    ),
-                    const SizedBox(height: 10),
-                    TopInformationArea(
-                      _cartKey,
-                      onInventoryTap: () {
-                        _tracker.trackEvent('메인_인벤토리_클릭');
-                        _locationChangeSubscription.pause();
-                        context
-                            .showBottomSheet(
-                              isDismissible: true,
-                              content: (context) => const MyIngredientsPage(),
-                            )
-                            .then((value) => _locationChangeSubscription.resume());
-                      },
-                      onGradeAreaTap: () {
-                        _tracker.trackEvent('메인_레벨_클릭');
-                        _router.navigateTo(context, AppRoutes.rankingRoutes);
-                      },
-                      onCoinTap: _showCoinDialog,
-                    ),
-                  ]),
-                ),
-              ),
-              // 하단 그라데이션.
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 24,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        ColorName.grey900.withOpacity(1.0),
-                        ColorName.grey900.withOpacity(0.0),
-                      ],
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          ColorName.grey900.withOpacity(0.0),
+                          ColorName.grey900.withOpacity(1.0),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // 상단 그라데이션.
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 12,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        ColorName.grey900.withOpacity(0.0),
-                        ColorName.grey900.withOpacity(1.0),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

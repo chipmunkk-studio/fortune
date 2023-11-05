@@ -34,7 +34,7 @@ main() {
           supportedLocales: Environment.supportedLocales,
           path: Environment.translation,
           fallbackLocale: const Locale('ko', 'KR'),
-          child: FortuneApp(startRoute),
+          child: FortuneApp(startRoute: startRoute),
         ),
       );
     },

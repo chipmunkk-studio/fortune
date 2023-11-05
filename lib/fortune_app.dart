@@ -14,9 +14,9 @@ import 'core/util/theme.dart';
 class FortuneApp extends StatelessWidget {
   final String startRoute;
 
-  const FortuneApp(
-    this.startRoute, {
+  const FortuneApp({
     super.key,
+    required this.startRoute,
   });
 
   @override
@@ -76,4 +76,5 @@ class FortuneApp extends StatelessWidget {
       return serviceLocator<FortuneAppRouter>().router.generator;
     }
   }
+
 }
