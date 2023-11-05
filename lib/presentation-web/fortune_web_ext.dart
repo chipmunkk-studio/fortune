@@ -9,12 +9,10 @@ import 'package:fortune/env.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FortuneWebResponse {
-  final String routes;
   final FortuneWebCommand? data;
   final FortuneWebQueryParam? queryParams;
 
-  FortuneWebResponse(
-    this.routes, {
+  FortuneWebResponse({
     this.data,
     this.queryParams,
   });
@@ -24,6 +22,8 @@ abstract class FortuneWebExtension {
   static const webMainUrl = "https://chipmunk-studio.com";
   static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app";
 
+  static String baseUrl = kReleaseMode ? webMainUrl : webMainDebugUrl;
+
   static FortuneWebResponse parseAndGetUrlWithQueryParam(String url) {
     try {
       final uri = Uri.parse(url);
@@ -31,7 +31,6 @@ abstract class FortuneWebExtension {
       final queryParams = FortuneWebQueryParam.fromJson(
         Map.of(uri.queryParameters)..remove('data'),
       );
-      final routes = uri.fragment;
       FortuneWebCommand? param;
 
       if (dataStr != null) {
@@ -42,7 +41,6 @@ abstract class FortuneWebExtension {
       }
 
       return FortuneWebResponse(
-        routes,
         data: param,
         queryParams: queryParams,
       );
@@ -52,36 +50,31 @@ abstract class FortuneWebExtension {
     }
   }
 
-  static String makeWebUrl({
+  static String makeRouteUrl({
+    String? url,
     String route = '',
     FortuneWebCommand? entity,
     Map<String, dynamic>? queryParams,
   }) {
-    final uri = Uri.parse("${getMainWebUrl(queryParams: queryParams)}#$route");
+    String paramUrl = url ?? baseUrl;
+    Uri uri = Uri.parse(paramUrl);
 
-    if (entity != null) {
-      final content = Uri.encodeComponent(jsonEncode(entity.toJson()));
-
-      // 기존의 쿼리 파라미터와 새로운 파라미터를 결합
-      final combinedQueryParams = {
-        ...uri.queryParameters, // Spread operator를 사용하여 기존의 쿼리 파라미터를 추가
-        'data': content,
-      };
-
-      final finalUri = uri.replace(queryParameters: combinedQueryParams);
-      return finalUri.toString();
-    }
-
-    return uri.toString();
-  }
-
-  static String getMainWebUrl({Map<String, dynamic>? queryParams}) {
-    String baseUrl = kReleaseMode ? webMainUrl : webMainDebugUrl;
-    var uri = Uri.parse(baseUrl);
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
-    return uri.toString();
+
+    Uri finalUri = Uri.parse("${uri.toString()}#$route");
+
+    if (entity != null) {
+      final content = Uri.encodeComponent(jsonEncode(entity.toJson()));
+      final combinedQueryParams = {
+        ...finalUri.queryParameters,
+        'data': content,
+      };
+      finalUri = finalUri.replace(queryParameters: combinedQueryParams);
+    }
+
+    return finalUri.toString();
   }
 
   static FortuneWebCommand? _getParam(WebCommand webCommand, dynamic jsonMap) {
@@ -94,13 +87,11 @@ abstract class FortuneWebExtension {
   }
 }
 
-launchWebRoutes(
-  String route, {
+launchWebRoutes({
   FortuneWebCommand? entity,
   Map<String, dynamic>? queryParams,
 }) async {
-  final url = FortuneWebExtension.makeWebUrl(
-    route: route,
+  final url = FortuneWebExtension.makeRouteUrl(
     entity: entity,
     queryParams: queryParams,
   );

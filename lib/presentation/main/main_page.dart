@@ -28,6 +28,7 @@ import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dar
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
+import 'package:fortune/presentation/webview/fortune_webview_args.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
@@ -647,6 +648,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   _onCommunityClick() {
-    _router.navigateTo(context, AppRoutes.communityRoutes);
+    _router.navigateTo(
+      context,
+      AppRoutes.fortuneWebViewRoutes,
+      routeSettings: RouteSettings(
+        arguments: FortuneWebViewArgs(),
+      ),
+    );
   }
 }

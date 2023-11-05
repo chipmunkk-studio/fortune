@@ -81,6 +81,7 @@ import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
 import 'package:fortune/presentation/support/notices/bloc/notices.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
+import 'package:fortune/presentation/webview/bloc/fortune_webview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
@@ -724,6 +725,9 @@ _initWebBloc() {
       () => TermsDetailBloc(
         getTermsByIndexUseCase: serviceLocator(),
       ),
+    )
+    ..registerFactory(
+      () => FortuneWebviewBloc(),
     )
     ..registerFactory(
       () => WebLoginBloc(

@@ -103,7 +103,6 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                 appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
                     onPressed: () async {
                   await launchWebRoutes(
-                    WebRoutes.exitRoute,
                     entity: FortuneWebCommandClose(
                       command: WebCommand.close,
                       sample: '테스트',
