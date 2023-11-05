@@ -179,8 +179,8 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
   /// 0초을 사용하여 서버에서 강제로 가져옵니다.
   await remoteConfig.setConfigSettings(
     RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 0),
-      minimumFetchInterval: Duration.zero,
+      fetchTimeout: const Duration(seconds: 10),
+      minimumFetchInterval: const Duration(minutes: 5),
     ),
   );
 

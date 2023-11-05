@@ -22,9 +22,9 @@ class FortuneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
+      child: Container(
+        color: ColorName.grey900,
         width: PlatformDetails().isDesktop ? 480 : null,
-        height: MediaQuery.of(context).size.height,
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
           splitScreenMode: false,
