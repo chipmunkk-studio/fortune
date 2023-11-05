@@ -86,20 +86,23 @@ abstract class FortuneWebExtension {
   }
 }
 
-launchWebRoutes({
+requestWebUrl({
+  String? paramUrl,
   FortuneWebCommand? entity,
   Map<String, dynamic>? queryParams,
 }) async {
   final url = FortuneWebExtension.makeFortuneWebUrl(
+    url: paramUrl,
     entity: entity,
     queryParams: queryParams,
   );
   final parsedUri = Uri.parse(url);
 
   if (await canLaunchUrl(parsedUri)) {
-    // entity가 null인 경우 > 웹에서 웹으로 보내는 url임.
-    // source가 app인 경우 앱에서 실행된 웹임.
-    if (entity == null || serviceLocator<Environment>().source == 'app') {
+    final sourceIsApp = serviceLocator<Environment>().source == 'app';
+    final commandIsClose = entity?.command == WebCommand.close && sourceIsApp;
+
+    if (!sourceIsApp || commandIsClose) {
       await launchUrl(parsedUri);
     }
   } else {
