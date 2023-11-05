@@ -135,8 +135,11 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 FortuneTextButton(
-                                  onPress: () {
-                                    webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                                  onPress: () async {
+                                    await requestWebUrl(
+                                      paramUrl: 'https://www.naver.com',
+                                      queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+                                    );
                                   },
                                   text: '테스트 랜딩(개인정보처리방침)',
                                 ),
