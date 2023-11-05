@@ -63,7 +63,7 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
               }
               return NavigationDecision.navigate;
             }
-            return NavigationDecision.prevent;
+            return NavigationDecision.navigate;
           },
         ),
       )

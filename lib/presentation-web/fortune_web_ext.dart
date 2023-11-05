@@ -102,7 +102,7 @@ requestWebUrl({
     final sourceIsApp = serviceLocator<Environment>().source == 'app';
 
     FortuneLogger.info('#1 prepare Uri:$parsedUri');
-    if (sourceIsApp || (entity == null && !sourceIsApp)) {
+    if (sourceIsApp) {
       FortuneLogger.info('#2 launchUri:$parsedUri');
       await launchUrl(parsedUri);
     }
