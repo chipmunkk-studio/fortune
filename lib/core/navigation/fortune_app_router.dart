@@ -310,7 +310,7 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 커뮤니티.
+      /// 웹뷰.
       ..define(
         AppRoutes.fortuneWebViewRoutes,
         handler: fortuneWebViewHandler,

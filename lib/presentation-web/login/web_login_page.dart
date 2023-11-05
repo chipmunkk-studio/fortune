@@ -8,7 +8,6 @@ import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
 import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
@@ -101,15 +100,18 @@ class _WebLoginPageState extends State<_WebLoginPage> {
           return KeyboardVisibilityBuilder(
             builder: (BuildContext context, bool isKeyboardVisible) {
               return Scaffold(
-                appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
-                    onPressed: () async {
-                  await requestWebUrl(
-                    command: FortuneWebCommandClose(
-                      sample: '테스트',
-                    ),
-                    queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
-                  );
-                }),
+                appBar: FortuneCustomAppBar.leadingAppBar(
+                  context,
+                  leadingIcon: Assets.icons.icWebCi.svg(),
+                  onPressed: () async {
+                    await requestWebUrl(
+                      command: FortuneWebCommandClose(
+                        sample: '테스트',
+                      ),
+                      queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+                    );
+                  },
+                ),
                 body: SafeArea(
                   bottom: true,
                   child: Column(
@@ -143,14 +145,6 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                                     );
                                   },
                                   text: '네이버(현재창 - 웹뷰)',
-                                ),
-                                FortuneTextButton(
-                                  onPress: () async {
-                                    requestWebUrl(
-                                      paramUrl: 'https://www.naver.com',
-                                    );
-                                  },
-                                  text: '네이버(새창)',
                                 ),
                                 FortuneTextButton(
                                   onPress: () async {

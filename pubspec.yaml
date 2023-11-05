@@ -68,6 +68,7 @@ dependencies:
   fluttertoast: ^8.2.2
   cached_network_image: ^3.3.0
   universal_html: ^2.2.4
+  flutter_web_frame: ^1.0.0
 
   # map
   flutter_map: ^6.0.1
