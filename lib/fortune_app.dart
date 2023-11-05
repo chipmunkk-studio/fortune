@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
+import 'package:fortune/core/util/platform.dart';
 import 'package:fortune/di.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -22,7 +23,7 @@ class FortuneApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: _isDesktop(context) ? 480 : null,
+        width: PlatformDetails().isDesktop ? 480 : null,
         height: MediaQuery.of(context).size.height,
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
@@ -66,14 +67,6 @@ class FortuneApp extends StatelessWidget {
         locale: context.locale,
       ),
     );
-  }
-
-  bool _isDesktop(BuildContext context) {
-    if (kIsWeb) {
-      final width = MediaQuery.of(context).size.width;
-      return width > 800;
-    }
-    return false;
   }
 
   _getRouter() {
