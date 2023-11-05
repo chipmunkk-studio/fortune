@@ -4,6 +4,7 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:fortune/presentation/webview/bloc/fortune_webview.dart';
 import 'package:fortune/presentation/webview/fortune_webview_args.dart';
@@ -57,13 +58,29 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith(FortuneWebExtension.baseUrl)) {
               final response = FortuneWebExtension.parseAndGetUrlWithQueryParam(request.url);
-              if (response.data?.command == WebCommand.close) {
-                _appRouter.pop(context);
-                return NavigationDecision.prevent;
+              switch (response.data?.command) {
+                case WebCommand.close:
+                  _appRouter.pop(context);
+                  return NavigationDecision.prevent;
+                  break;
+                case WebCommand.newWebPage:
+                  final commandEntity = response.data as FortuneWebCommandNewPage;
+                  _appRouter.navigateTo(
+                    context,
+                    AppRoutes.fortuneWebViewRoutes,
+                    routeSettings: RouteSettings(
+                      arguments: FortuneWebViewArgs(
+                        url: commandEntity.url,
+                      ),
+                    ),
+                  );
+                  return NavigationDecision.prevent;
+                  break;
+                default:
+                  return NavigationDecision.navigate;
               }
-              return NavigationDecision.navigate;
             }
-            return NavigationDecision.navigate;
+            return NavigationDecision.prevent;
           },
         ),
       )

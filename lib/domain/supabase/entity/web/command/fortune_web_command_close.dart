@@ -9,7 +9,7 @@ class FortuneWebCommandClose extends FortuneWebCommand {
   final String sample;
 
   FortuneWebCommandClose({
-    required super.command,
+    super.command = WebCommand.close,
     required this.sample,
   });
 

@@ -21,6 +21,7 @@ class FortuneWebCommand {
 
 enum WebCommand {
   close,
+  newWebPage,
 }
 
 

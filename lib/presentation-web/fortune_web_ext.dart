@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
 import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
 import 'package:fortune/env.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,7 +39,7 @@ abstract class FortuneWebExtension {
         final decodedData = Uri.decodeComponent(dataStr);
         final jsonMap = jsonDecode(decodedData);
         final WebCommand webCommand = (jsonMap['command'] as String).toWebCommand();
-        param = _getParam(webCommand, jsonMap);
+        param = _getCommandEntity(webCommand, jsonMap);
       }
 
       return FortuneWebResponse(
@@ -55,14 +57,13 @@ abstract class FortuneWebExtension {
     FortuneWebCommand? entity,
     Map<String, dynamic>? queryParams,
   }) {
-    String paramUrl = url ?? baseUrl;
-    Uri uri = Uri.parse(paramUrl);
+    Uri uri = Uri.parse(url ?? baseUrl);
 
     if (queryParams != null && queryParams.isNotEmpty) {
       uri = uri.replace(queryParameters: queryParams);
     }
 
-    Uri finalUri = Uri.parse(paramUrl.toString());
+    Uri finalUri = Uri.parse(uri.toString());
 
     if (entity != null) {
       final content = Uri.encodeComponent(jsonEncode(entity.toJson()));
@@ -76,34 +77,41 @@ abstract class FortuneWebExtension {
     return finalUri.toString();
   }
 
-  static FortuneWebCommand? _getParam(WebCommand webCommand, dynamic jsonMap) {
+  static FortuneWebCommand? _getCommandEntity(WebCommand webCommand, dynamic jsonMap) {
     switch (webCommand) {
       case WebCommand.close:
-        return FortuneWebCommand.fromJson(jsonMap);
+        return FortuneWebCommandClose.fromJson(jsonMap);
+      case WebCommand.newWebPage:
+        return FortuneWebCommandNewPage.fromJson(jsonMap);
       default:
         return null;
     }
   }
 }
 
+// 웹에서 새로운 창을 띄울때 paramUrl을 사용하면됨.
+// 앱에서는 main url말고, url 랜딩이 막혀있음.
 requestWebUrl({
   String? paramUrl,
-  FortuneWebCommand? entity,
+  FortuneWebCommand? command,
   Map<String, dynamic>? queryParams,
 }) async {
+  final environment = serviceLocator<Environment>();
+  final sourceIsApp = environment.source == 'app';
+  final shouldUseNewPageUrl = command is FortuneWebCommandNewPage && !sourceIsApp;
+
+  final targetUrl = shouldUseNewPageUrl ? command.url : paramUrl;
   final url = FortuneWebExtension.makeWebUrl(
-    url: paramUrl,
-    entity: entity,
+    url: targetUrl,
+    entity: command,
     queryParams: queryParams,
   );
+
   final parsedUri = Uri.parse(url);
 
   if (await canLaunchUrl(parsedUri)) {
-    final sourceIsApp = serviceLocator<Environment>().source == 'app';
-
-    FortuneLogger.info('#1 prepare Uri:$parsedUri');
-    if (sourceIsApp) {
-      FortuneLogger.info('#2 launchUri:$parsedUri');
+    final shouldLaunch = sourceIsApp || (command == null || shouldUseNewPageUrl);
+    if (shouldLaunch) {
       await launchUrl(parsedUri);
     }
   } else {

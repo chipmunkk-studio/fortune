@@ -10,6 +10,7 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
 import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -103,8 +104,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                 appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
                     onPressed: () async {
                   await requestWebUrl(
-                    entity: FortuneWebCommandClose(
-                      command: WebCommand.close,
+                    command: FortuneWebCommandClose(
                       sample: '테스트',
                     ),
                     queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
@@ -136,12 +136,27 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                                 const SizedBox(height: 20),
                                 FortuneTextButton(
                                   onPress: () async {
-                                    await requestWebUrl(
-                                      paramUrl: 'https://www.naver.com',
-                                      queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+                                    requestWebUrl(
+                                      command: FortuneWebCommandNewPage(
+                                        url: 'https://www.naver.com',
+                                      ),
                                     );
                                   },
-                                  text: '테스트 랜딩(개인정보처리방침)',
+                                  text: '네이버(현재창 - 웹뷰)',
+                                ),
+                                FortuneTextButton(
+                                  onPress: () async {
+                                    requestWebUrl(
+                                      paramUrl: 'https://www.naver.com',
+                                    );
+                                  },
+                                  text: '네이버(새창)',
+                                ),
+                                FortuneTextButton(
+                                  onPress: () async {
+                                    webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                                  },
+                                  text: '개인정보처리방침',
                                 ),
                               ],
                             ),
