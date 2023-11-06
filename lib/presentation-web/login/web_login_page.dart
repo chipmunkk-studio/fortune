@@ -124,78 +124,8 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: 28),
+                                const SizedBox(height: 500),
                                 // 로그인 상태.
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
                                 BlocBuilder<WebLoginBloc, WebLoginState>(
                                   buildWhen: (previous, current) => previous.email != current.email,
                                   builder: (context, state) {
