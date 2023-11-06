@@ -117,67 +117,43 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                   bottom: true,
                   child: Column(
                     children: <Widget>[
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 500),
-                                // 로그인 상태.
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                FortuneTextButton(
-                                  onPress: () async {
-                                    requestWebUrl(
-                                      command: FortuneWebCommandNewPage(
-                                        url: 'https://www.naver.com',
-                                      ),
-                                    );
-                                  },
-                                  text: '네이버(현재창 - 웹뷰)',
-                                ),
-                                FortuneTextButton(
-                                  onPress: () async {
-                                    webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
-                                  },
-                                  text: '개인정보처리방침',
-                                ),
-                              ],
-                            ),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 900),
+                              // 로그인 상태.
+                              BlocBuilder<WebLoginBloc, WebLoginState>(
+                                buildWhen: (previous, current) => previous.email != current.email,
+                                builder: (context, state) {
+                                  return WebLoginEmailInputField(
+                                    email: state.email,
+                                    emailController: _phoneNumberController,
+                                    onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              FortuneTextButton(
+                                onPress: () async {
+                                  requestWebUrl(
+                                    command: FortuneWebCommandNewPage(
+                                      url: 'https://www.naver.com',
+                                    ),
+                                  );
+                                },
+                                text: '네이버(현재창 - 웹뷰)',
+                              ),
+                              FortuneTextButton(
+                                onPress: () async {
+                                  webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                                },
+                                text: '개인정보처리방침',
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
-                        padding: EdgeInsets.only(
-                          left: isKeyboardVisible ? 0 : 20,
-                          right: isKeyboardVisible ? 0 : 20,
-                          bottom: isKeyboardVisible ? 0 : 20,
-                        ),
-                        curve: Curves.easeInOut,
-                        child: BlocBuilder<WebLoginBloc, WebLoginState>(
-                          buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                          builder: (context, state) {
-                            return WebLoginButton(
-                              text: FortuneTr.msgVerifyYourself,
-                              isKeyboardVisible: isKeyboardVisible,
-                              isEnabled: state.isButtonEnabled,
-                              onPressed: () {
-                                _bloc.add(WebLoginBottomButtonClick());
-                              },
-                            );
-                          },
                         ),
                       ),
                     ],
