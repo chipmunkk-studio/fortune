@@ -14,9 +14,9 @@ class FortuneWebViewPage extends StatelessWidget {
   final FortuneWebViewArgs args;
 
   const FortuneWebViewPage(
-      this.args, {
-        super.key,
-      });
+    this.args, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -57,23 +57,24 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FortuneScaffold(
-      padding: EdgeInsets.zero,
-      child: InAppWebView(
-        initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
-        onWebViewCreated: (InAppWebViewController webViewController) {
-          controller = webViewController;
-        },
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            useShouldOverrideUrlLoading: true,
-            javaScriptEnabled: true,
-            transparentBackground: true,
+    return SafeArea(
+      child: Scaffold(
+        body: InAppWebView(
+          initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
+          onWebViewCreated: (InAppWebViewController webViewController) {
+            controller = webViewController;
+          },
+          initialOptions: InAppWebViewGroupOptions(
+            crossPlatform: InAppWebViewOptions(
+              useShouldOverrideUrlLoading: true,
+              javaScriptEnabled: true,
+              transparentBackground: true,
+            ),
           ),
+          shouldOverrideUrlLoading: (controller, request) async {
+            return _handleNavigationRequest(request);
+          },
         ),
-        shouldOverrideUrlLoading: (controller, request) async {
-          return _handleNavigationRequest(request);
-        },
       ),
     );
   }
@@ -105,4 +106,3 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
     return NavigationActionPolicy.ALLOW;
   }
 }
-
