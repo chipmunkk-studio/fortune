@@ -2,17 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
+import 'package:fortune/di.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
+import 'package:fortune/env.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FortuneWebResponse {
-  final String routes;
-  final FortuneWebCommonEntity? data;
+  final FortuneWebCommand? data;
+  final FortuneWebQueryParam? queryParams;
 
-  FortuneWebResponse(
-    this.routes, {
+  FortuneWebResponse({
     this.data,
+    this.queryParams,
   });
 }
 
@@ -20,23 +24,27 @@ abstract class FortuneWebExtension {
   static const webMainUrl = "https://chipmunk-studio.com";
   static const webMainDebugUrl = "https://fortune-50ef2--develop-7ospx4vb.web.app";
 
+  static String baseUrl = kReleaseMode ? webMainUrl : webMainDebugUrl;
+
   static FortuneWebResponse parseAndGetUrlWithQueryParam(String url) {
     try {
       final uri = Uri.parse(url);
       final dataStr = uri.queryParameters['data'];
-      final routes = uri.fragment;
-      FortuneWebCommonEntity? param;
+      final queryParams = FortuneWebQueryParam.fromJson(
+        Map.of(uri.queryParameters)..remove('data'),
+      );
+      FortuneWebCommand? param;
 
       if (dataStr != null) {
         final decodedData = Uri.decodeComponent(dataStr);
         final jsonMap = jsonDecode(decodedData);
         final WebCommand webCommand = (jsonMap['command'] as String).toWebCommand();
-        param = _getParam(webCommand, jsonMap);
+        param = _getCommandEntity(webCommand, jsonMap);
       }
 
       return FortuneWebResponse(
-        routes,
         data: param,
+        queryParams: queryParams,
       );
     } catch (e) {
       FortuneLogger.error(message: e.toString());
@@ -44,50 +52,69 @@ abstract class FortuneWebExtension {
     }
   }
 
-  static launchWebRoutes(String route, {FortuneWebCommonEntity? queryParam}) async {
-    final url = makeWebUrl(route: route, queryParam: queryParam);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      FortuneLogger.error(message: 'Cannot Routing :: $url');
-    }
-  }
+  static String makeWebUrl({
+    String? url,
+    FortuneWebCommand? entity,
+    Map<String, dynamic>? queryParams,
+  }) {
+    Uri uri = Uri.parse(url ?? baseUrl);
 
-  static makeWebUrl({String route = '', FortuneWebCommonEntity? queryParam}) {
-    final uri = Uri.parse(getMainWebUrl() + "#$route");
-    if (queryParam != null) {
-      final content = Uri.encodeComponent(jsonEncode(queryParam.toJson()));
-      return uri.replace(queryParameters: {
+    if (queryParams != null && queryParams.isNotEmpty) {
+      uri = uri.replace(queryParameters: queryParams);
+    }
+
+    Uri finalUri = Uri.parse(uri.toString());
+
+    if (entity != null) {
+      final content = Uri.encodeComponent(jsonEncode(entity.toJson()));
+      final combinedQueryParams = {
+        ...finalUri.queryParameters,
         'data': content,
-      });
+      };
+      finalUri = finalUri.replace(queryParameters: combinedQueryParams);
     }
 
-    return uri.toString();
+    return finalUri.toString();
   }
 
-  static getMainWebUrl() => kReleaseMode ? webMainUrl : webMainDebugUrl;
-
-  static FortuneWebCommonEntity? _getParam(WebCommand webCommand, dynamic jsonMap) {
+  static FortuneWebCommand? _getCommandEntity(WebCommand webCommand, dynamic jsonMap) {
     switch (webCommand) {
       case WebCommand.close:
-        return FortuneWebCloseEntity.fromJson(jsonMap);
+        return FortuneWebCommandClose.fromJson(jsonMap);
+      case WebCommand.newWebPage:
+        return FortuneWebCommandNewPage.fromJson(jsonMap);
       default:
         return null;
     }
   }
 }
 
-extension WebCommandParser on String {
-  WebCommand toWebCommand() {
-    for (WebCommand command in WebCommand.values) {
-      if (this == command.name) {
-        return command;
-      }
-    }
-    throw Exception('Unknown command: $this');
-  }
-}
+// 웹에서 새로운 창을 띄울때 paramUrl을 사용하면됨.
+// 앱에서는 main url말고, url 랜딩이 막혀있음.
+requestWebUrl({
+  String? paramUrl,
+  FortuneWebCommand? command,
+  Map<String, dynamic>? queryParams,
+}) async {
+  final environment = serviceLocator<Environment>();
+  final sourceIsApp = environment.source == 'app';
+  final shouldUseNewPageUrl = command is FortuneWebCommandNewPage && !sourceIsApp;
 
-enum WebCommand {
-  close,
+  final targetUrl = shouldUseNewPageUrl ? command.url : paramUrl;
+  final url = FortuneWebExtension.makeWebUrl(
+    url: targetUrl,
+    entity: command,
+    queryParams: queryParams,
+  );
+
+  final parsedUri = Uri.parse(url);
+
+  if (await canLaunchUrl(parsedUri)) {
+    final shouldLaunch = sourceIsApp || (command == null || shouldUseNewPageUrl);
+    if (shouldLaunch) {
+      await launchUrl(parsedUri);
+    }
+  } else {
+    FortuneLogger.error(message: 'Cannot Routing :: $url');
+  }
 }

@@ -58,7 +58,7 @@ class _NoticesPageState extends State<_NoticesPage> {
     return BlocSideEffectListener<NoticesBloc, NoticesSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is NoticesError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<NoticesBloc, NoticesState>(

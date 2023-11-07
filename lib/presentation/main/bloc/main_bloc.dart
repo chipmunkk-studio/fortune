@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/fortune_ext.dart';
@@ -124,7 +122,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             }
 
             // 실제 기기가 아니거나 테스트 계정일 경우 테스트 로케이션을 보여줌.
-            final isPhysicalDevice = await getPhysicalDevice();
+            final isPhysicalDevice = await getPhysicalMobileDevice();
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
             final isShowTestLocation = isPhysicalDevice ? false : isTestAccount;

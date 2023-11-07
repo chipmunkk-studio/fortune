@@ -93,7 +93,7 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
               );
           }
         } else if (sideEffect is MissionDetailError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is MissionDetailParticleBurst) {
           _controller.play();
         }

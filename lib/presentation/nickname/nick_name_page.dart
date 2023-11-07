@@ -68,7 +68,7 @@ class _NickNamePageState extends State<_NickNamePage> {
     return BlocSideEffectListener<NickNameBloc, NickNameSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is NickNameError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is NickNameUserInfoInit) {
           _nickNameController.text = sideEffect.user.nickname;
           _emailController.text = sideEffect.user.email;

@@ -53,7 +53,7 @@ class _MyPageState extends State<_MyPage> {
     return BlocSideEffectListener<MyPageBloc, MyPageSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is MyPageError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: FortuneScaffold(

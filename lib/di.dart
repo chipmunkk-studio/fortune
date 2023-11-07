@@ -81,6 +81,7 @@ import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
 import 'package:fortune/presentation/support/notices/bloc/notices.dart';
 import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
 import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
+import 'package:fortune/presentation/webview/bloc/fortune_webview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
@@ -111,6 +112,7 @@ import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
+import 'package:universal_html/html.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
@@ -202,8 +204,14 @@ initSupabase(bool kIsWeb) async {
 
 /// 환경설정.
 initEnvironment(bool kIsWeb) async {
+  Uri uri = Uri.parse(window.location.href);
+  // 현재 웹에서 실행된 웹인건지, 앱에서 실행된 웹인지 결정함.
+  // source가 app이면 앱에서 실행된 웹임.
+  String source = uri.queryParameters['source'] ?? 'web';
+
   final Environment environment = Environment.create(
     remoteConfig: await getRemoteConfigArgs(),
+    source: source,
   )..init(kIsWeb);
   serviceLocator.registerLazySingleton<Environment>(() => environment);
 }
@@ -686,6 +694,9 @@ _initAppBloc() {
     //     postMissionClearUseCase: serviceLocator(),
     //   ),
     // )
+    ..registerFactory(
+      () => FortuneWebviewBloc(),
+    )
     ..registerFactory(
       () => AgreeTermsBloc(
         getTermsUseCase: serviceLocator(),

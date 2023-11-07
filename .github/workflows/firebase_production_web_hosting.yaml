@@ -2,7 +2,7 @@ name: Firebase Production Web Hosting
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 # 깃헙액션 용량 떄문에 주석 처리
 #  pull_request:
 #    branches: [main]
@@ -30,7 +30,7 @@ jobs:
       - run: flutter packages pub run build_runner build --delete-conflicting-outputs
       - run: fluttergen -c pubspec.yaml
       - run: flutter config --enable-web
-      - run: flutter build web --release
+      - run: flutter build web --release --web-renderer canvaskit
 
       - name: 업로드 빌드 파일
         uses: actions/upload-artifact@master

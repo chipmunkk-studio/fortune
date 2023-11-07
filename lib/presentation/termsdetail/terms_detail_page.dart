@@ -54,7 +54,7 @@ class _TermsDetailPageState extends State<_TermsDetailPage> {
     return BlocSideEffectListener<TermsDetailBloc, TermsDetailSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is TermsDetailError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<TermsDetailBloc, TermsDetailState>(

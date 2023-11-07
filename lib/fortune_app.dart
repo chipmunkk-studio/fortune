@@ -12,50 +12,63 @@ import 'core/util/theme.dart';
 
 class FortuneApp extends StatelessWidget {
   final String startRoute;
+  final bool isWebInApp;
 
-  const FortuneApp(
-    this.startRoute, {
+  const FortuneApp({
     super.key,
+    required this.startRoute,
+    required this.isWebInApp,
   });
 
   @override
-  Widget build(BuildContext context) => ScreenUtilInit(
-        designSize: const Size(390, 844),
-        splitScreenMode: false,
-        minTextAdapt: true,
-        rebuildFactor: RebuildFactors.change,
-        builder: (BuildContext context, Widget? child) {
-          return MediaQuery(
-            // 화면 비율 일정 하도록 함.
-            data: MediaQueryData.fromView(WidgetsBinding.instance.window).copyWith(textScaleFactor: 1.0),
-            child: SkeletonTheme(
-              shimmerGradient: const LinearGradient(
-                colors: [
-                  ColorName.grey700,
-                  ColorName.grey600,
-                  ColorName.grey600,
-                  ColorName.grey800,
-                  ColorName.grey600,
-                  ColorName.grey600,
-                  ColorName.grey700,
-                ],
-                stops: [0.3, 0.5, 0.7, 0.9, 0.7, 0.5, 0.3],
-              ),
-              child: MaterialApp(
-                // 기본적으로 필요한 언어 설정
-                debugShowCheckedModeBanner: false,
-                navigatorObservers: [serviceLocator<RouteObserver<PageRoute>>()],
-                theme: theme(),
-                onGenerateRoute: _getRouter(),
-                initialRoute: startRoute,
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-              ),
-            ),
-          );
-        },
-      );
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        color: ColorName.grey900,
+        width: isWebInApp ? null : 690,
+        child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          splitScreenMode: false,
+          minTextAdapt: true,
+          rebuildFactor: RebuildFactors.change,
+          builder: (BuildContext context, Widget? child) {
+            return MediaQuery(
+              // 화면 비율 일정 하도록 함.
+              data: MediaQueryData.fromView(View.of(context)).copyWith(textScaleFactor: 1.0),
+              child: _buildApp(context),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildApp(BuildContext context) {
+    return SkeletonTheme(
+      shimmerGradient: const LinearGradient(
+        colors: [
+          ColorName.grey700,
+          ColorName.grey600,
+          ColorName.grey600,
+          ColorName.grey800,
+          ColorName.grey600,
+          ColorName.grey600,
+          ColorName.grey700,
+        ],
+        stops: [0.3, 0.5, 0.7, 0.9, 0.7, 0.5, 0.3],
+      ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [serviceLocator<RouteObserver<PageRoute>>()],
+        theme: theme(),
+        onGenerateRoute: _getRouter(),
+        initialRoute: startRoute,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+      ),
+    );
+  }
 
   _getRouter() {
     if (kIsWeb) {

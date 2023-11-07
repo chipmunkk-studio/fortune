@@ -6,7 +6,6 @@ import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
-import 'package:fortune/presentation/community/community_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
@@ -17,6 +16,8 @@ import 'package:fortune/presentation/support/faqs/faqs_page.dart';
 import 'package:fortune/presentation/support/notices/notices_page.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
+import 'package:fortune/presentation/webview/fortune_webview_args.dart';
+import 'package:fortune/presentation/webview/fortune_webview_page.dart';
 
 import '../../presentation/ingredientaction/ingredient_action_page.dart';
 import '../../presentation/login/login_page.dart';
@@ -88,9 +89,10 @@ class FortuneAppRouter {
     },
   );
 
-  static var communityHandler = Handler(
+  static var fortuneWebViewHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const CommunityPage();
+      final args = context?.settings?.arguments as FortuneWebViewArgs?;
+      return args != null ? FortuneWebViewPage(args) : null;
     },
   );
 
@@ -308,10 +310,10 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
-      /// 커뮤니티.
+      /// 웹뷰.
       ..define(
-        AppRoutes.communityRoutes,
-        handler: communityHandler,
+        AppRoutes.fortuneWebViewRoutes,
+        handler: fortuneWebViewHandler,
         transitionType: TransitionType.cupertino,
       )
 
@@ -344,5 +346,5 @@ class AppRoutes {
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
   static const String rankingRoutes = 'ranking';
-  static const String communityRoutes = 'community';
+  static const String fortuneWebViewRoutes = 'fortuneWebView';
 }

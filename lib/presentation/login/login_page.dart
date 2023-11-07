@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class _LoginPage extends StatefulWidget {
-  const _LoginPage({Key? key}) : super(key: key);
+  const _LoginPage();
 
   @override
   State<_LoginPage> createState() => _LoginPageState();
@@ -70,7 +70,7 @@ class _LoginPageState extends State<_LoginPage> {
     return BlocSideEffectListener<LoginBloc, LoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is LoginError) {
-          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService.showAppErrorDialog(context, sideEffect.error, needToFinish: false);
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,

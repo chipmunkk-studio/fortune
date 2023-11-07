@@ -56,7 +56,7 @@ class _WebAgreeTermsBottomSheetState extends State<_WebAgreeTermsBottomSheet> {
         if (sideEffect is WebAgreeTermsPop) {
           router.pop(context, sideEffect.flag);
         } else if (sideEffect is WebAgreeTermsError) {
-          dialogService.showErrorDialog(
+          dialogService.showAppErrorDialog(
             context,
             sideEffect.error,
             btnOkOnPress: () {

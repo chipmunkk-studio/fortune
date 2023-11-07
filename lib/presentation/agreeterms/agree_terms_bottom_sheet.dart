@@ -55,7 +55,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
         if (sideEffect is AgreeTermsPop) {
           router.pop(context, sideEffect.flag);
         } else if (sideEffect is AgreeTermsError) {
-          dialogService.showErrorDialog(
+          dialogService.showAppErrorDialog(
             context,
             sideEffect.error,
             btnOkOnPress: () {

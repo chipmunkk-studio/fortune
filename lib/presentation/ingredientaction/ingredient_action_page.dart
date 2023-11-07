@@ -79,7 +79,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
     return BlocSideEffectListener<IngredientActionBloc, IngredientActionSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is IngredientActionError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is IngredientProcessAction) {
           final ingredient = sideEffect.param.ingredient;
           final ad = sideEffect.param.ad;

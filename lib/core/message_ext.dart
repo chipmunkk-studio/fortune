@@ -32,6 +32,7 @@ abstract class FortuneTr {
   static String msgAchievedGrade(String grade) => tr('msgAchievedGrade', args: [grade]);
 
   static String msgAcquiredMarker(String marker) => tr('msgAcquiredMarker', args: [marker]);
+
   static String msgRewardCollectWinner(String reward) => tr('msgRewardCollectWinner', args: [reward]);
 
   static String msgItemCount(String count) => tr('msgItemCount', args: [count]);
@@ -51,6 +52,7 @@ abstract class FortuneTr {
   static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');
+  static final msgPressAgainToExit = tr('msgPressAgainToExit');
 
   static final msgWelcome = tr('msgWelcome');
   static final msgFortuneCookieReward = tr('msgFortuneCookieReward');

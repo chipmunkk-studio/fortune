@@ -14,12 +14,12 @@ class FortuneBottomButton extends StatelessWidget {
   final _deBouncer = FortuneButtonDeBouncer(milliseconds: 3000);
 
   FortuneBottomButton({
-    Key? key,
+    super.key,
     required this.isEnabled,
     required this.onPress,
     required this.text,
     required this.isKeyboardVisible,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

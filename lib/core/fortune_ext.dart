@@ -30,7 +30,7 @@ String getSampleNetworkImageUrl({
   return "https://source.unsplash.com/user/max_duz/${width}x$height";
 }
 
-Future<bool> getPhysicalDevice() async {
+Future<bool> getPhysicalMobileDevice() async {
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   if (Platform.isIOS) {
@@ -41,7 +41,7 @@ Future<bool> getPhysicalDevice() async {
     return androidInfo.isPhysicalDevice;
   }
 
-  throw Exception("Platform not supported");
+  return false;
 }
 
 void reportRandomTimes({

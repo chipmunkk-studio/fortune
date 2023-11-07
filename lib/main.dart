@@ -29,12 +29,17 @@ main() {
           ? await authService.recoverWebSession()
           : await authService.recoverAppSession(remoteMessageData: remoteMessageData);
 
+      final isWebInApp = serviceLocator<Environment>().source == 'app';
+
       runApp(
         EasyLocalization(
           supportedLocales: Environment.supportedLocales,
           path: Environment.translation,
           fallbackLocale: const Locale('ko', 'KR'),
-          child: FortuneApp(startRoute),
+          child: FortuneApp(
+            startRoute: startRoute,
+            isWebInApp: isWebInApp,
+          ),
         ),
       );
     },

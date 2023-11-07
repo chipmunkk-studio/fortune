@@ -65,7 +65,7 @@ class _RankingPageState extends State<_RankingPage> {
     return BlocSideEffectListener<RankingBloc, RankingSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is RankingError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<RankingBloc, RankingState>(

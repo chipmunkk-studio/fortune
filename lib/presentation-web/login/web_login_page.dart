@@ -1,20 +1,18 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:fortune/core/widgets/button/fortune_text_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_close_entity.dart';
-import 'package:fortune/domain/supabase/entity/web/fortune_web_common_entity.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_close.dart';
+import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
+import 'package:fortune/domain/supabase/entity/web/fortune_web_query_param.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../agreeterms/web_agree_terms_bottom_sheet.dart';
 import '../verifycode/web_verify_code_bottom_sheet.dart';
@@ -45,7 +43,7 @@ class _WebLoginPage extends StatefulWidget {
 
 class _WebLoginPageState extends State<_WebLoginPage> {
   late WebLoginBloc _bloc;
-  final router = serviceLocator<FortuneWebRouter>().router;
+  final webRouter = serviceLocator<FortuneWebRouter>().router;
   final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
@@ -66,7 +64,11 @@ class _WebLoginPageState extends State<_WebLoginPage> {
     return BlocSideEffectListener<WebLoginBloc, WebLoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is WebLoginError) {
-          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService.showWebErrorDialog(
+            context,
+            sideEffect.error,
+            needToFinish: false,
+          );
         } else if (sideEffect is WebLoginShowTermsBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,
@@ -76,14 +78,14 @@ class _WebLoginPageState extends State<_WebLoginPage> {
             _bloc.add(WebLoginRequestVerifyCode());
           }
         } else if (sideEffect is WebLoginShowVerifyCodeBottomSheet) {
-          final result = await context.showBottomSheet(
+          await context.showBottomSheet(
             isDismissible: false,
             content: (context) => WebVerifyCodeBottomSheet(
               email: sideEffect.email,
             ),
           );
         } else if (sideEffect is WebLoginLandingRoute) {
-          router.navigateTo(
+          webRouter.navigateTo(
             context,
             sideEffect.route,
             clearStack: true,
@@ -99,75 +101,75 @@ class _WebLoginPageState extends State<_WebLoginPage> {
       },
       child: BlocBuilder<WebLoginBloc, WebLoginState>(
         builder: (context, state) {
-          return KeyboardVisibilityBuilder(
-            builder: (BuildContext context, bool isKeyboardVisible) {
-              return Scaffold(
-                appBar: FortuneCustomAppBar.leadingAppBar(context, leadingIcon: Assets.icons.icWebCi.svg(),
-                    onPressed: () async {
-                  await FortuneWebExtension.launchWebRoutes(
-                    WebRoutes.exitRoute,
-                    queryParam: FortuneWebCloseEntity(
-                      command: WebCommand.close,
-                      sample: '테스트',
-                    ),
-                  );
-                }),
-                body: SafeArea(
-                  bottom: true,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 28),
-                                // 로그인 상태.
-                                BlocBuilder<WebLoginBloc, WebLoginState>(
-                                  buildWhen: (previous, current) => previous.email != current.email,
-                                  builder: (context, state) {
-                                    return WebLoginEmailInputField(
-                                      email: state.email,
-                                      emailController: _phoneNumberController,
-                                      onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 100),
-                        padding: EdgeInsets.only(
-                          left: isKeyboardVisible ? 0 : 20,
-                          right: isKeyboardVisible ? 0 : 20,
-                          bottom: isKeyboardVisible ? 0 : 20,
-                        ),
-                        curve: Curves.easeInOut,
-                        child: BlocBuilder<WebLoginBloc, WebLoginState>(
-                          buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+          return Scaffold(
+            appBar: FortuneCustomAppBar.leadingAppBar(
+              context,
+              leadingIcon: Assets.icons.icWebCi.svg(),
+              onPressed: () async {
+                await requestWebUrl(
+                  command: FortuneWebCommandClose(
+                    sample: '테스트',
+                  ),
+                  queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+                );
+              },
+            ),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 28),
+                        // 로그인 상태.
+                        BlocBuilder<WebLoginBloc, WebLoginState>(
+                          buildWhen: (previous, current) => previous.email != current.email,
                           builder: (context, state) {
-                            return WebLoginButton(
-                              text: FortuneTr.msgVerifyYourself,
-                              isKeyboardVisible: isKeyboardVisible,
-                              isEnabled: state.isButtonEnabled,
-                              onPressed: () {
-                                _bloc.add(WebLoginBottomButtonClick());
-                              },
+                            return WebLoginEmailInputField(
+                              email: state.email,
+                              emailController: _phoneNumberController,
+                              onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
                             );
                           },
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                        FortuneTextButton(
+                          onPress: () async {
+                            requestWebUrl(
+                              command: FortuneWebCommandNewPage(
+                                url: 'https://www.naver.com',
+                              ),
+                            );
+                          },
+                          text: '네이버(현재창 - 웹뷰)',
+                        ),
+                        FortuneTextButton(
+                          onPress: () async {
+                            webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                          },
+                          text: '개인정보처리방침',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              );
-            },
+                BlocBuilder<WebLoginBloc, WebLoginState>(
+                  buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+                  builder: (context, state) {
+                    return WebLoginButton(
+                      text: FortuneTr.msgVerifyYourself,
+                      isKeyboardVisible: true,
+                      isEnabled: state.isButtonEnabled,
+                      onPressed: () {
+                        _bloc.add(WebLoginBottomButtonClick());
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),
