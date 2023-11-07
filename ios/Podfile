@@ -34,6 +34,7 @@ target 'Runner' do
 
   pod 'GoogleMobileAdsMediationFacebook'
   pod 'GoogleMobileAdsMediationAppLovin'
+  pod 'GoogleMobileAdsMediationChartboost'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
