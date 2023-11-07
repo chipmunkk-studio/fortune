@@ -119,6 +119,7 @@ class _Top3ViewItem extends StatelessWidget {
             style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
           ),
         ),
+        SizedBox(height: 18.h),
       ],
     );
   }
