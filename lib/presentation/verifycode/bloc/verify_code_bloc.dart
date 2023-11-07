@@ -103,6 +103,7 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
       (value) => value.fold(
         (l) => produceSideEffect(VerifyCodeError(l)),
         (r) {
+
           emit(
             state.copyWith(
               isRequestVerifyCodeEnable: false,

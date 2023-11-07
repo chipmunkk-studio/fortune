@@ -75,7 +75,7 @@ class _CountryCodePageState extends State<_CountryCodePage> {
       child: BlocSideEffectListener<CountryCodeBloc, CountryCodeSideEffect>(
         listener: (context, sideEffect) {
           if (sideEffect is CountryCodeError) {
-            dialogService.showErrorDialog(context, sideEffect.error);
+            dialogService.showAppErrorDialog(context, sideEffect.error);
           } else if (sideEffect is CountryCodeScrollSelected) {
             _scrollToCounter(sideEffect.index);
           }

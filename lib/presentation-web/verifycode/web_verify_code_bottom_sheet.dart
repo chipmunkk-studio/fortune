@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
@@ -58,7 +57,7 @@ class _WebVerifyCodeBottomSheetState extends State<_WebVerifyCodeBottomSheet> {
     return BlocSideEffectListener<WebVerifyCodeBloc, WebVerifyCodeSideEffect>(
       listener: (BuildContext context, WebVerifyCodeSideEffect sideEffect) {
         if (sideEffect is WebVerifyCodeError) {
-          dialogService.showErrorDialog(
+          dialogService.showWebErrorDialog(
             context,
             sideEffect.error,
             needToFinish: false,
@@ -74,69 +73,55 @@ class _WebVerifyCodeBottomSheetState extends State<_WebVerifyCodeBottomSheet> {
       child: BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
         buildWhen: (previous, current) => previous.verifyCode != current.verifyCode,
         builder: (context, state) {
-          return KeyboardVisibilityBuilder(
-            builder: (BuildContext context, bool isKeyboardVisible) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: 24),
-                      Text(
-                        FortuneTr.msgRequireVerifyCodeInput,
-                        style: FortuneTextStyle.headLine2(),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  WebVerifyCodeNumberInput(
-                    verifyCode: state.verifyCode,
-                    verifyCodeController: _verifyCodeController,
-                    onTextChanged: (text) => _bloc.add(WebVerifyCodeInput(verifyCode: text)),
-                    onVerifyTimeCountdown: () {
-                      _bloc.add(WebVerifyCodeCountdown());
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
-                    buildWhen: (previous, current) =>
-                        previous.isRequestVerifyCodeEnable != current.isRequestVerifyCodeEnable,
-                    builder: (context, state) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: FortuneTextButton(
-                          onPress: state.isRequestVerifyCodeEnable
-                              ? () => _bloc.add(WebVerifyCodeRequestVerifyCode())
-                              : null,
-                          text: FortuneTr.msgRequireVerifyCodeReceive,
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    padding: EdgeInsets.only(
-                      left: isKeyboardVisible ? 0 : 20,
-                      right: isKeyboardVisible ? 0 : 20,
-                      bottom: isKeyboardVisible ? 0 : 20,
-                    ),
-                    curve: Curves.easeInOut,
-                    child: BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
-                      buildWhen: (previous, current) => previous.isConfirmEnable != current.isConfirmEnable,
-                      builder: (context, state) {
-                        return FortuneBottomButton(
-                          isKeyboardVisible: isKeyboardVisible,
-                          isEnabled: state.isConfirmEnable && !state.isLoginProcessing,
-                          onPress: () => _bloc.add(WebVerifyConfirm()),
-                          text: FortuneTr.confirm,
-                        );
-                      },
-                    ),
+                  const SizedBox(width: 24),
+                  Text(
+                    FortuneTr.msgRequireVerifyCodeInput,
+                    style: FortuneTextStyle.headLine2(),
                   ),
                 ],
-              );
-            },
+              ),
+              const SizedBox(height: 32),
+              WebVerifyCodeNumberInput(
+                verifyCode: state.verifyCode,
+                verifyCodeController: _verifyCodeController,
+                onTextChanged: (text) => _bloc.add(WebVerifyCodeInput(verifyCode: text)),
+                onVerifyTimeCountdown: () {
+                  _bloc.add(WebVerifyCodeCountdown());
+                },
+              ),
+              const SizedBox(height: 16),
+              BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
+                buildWhen: (previous, current) =>
+                    previous.isRequestVerifyCodeEnable != current.isRequestVerifyCodeEnable,
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: FortuneTextButton(
+                      onPress:
+                          state.isRequestVerifyCodeEnable ? () => _bloc.add(WebVerifyCodeRequestVerifyCode()) : null,
+                      text: FortuneTr.msgRequireVerifyCodeReceive,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
+              BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
+                buildWhen: (previous, current) => previous.isConfirmEnable != current.isConfirmEnable,
+                builder: (context, state) {
+                  return FortuneBottomButton(
+                    isKeyboardVisible: false,
+                    isEnabled: state.isConfirmEnable && !state.isLoginProcessing,
+                    onPress: () => _bloc.add(WebVerifyConfirm()),
+                    text: FortuneTr.confirm,
+                  );
+                },
+              ),
+            ],
           );
         },
       ),

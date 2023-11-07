@@ -61,7 +61,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
     return BlocSideEffectListener<VerifyCodeBloc, VerifyCodeSideEffect>(
       listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {
         if (sideEffect is VerifyCodeError) {
-          dialogService.showErrorDialog(
+          dialogService.showAppErrorDialog(
             context,
             sideEffect.error,
             needToFinish: false,

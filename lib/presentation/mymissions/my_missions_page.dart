@@ -59,7 +59,7 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
     return BlocSideEffectListener<MyMissionsBloc, MyMissionsSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is MyMissionsError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<MyMissionsBloc, MyMissionsState>(

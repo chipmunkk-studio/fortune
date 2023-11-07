@@ -64,7 +64,7 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
     return BlocSideEffectListener<AlarmFeedBloc, AlarmFeedSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is AlarmFeedError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is AlarmFeedReceiveConfetti) {
           _controller.play();
         } else if (sideEffect is AlarmFeedReceiveShowDialog) {

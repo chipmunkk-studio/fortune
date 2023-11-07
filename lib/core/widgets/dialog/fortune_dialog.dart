@@ -8,6 +8,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
@@ -20,7 +21,7 @@ class FortuneDialogService {
   bool _isDialogShowing = false;
   final _sClient = Supabase.instance.client;
 
-  Future<void> showErrorDialog(
+  Future<void> showAppErrorDialog(
     BuildContext context,
     FortuneFailure error, {
     Function0? btnOkOnPress,
@@ -44,6 +45,43 @@ class FortuneDialogService {
                 router.navigateTo(
                   context,
                   "${AppRoutes.loginRoute}/:${LoginUserState.needToLogin}",
+                  clearStack: true,
+                  replace: false,
+                );
+              }
+            } else {
+              _isDialogShowing = false;
+              btnOkOnPress?.call();
+            }
+          },
+      needToFinish,
+    ).show();
+  }
+
+  Future<void> showWebErrorDialog(
+    BuildContext context,
+    FortuneFailure error, {
+    Function0? btnOkOnPress,
+    bool needToFinish = true,
+  }) async {
+    if (_isDialogShowing) return;
+    _isDialogShowing = true;
+
+    final router = serviceLocator<FortuneWebRouter>().router;
+
+    _fortuneErrorDialog(
+      context,
+      error,
+      btnOkOnPress ??
+          () {
+            if (error is AuthFailure) {
+              _isDialogShowing = false;
+              // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
+              if (needToFinish) {
+                _sClient.auth.signOut();
+                router.navigateTo(
+                  context,
+                  WebRoutes.loginRoute,
                   clearStack: true,
                   replace: false,
                 );

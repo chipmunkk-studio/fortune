@@ -64,7 +64,11 @@ class _WebLoginPageState extends State<_WebLoginPage> {
     return BlocSideEffectListener<WebLoginBloc, WebLoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is WebLoginError) {
-          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService.showWebErrorDialog(
+            context,
+            sideEffect.error,
+            needToFinish: false,
+          );
         } else if (sideEffect is WebLoginShowTermsBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,
@@ -74,7 +78,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
             _bloc.add(WebLoginRequestVerifyCode());
           }
         } else if (sideEffect is WebLoginShowVerifyCodeBottomSheet) {
-          final result = await context.showBottomSheet(
+          await context.showBottomSheet(
             isDismissible: false,
             content: (context) => WebVerifyCodeBottomSheet(
               email: sideEffect.email,

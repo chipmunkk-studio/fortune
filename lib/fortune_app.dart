@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
-import 'package:fortune/core/util/platform.dart';
 import 'package:fortune/di.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -13,10 +12,12 @@ import 'core/util/theme.dart';
 
 class FortuneApp extends StatelessWidget {
   final String startRoute;
+  final bool isWebInApp;
 
   const FortuneApp({
     super.key,
     required this.startRoute,
+    required this.isWebInApp,
   });
 
   @override
@@ -24,7 +25,7 @@ class FortuneApp extends StatelessWidget {
     return Center(
       child: Container(
         color: ColorName.grey900,
-        width: PlatformDetails().isDesktop ? 480 : null,
+        width: isWebInApp ? null : 640,
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
           splitScreenMode: false,
@@ -76,5 +77,4 @@ class FortuneApp extends StatelessWidget {
       return serviceLocator<FortuneAppRouter>().router.generator;
     }
   }
-
 }

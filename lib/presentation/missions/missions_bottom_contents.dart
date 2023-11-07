@@ -55,7 +55,7 @@ class _MissionsBottomContentsState extends State<_MissionsBottomContents> {
     return BlocSideEffectListener<MissionsBloc, MissionsSideEffect>(
       listener: (BuildContext context, MissionsSideEffect sideEffect) {
         if (sideEffect is MissionsError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<MissionsBloc, MissionsState>(

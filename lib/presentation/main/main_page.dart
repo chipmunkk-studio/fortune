@@ -195,7 +195,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             },
           );
         } else if (sideEffect is MainError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
           if (sideEffect.error is NetworkFailure) {
             _bloc.add(Main());
           }

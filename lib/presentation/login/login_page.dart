@@ -70,7 +70,7 @@ class _LoginPageState extends State<_LoginPage> {
     return BlocSideEffectListener<LoginBloc, LoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is LoginError) {
-          dialogService.showErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService.showAppErrorDialog(context, sideEffect.error, needToFinish: false);
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,

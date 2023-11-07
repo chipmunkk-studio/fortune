@@ -57,7 +57,7 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
     return BlocSideEffectListener<MyIngredientsBloc, MyIngredientsSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is MyIngredientsError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<MyIngredientsBloc, MyIngredientsState>(

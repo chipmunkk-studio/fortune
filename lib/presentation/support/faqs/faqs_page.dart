@@ -57,7 +57,7 @@ class _FaqPageState extends State<_FaqPage> {
     return BlocSideEffectListener<FaqsBloc, FaqsSideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is FaqError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<FaqsBloc, FaqsState>(

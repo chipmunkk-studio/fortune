@@ -26,7 +26,7 @@ class SignUpOrInUseCase implements UseCase1<bool, RequestSignUpParam> {
 
       // 테스트 계정으로 로그인 할 경우.
       if (remoteConfig.testSignInEmail == param.email) {
-        authRepository.signInWithEmailWithTest(
+        await authRepository.signInWithEmailWithTest(
           email: remoteConfig.testSignInEmail,
           password: remoteConfig.testSignInPassword,
           isRegistered: user != null,

@@ -55,7 +55,7 @@ class _PrivacyPolicyPageState extends State<_PrivacyPolicyPage> {
     return BlocSideEffectListener<PrivacyPolicyBloc, PrivacyPolicySideEffect>(
       listener: (context, sideEffect) {
         if (sideEffect is PrivacyPolicyError) {
-          dialogService.showErrorDialog(context, sideEffect.error);
+          dialogService.showAppErrorDialog(context, sideEffect.error);
         }
       },
       child: BlocBuilder<PrivacyPolicyBloc, PrivacyPolicyState>(
