@@ -33,7 +33,7 @@ dependencies:
   google_mobile_ads: ^3.1.0
   upgrader: ^8.2.0
   google_fonts: ^6.1.0
-  webview_flutter: ^4.4.1
+  flutter_inappwebview: ^5.8.0
   flutter_cache_manager: ^3.3.1
   url_launcher: ^6.2.1
   device_info_plus: ^9.1.0
