@@ -25,7 +25,7 @@ class FortuneApp extends StatelessWidget {
     return Center(
       child: Container(
         color: ColorName.grey900,
-        width: isWebInApp ? null : 640,
+        width: isWebInApp ? null : 690,
         child: ScreenUtilInit(
           designSize: const Size(390, 844),
           splitScreenMode: false,

@@ -101,88 +101,75 @@ class _WebLoginPageState extends State<_WebLoginPage> {
       },
       child: BlocBuilder<WebLoginBloc, WebLoginState>(
         builder: (context, state) {
-          return KeyboardVisibilityBuilder(
-            builder: (BuildContext context, bool isKeyboardVisible) {
-              return Scaffold(
-                appBar: FortuneCustomAppBar.leadingAppBar(
-                  context,
-                  leadingIcon: Assets.icons.icWebCi.svg(),
-                  onPressed: () async {
-                    await requestWebUrl(
-                      command: FortuneWebCommandClose(
-                        sample: '테스트',
-                      ),
-                      queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+          return Scaffold(
+            appBar: FortuneCustomAppBar.leadingAppBar(
+              context,
+              leadingIcon: Assets.icons.icWebCi.svg(),
+              onPressed: () async {
+                await requestWebUrl(
+                  command: FortuneWebCommandClose(
+                    sample: '테스트',
+                  ),
+                  queryParams: FortuneWebQueryParam(testData: '테스트데이터').toJson(),
+                );
+              },
+            ),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 28),
+                        // 로그인 상태.
+                        BlocBuilder<WebLoginBloc, WebLoginState>(
+                          buildWhen: (previous, current) => previous.email != current.email,
+                          builder: (context, state) {
+                            return WebLoginEmailInputField(
+                              email: state.email,
+                              emailController: _phoneNumberController,
+                              onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        FortuneTextButton(
+                          onPress: () async {
+                            requestWebUrl(
+                              command: FortuneWebCommandNewPage(
+                                url: 'https://www.naver.com',
+                              ),
+                            );
+                          },
+                          text: '네이버(현재창 - 웹뷰)',
+                        ),
+                        FortuneTextButton(
+                          onPress: () async {
+                            webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
+                          },
+                          text: '개인정보처리방침',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                BlocBuilder<WebLoginBloc, WebLoginState>(
+                  buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
+                  builder: (context, state) {
+                    return WebLoginButton(
+                      text: FortuneTr.msgVerifyYourself,
+                      isKeyboardVisible: false,
+                      isEnabled: state.isButtonEnabled,
+                      onPressed: () {
+                        _bloc.add(WebLoginBottomButtonClick());
+                      },
                     );
                   },
                 ),
-                body: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 28),
-                            // 로그인 상태.
-                            BlocBuilder<WebLoginBloc, WebLoginState>(
-                              buildWhen: (previous, current) => previous.email != current.email,
-                              builder: (context, state) {
-                                return WebLoginEmailInputField(
-                                  email: state.email,
-                                  emailController: _phoneNumberController,
-                                  onTextChanged: (text) => _bloc.add(WebLoginEmailInput(text)),
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            FortuneTextButton(
-                              onPress: () async {
-                                requestWebUrl(
-                                  command: FortuneWebCommandNewPage(
-                                    url: 'https://www.naver.com',
-                                  ),
-                                );
-                              },
-                              text: '네이버(현재창 - 웹뷰)',
-                            ),
-                            FortuneTextButton(
-                              onPress: () async {
-                                webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
-                              },
-                              text: '개인정보처리방침',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 100),
-                      padding: EdgeInsets.only(
-                        left: isKeyboardVisible ? 0 : 20,
-                        right: isKeyboardVisible ? 0 : 20,
-                        bottom: isKeyboardVisible ? 0 : 20,
-                      ),
-                      curve: Curves.easeInOut,
-                      child: BlocBuilder<WebLoginBloc, WebLoginState>(
-                        buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                        builder: (context, state) {
-                          return WebLoginButton(
-                            text: FortuneTr.msgVerifyYourself,
-                            isKeyboardVisible: isKeyboardVisible,
-                            isEnabled: state.isButtonEnabled,
-                            onPressed: () {
-                              _bloc.add(WebLoginBottomButtonClick());
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
+              ],
+            ),
           );
         },
       ),
