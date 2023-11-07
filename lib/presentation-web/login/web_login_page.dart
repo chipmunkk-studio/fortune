@@ -99,7 +99,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
         builder: (context, state) {
           return KeyboardVisibilityBuilder(
             builder: (BuildContext context, bool isKeyboardVisible) {
-              return FortuneScaffold(
+              return Scaffold(
                 appBar: FortuneCustomAppBar.leadingAppBar(
                   context,
                   leadingIcon: Assets.icons.icWebCi.svg(),
@@ -112,10 +112,11 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                     );
                   },
                 ),
-                child: Column(
+                body: Column(
                   children: <Widget>[
                     Expanded(
-                      child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
