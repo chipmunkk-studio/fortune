@@ -160,7 +160,7 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                   builder: (context, state) {
                     return WebLoginButton(
                       text: FortuneTr.msgVerifyYourself,
-                      isKeyboardVisible: false,
+                      isKeyboardVisible: true,
                       isEnabled: state.isButtonEnabled,
                       onPressed: () {
                         _bloc.add(WebLoginBottomButtonClick());
