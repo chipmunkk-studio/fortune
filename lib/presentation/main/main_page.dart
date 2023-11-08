@@ -313,23 +313,23 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                   ),
                 ),
-                // Positioned(
-                //   bottom: 16,
-                //   left: 16,
-                //   child: Bounceable(
-                //     onTap: _onCommunityClick,
-                //     child: Container(
-                //       decoration: BoxDecoration(
-                //         color: ColorName.secondary,
-                //         borderRadius: BorderRadius.circular(50.r),
-                //       ),
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(16.0),
-                //         child: Assets.icons.icGift.svg(),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  child: Bounceable(
+                    onTap: _onCommunityClick,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorName.secondary,
+                        borderRadius: BorderRadius.circular(50.r),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Assets.icons.icGift.svg(),
+                      ),
+                    ),
+                  ),
+                ),
                 AddToCartAnimation(
                   cartKey: _cartKey,
                   opacity: 0.85,

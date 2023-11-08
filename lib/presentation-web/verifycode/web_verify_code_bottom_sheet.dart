@@ -114,7 +114,7 @@ class _WebVerifyCodeBottomSheetState extends State<_WebVerifyCodeBottomSheet> {
                 buildWhen: (previous, current) => previous.isConfirmEnable != current.isConfirmEnable,
                 builder: (context, state) {
                   return FortuneBottomButton(
-                    isKeyboardVisible: false,
+                    isKeyboardVisible: true,
                     isEnabled: state.isConfirmEnable && !state.isLoginProcessing,
                     onPress: () => _bloc.add(WebVerifyConfirm()),
                     text: FortuneTr.confirm,

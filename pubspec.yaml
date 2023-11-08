@@ -39,6 +39,7 @@ dependencies:
   device_info_plus: ^9.1.0
   flutter_image_compress: ^2.1.0
   websafe_svg: ^3.0.1+1
+  flutter_quill: ^8.2.6
 
   # ui
   cupertino_icons: ^1.0.6

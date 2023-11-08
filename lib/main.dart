@@ -29,7 +29,7 @@ main() {
           ? await authService.recoverWebSession()
           : await authService.recoverAppSession(remoteMessageData: remoteMessageData);
 
-      final isWebInApp = serviceLocator<Environment>().source == 'app';
+      final isWebInApp = serviceLocator<Environment>().isWebInApp;
 
       runApp(
         EasyLocalization(

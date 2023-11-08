@@ -126,6 +126,9 @@ class Environment {
 
   bool get isDebuggable => buildType == BuildType.dev;
 
+  // 앱에서 업로드 된 웹인 경우.
+  bool get isWebInApp => source == 'app';
+
   init(bool kIsWeb) async {
     /// 빌드 타입.
     buildType = () {
