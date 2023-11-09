@@ -12,7 +12,7 @@ class FortuneWebRouter {
 
   static Handler webMainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return const WebMainPage();
+      return WebMainPage();
     },
   );
 

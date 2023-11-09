@@ -109,6 +109,7 @@ abstract class FortuneTr {
   static final msgNewGradeReached = tr('msgNewGradeReached');
   static final msgGradeChangeNotice = tr('msgGradeChangeNotice');
   static final msgCurrentGradePrefix = tr('msgCurrentGradePrefix');
+  static final msgNoAdsAvailable = tr('msgNoAdsAvailable');
   static final msgUnlimited = tr('msgUnlimited');
   static final msgCurrentGradeSuffix = tr('msgCurrentGradeSuffix');
   static final msgRewardPreparation = tr('msgRewardPreparation');

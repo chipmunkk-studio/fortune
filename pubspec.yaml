@@ -9,7 +9,7 @@ description: fortune flutter
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
-version: 1.4.0+22
+version: 1.4.1+23
 
 # 3.0.0 이상을 지원하면서, 4.0.0미만에 버전도 작동하도록 함
 environment:
@@ -39,6 +39,7 @@ dependencies:
   device_info_plus: ^9.1.0
   flutter_image_compress: ^2.1.0
   websafe_svg: ^3.0.1+1
+  flutter_quill: ^8.2.6
 
   # ui
   cupertino_icons: ^1.0.6
