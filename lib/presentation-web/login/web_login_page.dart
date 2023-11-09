@@ -135,22 +135,6 @@ class _WebLoginPageState extends State<_WebLoginPage> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        FortuneTextButton(
-                          onPress: () async {
-                            requestWebUrl(
-                              command: FortuneWebCommandNewPage(
-                                url: 'https://www.naver.com',
-                              ),
-                            );
-                          },
-                          text: '네이버(현재창 - 웹뷰)',
-                        ),
-                        FortuneTextButton(
-                          onPress: () async {
-                            webRouter.navigateTo(context, WebRoutes.privacyPolicyRoutes);
-                          },
-                          text: '개인정보처리방침',
-                        ),
                       ],
                     ),
                   ),
