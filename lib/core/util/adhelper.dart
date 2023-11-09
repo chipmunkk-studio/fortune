@@ -12,7 +12,7 @@ class AdHelper {
     'ios': {
       'banner': kReleaseMode ? 'ca-app-pub-8638803250596668/8868042637' : 'ca-app-pub-3940256099942544/2934735716',
       'interstitial': '<YOUR_IOS_INTERSTITIAL_AD_UNIT_ID>',
-      'rewarded': kReleaseMode ? 'ca-app-pub-8638803250596668/3666280902' : 'ca-app-pub-3940256099942544/1712485313',
+      'rewarded': kReleaseMode ? 'ca-app-pub-8638803250596668/4990925070' : 'ca-app-pub-3940256099942544/1712485313',
     }
   };
 
