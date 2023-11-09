@@ -16,6 +16,7 @@
   "msgNotUpdateUser": "사용자를 업데이트할 수 없습니다",
   "msgRenewAuthInfo": "인증정보를 갱신합니다",
   "msgConfirmNetworkConnection": "네트워크 연결 상태를 확인해주세요",
+  "msgNoAdsAvailable": "현재 노출 할 수 없는 광고가 없습니다",
   "msgRecentNotifications": "최근 30일 동안의 알림만 표시합니다.",
   "msgNoNotifications": "알림이 없습니다",
   "msgRewardCompleted": "이미 보상 완료된 리워드입니다",
