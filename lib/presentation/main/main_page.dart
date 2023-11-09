@@ -618,6 +618,20 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         );
         if (markerActionResult) {
           _bloc.add(MainMarkerObtain(data: data, key: globalKey));
+        } else {
+          _fToast.showToast(
+            child: fortuneToastContent(
+              icon: Assets.icons.icWarningCircle24.svg(),
+              content: FortuneTr.msgNoAdsAvailable,
+            ),
+            positionedToastBuilder: (context, child) => Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: child,
+            ),
+            toastDuration: const Duration(seconds: 2),
+          );
         }
       },
     );

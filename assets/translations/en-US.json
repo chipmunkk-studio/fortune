@@ -23,6 +23,7 @@
   "msgCompletedMissions": "Missions Completed So Far",
   "msgRecentNotifications": "Notifications from the last 30 days are displayed.",
   "msgVerifyCode": "Please enter the verification code.",
+  "msgNoAdsAvailable": "No ads available to display currently.",
   "msgConfirmNetworkConnection": "Check your internet connection.",
   "msgReceiveRewardCompleted": "Reward Completed",
   "msgInputNickNameNotValid": "Nicknames can only be up to 12 characters without spaces",

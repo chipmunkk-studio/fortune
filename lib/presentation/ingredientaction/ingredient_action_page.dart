@@ -54,9 +54,7 @@ class IngredientActionPage extends StatelessWidget {
 }
 
 class _IngredientActionPage extends StatefulWidget {
-  const _IngredientActionPage({
-    Key? key,
-  }) : super(key: key);
+  const _IngredientActionPage();
 
   @override
   State<_IngredientActionPage> createState() => _IngredientActionPageState();
@@ -98,18 +96,20 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                     },
                   );
                 } else {
-                  _bloc.add(IngredientActionShowAdCounting());
+                  _mixpanelTracker.trackEvent('광고 없음 #1', properties: {
+                    'email': sideEffect.param.user?.email,
+                  });
+                  _router.pop(context, false);
                 }
               } catch (e) {
-                _mixpanelTracker.trackEvent('광고 없음', properties: {
+                _mixpanelTracker.trackEvent('광고 없음 #2', properties: {
                   'email': sideEffect.param.user?.email,
                 });
-                FortuneLogger.info("#2 광고 없음: $e");
-                _router.pop(context, true);
+                _router.pop(context, false);
               }
               break;
             default:
-              _router.pop(context, true);
+              _router.pop(context, false);
           }
         } else if (sideEffect is IngredientAdShowComplete) {
           _router.pop(context, true);
