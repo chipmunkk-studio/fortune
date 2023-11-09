@@ -113,7 +113,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
               }
               break;
             default:
-              _router.pop(context, false);
+              _router.pop(context, true);
           }
         } else if (sideEffect is IngredientAdShowComplete) {
           _router.pop(context, true);
