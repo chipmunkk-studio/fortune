@@ -85,21 +85,25 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
             case IngredientType.coin:
               FortuneLogger.info("ad: ${sideEffect.param.ad}, isShowAd: ${sideEffect.param.isShowAd}");
               try {
-                if (ad != null && sideEffect.param.isShowAd) {
-                  ad.show(
-                    onUserEarnedReward: (_, reward) {
-                      _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
-                        'email': sideEffect.param.user?.email,
-                      });
-                      FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
-                      _bloc.add(IngredientActionShowAdCounting());
-                    },
-                  );
+                if (sideEffect.param.isShowAd) {
+                  if (ad != null) {
+                    ad.show(
+                      onUserEarnedReward: (_, reward) {
+                        _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
+                          'email': sideEffect.param.user?.email,
+                        });
+                        FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
+                        _bloc.add(IngredientActionShowAdCounting());
+                      },
+                    );
+                  } else {
+                    _mixpanelTracker.trackEvent('광고 없음 #1', properties: {
+                      'email': sideEffect.param.user?.email,
+                    });
+                    _router.pop(context, false);
+                  }
                 } else {
-                  _mixpanelTracker.trackEvent('광고 없음 #1', properties: {
-                    'email': sideEffect.param.user?.email,
-                  });
-                  _router.pop(context, false);
+                  _bloc.add(IngredientActionShowAdCounting());
                 }
               } catch (e) {
                 _mixpanelTracker.trackEvent('광고 없음 #2', properties: {
