@@ -36,6 +36,7 @@ enum EnvKey {
   testSignInEmail,
   testSignInPassword,
   mapType,
+  adRequestIntervalTime,
 }
 
 enum MapType {
@@ -68,6 +69,7 @@ class FortuneRemoteConfig {
   final int markerCount;
   final int ticketCount;
   final MapType mapType;
+  final int adRequestIntervalTime;
 
   FortuneRemoteConfig({
     required this.baseUrl,
@@ -84,6 +86,7 @@ class FortuneRemoteConfig {
     required this.testSignInPassword,
     required this.refreshTime,
     required this.mapType,
+    required this.adRequestIntervalTime,
   });
 
   @override
@@ -101,6 +104,7 @@ class FortuneRemoteConfig {
         "markerCount: $markerCount\n"
         "randomDistance: $randomDistance\n"
         "mapType: $mapType\n"
+        "adRequestIntervalTime: $adRequestIntervalTime\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
@@ -201,6 +205,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final testSignInPassword = remoteConfig.getString(describeEnum(EnvKey.testSignInPassword));
     final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
     final mapType = remoteConfig.getString(describeEnum(EnvKey.mapType)).toMapType();
+    final adRequestIntervalTime = remoteConfig.getInt(describeEnum(EnvKey.adRequestIntervalTime));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
@@ -238,6 +243,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       ticketCount: ticketCount,
       testSignInEmail: testSignInEmail,
       testSignInPassword: testSignInPassword,
+      adRequestIntervalTime: adRequestIntervalTime,
       mapType: mapType,
     );
   } catch (e) {

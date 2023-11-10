@@ -94,7 +94,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     });
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
-    _loadRewardedAd();
+    _loadRewardedAd(_remoteConfig.adRequestIntervalTime);
     _listeningLocationChange();
   }
 
@@ -552,7 +552,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
 // 광고 로드
-  void _loadRewardedAd() async {
+  void _loadRewardedAd(int adRequestIntervalTime) async {
     try {
       RewardedAd.load(
         adUnitId: AdHelper.rewardedAdUnitId,
@@ -562,16 +562,21 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             ad.fullScreenContentCallback = FullScreenContentCallback(
               onAdDismissedFullScreenContent: (ad) {
                 ad.dispose();
-                _loadRewardedAd();
+                _loadRewardedAd(adRequestIntervalTime);
               },
             );
             FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
-          onAdFailedToLoad: (err) {
-            FortuneLogger.error(message: "광고 로딩 실패 #1");
-            _loadRewardedAd();
-            _bloc.add(MainSetRewardAd(null));
+          onAdFailedToLoad: (err) async {
+            try {
+              FortuneLogger.error(message: "광고 로딩 실패 #1");
+              await Future.delayed(Duration(milliseconds: adRequestIntervalTime));
+              _loadRewardedAd(adRequestIntervalTime);
+              _bloc.add(MainSetRewardAd(null));
+            } catch (e) {
+              _bloc.add(MainSetRewardAd(null));
+            }
           },
         ),
       );
