@@ -35,6 +35,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
@@ -565,6 +566,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 _loadRewardedAd(adRequestIntervalTime);
               },
             );
+            // todo 나중에 뺴야 됨.
+            _tracker.trackEvent('광고 로딩 성공', properties: {
+              'email': Supabase.instance.client.auth.currentUser?.email,
+              'os': Platform.isIOS ? 'IOS' : 'AOS'
+            });
             FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
