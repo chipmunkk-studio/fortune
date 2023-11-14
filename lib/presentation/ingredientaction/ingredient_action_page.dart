@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
@@ -83,34 +82,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
           final ad = sideEffect.param.ad;
           switch (ingredient.type) {
             case IngredientType.coin:
-              FortuneLogger.info("ad: ${sideEffect.param.ad}, isShowAd: ${sideEffect.param.isShowAd}");
-              try {
-                if (sideEffect.param.isShowAd) {
-                  if (ad != null) {
-                    ad.show(
-                      onUserEarnedReward: (_, reward) {
-                        _mixpanelTracker.trackEvent('광고 보기 완료', properties: {
-                          'email': sideEffect.param.user?.email,
-                        });
-                        FortuneLogger.info("#1 광고 보기 완료: ${reward.type}, ${reward.amount}");
-                        _bloc.add(IngredientActionShowAdCounting());
-                      },
-                    );
-                  } else {
-                    _mixpanelTracker.trackEvent('광고 없음 #1', properties: {
-                      'email': sideEffect.param.user?.email,
-                    });
-                    _router.pop(context, false);
-                  }
-                } else {
-                  _bloc.add(IngredientActionShowAdCounting());
-                }
-              } catch (e) {
-                _mixpanelTracker.trackEvent('광고 없음 #2', properties: {
-                  'email': sideEffect.param.user?.email,
-                });
-                _router.pop(context, false);
-              }
+              handleAdDisplay(sideEffect);
               break;
             default:
               _router.pop(context, true);
@@ -151,5 +123,37 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
       default:
         return Container(color: Colors.black.withOpacity(0.5));
     }
+  }
+
+  void handleAdDisplay(IngredientProcessAction sideEffect) {
+    if (!sideEffect.param.isShowAd) {
+      _bloc.add(IngredientActionShowAdCounting());
+      return;
+    }
+
+    try {
+      showAdIfNeeded(sideEffect.param);
+    } catch (e) {
+      _noAdsAction();
+    }
+  }
+
+  void showAdIfNeeded(IngredientActionParam param) {
+    if (param.ad == null) {
+      _noAdsAction();
+      return;
+    }
+
+    param.ad?.show(
+      onUserEarnedReward: (_, reward) {
+        _mixpanelTracker.trackEvent('광고 보기 완료');
+        _bloc.add(IngredientActionShowAdCounting());
+      },
+    );
+  }
+
+  void _noAdsAction() {
+    _mixpanelTracker.trackEvent('광고 없음');
+    _router.pop(context, false);
   }
 }

@@ -33,6 +33,8 @@ target 'Runner' do
   use_modular_headers!
 
   pod 'GoogleMobileAdsMediationFacebook'
+  pod 'GoogleMobileAdsMediationAppLovin'
+  pod 'GoogleMobileAdsMediationChartboost'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
