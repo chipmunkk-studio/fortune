@@ -137,9 +137,9 @@ class MissionNormalCard extends StatelessWidget {
                     animation: true,
                     lineHeight: 12,
                     animationDuration: 2000,
-                    percent: item.userHaveCount / item.requiredTotalCount > 1
+                    percent: item.satisfiedCount / item.totalConditionSize > 1
                         ? 1
-                        : item.userHaveCount / item.requiredTotalCount,
+                        : item.satisfiedCount / item.totalConditionSize,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
                     backgroundColor: ColorName.grey500,
@@ -151,11 +151,11 @@ class MissionNormalCard extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "${item.userHaveCount}",
+                        text: "${item.satisfiedCount}",
                         style: FortuneTextStyle.caption1SemiBold(color: ColorName.primary),
                       ),
                       TextSpan(
-                        text: "/${item.requiredTotalCount}",
+                        text: "/${item.totalConditionSize}",
                         style: FortuneTextStyle.caption2Regular(color: ColorName.grey400),
                       ),
                     ],

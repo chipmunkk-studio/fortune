@@ -103,6 +103,7 @@ import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_app_update.dart';
 import 'domain/supabase/usecase/get_country_info_use_case.dart';
+import 'domain/supabase/usecase/get_ingredients_by_type_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
 import 'domain/supabase/usecase/get_missions_use_case.dart';
@@ -553,6 +554,11 @@ _initUseCase() async {
         repository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<GetIngredientsByTypeUseCase>(
+      () => GetIngredientsByTypeUseCase(
+        ingredientRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<MainUseCase>(
       () => MainUseCase(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
@@ -664,6 +670,7 @@ _initAppBloc() {
     ..registerFactory(
       () => IngredientActionBloc(
         setShowAdUseCase: serviceLocator(),
+        getIngredientsByTypeUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

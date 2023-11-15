@@ -15,7 +15,13 @@ enum IngredientType {
   unique, // 레벨 업 시
   epic, // 등급 업.
   rare, // 릴레이 미션.
+  randomNormal, // 랜덤(노말)
   special, // 서버 컨트롤.
+}
+
+enum IngredientPlayType {
+  webp,
+  lottie,
 }
 
 enum AlarmFeedType {
@@ -53,6 +59,18 @@ getIngredientType(String? type) {
     return IngredientType.epic;
   } else if (IngredientType.special.name == type) {
     return IngredientType.special;
+  } else if (IngredientType.randomNormal.name == type) {
+    return IngredientType.randomNormal;
+  } else {
+    return IngredientType.none;
+  }
+}
+
+getIngredientPlayType(String? type) {
+  if (IngredientPlayType.webp.name == type) {
+    return IngredientPlayType.webp;
+  } else if (IngredientPlayType.lottie.name == type) {
+    return IngredientPlayType.lottie;
   } else {
     return IngredientType.none;
   }

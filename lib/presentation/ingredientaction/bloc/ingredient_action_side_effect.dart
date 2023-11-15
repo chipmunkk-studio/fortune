@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 
 @immutable
 abstract class IngredientActionSideEffect extends Equatable {}
@@ -25,7 +26,13 @@ class IngredientProcessAction extends IngredientActionSideEffect {
 }
 
 class IngredientAdShowComplete extends IngredientActionSideEffect {
-  IngredientAdShowComplete();
+  final IngredientEntity ingredient;
+  final bool result;
+
+  IngredientAdShowComplete({
+    required this.ingredient,
+    required this.result,
+  });
 
   @override
   List<Object?> get props => [];

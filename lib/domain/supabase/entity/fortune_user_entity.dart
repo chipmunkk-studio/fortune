@@ -1,9 +1,13 @@
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'fortune_user_next_level_entity.dart';
 
+part 'fortune_user_entity.g.dart';
+
+@JsonSerializable(ignoreUnannotated: false)
 class FortuneUserEntity {
   final int id;
   final String email;
@@ -33,6 +37,10 @@ class FortuneUserEntity {
     required this.createdAt,
   })  : nextLevelInfo = calculateLevelInfo(markerObtainCount),
         grade = getUserGradeIconInfo(assignGrade(level));
+
+  factory FortuneUserEntity.fromJson(Map<String, dynamic> json) => _$FortuneUserEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FortuneUserEntityToJson(this);
 
   FortuneUserEntity copyWith({
     int? id,
@@ -79,16 +87,4 @@ class FortuneUserEntity {
       level: 0,
     );
   }
-}
-
-class FortuneUserRankingEntity {
-  final int ticket;
-  final int markerObtainCount;
-  final String createdAt;
-
-  FortuneUserRankingEntity({
-    required this.ticket,
-    required this.markerObtainCount,
-    required this.createdAt,
-  });
 }

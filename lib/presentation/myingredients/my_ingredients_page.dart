@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -112,12 +112,10 @@ class _MyIngredientsPageState extends State<_MyIngredientsPage> {
               borderRadius: BorderRadius.circular(20.r),
               color: ColorName.grey700,
             ),
-            child: FortuneCachedNetworkImage(
+            child: buildIngredientByPlayType(
+              ingredient,
               width: 76.h,
               height: 76.h,
-              imageUrl: ingredient.imageUrl,
-              placeholder: Container(),
-              fit: BoxFit.fill,
             ),
           ),
         ],

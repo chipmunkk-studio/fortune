@@ -42,6 +42,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 유저 정보 가져오기.
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.id,
+        UserColumn.email,
         UserColumn.markerObtainCount,
         UserColumn.level,
         UserColumn.ticket,
@@ -73,7 +74,9 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
           .where(
             (element) =>
                 element.ingredient.type != IngredientType.coin &&
-                (element.ingredient.type == IngredientType.normal || element.ingredient.type == IngredientType.special),
+                (element.ingredient.type == IngredientType.normal ||
+                    element.ingredient.type == IngredientType.randomNormal ||
+                    element.ingredient.type == IngredientType.special),
           )
           .toList();
 
@@ -83,8 +86,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 1;
-      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 1;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
+      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 3;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length

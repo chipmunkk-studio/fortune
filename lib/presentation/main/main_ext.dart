@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/linear_bounce_animation.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../core/widgets/fortune_lottie_widget.dart';
 import 'component/map/main_location_data.dart';
 import 'component/map/main_marker_view.dart';
 
@@ -72,7 +75,6 @@ void generateRandomMarkers({
   double radiusInMeters = 100,
   int numberOfMarkers = 10,
 }) {
-  final List<Marker> markers = [];
   final double radiusInDegrees = radiusInMeters / 111300;
   final rand = math.Random();
 
@@ -90,13 +92,30 @@ void generateRandomMarkers({
     final double foundLatitude = new_x + centerLat;
     final double foundLongitude = y + centerLng;
     FortuneLogger.info("latitude: $foundLatitude, longitude: $foundLongitude");
-    // final Marker marker = Marker(
-    //   markerId: MarkerId(i.toString()),
-    //   position: LatLng(foundLatitude, foundLongitude),
-    // );
-    //
-    // markers.add(marker);
   }
+}
 
-  // 여기서 markers를 GoogleMap에 추가하세요.
+buildIngredientByPlayType(
+  IngredientEntity ingredientEntity, {
+  double? width,
+  double? height,
+  ImageShape? imageShape,
+}) {
+  switch (ingredientEntity.playType) {
+    case IngredientPlayType.lottie:
+      return FortuneLottieWidget(
+        lottieUrl: ingredientEntity.imageUrl,
+        width: width,
+        height: height,
+      );
+    default:
+      return FortuneCachedNetworkImage(
+        width: width,
+        height: height,
+        imageUrl: ingredientEntity.imageUrl,
+        imageShape: imageShape ?? ImageShape.circle,
+        placeholder: Container(),
+        fit: BoxFit.fill,
+      );
+  }
 }

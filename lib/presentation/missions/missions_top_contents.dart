@@ -12,7 +12,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'bloc/missions.dart';
 
 class MissionsTopContents extends StatelessWidget {
-  const MissionsTopContents({Key? key}) : super(key: key);
+  const MissionsTopContents({super.key});
 
   @override
   Widget build(BuildContext context) {

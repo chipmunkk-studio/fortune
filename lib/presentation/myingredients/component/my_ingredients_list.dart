@@ -6,8 +6,8 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/ints.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/my_ingredients_view_entity.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 
 class MyIngredientList extends StatelessWidget {
   final Function1<MyIngredientsViewListEntity, void> onTap;
@@ -41,13 +41,16 @@ class MyIngredientList extends StatelessWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.all(8.h),
-                      decoration: BoxDecoration(color: ColorName.grey700, borderRadius: BorderRadius.circular(16.r)),
-                      child: FortuneCachedNetworkImage(
+                      decoration: BoxDecoration(
+                        color: ColorName.grey700,
+                        borderRadius: BorderRadius.circular(
+                          16.r,
+                        ),
+                      ),
+                      child: buildIngredientByPlayType(
+                        item.ingredient,
                         width: getImageSize(context),
                         height: getImageSize(context),
-                        imageUrl: item.ingredient.imageUrl,
-                        placeholder: Container(),
-                        fit: BoxFit.fill,
                       ),
                     ),
                     Positioned(

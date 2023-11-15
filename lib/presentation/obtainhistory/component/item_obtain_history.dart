@@ -4,9 +4,9 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 
 class ItemObtainHistory extends StatelessWidget {
   final ObtainHistoryContentViewItem item;
@@ -31,18 +31,16 @@ class ItemObtainHistory extends StatelessWidget {
               CustomPaint(
                 painter: SquirclePainter(color: ColorName.grey800),
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(4),
                   child: item.ingredient.imageUrl.isEmpty
                       ? Assets.icons.icLock.svg(
                           width: 24,
                           height: 24,
                         )
-                      : FortuneCachedNetworkImage(
+                      : buildIngredientByPlayType(
+                          item.ingredient,
                           width: 24,
                           height: 24,
-                          imageUrl: item.ingredient.imageUrl,
-                          placeholder: Container(),
-                          fit: BoxFit.fill,
                         ),
                 ),
               ),
