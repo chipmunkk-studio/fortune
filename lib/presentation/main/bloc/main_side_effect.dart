@@ -34,12 +34,12 @@ class MainLocationChangeListenSideEffect extends MainSideEffect {
 class MainMarkerObtainSuccessSideEffect extends MainSideEffect {
   final GlobalKey key;
   final MainLocationData data;
-  final MarkerAnimationType animationType;
+  final bool hasAnimation;
 
   MainMarkerObtainSuccessSideEffect({
     required this.key,
     required this.data,
-    required this.animationType,
+    required this.hasAnimation,
   });
 
   @override
@@ -116,10 +116,4 @@ class MainRotateEffect extends MainSideEffect {
 
   @override
   List<Object?> get props => [];
-}
-
-enum MarkerAnimationType {
-  none,
-  normal,
-  special,
 }

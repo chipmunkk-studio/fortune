@@ -12,7 +12,8 @@ abstract class MarkerRepository {
 
   // 마커 재배치.
   Future<void> reLocateMarker({
-    required MarkerEntity marker,
+    required IngredientEntity ingredient,
+    required int markerId,
     required int userId,
     required LatLng location,
   });

@@ -7,12 +7,12 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed.dart';
 import 'package:fortune/presentation/alarmfeed/component/alarm_feed_skeleton.dart';
 import 'package:fortune/presentation/alarmfeed/component/item_alarm_feed.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -76,14 +76,10 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
             subTitle: FortuneTr.msgAcquiredMarker(reward.ingredients.exposureName),
             btnOkText: FortuneTr.confirm,
             btnOkPressed: () {},
-            topContent: SizedBox.square(
-              dimension: 84,
-              child: FortuneCachedNetworkImage(
-                imageUrl: reward.ingredients.imageUrl,
-                placeholder: Container(),
-                fit: BoxFit.fill,
-                imageShape: ImageShape.circle,
-              ),
+            topContent: buildIngredientByPlayType(
+              reward.ingredients,
+              width: 84,
+              height: 84,
             ),
           );
         }

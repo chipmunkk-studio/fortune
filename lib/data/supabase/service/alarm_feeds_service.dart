@@ -37,6 +37,7 @@ class AlarmFeedsService {
             '${IngredientColumn.krName.name},'
             '${IngredientColumn.id.name},'
             '${IngredientColumn.enName.name},'
+            '${IngredientColumn.playType.name},'
             '${IngredientColumn.imageUrl.name}),'
             '${TableName.alarmRewardInfo}('
             '${AlarmRewardInfoColumn.id.name},'

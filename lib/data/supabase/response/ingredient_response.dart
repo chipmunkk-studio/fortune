@@ -13,6 +13,7 @@ enum IngredientColumn {
   rewardTicket,
   imageUrl,
   distance,
+  playType,
 }
 
 extension IngredientColumnExtension on IngredientColumn {
@@ -32,6 +33,8 @@ extension IngredientColumnExtension on IngredientColumn {
         return 'image_url';
       case IngredientColumn.distance:
         return 'distance';
+      case IngredientColumn.playType:
+        return 'play_type';
     }
   }
 }
@@ -54,6 +57,8 @@ class IngredientResponse extends IngredientEntity {
   final String? desc_;
   @JsonKey(name: 'distance')
   final int? distance_;
+  @JsonKey(name: 'play_type')
+  final String? playType_;
 
   IngredientResponse({
     required this.id_,
@@ -64,6 +69,7 @@ class IngredientResponse extends IngredientEntity {
     required this.rewardTicket_,
     required this.distance_,
     required this.desc_,
+    required this.playType_,
   }) : super(
           id: id_?.toInt() ?? -1,
           exposureName: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
@@ -72,6 +78,7 @@ class IngredientResponse extends IngredientEntity {
           imageUrl: imageUrl_ ?? '',
           rewardTicket: rewardTicket_ ?? 0,
           type: getIngredientType(type_),
+          playType: getIngredientPlayType(playType_),
           distance: distance_ ?? 500,
           desc: desc_ ?? '',
         );

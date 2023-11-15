@@ -44,22 +44,18 @@ class MarkerRepositoryImpl extends MarkerRepository {
   // 마커 랜덤 배치.
   @override
   Future<void> reLocateMarker({
-    required MarkerEntity marker,
+    required IngredientEntity ingredient,
+    required int markerId,
     required int userId,
     required LatLng location,
   }) async {
     try {
-      if (marker.ingredient.type != IngredientType.coin) {
-        final locationMarker = await findMarkerByLocation(
-          latitude: location.latitude,
-          longitude: location.longitude,
-        );
-        /// 중복 획득 가능 하게 함.
-        // if (locationMarker == null) {
-        //   throw CommonFailure(errorMessage: '이미 누군가 마커를 획득 했어요!');
-        // }
-      }
-      await _markerService.reLocateMarker(marker, userId);
+      await _markerService.reLocateMarker(
+        location: location,
+        userId: userId,
+        markerId: markerId,
+        distance: ingredient.distance,
+      );
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }
@@ -77,7 +73,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       // 노말인 마커들만 뿌림.
       final nonTicketAndUniqueIngredients = ingredients
           .where(
-            (ingredient) => ingredient.type == IngredientType.normal,
+            (ingredient) => ingredient.type == IngredientType.normal || ingredient.type == IngredientType.randomNormal,
           )
           .toList();
 

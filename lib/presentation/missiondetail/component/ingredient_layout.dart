@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/painter/squircle_painter.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 
 class IngredientLayout extends StatelessWidget {
   final List<MissionDetailViewItemEntity> _viewItems;
@@ -84,12 +84,10 @@ class IngredientLayout extends StatelessWidget {
                         )
                       : Container(
                           padding: const EdgeInsets.all(16),
-                          child: FortuneCachedNetworkImage(
+                          child: buildIngredientByPlayType(
+                            item.ingredient,
                             width: 68,
                             height: 68,
-                            imageUrl: item.ingredient.imageUrl,
-                            placeholder: Container(),
-                            fit: BoxFit.fill,
                           ),
                         ),
                 ),

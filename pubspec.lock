@@ -441,6 +441,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.1"
+  dotlottie_loader:
+    dependency: "direct main"
+    description:
+      name: dotlottie_loader
+      sha256: "77aad8861b8b85cba8b13aad89c944c881e64927a99f77f34bb8bbfa01af7d36"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   double_back_to_close:
     dependency: "direct main"
     description:

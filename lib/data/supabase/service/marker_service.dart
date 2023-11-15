@@ -71,24 +71,26 @@ class MarkerService {
   }
 
   // 마커 재배치.
-  Future<void> reLocateMarker(
-    MarkerEntity marker,
-    int userId,
-  ) async {
+  Future<void> reLocateMarker({
+    required int markerId,
+    required LatLng location,
+    required int distance,
+    required int userId,
+  }) async {
     try {
-      final ingredient = marker.ingredient;
       final randomLocation = getRandomLocation(
-        marker.latitude,
-        marker.longitude,
-        ingredient.distance,
+        location.latitude,
+        location.longitude,
+        distance,
       );
+      final hitCount = (await findMarkerById(markerId, columnsToSelect: [MarkerColumn.hitCount])).hitCount;
       await update(
-        marker.id,
+        markerId,
         request: RequestMarkerUpdate(
           latitude: randomLocation.latitude,
           longitude: randomLocation.longitude,
           lastObtainUser: userId,
-          hitCount: marker.hitCount + 1,
+          hitCount: hitCount + 1,
         ),
       );
     } catch (e) {
@@ -97,14 +99,16 @@ class MarkerService {
   }
 
   // 아이디로 마커를 찾음.
-  Future<MarkerEntity> findMarkerById(int id) async {
+  Future<MarkerEntity> findMarkerById(
+    int id, {
+    List<MarkerColumn> columnsToSelect = const [],
+  }) async {
     try {
+      final selectColumns = columnsToSelect.map((column) => column.name).toList();
       final List<dynamic> response = await _client
           .from(TableName.markers)
-          .select(
-            fullSelectQuery,
-          )
-          .eq("id", id)
+          .select(selectColumns.isEmpty ? fullSelectQuery : selectColumns.join(","))
+          .eq(MarkerColumn.id.name, id)
           .toSelect();
       if (response.isEmpty) {
         throw CommonFailure(

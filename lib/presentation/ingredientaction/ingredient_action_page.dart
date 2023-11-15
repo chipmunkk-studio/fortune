@@ -11,29 +11,10 @@ import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-class IngredientActionParam {
-  final IngredientEntity ingredient;
-  final RewardedAd? ad;
-  final bool isShowAd;
-  final FortuneUserEntity? user;
-
-  IngredientActionParam({
-    required this.ingredient,
-    required this.ad,
-    required this.isShowAd,
-    required this.user,
-  });
-
-  factory IngredientActionParam.empty() => IngredientActionParam(
-        ingredient: IngredientEntity.empty(),
-        user: FortuneUserEntity.empty(),
-        ad: null,
-        isShowAd: false,
-      );
-}
+import 'ingredient_action_param.dart';
+import 'ingredient_action_response.dart';
 
 class IngredientActionPage extends StatelessWidget {
   final IngredientActionParam param;
@@ -78,17 +59,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
         if (sideEffect is IngredientActionError) {
           dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is IngredientProcessAction) {
-          final ingredient = sideEffect.param.ingredient;
-          final ad = sideEffect.param.ad;
-          switch (ingredient.type) {
-            case IngredientType.coin:
-              handleAdDisplay(sideEffect);
-              break;
-            default:
-              _router.pop(context, true);
-          }
+          _processAction(sideEffect);
         } else if (sideEffect is IngredientAdShowComplete) {
-          _router.pop(context, true);
+          _adShowComplete(sideEffect);
         }
       },
       child: BlocBuilder<IngredientActionBloc, IngredientActionState>(
@@ -134,26 +107,72 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
     try {
       showAdIfNeeded(sideEffect.param);
     } catch (e) {
-      _noAdsAction();
+      _noAdsAction(
+        user: sideEffect.param.user,
+        ingredient: sideEffect.param.ingredient,
+      );
     }
   }
 
   void showAdIfNeeded(IngredientActionParam param) {
     if (param.ad == null) {
-      _noAdsAction();
+      _noAdsAction(
+        user: param.user,
+        ingredient: param.ingredient,
+      );
       return;
     }
-
     param.ad?.show(
       onUserEarnedReward: (_, reward) {
-        _mixpanelTracker.trackEvent('광고 보기 완료');
+        _mixpanelTracker.trackEvent(
+          '광고 보기 완료',
+          properties: param.user?.toJson(),
+        );
         _bloc.add(IngredientActionShowAdCounting());
       },
     );
   }
 
-  void _noAdsAction() {
-    _mixpanelTracker.trackEvent('광고 없음');
-    _router.pop(context, false);
+  void _noAdsAction({
+    required FortuneUserEntity? user,
+    required IngredientEntity ingredient,
+  }) {
+    _mixpanelTracker.trackEvent(
+      '광고 없음',
+      properties: user?.toJson(),
+    );
+    _router.pop(
+      context,
+      IngredientActionResponse(
+        ingredient: ingredient,
+        result: false,
+      ),
+    );
+  }
+
+  _processAction(IngredientProcessAction sideEffect) {
+    switch (sideEffect.param.ingredient.type) {
+      case IngredientType.coin:
+        handleAdDisplay(sideEffect);
+        break;
+      default:
+        _router.pop(
+          context,
+          IngredientActionResponse(
+            ingredient: sideEffect.param.ingredient,
+            result: true,
+          ),
+        );
+    }
+  }
+
+  _adShowComplete(IngredientAdShowComplete sideEffect) {
+    _router.pop(
+      context,
+      IngredientActionResponse(
+        ingredient: sideEffect.ingredient,
+        result: sideEffect.result,
+      ),
+    );
   }
 }
