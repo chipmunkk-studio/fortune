@@ -1,4 +1,3 @@
-
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 
 import 'missions_entity.dart';
@@ -8,6 +7,8 @@ class MissionViewEntity {
   final MarkerEntity relayMarker;
   final int userHaveCount;
   final int requiredTotalCount;
+  final int satisfiedCount;
+  final int totalConditionSize;
   final bool isRelayMissionCleared;
 
   MissionViewEntity({
@@ -15,5 +16,7 @@ class MissionViewEntity {
     required this.relayMarker,
     required this.userHaveCount,
     required this.requiredTotalCount,
-  }): isRelayMissionCleared =  !relayMarker.isEmpty && relayMarker.hitCount == requiredTotalCount;
+    required this.satisfiedCount,
+    required this.totalConditionSize,
+  }) : isRelayMissionCleared = !relayMarker.isEmpty && relayMarker.hitCount == requiredTotalCount;
 }

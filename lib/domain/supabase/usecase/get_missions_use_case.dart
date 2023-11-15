@@ -25,10 +25,13 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final missions = await missionRepository.getAllMissions();
+
       final missionViewItemsFutures = missions.map(
         (e) async {
           // 클리어 조건들을 가져옴.
           final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(e.id);
+          // 조건에 만족 하는 갯수.
+          int satisfiedCount = 0;
 
           // 사용자가 갖고있는 재료의 획득량.
           final userHaveCountFutures = clearConditions.map((e) async {
@@ -36,7 +39,11 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
               userId: user.id,
               ingredientId: e.ingredient.id,
             );
-            return history.length >= e.requireCount ? e.requireCount : history.length;
+            final isSatisfied = history.length >= e.requireCount;
+            if (isSatisfied) {
+              satisfiedCount++;
+            }
+            return isSatisfied ? e.requireCount : history.length;
           }).toList();
 
           // 사용자의 총 획득량.
@@ -49,11 +56,16 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           final relayMarker = (e.type == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
 
           return MissionViewEntity(
-            mission: e,
-            relayMarker: relayMarker,
-            userHaveCount: userHaveCount,
-            requiredTotalCount: requireCount,
-          );
+              mission: e,
+              relayMarker: relayMarker,
+              // 사용자가 가진 총 합.
+              userHaveCount: userHaveCount,
+              // 클리어에 필요한 총 합.
+              requiredTotalCount: requireCount,
+              // 현제 클리어 한 갯수.
+              satisfiedCount: satisfiedCount,
+              // 클리어에 필요한 갯수.
+              totalConditionSize: clearConditions.length);
         },
       );
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
