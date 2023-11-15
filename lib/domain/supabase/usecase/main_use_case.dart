@@ -42,6 +42,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 유저 정보 가져오기.
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.id,
+        UserColumn.email,
         UserColumn.markerObtainCount,
         UserColumn.level,
         UserColumn.ticket,

@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_compass/flutter_compass.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/app_update_view_entity.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_mobile_ads/src/ad_containers.dart';
 
 import '../../../../core/error/fortune_app_failures.dart';
 
@@ -65,11 +66,15 @@ class MainShowObtainDialog extends MainSideEffect {
   final MainLocationData data;
   final GlobalKey key;
   final bool isShowAd;
+  final FortuneUserEntity? user;
+  final RewardedAd? ad;
 
   MainShowObtainDialog({
     required this.data,
     required this.key,
     required this.isShowAd,
+    this.user,
+    this.ad,
   });
 
   @override
