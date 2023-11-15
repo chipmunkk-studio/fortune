@@ -10,6 +10,7 @@ import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/data/supabase/supabase_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/supabase/entity/fortune_user_ranking_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
 class UserService {

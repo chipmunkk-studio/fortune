@@ -25,7 +25,8 @@ import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation-web/fortune_web_ext.dart';
-import 'package:fortune/presentation/ingredientaction/ingredient_action_page.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_response.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
@@ -35,11 +36,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'bloc/main.dart';
-import 'component/map/main_location_data.dart';
 import 'component/map/main_map.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_location_area.dart';
@@ -165,11 +164,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainMarkerObtainSuccessSideEffect) {
           () async {
-            switch (sideEffect.animationType) {
-              case MarkerAnimationType.normal:
-                await _startAnimation(sideEffect.key);
-                break;
-              default:
+            if (sideEffect.hasAnimation) {
+              await _startAnimation(sideEffect.key);
             }
             _fToast.showToast(
               child: fortuneToastContent(
@@ -217,11 +213,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             toastDuration: const Duration(seconds: 2),
           );
         } else if (sideEffect is MainShowObtainDialog) {
-          _showObtainIngredientDialog(
-            sideEffect.data,
-            sideEffect.key,
-            sideEffect.isShowAd,
-          );
+          _showObtainIngredientDialog(sideEffect);
         } else if (sideEffect is MainSchemeLandingPage) {
           _router.navigateTo(
             context,
@@ -566,20 +558,15 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 _loadRewardedAd(adRequestIntervalTime);
               },
             );
-            // todo 나중에 뺴야 됨.
-            _tracker.trackEvent('광고 로딩 성공', properties: {
-              'email': Supabase.instance.client.auth.currentUser?.email,
-              'os': Platform.isIOS ? 'IOS' : 'AOS'
-            });
             FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
           onAdFailedToLoad: (err) async {
             try {
-              FortuneLogger.error(message: "광고 로딩 실패 #1");
               await Future.delayed(Duration(milliseconds: adRequestIntervalTime));
               _loadRewardedAd(adRequestIntervalTime);
               _bloc.add(MainSetRewardAd(null));
+              FortuneLogger.error(message: "광고 로딩 실패 : $err");
             } catch (e) {
               _bloc.add(MainSetRewardAd(null));
             }
@@ -587,23 +574,21 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         ),
       );
     } catch (e) {
-      FortuneLogger.error(message: "광고 로딩 실패 #2");
+      FortuneLogger.error(message: "광고 로딩 실패: $e}");
       _bloc.add(MainSetRewardAd(null));
     }
   }
 
-  _showObtainIngredientDialog(
-    MainLocationData data,
-    GlobalKey globalKey,
-    bool isShowAd,
-  ) {
-    String dialogSubtitle = (data.ingredient.type == IngredientType.coin) && isShowAd
-        ? FortuneTr.msgWatchAd
-        : (data.ingredient.type != IngredientType.coin)
-            ? FortuneTr.msgConsumeCoinToGetMarker(
-                data.ingredient.rewardTicket.abs().toString(),
-              )
-            : FortuneTr.msgAcquireCoin;
+  _showObtainIngredientDialog(MainShowObtainDialog param) {
+    final ingredient = param.data.ingredient;
+
+    String dialogSubtitle = () {
+      if (ingredient.type == IngredientType.coin) {
+        return param.isShowAd ? FortuneTr.msgWatchAd : FortuneTr.msgAcquireCoin;
+      } else {
+        return FortuneTr.msgConsumeCoinToGetMarker(ingredient.rewardTicket.abs().toString());
+      }
+    }();
 
     dialogService.showFortuneDialog(
       context,
@@ -612,43 +597,59 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       btnCancelText: FortuneTr.cancel,
       dismissOnBackKeyPress: true,
       dismissOnTouchOutside: true,
-      onDismissCallback: (type) => _bloc.add(MainScreenFreeze(flag: false, data: data)),
-      btnCancelPressed: () => _bloc.add(MainScreenFreeze(flag: false, data: data)),
-      btnOkPressed: () async {
-        final markerActionResult = await _router.navigateTo(
-          context,
-          AppRoutes.ingredientActionRoute,
-          routeSettings: RouteSettings(
-            arguments: IngredientActionParam(
-              ingredient: data.ingredient,
-              ad: _bloc.state.rewardAd,
-              user: _bloc.state.user,
-              isShowAd: isShowAd,
-            ),
-          ),
-        );
-        if (markerActionResult) {
-          _bloc.add(MainMarkerObtain(data: data, key: globalKey));
-        } else {
-          _fToast.showToast(
-            child: fortuneToastContent(
-              icon: Assets.icons.icWarningCircle24.svg(),
-              content: FortuneTr.msgNoAdsAvailable,
-            ),
-            positionedToastBuilder: (context, child) => Positioned(
-              bottom: 40,
-              left: 0,
-              right: 0,
-              child: child,
-            ),
-            toastDuration: const Duration(seconds: 2),
-          );
-        }
-      },
+      onDismissCallback: (_) => _bloc.add(MainScreenFreeze(flag: false, data: param.data)),
+      btnCancelPressed: () => _bloc.add(MainScreenFreeze(flag: false, data: param.data)),
+      btnOkPressed: () async => _handleOkPressed(context, param),
     );
   }
 
-// 마커 트랜지션.
+  Future<void> _handleOkPressed(
+    BuildContext context,
+    MainShowObtainDialog param,
+  ) async {
+    final IngredientActionResponse response = await _router.navigateTo(
+      context,
+      AppRoutes.ingredientActionRoute,
+      routeSettings: RouteSettings(
+        arguments: IngredientActionParam(
+          ingredient: param.data.ingredient,
+          ad: param.ad,
+          user: param.user,
+          isShowAd: param.isShowAd,
+        ),
+      ),
+    );
+
+    if (response.result) {
+      _bloc.add(
+        MainMarkerObtain(
+          data: param.data.copyWith(ingredient: response.ingredient),
+          key: param.key,
+        ),
+      );
+    } else {
+      _showNoAdsAvailableToast();
+    }
+  }
+
+  // 광고가 없을 경우 토스트 노출.
+  void _showNoAdsAvailableToast() {
+    _fToast.showToast(
+      child: fortuneToastContent(
+        icon: Assets.icons.icWarningCircle24.svg(),
+        content: FortuneTr.msgNoAdsAvailable,
+      ),
+      positionedToastBuilder: (context, child) => Positioned(
+        bottom: 40,
+        left: 0,
+        right: 0,
+        child: child,
+      ),
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  // 마커 트랜지션.
   _startAnimation(GlobalKey key) async {
     try {
       await _runAddToCartAnimation(key);
@@ -658,7 +659,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     }
   }
 
-// 가방 클릭
+  // 가방 클릭
   _onMyBagClick() {
     // 열었을때 중지.
     _locationChangeSubscription.pause();
@@ -674,7 +675,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         );
   }
 
-// 코인 클릭.
+  // 코인 클릭.
   _showCoinDialog() => dialogService.showFortuneDialog(
         context,
         dismissOnTouchOutside: true,
@@ -684,7 +685,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         subTitle: FortuneTr.msgCollectWithCoin,
       );
 
-// 회전감지
+  // 회전감지
   _listenRotate(Position myLocation) {
     _rotateChangeEvent = FlutterCompass.events?.listen((data) {
       _bloc.add(MainMapRotate(data));

@@ -42,6 +42,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
       final ingredient = param.marker.ingredient;
+      final marker = param.marker;
       final currentUser = await userRepository.findUserByEmailNonNull(
         columnsToSelect: [
           UserColumn.id,
@@ -52,7 +53,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
           UserColumn.markerObtainCount,
         ],
       );
-      final marker = await markerRepository.findMarkerById(param.marker.id);
 
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
       final currentTicket = currentUser.ticket;
@@ -64,9 +64,10 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       // 마커 재배치.
       await markerRepository.reLocateMarker(
-        marker: marker,
         userId: currentUser.id,
-        location: param.marker.location,
+        location: marker.location,
+        ingredient: marker.ingredient,
+        markerId: marker.id,
       );
 
       int updatedTicket = currentUser.ticket;
@@ -102,8 +103,8 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
             ingredientId: marker.ingredient.id,
             nickName: currentUser.nickname,
             locationName: param.kLocation,
-            krIngredientName: param.marker.ingredient.krName,
-            enIngredientName: param.marker.ingredient.enName,
+            krIngredientName: marker.ingredient.krName,
+            enIngredientName: marker.ingredient.enName,
           ),
         )
             .then(

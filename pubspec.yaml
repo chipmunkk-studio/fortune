@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   firebase_core: ^2.22.0
   firebase_remote_config: ^4.3.4
-  firebase_analytics: ^10.6.4
+  firebase_analytics: ^10.7.0
   firebase_crashlytics: ^3.4.4
   firebase_messaging: ^14.7.4
   supabase: ^1.11.11
@@ -39,7 +39,7 @@ dependencies:
   device_info_plus: ^9.1.0
   flutter_image_compress: ^2.1.0
   websafe_svg: ^3.0.1+1
-  flutter_quill: ^8.3.0
+  flutter_quill: ^8.5.4
 
   # ui
   cupertino_icons: ^1.0.6
@@ -67,9 +67,10 @@ dependencies:
   carousel_slider: ^4.2.1
   animation_list: ^2.2.1
   confetti: ^0.7.0
-  fluttertoast: ^8.2.3
+  fluttertoast: ^8.2.4
   cached_network_image: ^3.3.0
   universal_html: ^2.2.4
+  dotlottie_loader: ^0.0.3
 
   # map
   flutter_map: ^6.0.1

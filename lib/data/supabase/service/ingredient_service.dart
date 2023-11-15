@@ -26,4 +26,24 @@ class IngredientService {
       throw (e is Exception) ? e.handleException() : e;
     }
   }
+
+  Future<List<IngredientEntity>> findIngredientsByType(IngredientType type) async {
+    try {
+      final List<dynamic> response = await _client
+          .from(_ingredientTableName)
+          .select(
+            "*",
+          )
+          .filter(IngredientColumn.type.name, 'eq', type.name)
+          .toSelect();
+      if (response.isEmpty) {
+        return List.empty();
+      } else {
+        final ingredients = response.map((e) => IngredientResponse.fromJson(e)).toList();
+        return ingredients;
+      }
+    } catch (e) {
+      throw (e is Exception) ? e.handleException() : e;
+    }
+  }
 }

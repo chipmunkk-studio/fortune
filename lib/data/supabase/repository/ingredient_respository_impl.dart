@@ -56,4 +56,14 @@ class IngredientRepositoryImpl extends IngredientRepository {
       throw e.handleFortuneFailure();
     }
   }
+
+  @override
+  Future<List<IngredientEntity>> findIngredientsByType(IngredientType type) async {
+    try {
+      final List<IngredientEntity> ingredients = await _ingredientService.findIngredientsByType(type);
+      return ingredients;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure();
+    }
+  }
 }

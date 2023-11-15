@@ -18,9 +18,9 @@ class ObtainHistoryPage extends StatelessWidget {
   final String searchText;
 
   const ObtainHistoryPage({
-    Key? key,
+    super.key,
     required this.searchText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ObtainHistoryPage extends StatelessWidget {
 }
 
 class _ObtainHistoryPage extends StatefulWidget {
-  const _ObtainHistoryPage({Key? key}) : super(key: key);
+  const _ObtainHistoryPage();
 
   @override
   State<_ObtainHistoryPage> createState() => _ObtainHistoryPageState();

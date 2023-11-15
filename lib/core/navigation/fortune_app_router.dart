@@ -8,6 +8,7 @@ import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart'
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
 import 'package:fortune/presentation/mymissions/my_missions_page.dart';
 import 'package:fortune/presentation/mypage/my_page.dart';

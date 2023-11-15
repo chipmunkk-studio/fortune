@@ -9,8 +9,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ObtainHistoryService {
   static const _obtainHistoryTableName = "obtain_histories";
-  static const _fullSelectQuery = '*,ingredient(*),user(*)'; // 여기서만 ingredient로 잘못쓰고있음.
-
   final SupabaseClient _client = Supabase.instance.client;
 
   ObtainHistoryService();
@@ -33,7 +31,10 @@ class ObtainHistoryService {
 
       final selectColumns = columnsToSelect.map((column) {
         if (column == ObtainHistoryColumn.ingredient) {
-          return '${ObtainHistoryColumn.ingredient.name}(${IngredientColumn.imageUrl.name})';
+          return '${ObtainHistoryColumn.ingredient.name}('
+              '${IngredientColumn.imageUrl.name},'
+              '${IngredientColumn.playType.name}'
+              ')';
         } else if (column == ObtainHistoryColumn.users) {
           return '${TableName.users}(${UserColumn.nickname.name})';
         }
@@ -72,13 +73,14 @@ class ObtainHistoryService {
   }) async {
     final columnsToSelect = [
       ObtainHistoryColumn.ingredient,
+      ObtainHistoryColumn.createdAt,
     ];
 
     final selectColumns = columnsToSelect.map((column) {
       if (column == ObtainHistoryColumn.ingredient) {
-        return '${ObtainHistoryColumn.createdAt.name},'
-            '${ObtainHistoryColumn.ingredient.name}('
-            '${IngredientColumn.id.name}'
+        return '${ObtainHistoryColumn.ingredient.name}('
+            '${IngredientColumn.id.name},'
+            '${IngredientColumn.playType.name}'
             ')';
       }
       return column.name;
@@ -115,6 +117,7 @@ class ObtainHistoryService {
             '${IngredientColumn.krName.name},'
             '${IngredientColumn.enName.name},'
             '${IngredientColumn.rewardTicket.name},'
+            '${IngredientColumn.playType.name},'
             '${IngredientColumn.type.name}'
             ')';
       }

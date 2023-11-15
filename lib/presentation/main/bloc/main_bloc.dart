@@ -259,6 +259,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         data: data,
         key: event.globalKey,
         isShowAd: isShowAd,
+        user: state.user,
+        ad: state.rewardAd,
       ),
     );
   }
@@ -285,20 +287,13 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           var loc = state.markers.firstWhereOrNull((element) => element.location == event.data.location);
           newList.remove(loc);
 
+          final ingredientType = event.data.ingredient.type;
+
           produceSideEffect(
             MainMarkerObtainSuccessSideEffect(
               key: event.key,
               data: event.data,
-              animationType: () {
-                switch (event.data.ingredient.type) {
-                  case IngredientType.coin:
-                    return MarkerAnimationType.none;
-                  case IngredientType.special:
-                    return MarkerAnimationType.special;
-                  default:
-                    return MarkerAnimationType.normal;
-                }
-              }(),
+              hasAnimation: _hasAnimation(ingredientType),
             ),
           );
 
@@ -375,4 +370,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       ),
     );
   }
+
+  _hasAnimation(IngredientType ingredientType) =>
+      IngredientType.coin != ingredientType && IngredientType.randomNormal != ingredientType;
 }
