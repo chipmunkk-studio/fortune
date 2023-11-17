@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -306,23 +307,24 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                   ),
                 ),
-                // Positioned(
-                //   bottom: 16,
-                //   left: 16,
-                //   child: Bounceable(
-                //     onTap: _onCommunityClick,
-                //     child: Container(
-                //       decoration: BoxDecoration(
-                //         color: ColorName.secondary,
-                //         borderRadius: BorderRadius.circular(50.r),
-                //       ),
-                //       child: Padding(
-                //         padding: const EdgeInsets.all(16.0),
-                //         child: Assets.icons.icGift.svg(),
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                if (!kReleaseMode)
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    child: Bounceable(
+                      onTap: _onCommunityClick,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorName.secondary,
+                          borderRadius: BorderRadius.circular(50.r),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Assets.icons.icGift.svg(),
+                        ),
+                      ),
+                    ),
+                  ),
                 AddToCartAnimation(
                   cartKey: _cartKey,
                   opacity: 0.85,

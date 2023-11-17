@@ -13,3 +13,19 @@ class FortuneWebviewInit extends FortuneWebviewEvent {
   @override
   List<Object?> get props => [];
 }
+
+class FortuneWebviewLoadingComplete extends FortuneWebviewEvent {
+  FortuneWebviewLoadingComplete();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class FortuneWebviewLoading extends FortuneWebviewEvent {
+  final int progress;
+
+  FortuneWebviewLoading(this.progress);
+
+  @override
+  List<Object?> get props => [];
+}
