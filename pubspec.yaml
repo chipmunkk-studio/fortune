@@ -184,6 +184,7 @@ flutter:
     - assets/images/
     - assets/images/onboarding/
     - assets/icons/
+    - assets/lottie/
 
   fonts:
     - family: Pretendard-Light

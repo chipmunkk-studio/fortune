@@ -311,6 +311,16 @@ class $AssetsImagesGen {
   List<dynamic> get values => [icLauncher, ivDefaultProfile, webMain];
 }
 
+class $AssetsLottieGen {
+  const $AssetsLottieGen();
+
+  /// File path: assets/lottie/loading.lottie
+  String get loading => 'assets/lottie/loading.lottie';
+
+  /// List of all assets
+  List<String> get values => [loading];
+}
+
 class $AssetsTranslationsGen {
   const $AssetsTranslationsGen();
 
@@ -349,6 +359,7 @@ class Assets {
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsLottieGen lottie = $AssetsLottieGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }
 

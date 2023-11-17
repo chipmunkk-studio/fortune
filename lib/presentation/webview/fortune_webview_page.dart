@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/widgets/fortune_loading_view.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
@@ -98,13 +99,7 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
             BlocBuilder<FortuneWebviewBloc, FortuneWebviewState>(
               buildWhen: (previous, current) => previous.isLoading != current.isLoading,
               builder: (context, state) {
-                return state.isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                          color: ColorName.primary,
-                        ),
-                      )
-                    : const SizedBox.shrink();
+                return state.isLoading ? const Center(child: FortuneLoadingView()) : const SizedBox.shrink();
               },
             ),
           ],
