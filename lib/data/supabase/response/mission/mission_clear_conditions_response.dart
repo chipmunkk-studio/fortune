@@ -16,6 +16,7 @@ enum MissionClearConditionColumn {
   ingredients,
   markers,
   requireCount,
+  relayCount,
 }
 
 extension MissionClearConditionColumnExtension on MissionClearConditionColumn {
@@ -31,6 +32,8 @@ extension MissionClearConditionColumnExtension on MissionClearConditionColumn {
         return 'markers';
       case MissionClearConditionColumn.requireCount:
         return 'require_count';
+      case MissionClearConditionColumn.relayCount:
+        return 'relay_count';
     }
   }
 }
@@ -47,6 +50,8 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
   final MarkerResponse? markers_;
   @JsonKey(name: 'require_count')
   final double? requireCount_;
+  @JsonKey(name: 'relay_count')
+  final int? relayCount_;
 
   MissionClearConditionResponse({
     required this.id_,
@@ -54,11 +59,13 @@ class MissionClearConditionResponse extends MissionClearConditionEntity {
     required this.requireCount_,
     required this.ingredient_,
     required this.markers_,
+    required this.relayCount_,
   }) : super(
           id: id_?.toInt() ?? -1,
           mission: mission_ ?? MissionsEntity.empty(),
           ingredient: ingredient_ ?? IngredientEntity.empty(),
           requireCount: requireCount_?.toInt() ?? 999,
+          relayCount: relayCount_ ?? 999,
           marker: markers_ ?? MarkerEntity.empty(),
         );
 

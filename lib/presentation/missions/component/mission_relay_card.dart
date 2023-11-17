@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
@@ -22,7 +23,7 @@ class MissionRelayCard extends StatelessWidget {
               topLeft: Radius.circular(24.r),
               topRight: Radius.circular(24.r),
             ),
-            color: ColorName.grey900,
+            color: ColorName.grey700,
           ),
           child: Row(
             children: [
@@ -53,12 +54,12 @@ class MissionRelayCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24.r),
-                            color: ColorName.grey700,
+                            color: ColorName.primary.withOpacity(0.3),
                           ),
                           child: Text(
                             "선착순",
                             style: FortuneTextStyle.caption1SemiBold(
-                              color: Colors.white,
+                              color: ColorName.primary,
                             ),
                           ),
                         ),
@@ -67,12 +68,12 @@ class MissionRelayCard extends StatelessWidget {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "${item.relayMarker.hitCount}",
+                                text: "${item.userHaveCount}(보유한 갯수)",
                                 style: FortuneTextStyle.body3Light(color: Colors.white),
                               ),
                               TextSpan(
-                                text: "/${item.requiredTotalCount} ${item.isRelayMissionCleared}",
-                                style: FortuneTextStyle.body2Semibold(color: ColorName.grey700),
+                                text: "/${item.requiredTotalCount}",
+                                style: FortuneTextStyle.body2Semibold(color: ColorName.grey400),
                               ),
                             ],
                           ),
@@ -83,15 +84,27 @@ class MissionRelayCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              SizedBox.square(
-                dimension: 84,
-                child: ClipOval(
-                  child: FortuneCachedNetworkImage(
-                    imageUrl: item.mission.reward.image,
-                    placeholder: Container(),
-                    fit: BoxFit.fill,
+              FortuneCachedNetworkImage(
+                width: 84,
+                height: 84,
+                imageShape: ImageShape.circle,
+                imageUrl: item.mission.image,
+                placeholder: Container(),
+                errorWidget: Container(
+                  decoration: BoxDecoration(
+                    color: ColorName.grey700,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
+                      width: 1.0, // 원하는 테두리 두께
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Assets.images.ivDefaultProfile.svg(),
                   ),
                 ),
+                fit: BoxFit.fill,
               ),
             ],
           ),
@@ -100,7 +113,7 @@ class MissionRelayCard extends StatelessWidget {
           decoration: const BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: ColorName.grey700,
+                color: ColorName.grey600,
                 width: 0.5,
               ),
             ),
@@ -112,7 +125,7 @@ class MissionRelayCard extends StatelessWidget {
                 bottomLeft: Radius.circular(24.r),
                 bottomRight: Radius.circular(24.r),
               ),
-              color: ColorName.grey900,
+              color: ColorName.grey700,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -123,12 +136,12 @@ class MissionRelayCard extends StatelessWidget {
                     animation: true,
                     lineHeight: 12,
                     animationDuration: 2000,
-                    percent: item.relayMarker.hitCount / item.requiredTotalCount > 1
+                    percent: item.satisfiedCount / item.totalConditionSize > 1
                         ? 1
-                        : item.relayMarker.hitCount / item.requiredTotalCount,
+                        : item.satisfiedCount / item.totalConditionSize,
                     padding: const EdgeInsets.all(0),
                     barRadius: Radius.circular(16.r),
-                    backgroundColor: ColorName.grey700.withOpacity(0.3),
+                    backgroundColor: ColorName.grey400.withOpacity(0.3),
                     progressColor: ColorName.primary,
                   ),
                 ),
@@ -137,12 +150,12 @@ class MissionRelayCard extends StatelessWidget {
                   text: TextSpan(
                     children: [
                       TextSpan(
-                        text: "${item.relayMarker.hitCount}",
+                        text: "${item.satisfiedCount}(요구 갯수)",
                         style: FortuneTextStyle.body3Light(color: ColorName.primary),
                       ),
                       TextSpan(
-                        text: "/${item.requiredTotalCount}",
-                        style: FortuneTextStyle.body3Light(color: ColorName.grey700),
+                        text: "/${item.totalConditionSize}",
+                        style: FortuneTextStyle.body3Light(color: ColorName.grey400),
                       ),
                     ],
                   ),

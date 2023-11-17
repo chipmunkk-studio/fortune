@@ -9,6 +9,7 @@ class MissionClearConditionEntity {
   final IngredientEntity ingredient;
   final MarkerEntity marker;
   final int requireCount;
+  final int relayCount;
 
   MissionClearConditionEntity({
     required this.id,
@@ -16,5 +17,6 @@ class MissionClearConditionEntity {
     required this.marker,
     required this.requireCount,
     required this.ingredient,
+    required this.relayCount,
   });
 }
