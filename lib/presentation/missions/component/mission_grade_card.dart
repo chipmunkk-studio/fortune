@@ -79,29 +79,27 @@ class MissionGradeCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              SizedBox.square(
-                dimension: 84,
-                child: ClipOval(
-                  child: FortuneCachedNetworkImage(
-                    imageUrl: item.mission.image,
-                    placeholder: Container(),
-                    errorWidget: Container(
-                      decoration: BoxDecoration(
-                        color: ColorName.grey700,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
-                          width: 1.0, // 원하는 테두리 두께
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Assets.images.ivDefaultProfile.svg(),
-                      ),
+              FortuneCachedNetworkImage(
+                width: 84,
+                height: 84,
+                imageShape: ImageShape.circle,
+                imageUrl: item.mission.image,
+                placeholder: Container(),
+                errorWidget: Container(
+                  decoration: BoxDecoration(
+                    color: ColorName.grey700,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: ColorName.grey700, // 테두리 색을 빨간색으로 설정
+                      width: 1.0, // 원하는 테두리 두께
                     ),
-                    fit: BoxFit.fill,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Assets.images.ivDefaultProfile.svg(),
                   ),
                 ),
+                fit: BoxFit.fill,
               ),
             ],
           ),

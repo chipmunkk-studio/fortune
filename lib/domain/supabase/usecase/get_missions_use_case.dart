@@ -43,7 +43,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
             if (isSatisfied) {
               satisfiedCount++;
             }
-            return isSatisfied ? e.requireCount : history.length;
+            return history.length;
           }).toList();
 
           // 사용자의 총 획득량.
@@ -56,16 +56,17 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           final relayMarker = (e.type == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
 
           return MissionViewEntity(
-              mission: e,
-              relayMarker: relayMarker,
-              // 사용자가 가진 총 합.
-              userHaveCount: userHaveCount,
-              // 클리어에 필요한 총 합.
-              requiredTotalCount: requireCount,
-              // 현제 클리어 한 갯수.
-              satisfiedCount: satisfiedCount,
-              // 클리어에 필요한 갯수.
-              totalConditionSize: clearConditions.length);
+            mission: e,
+            relayMarker: relayMarker,
+            // 사용자가 가진 총 합.
+            userHaveCount: userHaveCount,
+            // 클리어에 필요한 총 합.
+            requiredTotalCount: requireCount,
+            // 현재 클리어 한 갯수.
+            satisfiedCount: satisfiedCount,
+            // 클리어에 필요한 갯수.
+            totalConditionSize: clearConditions.length,
+          );
         },
       );
       final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);

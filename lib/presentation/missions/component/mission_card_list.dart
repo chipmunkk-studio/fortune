@@ -38,7 +38,7 @@ class MissionCardList extends StatelessWidget {
               case MissionType.grade:
                 return MissionGradeCard(item);
               case MissionType.relay:
-                return MissionNormalCard(item);
+                return MissionRelayCard(item);
               default:
                 return Container();
             }
