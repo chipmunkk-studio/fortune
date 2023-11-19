@@ -88,7 +88,7 @@ class _MyPageState extends State<_MyPage> {
                           },
                           onProfileTap: () {
                             _tracker.trackEvent('마이페이지_프로필_클릭');
-                            FortuneImagePicker().loadImagePicker(
+                            FortuneImagePicker.instance.loadImagePicker(
                               (path) => _bloc.add(MyPageUpdateProfile(path)),
                             );
                           },

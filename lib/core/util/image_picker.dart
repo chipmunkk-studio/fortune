@@ -8,10 +8,18 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
 class FortuneImagePicker {
   static const String _tag = "[FortuneImagePicker]";
+  static final FortuneImagePicker _instance = FortuneImagePicker._internal();
 
-// 이미지 가져오기.
+  // 프라이빗 생성자
+  FortuneImagePicker._internal();
+
+  // 싱글톤 인스턴스에 접근하기 위한 메소드
+  static FortuneImagePicker get instance => _instance;
+
+  // 이미지 가져오기
   void loadImagePicker(Function1 onLoad, {Function0? onError}) async {
     try {
       final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);

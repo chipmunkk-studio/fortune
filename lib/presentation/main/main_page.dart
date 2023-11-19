@@ -701,14 +701,18 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   _onCommunityClick() {
     _router.navigateTo(
       context,
-      AppRoutes.fortuneWebViewRoutes,
-      routeSettings: RouteSettings(
-        arguments: FortuneWebViewArgs(
-          url: FortuneWebExtension.makeWebUrl(
-            queryParams: {'source': 'app'},
-          ),
-        ),
-      ),
+      AppRoutes.writePostRoutes,
     );
+    // _router.navigateTo(
+    //   context,
+    //   AppRoutes.fortuneWebViewRoutes,
+    //   routeSettings: RouteSettings(
+    //     arguments: FortuneWebViewArgs(
+    //       url: FortuneWebExtension.makeWebUrl(
+    //         queryParams: {'source': 'app'},
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }
