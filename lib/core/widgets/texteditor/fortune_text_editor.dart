@@ -48,7 +48,7 @@ class FortuneQuillTextEditor extends StatelessWidget {
                 readOnly: false,
                 autoFocus: true,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                placeholder: '입력해주세요..',
+                placeholder: '입력해주세요.',
                 embedBuilders: kIsWeb ? FlutterQuillEmbeds.editorWebBuilders() : FlutterQuillEmbeds.editorBuilders(),
                 customStyles: buildDefaultStyles(
                   defaultTextStyle,
