@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/widgets/fortune_loading_view.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command.dart';
 import 'package:fortune/domain/supabase/entity/web/command/fortune_web_command_new_page.dart';
@@ -58,21 +60,49 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: InAppWebView(
-          initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
-          onWebViewCreated: (InAppWebViewController webViewController) {
-            controller = webViewController;
-          },
-          initialOptions: InAppWebViewGroupOptions(
-            crossPlatform: InAppWebViewOptions(
-              useShouldOverrideUrlLoading: true,
-              javaScriptEnabled: true,
-              transparentBackground: true,
+        body: Stack(
+          children: [
+            // 프로그레스 바
+            BlocBuilder<FortuneWebviewBloc, FortuneWebviewState>(
+              buildWhen: (previous, current) => previous.loadingProgress != current.loadingProgress,
+              builder: (context, state) {
+                final progress = state.loadingProgress;
+                return LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: ColorName.grey900,
+                  valueColor: AlwaysStoppedAnimation<Color>(progress != 100 ? ColorName.primary : Colors.transparent),
+                );
+              },
             ),
-          ),
-          shouldOverrideUrlLoading: (controller, request) async {
-            return _handleNavigationRequest(request);
-          },
+            InAppWebView(
+              initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
+              onWebViewCreated: (InAppWebViewController webViewController) {
+                controller = webViewController;
+              },
+              onProgressChanged: (controller, progress) {
+                _bloc.add(FortuneWebviewLoading(progress));
+              },
+              onLoadStop: (controller, _) {
+                _bloc.add(FortuneWebviewLoadingComplete());
+              },
+              initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+                  useShouldOverrideUrlLoading: true,
+                  javaScriptEnabled: true,
+                  transparentBackground: true,
+                ),
+              ),
+              shouldOverrideUrlLoading: (controller, request) async {
+                return _handleNavigationRequest(request);
+              },
+            ),
+            BlocBuilder<FortuneWebviewBloc, FortuneWebviewState>(
+              buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+              builder: (context, state) {
+                return state.isLoading ? const Center(child: FortuneLoadingView()) : const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
       ),
     );

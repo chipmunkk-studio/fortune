@@ -18,5 +18,5 @@ class MissionViewEntity {
     required this.requiredTotalCount,
     required this.satisfiedCount,
     required this.totalConditionSize,
-  }) : isRelayMissionCleared = !relayMarker.isEmpty && relayMarker.hitCount == requiredTotalCount;
+  }) : isRelayMissionCleared = !relayMarker.isEmpty && satisfiedCount >= totalConditionSize;
 }

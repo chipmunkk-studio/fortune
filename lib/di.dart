@@ -24,6 +24,7 @@ import 'package:fortune/data/supabase/service/marker_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_clear_user_histories_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:fortune/data/supabase/service/obtain_history_service.dart';
+import 'package:fortune/data/supabase/service/post_service.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/local/local_respository.dart';
@@ -62,6 +63,7 @@ import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
 import 'package:fortune/presentation-web/login/bloc/web_login.dart';
 import 'package:fortune/presentation-web/verifycode/bloc/web_verify_code.dart';
+import 'package:fortune/presentation-web/writepost/bloc/write_post.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
@@ -87,6 +89,7 @@ import 'package:logger/logger.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:universal_html/html.dart';
 
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
@@ -113,7 +116,6 @@ import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
-import 'package:universal_html/html.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
@@ -292,6 +294,9 @@ _initService() {
     )
     ..registerLazySingleton<MissionsClearConditionsService>(
       () => MissionsClearConditionsService(),
+    )
+    ..registerLazySingleton<PostService>(
+      () => PostService(),
     )
     ..registerLazySingleton<AuthService>(
       () => AuthService(
@@ -704,6 +709,11 @@ _initAppBloc() {
     ..registerFactory(
       () => FortuneWebviewBloc(),
     )
+
+    /// 삭제 해야 됨.
+    ..registerFactory(
+      () => WritePostBloc(),
+    )
     ..registerFactory(
       () => AgreeTermsBloc(
         getTermsUseCase: serviceLocator(),
@@ -735,6 +745,9 @@ _initWebBloc() {
       () => TermsDetailBloc(
         getTermsByIndexUseCase: serviceLocator(),
       ),
+    )
+    ..registerFactory(
+      () => WritePostBloc(),
     )
     ..registerFactory(
       () => WebLoginBloc(

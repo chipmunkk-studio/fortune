@@ -145,7 +145,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
       // 마커 조회.
       final markerEntity = await markerRepository.findMarkerById(markerId);
       // 클리어 조건. (내가 클리어 한 건지)
-      final isClear = markerEntity.hitCount == clearConditions.requireCount && markerEntity.lastObtainUser == user.id;
+      final isClear = markerEntity.hitCount == clearConditions.relayCount && markerEntity.lastObtainUser == user.id;
       if (isClear) {
         // 미션 클리어.
         final rewardType = await rewardRepository.findRewardInfoByType(AlarmRewardType.relay);

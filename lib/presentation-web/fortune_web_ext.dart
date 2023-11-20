@@ -97,6 +97,7 @@ requestWebUrl({
   Map<String, dynamic>? queryParams,
 }) async {
   final environment = serviceLocator<Environment>();
+  // 앱안에서 실행된 웹인지.
   final sourceIsApp = environment.source == 'app';
   final shouldUseNewPageUrl = command is FortuneWebCommandNewPage && !sourceIsApp;
 

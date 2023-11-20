@@ -11,6 +11,7 @@ import 'package:latlong2/latlong.dart';
 enum IngredientType {
   none, // 사용하지 않음.
   normal, // 일반
+  normalNotProvide, // 노멀(배포하진 않고, 랜덤박스에 포함시킴)
   coin, // 코인
   unique, // 레벨 업 시
   epic, // 등급 업.
@@ -61,6 +62,8 @@ getIngredientType(String? type) {
     return IngredientType.special;
   } else if (IngredientType.randomNormal.name == type) {
     return IngredientType.randomNormal;
+  } else if (IngredientType.normalNotProvide.name == type) {
+    return IngredientType.normalNotProvide;
   } else {
     return IngredientType.none;
   }

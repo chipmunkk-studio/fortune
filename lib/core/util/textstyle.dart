@@ -31,6 +31,18 @@ abstract class FortuneTextStyle {
     );
   }
 
+  static TextStyle headLine3({
+    Color? fontColor,
+    bool isSpMax = false,
+  }) {
+    return TextStyle(
+      fontSize: isSpMax ? 20.spMax : 20.spMin,
+      letterSpacing: -0.06,
+      fontStyle: FontStyle.normal,
+      fontFamily: FontFamily.pretendardSemiBold,
+      color: fontColor ?? ColorName.white,
+    );
+  }
   static TextStyle subTitle1Bold({Color? fontColor}) {
     return TextStyle(
       fontSize: 22.spMin,

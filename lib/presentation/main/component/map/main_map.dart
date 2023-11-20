@@ -8,6 +8,7 @@ import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
+import 'package:fortune/core/widgets/fortune_loading_view.dart';
 import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_map_grid_painter.dart';
 import 'package:fortune/env.dart';
@@ -44,7 +45,7 @@ class MainMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return myLocation == null
-        ? const Center(child: CircularProgressIndicator(backgroundColor: ColorName.primary))
+        ? const Center(child: FortuneLoadingView())
         : Stack(
             children: [
               // 메인맵.

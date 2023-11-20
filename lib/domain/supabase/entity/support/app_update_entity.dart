@@ -5,6 +5,9 @@ class AppUpdateEntity {
   final bool android;
   final bool ios;
   final String createdAt;
+  final String minVersion;
+  final int minVersionCode;
+  final bool isAlert;
 
   AppUpdateEntity({
     required this.title,
@@ -13,5 +16,8 @@ class AppUpdateEntity {
     required this.android,
     required this.ios,
     required this.createdAt,
+    required this.minVersion,
+    required this.minVersionCode,
+    required this.isAlert,
   });
 }

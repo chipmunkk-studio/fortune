@@ -28,6 +28,7 @@ class MissionsClearConditionsService {
       MissionClearConditionColumn.requireCount,
       MissionClearConditionColumn.markers,
       MissionClearConditionColumn.missions,
+      MissionClearConditionColumn.relayCount,
     ];
 
     final selectColumns = columnsToSelect.map((column) {
@@ -69,7 +70,7 @@ class MissionsClearConditionsService {
   // 마커 아이디로 클리어 조건을 조회. (릴레이미션)
   Future<MissionClearConditionEntity?> findMissionClearConditionOrNullByMarkerId(int id) async {
     final columnsToSelect = [
-      MissionClearConditionColumn.requireCount,
+      MissionClearConditionColumn.relayCount,
       MissionClearConditionColumn.missions,
     ];
 

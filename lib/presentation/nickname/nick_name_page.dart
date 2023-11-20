@@ -21,7 +21,7 @@ import 'package:skeletons/skeletons.dart';
 import 'bloc/nick_name.dart';
 
 class NickNamePage extends StatelessWidget {
-  const NickNamePage({Key? key}) : super(key: key);
+  const NickNamePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                       const SizedBox(height: 20),
                       Center(
                         child: ProfileImage(
-                          onProfileTap: () => FortuneImagePicker().loadImagePicker(
+                          onProfileTap: () => FortuneImagePicker.instance.loadImagePicker(
                             (path) => _bloc.add(NickNameUpdateProfile(path)),
                           ),
                           profileUrl: state.userEntity.profileImage,

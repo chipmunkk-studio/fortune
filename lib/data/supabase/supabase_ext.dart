@@ -17,6 +17,7 @@ abstract class TableName {
   static const markers = "markers";
   static const notices = "notices";
   static const faqs = "faqs";
+  static const post = "post";
   static const users = "users";
   static const countryInfo = "country_info";
 }

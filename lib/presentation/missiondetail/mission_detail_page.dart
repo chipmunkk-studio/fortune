@@ -22,8 +22,8 @@ import 'component/skeleton.dart';
 class MissionDetailPage extends StatelessWidget {
   const MissionDetailPage(
     this.mission, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final MissionViewEntity mission;
 
@@ -37,7 +37,7 @@ class MissionDetailPage extends StatelessWidget {
 }
 
 class _MissionDetailPage extends StatefulWidget {
-  const _MissionDetailPage({Key? key}) : super(key: key);
+  const _MissionDetailPage();
 
   @override
   State<_MissionDetailPage> createState() => _MissionDetailPageState();
@@ -127,7 +127,13 @@ class _MissionDetailPageState extends State<_MissionDetailPage> {
                               onExchangeClick: () => _bloc.add(MissionDetailExchange()),
                             );
                           default:
-                            return Container();
+                            return NormalMission(
+                              state,
+                              onExchangeClick: () {
+                                router.pop(context);
+                                _bloc.add(MissionDetailExchange());
+                              },
+                            );
                         }
                       }(),
                     );

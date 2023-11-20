@@ -9,7 +9,7 @@ description: fortune flutter
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
-version: 1.4.8+27
+version: 1.4.9+28
 
 # 3.0.0 이상을 지원하면서, 4.0.0미만에 버전도 작동하도록 함
 environment:
@@ -39,7 +39,8 @@ dependencies:
   device_info_plus: ^9.1.0
   flutter_image_compress: ^2.1.0
   websafe_svg: ^3.0.1+1
-  flutter_quill: ^8.5.4
+  flutter_quill: ^8.6.0
+  flutter_quill_extensions: ^0.7.0
 
   # ui
   cupertino_icons: ^1.0.6
@@ -94,7 +95,7 @@ dependencies:
   synchronized: ^3.1.0
   logger: ^2.0.2+1
   easy_localization: ^3.0.3
-  collection: ^1.17.2
+  collection: ^1.18.0
   geocoding: ^2.1.1
 
   # network
@@ -137,7 +138,6 @@ dev_dependencies:
   test: any
   # navigation testing
   bloc_test: ^9.1.5
-  analyzer: ^5.13.0
 
 flutter_native_splash:
   color: "#1b1c24"
@@ -184,6 +184,7 @@ flutter:
     - assets/images/
     - assets/images/onboarding/
     - assets/icons/
+    - assets/lottie/
 
   fonts:
     - family: Pretendard-Light

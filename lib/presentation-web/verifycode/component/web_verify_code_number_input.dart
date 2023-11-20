@@ -56,6 +56,7 @@ class _WebVerifyCodeNumberInputState extends State<WebVerifyCodeNumberInput> {
                     style: FortuneTextStyle.button1Medium(),
                     controller: widget._verifyCodeController,
                     keyboardType: TextInputType.phone,
+                    maxLength: 6,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(6),

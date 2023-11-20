@@ -1,6 +1,8 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/presentation-web/login/web_login_page.dart';
+import 'package:fortune/presentation-web/viewpost/view_post_page.dart';
+import 'package:fortune/presentation-web/writepost/write_post.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
 import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
@@ -12,7 +14,7 @@ class FortuneWebRouter {
 
   static Handler webMainHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return WebMainPage();
+      return const WebMainPage();
     },
   );
 
@@ -39,6 +41,19 @@ class FortuneWebRouter {
     },
   );
 
+  static var writePostHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const WritePostPage();
+    },
+  );
+
+  static var viewPostHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as ViewPostPageArgs?;
+      return args != null ? ViewPostPage(args: args) : null;
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -46,6 +61,20 @@ class FortuneWebRouter {
       ..define(
         WebRoutes.loginRoute,
         handler: loginHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
+      /// 글쓰기.
+      ..define(
+        WebRoutes.writePostRoute,
+        handler: writePostHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
+      /// 글보기.
+      ..define(
+        WebRoutes.viewPostRoute,
+        handler: viewPostHandler,
         transitionType: TransitionType.fadeIn,
       )
 
@@ -74,9 +103,11 @@ class FortuneWebRouter {
 
 class WebRoutes {
   static const String mainRoute = 'main';
-
   static const String exitRoute = 'exit';
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String termsDetailRoute = 'termsDetail';
   static const String loginRoute = 'login';
+  static const String writePostRoute = 'writePost';
+  static const String viewPostRoute = 'viewPost';
+  static const String readRoute = 'read';
 }

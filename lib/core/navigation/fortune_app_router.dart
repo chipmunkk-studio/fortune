@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_view_entity.dart';
+import 'package:fortune/presentation-web/viewpost/view_post_page.dart';
+import 'package:fortune/presentation-web/writepost/write_post.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
@@ -174,6 +176,21 @@ class FortuneAppRouter {
     },
   );
 
+  ///todo 삭제헤야됨.
+  static var writePostHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const WritePostPage();
+    },
+  );
+
+  // todo 삭제해야됨.
+  static var viewPostHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as ViewPostPageArgs?;
+      return args != null ? ViewPostPage(args: args) : null;
+    },
+  );
+
   void init() {
     router = FluroRouter()
 
@@ -311,6 +328,20 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// todo 삭제해야 됨.
+      ..define(
+        AppRoutes.writePostRoutes,
+        handler: writePostHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      ///  todo 삭제해야 됨.
+      ..define(
+        AppRoutes.viewPostRoutes,
+        handler: viewPostHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
       /// 웹뷰.
       ..define(
         AppRoutes.fortuneWebViewRoutes,
@@ -347,5 +378,7 @@ class AppRoutes {
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
   static const String rankingRoutes = 'ranking';
+  static const String writePostRoutes = 'writePost'; // todo 삭제해야됨.
+  static const String viewPostRoutes = 'viewPost'; // todo 삭제해야됨.
   static const String fortuneWebViewRoutes = 'fortuneWebView';
 }

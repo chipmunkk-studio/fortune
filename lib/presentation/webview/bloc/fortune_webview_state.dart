@@ -7,11 +7,13 @@ part 'fortune_webview_state.freezed.dart';
 class FortuneWebviewState with _$FortuneWebviewState {
   factory FortuneWebviewState({
     required List<MissionClearUserHistoriesEntity> missions,
+    required double loadingProgress,
     required bool isLoading,
   }) = _FortuneWebviewState;
 
   factory FortuneWebviewState.initial() => FortuneWebviewState(
         missions: List.empty(),
+        loadingProgress: 0,
         isLoading: true,
       );
 }
