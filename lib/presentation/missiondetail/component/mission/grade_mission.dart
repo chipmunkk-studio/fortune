@@ -5,7 +5,6 @@ import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
-import 'package:fortune/presentation/missiondetail/bloc/mission_detail_state.dart';
 
 import '../../../../core/util/textstyle.dart';
 import '../../bloc/mission_detail.dart';
@@ -16,9 +15,9 @@ class GradeMission extends StatelessWidget {
 
   const GradeMission(
     this.state, {
-    Key? key,
+    super.key,
     required this.onExchangeClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

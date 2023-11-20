@@ -11,6 +11,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/error/failure/network_failure.dart';
+import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
@@ -25,13 +26,11 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/presentation-web/fortune_web_ext.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_response.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
-import 'package:fortune/presentation/webview/fortune_webview_args.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
@@ -226,13 +225,27 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             ),
           );
         } else if (sideEffect is MainShowAppUpdate) {
-          dialogService.showFortuneDialog(
-            context,
-            title: sideEffect.entity.title,
-            subTitle: sideEffect.entity.content,
-            btnOkText: FortuneTr.confirm,
-            btnOkPressed: () => _bloc.add(MainInit()),
-          );
+          if (sideEffect.entity.isForceUpdate) {
+            dialogService.showFortuneDialog(
+              context,
+              title: FortuneTr.msgUpdateTitle,
+              subTitle: FortuneTr.msgUpdateMessage,
+              btnOkText: FortuneTr.confirm,
+              btnOkPressed: () {
+                launchStore(() {
+                  _bloc.add(MainInit());
+                });
+              },
+            );
+          } else {
+            dialogService.showFortuneDialog(
+              context,
+              title: sideEffect.entity.title,
+              subTitle: sideEffect.entity.content,
+              btnOkText: FortuneTr.confirm,
+              btnOkPressed: () => sideEffect.entity.isAlert ? null : _bloc.add(MainInit()),
+            );
+          }
         } else if (sideEffect is MainRotateEffect) {
           _animateCameraRotate(sideEffect.prevData, sideEffect.nextData);
         }

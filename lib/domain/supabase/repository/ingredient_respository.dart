@@ -10,5 +10,5 @@ abstract class IngredientRepository {
   Future<IngredientEntity> generateIngredientByRewardInfoType(AlarmRewardInfoEntity rewardInfo);
 
   // 타입에 따라 재료 가져오기.
-  Future<List<IngredientEntity>> findIngredientsByType(IngredientType type);
+  Future<List<IngredientEntity>> findIngredientsByType(List<IngredientType> type);
 }

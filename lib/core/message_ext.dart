@@ -53,6 +53,8 @@ abstract class FortuneTr {
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');
   static final msgPressAgainToExit = tr('msgPressAgainToExit');
+  static final msgUpdateTitle = tr('msgUpdateTitle');
+  static final msgUpdateMessage = tr('msgUpdateMessage');
 
   static final msgWelcome = tr('msgWelcome');
   static final msgFortuneCookieReward = tr('msgFortuneCookieReward');

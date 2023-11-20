@@ -95,7 +95,7 @@ class FortuneWebRouter {
       /// 웹 메인.
       ..define(
         WebRoutes.mainRoute,
-        handler: writePostHandler,
+        handler: webMainHandler,
         transitionType: TransitionType.fadeIn,
       );
   }

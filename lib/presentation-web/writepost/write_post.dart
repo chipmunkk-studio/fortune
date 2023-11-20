@@ -34,8 +34,6 @@ class _WritePostPageState extends State<_WritePostPage> {
   late WritePostBloc _bloc;
   final QuillController _inputController = QuillController.basic();
 
-  final _appRouter = serviceLocator<FortuneAppRouter>().router;
-
   @override
   void initState() {
     super.initState();

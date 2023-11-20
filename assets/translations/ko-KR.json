@@ -21,6 +21,8 @@
   "msgNoNotifications": "알림이 없습니다",
   "msgRewardCompleted": "이미 보상 완료된 리워드입니다",
   "msgInvalidMission": "존재하지 않는 미션입니다",
+  "msgUpdateTitle": "업데이트",
+  "msgUpdateMessage": "현재 버전이 낮습니다\n최신 버전으로 업데이트 합니다",
   "msgHallOfFame": "명예의 전당",
   "msgRetryLater": "잠시 후 다시 이용 해 주세요",
   "msgPressAgainToExit": "한 번 더 누르면 종료합니다",

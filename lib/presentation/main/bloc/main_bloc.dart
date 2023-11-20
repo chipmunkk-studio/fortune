@@ -38,7 +38,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final FortuneRemoteConfig remoteConfig;
   final GetShowAdUseCase getShowAdUseCase;
   final ReadAlarmFeedUseCase readAlarmFeedUseCase;
-
   final MixpanelTracker tracker;
 
   MainBloc({
@@ -110,7 +109,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
-          if (r != null && r.isActive) {
+          if (r != null && (r.isActive || r.isForceUpdate)) {
             produceSideEffect(MainShowAppUpdate(entity: r));
           } else {
             final notificationEntity = event.notificationEntity;
