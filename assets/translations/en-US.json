@@ -18,6 +18,8 @@
   "msgRenewAuthInfo": "Refreshing authentication...",
   "msgNoCompletedMissions": "You haven't completed any missions yet.",
   "msgUpdateMarkerInfo": "Updating the new marker information.",
+  "msgUpdateTitle": "Update",
+  "msgUpdateMessage": "Your current version is outdated.\nPlease update to the latest version.",
   "msgInvalidMission": "The mission does not exist",
   "msgPressAgainToExit": "Press again to exit",
   "msgCompletedMissions": "Missions Completed So Far",

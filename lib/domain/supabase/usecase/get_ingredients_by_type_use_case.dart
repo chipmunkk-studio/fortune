@@ -5,7 +5,7 @@ import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 
-class GetIngredientsByTypeUseCase implements UseCase1<List<IngredientEntity>, IngredientType> {
+class GetIngredientsByTypeUseCase implements UseCase1<List<IngredientEntity>, List<IngredientType>> {
   final IngredientRepository ingredientRepository;
 
   GetIngredientsByTypeUseCase({
@@ -13,9 +13,9 @@ class GetIngredientsByTypeUseCase implements UseCase1<List<IngredientEntity>, In
   });
 
   @override
-  Future<FortuneResult<List<IngredientEntity>>> call(IngredientType type) async {
+  Future<FortuneResult<List<IngredientEntity>>> call(List<IngredientType> types) async {
     try {
-      final ingredients = await ingredientRepository.findIngredientsByType(type);
+      final ingredients = await ingredientRepository.findIngredientsByType(types);
       return Right(ingredients);
     } on FortuneFailure catch (e) {
       return Left(e);

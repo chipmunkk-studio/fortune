@@ -138,6 +138,9 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - gal (1.0.0):
+    - Flutter
+    - FlutterMacOS
   - geocoding_ios (1.0.5):
     - Flutter
   - geolocator_apple (1.2.0):
@@ -222,12 +225,12 @@ PODS:
   - Mantle (2.2.0):
     - Mantle/extobjc (= 2.2.0)
   - Mantle/extobjc (2.2.0)
-  - Mixpanel-swift (4.1.0):
-    - Mixpanel-swift/Complete (= 4.1.0)
-  - Mixpanel-swift/Complete (4.1.0)
-  - mixpanel_flutter (2.1.1):
+  - Mixpanel-swift (4.2.0):
+    - Mixpanel-swift/Complete (= 4.2.0)
+  - Mixpanel-swift/Complete (4.2.0)
+  - mixpanel_flutter (2.2.0):
     - Flutter
-    - Mixpanel-swift (= 4.1.0)
+    - Mixpanel-swift (= 4.2.0)
   - nanopb (2.30909.1):
     - nanopb/decode (= 2.30909.1)
     - nanopb/encode (= 2.30909.1)
@@ -248,9 +251,9 @@ PODS:
     - PromisesObjC (= 2.3.1)
   - rive_common (0.0.1):
     - Flutter
-  - SDWebImage (5.18.3):
-    - SDWebImage/Core (= 5.18.3)
-  - SDWebImage/Core (5.18.3)
+  - SDWebImage (5.18.5):
+    - SDWebImage/Core (= 5.18.5)
+  - SDWebImage/Core (5.18.5)
   - SDWebImageWebPCoder (0.14.2):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
@@ -266,6 +269,9 @@ PODS:
   - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
     - Flutter
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
@@ -287,6 +293,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - gal (from `.symlinks/plugins/gal/darwin`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
@@ -305,6 +312,7 @@ DEPENDENCIES:
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
@@ -380,6 +388,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  gal:
+    :path: ".symlinks/plugins/gal/darwin"
   geocoding_ios:
     :path: ".symlinks/plugins/geocoding_ios/ios"
   geolocator_apple:
@@ -410,6 +420,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -447,6 +459,7 @@ SPEC CHECKSUMS:
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  gal: 61e868295d28fe67ffa297fae6dacebf56fd53e1
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   Google-Mobile-Ads-SDK: e81e8b009a182dc8dd14951782efdbb30a5e4510
@@ -462,8 +475,8 @@ SPEC CHECKSUMS:
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
-  Mixpanel-swift: 7b46c63259dec8398a7df9f8a1298fd00b6b3cb3
-  mixpanel_flutter: a530f9f27534f3c96a074e483ee425387f524e1c
+  Mixpanel-swift: e5dd85295923e6a875acf17ccbab8d2ecb10ea65
+  mixpanel_flutter: ed1e5eaea382cbbaf655d20e23478211727ee011
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
@@ -473,14 +486,15 @@ SPEC CHECKSUMS:
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
   rive_common: 8a159d68033a8b073e5853acc50f03aa486a2888
-  SDWebImage: 96e0c18ef14010b7485210e92fac888587ebb958
+  SDWebImage: 7ac2b7ddc5e8484c79aa90fc4e30b149d6a2c88f
   SDWebImageWebPCoder: 633b813fca24f1de5e076bcd7f720c038b23892b
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
+  video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
 PODFILE CHECKSUM: e10c4e829b7d565264e909c00fcd5e4c582fa0c4

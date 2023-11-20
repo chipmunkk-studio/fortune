@@ -69,9 +69,6 @@ class MissionDetailBloc extends Bloc<MissionDetailEvent, MissionDetailState>
             ),
           );
           produceSideEffect(MissionDetailParticleBurst());
-          if (currentMission.type == MissionType.grade) {
-            await Future.delayed(const Duration(seconds: 1));
-          }
           produceSideEffect(MissionDetailClearSuccess(currentMission));
         },
       ),

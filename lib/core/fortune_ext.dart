@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const transparentImageUrl = "https://via.placeholder.com/1x1.png?text=+&bg=ffffff00";
 const openStreetMap = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -54,5 +55,24 @@ void reportRandomTimes({
 
   for (int i = 0; i < n; i++) {
     func();
+  }
+}
+
+void launchStore(Function onLaunchAfter) async {
+  String url;
+  if (Platform.isAndroid) {
+    url = 'https://play.google.com/store/apps/details?id=com.foresh.fortune';
+  } else if (Platform.isIOS) {
+    url = 'https://apps.apple.com/app/id6465523666';
+  } else {
+    url = '';
+  }
+
+  final uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+    onLaunchAfter();
+  } else {
+    // 에러 무시.
   }
 }

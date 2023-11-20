@@ -15,7 +15,7 @@ class IngredientService {
   // 모든 재료 가져오기.
   Future<List<IngredientEntity>> findAllIngredients() async {
     try {
-      final List<dynamic> response = await _client.from(_ingredientTableName).select("*").toSelect();
+      final List<dynamic> response = await _client.from(_ingredientTableName).select(fullSelectQuery).toSelect();
       if (response.isEmpty) {
         return List.empty();
       } else {
@@ -27,14 +27,12 @@ class IngredientService {
     }
   }
 
-  Future<List<IngredientEntity>> findIngredientsByType(IngredientType type) async {
+  Future<List<IngredientEntity>> findIngredientsByType(List<IngredientType> types) async {
     try {
       final List<dynamic> response = await _client
           .from(_ingredientTableName)
-          .select(
-            "*",
-          )
-          .filter(IngredientColumn.type.name, 'eq', type.name)
+          .select(fullSelectQuery)
+          .in_(IngredientColumn.type.name, types.map((type) => type.name).toList())
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

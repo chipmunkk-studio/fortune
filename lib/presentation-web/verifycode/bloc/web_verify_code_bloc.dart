@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
 import 'package:fortune/domain/supabase/request/request_verify_phone_number_param.dart';
@@ -88,7 +89,7 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
         },
         (r) async {
           emit(state.copyWith(isLoginProcessing: false));
-          produceSideEffect(WebVerifyCodeLandingRoute(AppRoutes.mainRoute));
+          produceSideEffect(WebVerifyCodeLandingRoute(WebRoutes.mainRoute));
         },
       ),
     );
