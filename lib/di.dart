@@ -676,6 +676,7 @@ _initAppBloc() {
       () => IngredientActionBloc(
         setShowAdUseCase: serviceLocator(),
         getIngredientsByTypeUseCase: serviceLocator(),
+        env: serviceLocator(),
       ),
     )
     ..registerFactory(

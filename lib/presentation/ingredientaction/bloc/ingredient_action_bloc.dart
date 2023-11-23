@@ -6,6 +6,7 @@ import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/usecase/get_ingredients_by_type_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
+import 'package:fortune/env.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -15,16 +16,19 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     with SideEffectBlocMixin<IngredientActionEvent, IngredientActionState, IngredientActionSideEffect> {
   final SetShowAdUseCase setShowAdUseCase;
   final GetIngredientsByTypeUseCase getIngredientsByTypeUseCase;
+  final Environment env;
 
   IngredientActionBloc({
     required this.setShowAdUseCase,
     required this.getIngredientsByTypeUseCase,
+    required this.env,
   }) : super(IngredientActionState.initial()) {
     on<IngredientActionInit>(init);
     on<IngredientActionShowAdCounting>(showAdComplete);
   }
 
   FutureOr<void> init(IngredientActionInit event, Emitter<IngredientActionState> emit) async {
+    emit(state.copyWith(adMobStatus: env.remoteConfig.admobStatus));
     switch (event.param.ingredient.type) {
       case IngredientType.randomNormal:
         await processRandomNormalIngredient(event.param, emit);
@@ -72,7 +76,12 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     Emitter<IngredientActionState> emit,
   ) {
     emit(state.copyWith(entity: param));
-    produceSideEffect(IngredientProcessAction(param));
+    produceSideEffect(
+      IngredientProcessAction(
+        param,
+        state.adMobStatus,
+      ),
+    );
   }
 
   FutureOr<void> showAdComplete(IngredientActionShowAdCounting event, Emitter<IngredientActionState> emit) async {

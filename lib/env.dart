@@ -37,6 +37,7 @@ enum EnvKey {
   testSignInPassword,
   mapType,
   adRequestIntervalTime,
+  admobStatus,
 }
 
 enum MapType {
@@ -70,6 +71,7 @@ class FortuneRemoteConfig {
   final int ticketCount;
   final MapType mapType;
   final int adRequestIntervalTime;
+  final bool admobStatus;
 
   FortuneRemoteConfig({
     required this.baseUrl,
@@ -87,6 +89,7 @@ class FortuneRemoteConfig {
     required this.refreshTime,
     required this.mapType,
     required this.adRequestIntervalTime,
+    required this.admobStatus,
   });
 
   @override
@@ -105,6 +108,7 @@ class FortuneRemoteConfig {
         "randomDistance: $randomDistance\n"
         "mapType: $mapType\n"
         "adRequestIntervalTime: $adRequestIntervalTime\n"
+        "admobStatus: $admobStatus\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
 }
@@ -173,7 +177,7 @@ class Environment {
       "buildType: $buildType,\n"
       "--------------configArgs--------------"
       "${remoteConfig.toString()}"
-      "rewardAdUnitId: ${AdHelper.rewardedAdUnitId}\n"
+      "rewardAdUnitId: ${GoogleAdHelper.rewardedAdUnitId}\n"
       "--------------------------------------",
     );
   }
@@ -206,6 +210,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
     final mapType = remoteConfig.getString(describeEnum(EnvKey.mapType)).toMapType();
     final adRequestIntervalTime = remoteConfig.getInt(describeEnum(EnvKey.adRequestIntervalTime));
+    final admobStatus = remoteConfig.getBool(describeEnum(EnvKey.admobStatus));
 
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
@@ -245,6 +250,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       testSignInPassword: testSignInPassword,
       adRequestIntervalTime: adRequestIntervalTime,
       mapType: mapType,
+      admobStatus: admobStatus,
     );
   } catch (e) {
     throw (e is Exception) ? e.handleException() : e;

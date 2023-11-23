@@ -86,7 +86,7 @@
   "msgItemCount": "{}개",
   "msgRewardCollectWinner": "{}\n당첨!",
   "msgUnlimited": "무제한",
-  "msgAdPlaying": "광고 재생 중입니다.\n이 메시지가 보인다면, 뒤로가기를 눌러주세요",
+  "msgAdPlaying": "현재 광고를 요청 중입니다.\n이 메시지가 보인다면, 뒤로가기를 눌러주세요",
   "historyFortuneSpotSearchInput": "검색어를 입력하세요",
   "msgRequireMarkerObtainDistance": "현재 위치에서 {}m 더 가야해요",
   "msgInputEmail": "이메일을 입력하세요",

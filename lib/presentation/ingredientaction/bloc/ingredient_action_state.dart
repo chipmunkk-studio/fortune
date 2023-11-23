@@ -7,12 +7,15 @@ part 'ingredient_action_state.freezed.dart';
 class IngredientActionState with _$IngredientActionState {
   factory IngredientActionState({
     required IngredientActionParam entity,
+    required bool adMobStatus,
   }) = _IngredientActionState;
 
   factory IngredientActionState.initial([
     IngredientActionParam? param,
+    bool? adMobStatus,
   ]) =>
       IngredientActionState(
         entity: param ?? IngredientActionParam.empty(),
+        adMobStatus: adMobStatus ?? true,
       );
 }

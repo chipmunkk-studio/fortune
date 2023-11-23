@@ -44,23 +44,25 @@ extension FortuneMapDataConverter on List<MainLocationData> {
   List<Marker> toMarkerList(
     Function2<MainLocationData, GlobalKey, void> onMarkerClick,
   ) {
-    return map((e) {
-      final isCoinMarker = e.ingredient.type == IngredientType.coin;
-      return Marker(
-        width: isCoinMarker ? 52 : 80,
-        height: isCoinMarker ? 52 : 80,
-        point: LatLng(
-          e.location.latitude,
-          e.location.longitude,
-        ),
-        child: LinearBounceAnimation(
-          child: MainMarkerView(
-            marker: e,
-            onMarkerClick: onMarkerClick,
+    return map(
+      (e) {
+        final isCoinMarker = e.ingredient.type == IngredientType.coin;
+        return Marker(
+          width: isCoinMarker ? 52 : 80,
+          height: isCoinMarker ? 52 : 80,
+          point: LatLng(
+            e.location.latitude,
+            e.location.longitude,
           ),
-        ),
-      );
-    }).toList();
+          child: LinearBounceAnimation(
+            child: MainMarkerView(
+              marker: e,
+              onMarkerClick: onMarkerClick,
+            ),
+          ),
+        );
+      },
+    ).toList();
   }
 }
 
