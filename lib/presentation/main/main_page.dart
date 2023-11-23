@@ -96,7 +96,21 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     WidgetsBinding.instance.addObserver(this);
     _bloc = BlocProvider.of<MainBloc>(context);
     _loadRewardedAd(_remoteConfig.adRequestIntervalTime);
+    _initVungleAd();
     _listeningLocationChange();
+  }
+
+  void _initVungleAd() {
+    Vungle.onInitilizeListener = () {
+      Vungle.onAdPlayableListener = (playable, placementId) async {
+        if (!placementId) {
+          await Future.delayed(const Duration(seconds: 3));
+          Vungle.loadAd(VungleAdHelper.rewardedAdUnitId);
+        } else {
+          FortuneLogger.info('Vungle:: Load Success');
+        }
+      };
+    };
   }
 
   @override
@@ -574,7 +588,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 _loadRewardedAd(adRequestIntervalTime);
               },
               onAdShowedFullScreenContent: (ad) {
-                _loadRewardedAd(adRequestIntervalTime);
+                _bloc.add(MainSetRewardAd(null));
               },
             );
             FortuneLogger.info("광고 로딩 성공");
@@ -592,18 +606,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           },
         ),
       );
-
-
-      Vungle.onInitilizeListener = () {
-        Vungle.onAdPlayableListener = (playable, placementId) async {
-          if (!placementId) {
-            await Future.delayed(const Duration(seconds: 1));
-            Vungle.loadAd(VungleAdHelper.rewardedAdUnitId);
-          } else {
-            FortuneLogger.info('Vungle:: Load Success');
-          }
-        };
-      };
     } catch (e) {
       FortuneLogger.error(message: "광고 로딩 실패: $e}");
       _bloc.add(MainSetRewardAd(null));
