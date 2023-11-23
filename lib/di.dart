@@ -165,9 +165,6 @@ Future<void> init() async {
 
   /// Supabase
   await initSupabase(kIsWeb);
-
-  /// Vungle
-  Vungle.init(VungleAdHelper.appKey);
 }
 
 initMixPanel() async {

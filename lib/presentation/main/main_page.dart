@@ -101,6 +101,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   }
 
   void _initVungleAd() {
+    Vungle.init(VungleAdHelper.appKey);
     Vungle.onInitilizeListener = () {
       Vungle.onAdPlayableListener = (playable, placementId) async {
         if (!placementId) {
