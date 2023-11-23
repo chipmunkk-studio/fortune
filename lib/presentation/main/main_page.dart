@@ -37,6 +37,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:vungle/vungle.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
@@ -563,16 +564,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   void _loadRewardedAd(int adRequestIntervalTime) async {
     try {
       RewardedAd.load(
-        adUnitId: AdHelper.rewardedAdUnitId,
+        adUnitId: GoogleAdHelper.rewardedAdUnitId,
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdDismissedFullScreenContent: (ad) {
-                ad.dispose();
-                _loadRewardedAd(adRequestIntervalTime);
-              },
-            );
+            ad.fullScreenContentCallback = FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _loadRewardedAd(adRequestIntervalTime);
+            }, onAdShowedFullScreenContent: (ad) {
+              _loadRewardedAd(adRequestIntervalTime);
+            });
             FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
@@ -588,6 +589,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           },
         ),
       );
+
+      Vungle.init(VungleAdHelper.appKey);
+      Vungle.onInitilizeListener = () {
+        Vungle.onAdPlayableListener = (playable, placementId) async {
+          FortuneLogger.debug("playable: $playable, placementId: $placementId}");
+          if (!placementId) {
+            await Future.delayed(const Duration(seconds: 1));
+            Vungle.loadAd(VungleAdHelper.rewardedAdUnitId);
+          }
+        };
+      };
     } catch (e) {
       FortuneLogger.error(message: "광고 로딩 실패: $e}");
       _bloc.add(MainSetRewardAd(null));
@@ -622,7 +634,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     BuildContext context,
     MainShowObtainDialog param,
   ) async {
-    final IngredientActionResponse response = await _router.navigateTo(
+    final IngredientActionResponse? response = await _router.navigateTo(
       context,
       AppRoutes.ingredientActionRoute,
       routeSettings: RouteSettings(
@@ -635,7 +647,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       ),
     );
 
-    if (response.result) {
+    if (response != null && response.result) {
       _bloc.add(
         MainMarkerObtain(
           data: param.data.copyWith(ingredient: response.ingredient),

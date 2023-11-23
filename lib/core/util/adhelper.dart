@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-class AdHelper {
+class GoogleAdHelper {
   static const Map<String, Map<String, String>> _ads = {
     'android': {
       'banner': kReleaseMode ? 'ca-app-pub-8638803250596668/7886133459' : 'ca-app-pub-3940256099942544/6300978111',
@@ -16,11 +16,36 @@ class AdHelper {
     }
   };
 
-  static String _getPlatformKey() {
-    if (Platform.isAndroid) return 'android';
-    if (Platform.isIOS) return 'ios';
-    throw UnsupportedError('Unsupported platform');
-  }
+  // 배너.
+  static String get bannerAdUnitId => _ads[_getPlatformKey()]?['banner'] ?? '';
+
+  // 전면.
+  static String get interstitialAdUnitId => _ads[_getPlatformKey()]?['interstitial'] ?? '';
+
+  // 보상형.
+  static String get rewardedAdUnitId => _ads[_getPlatformKey()]?['rewarded'] ?? '';
+}
+
+class VungleAdHelper {
+  static const Map<String, Map<String, String>> _ads = {
+    'android': {
+      'banner': '',
+      'interstitial': '',
+      'rewarded': 'REWARD-4486627',
+    },
+    'ios': {
+      'banner': '',
+      'interstitial': '',
+      'rewarded': 'REWARD-8850293',
+    }
+  };
+
+  static const Map<String, String> _appKey = {
+    'android': '655dd88e87876843d0b54e5a',
+    'ios': '655dd7ea41519bc7542282cc',
+  };
+
+  static String get appKey => _appKey[_getPlatformKey()] ?? '';
 
   // 배너.
   static String get bannerAdUnitId => _ads[_getPlatformKey()]?['banner'] ?? '';
@@ -30,4 +55,10 @@ class AdHelper {
 
   // 보상형.
   static String get rewardedAdUnitId => _ads[_getPlatformKey()]?['rewarded'] ?? '';
+}
+
+String _getPlatformKey() {
+  if (Platform.isAndroid) return 'android';
+  if (Platform.isIOS) return 'ios';
+  throw UnsupportedError('Unsupported platform');
 }
