@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:vungle/vungle.dart';
 
 import 'ingredient_action_param.dart';
 import 'ingredient_action_response.dart';
@@ -55,7 +55,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
   @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<IngredientActionBloc, IngredientActionSideEffect>(
-      listener: (context, sideEffect) {
+      listener: (context, sideEffect) async {
         if (sideEffect is IngredientActionError) {
           dialogService.showAppErrorDialog(context, sideEffect.error);
         } else if (sideEffect is IngredientProcessAction) {
@@ -80,7 +80,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
             context,
             backgroundColor: Colors.black.withOpacity(0.5),
           ),
-          backgroundColor: Colors.black.withOpacity(0.5),
+          backgroundColor: Colors.black.withOpacity(0.8),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -98,62 +98,81 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
     }
   }
 
-  void handleAdDisplay(IngredientProcessAction sideEffect) {
+  void handleAdComplete(String eventType, IngredientActionParam param) {
+    _mixpanelTracker.trackEvent(
+      eventType,
+      properties: param.user?.toJson(),
+    );
+    _bloc.add(IngredientActionShowAdCounting());
+  }
+
+  void showAdMobAd(IngredientActionParam param) {
+    param.ad?.show(
+      onUserEarnedReward: (_, reward) => handleAdComplete('광고 보기 완료 #1', param),
+    );
+  }
+
+  void showAdIfNeeded(
+    IngredientActionParam param,
+    bool adMobStatus,
+  ) async {
+    if (param.ad == null && adMobStatus) {
+      noAdsAction(param);
+      return;
+    }
+
+    if (!adMobStatus) {
+      try {
+        if (await Vungle.isAdPlayable(VungleAdHelper.rewardedAdUnitId)) {
+          Vungle.playAd(VungleAdHelper.rewardedAdUnitId);
+          Vungle.onAdRewardedListener = (_) => handleAdComplete('광고 보기 완료 #2', param);
+          Vungle.onAdLeftApplicationListener = (_) => Navigator.pop(context);
+        } else {
+          Vungle.loadAd(VungleAdHelper.rewardedAdUnitId);
+          showAdMobAd(param);
+        }
+      } catch (e) {
+        noAdsAction(param);
+      }
+    } else {
+      showAdMobAd(param);
+    }
+  }
+
+  void noAdsAction(IngredientActionParam param) {
+    _mixpanelTracker.trackEvent(
+      '광고 없음',
+      properties: param.user?.toJson(),
+    );
+    _router.pop(
+      context,
+      IngredientActionResponse(
+        ingredient: param.ingredient,
+        result: false,
+      ),
+    );
+  }
+
+  _handleAdDisplay(IngredientProcessAction sideEffect) {
     if (!sideEffect.param.isShowAd) {
       _bloc.add(IngredientActionShowAdCounting());
       return;
     }
 
     try {
-      showAdIfNeeded(sideEffect.param);
+      showAdIfNeeded(
+        sideEffect.param,
+        sideEffect.adMobStatus,
+      );
     } catch (e) {
-      _noAdsAction(
-        user: sideEffect.param.user,
-        ingredient: sideEffect.param.ingredient,
-      );
+      noAdsAction(sideEffect.param);
     }
-  }
-
-  void showAdIfNeeded(IngredientActionParam param) {
-    if (param.ad == null) {
-      _noAdsAction(
-        user: param.user,
-        ingredient: param.ingredient,
-      );
-      return;
-    }
-    param.ad?.show(
-      onUserEarnedReward: (_, reward) {
-        _mixpanelTracker.trackEvent(
-          '광고 보기 완료',
-          properties: param.user?.toJson(),
-        );
-        _bloc.add(IngredientActionShowAdCounting());
-      },
-    );
-  }
-
-  void _noAdsAction({
-    required FortuneUserEntity? user,
-    required IngredientEntity ingredient,
-  }) {
-    _mixpanelTracker.trackEvent(
-      '광고 없음',
-      properties: user?.toJson(),
-    );
-    _router.pop(
-      context,
-      IngredientActionResponse(
-        ingredient: ingredient,
-        result: false,
-      ),
-    );
   }
 
   _processAction(IngredientProcessAction sideEffect) {
     switch (sideEffect.param.ingredient.type) {
       case IngredientType.coin:
-        handleAdDisplay(sideEffect);
+        _handleAdDisplay(sideEffect);
         break;
       default:
         _router.pop(

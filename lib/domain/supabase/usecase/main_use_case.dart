@@ -102,9 +102,6 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 코인 없으면 N개 뿌려주고 아니면 3-N개 뿌려줌.
       final coinCounts = coins.length < keepTicketCount ? keepTicketCount - coins.length : 0;
 
-      FortuneLogger.info(
-          "마커 로드 >> markersNearByMe: ${markersNearByMe.length}, markerCount: $markerCount, ticketCount: $coinCounts,");
-
       // 주변에 마커가 없다면, 필요한 개수 만큼 내 위치를 중심으로 랜덤 생성.
       final result = await markerRepository.getRandomMarkers(
         latitude: param.latitude,

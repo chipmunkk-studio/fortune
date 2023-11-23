@@ -18,8 +18,12 @@ class IngredientActionError extends IngredientActionSideEffect {
 
 class IngredientProcessAction extends IngredientActionSideEffect {
   final IngredientActionParam param;
+  final bool adMobStatus;
 
-  IngredientProcessAction(this.param);
+  IngredientProcessAction(
+    this.param,
+    this.adMobStatus,
+  );
 
   @override
   List<Object?> get props => [];
