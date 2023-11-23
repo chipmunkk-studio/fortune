@@ -33,7 +33,7 @@ class IngredientEntity {
       enName: '',
       imageUrl: '',
       rewardTicket: 0,
-      type: IngredientType.coin,
+      type: IngredientType.none,
       distance: 0,
       playType: IngredientPlayType.webp,
       desc: '',

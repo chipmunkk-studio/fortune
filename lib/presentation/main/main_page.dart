@@ -582,15 +582,16 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdDismissedFullScreenContent: (ad) {
-                ad.dispose();
-                _loadRewardedAd(adRequestIntervalTime);
-              },
-              onAdShowedFullScreenContent: (ad) {
-                _bloc.add(MainSetRewardAd(null));
-              },
-            );
+            ad.fullScreenContentCallback = FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _loadRewardedAd(adRequestIntervalTime);
+            }, onAdShowedFullScreenContent: (ad) {
+              _bloc.add(MainSetRewardAd(null));
+            }, onAdFailedToShowFullScreenContent: (ad, error) {
+              ad.dispose();
+              _bloc.add(MainSetRewardAd(null));
+              _loadRewardedAd(adRequestIntervalTime);
+            });
             FortuneLogger.info("광고 로딩 성공");
             _bloc.add(MainSetRewardAd(ad));
           },
