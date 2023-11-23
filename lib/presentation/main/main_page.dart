@@ -590,13 +590,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         ),
       );
 
-      Vungle.init(VungleAdHelper.appKey);
+
       Vungle.onInitilizeListener = () {
         Vungle.onAdPlayableListener = (playable, placementId) async {
-          FortuneLogger.debug("playable: $playable, placementId: $placementId}");
           if (!placementId) {
             await Future.delayed(const Duration(seconds: 1));
             Vungle.loadAd(VungleAdHelper.rewardedAdUnitId);
+          } else {
+            FortuneLogger.info('Vungle:: Load Success');
           }
         };
       };
