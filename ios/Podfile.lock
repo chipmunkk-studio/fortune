@@ -185,6 +185,9 @@ PODS:
   - GoogleMobileAdsMediationFacebook (6.14.0.0):
     - FBAudienceNetwork (= 6.14.0)
     - Google-Mobile-Ads-SDK (~> 10.4)
+  - GoogleMobileAdsMediationVungle (7.1.0.0):
+    - Google-Mobile-Ads-SDK (~> 10.4)
+    - VungleAds (= 7.1.0)
   - GoogleUserMessagingPlatform (2.1.0)
   - GoogleUtilities/AppDelegateSwizzler (7.12.0):
     - GoogleUtilities/Environment
@@ -275,6 +278,7 @@ PODS:
   - vungle (6.12.2):
     - Flutter
     - VungleSDK-iOS
+  - VungleAds (7.1.0)
   - VungleSDK-iOS (6.12.3)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -304,6 +308,7 @@ DEPENDENCIES:
   - GoogleMobileAdsMediationAppLovin
   - GoogleMobileAdsMediationChartboost
   - GoogleMobileAdsMediationFacebook
+  - GoogleMobileAdsMediationVungle
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - mixpanel_flutter (from `.symlinks/plugins/mixpanel_flutter/ios`)
@@ -344,6 +349,7 @@ SPEC REPOS:
     - GoogleMobileAdsMediationAppLovin
     - GoogleMobileAdsMediationChartboost
     - GoogleMobileAdsMediationFacebook
+    - GoogleMobileAdsMediationVungle
     - GoogleUserMessagingPlatform
     - GoogleUtilities
     - libwebp
@@ -357,6 +363,7 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - Toast
     - TOCropViewController
+    - VungleAds
     - VungleSDK-iOS
 
 EXTERNAL SOURCES:
@@ -477,6 +484,7 @@ SPEC CHECKSUMS:
   GoogleMobileAdsMediationAppLovin: 7499e6d7c686be3f5fccccf5ee60b478a171172d
   GoogleMobileAdsMediationChartboost: 850fae786982ff76f0415f159457423768ec9620
   GoogleMobileAdsMediationFacebook: 13b1e1b86cca4f186fdfa0ba50467479b842c342
+  GoogleMobileAdsMediationVungle: 969f2f1b0a5adbe412a6e2e052797d839eadc4d6
   GoogleUserMessagingPlatform: dce302b8f1b84d6e945812ee7a15c3f65a102cbf
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
@@ -504,9 +512,10 @@ SPEC CHECKSUMS:
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   video_player_avfoundation: e9e6f9cae7d7a6d9b43519b0aab382bca60fcfd1
   vungle: 7335eeaed096591bba02f2bca31334f1947c5098
+  VungleAds: e13f0ea8facb05d5511e31c5abcced79a82409e7
   VungleSDK-iOS: 27725029a42dfb9e39c67956637233fde1ee1797
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: e10c4e829b7d565264e909c00fcd5e4c582fa0c4
+PODFILE CHECKSUM: 1e02a2cf0b4a0b053bb925a2dc3c48781e086801
 
 COCOAPODS: 1.14.3

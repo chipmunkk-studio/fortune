@@ -158,5 +158,4 @@ dependencies {
     implementation 'com.google.ads.mediation:facebook:6.16.0.0'
     implementation "com.google.ads.mediation:applovin:11.11.3.0"
     implementation 'com.google.ads.mediation:chartboost:9.5.0.0'
-    implementation 'com.google.ads.mediation:vungle:7.0.0.1'
 }
