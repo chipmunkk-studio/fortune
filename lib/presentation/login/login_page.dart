@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:fortune/core/message_ext.dart';
@@ -22,15 +23,20 @@ class LoginPage extends StatelessWidget {
 
   const LoginPage(
     this.loginState, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<LoginBloc>()..add(LoginInit(loginState)),
       child: Scaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(context),
+        appBar: FortuneCustomAppBar.leadingAppBar(
+          context,
+          onPressed: () {
+            // 로그인 화면에서는 뒤로가기 동작 없음.
+          },
+        ),
         body: const SafeArea(
           bottom: true,
           child: _LoginPage(),

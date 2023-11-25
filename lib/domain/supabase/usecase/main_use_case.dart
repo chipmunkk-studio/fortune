@@ -69,13 +69,13 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
         ],
       );
 
-      // 내 주변 마커 리스트.(티켓 X, 노말O, 스페셜 O)
+      // 내 주변 마커 리스트.(티켓 X, 노말O, 스페셜O, 랜덤스크래치O)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) =>
                 element.ingredient.type != IngredientType.coin &&
                 (element.ingredient.type == IngredientType.normal ||
-                    element.ingredient.type == IngredientType.randomNormal ||
+                    element.ingredient.type == IngredientType.randomScratchSingle ||
                     element.ingredient.type == IngredientType.special),
           )
           .toList();

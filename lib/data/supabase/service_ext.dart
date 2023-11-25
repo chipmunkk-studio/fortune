@@ -11,13 +11,13 @@ import 'package:latlong2/latlong.dart';
 enum IngredientType {
   none, // 사용하지 않음.
   normal, // 일반
-  normalNotProvide, // 노멀(배포하진 않고, 랜덤박스에 포함시킴)
+  special, // 서버 컨트롤.
   coin, // 코인
   unique, // 레벨 업 시
   epic, // 등급 업.
   rare, // 릴레이 미션.
-  randomNormal, // 랜덤(노말)
-  special, // 서버 컨트롤.
+  randomScratchSingle, // 랜덤 스크래치(싱글) > 맵에 뿌려지는거.
+  randomScratchSingleOnly, // 랜덤 스크래쳐 싱글 아이템(맵에 뿌려지지않고, 랜덤 스크래쳐 싱글 박스에 포함시킴)
 }
 
 enum IngredientPlayType {
@@ -60,10 +60,10 @@ getIngredientType(String? type) {
     return IngredientType.epic;
   } else if (IngredientType.special.name == type) {
     return IngredientType.special;
-  } else if (IngredientType.randomNormal.name == type) {
-    return IngredientType.randomNormal;
-  } else if (IngredientType.normalNotProvide.name == type) {
-    return IngredientType.normalNotProvide;
+  } else if (IngredientType.randomScratchSingle.name == type) {
+    return IngredientType.randomScratchSingle;
+  } else if (IngredientType.randomScratchSingleOnly.name == type) {
+    return IngredientType.randomScratchSingleOnly;
   } else {
     return IngredientType.none;
   }

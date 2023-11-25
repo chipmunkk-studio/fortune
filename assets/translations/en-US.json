@@ -28,6 +28,7 @@
   "msgNoAdsAvailable": "No ads available to display currently.",
   "msgConfirmNetworkConnection": "Check your internet connection.",
   "msgReceiveRewardCompleted": "Reward Completed",
+  "msgReceive": "Receive",
   "msgInputNickNameNotValid": "Nicknames can only be up to 12 characters without spaces",
   "msgNoNotifications": "No notifications.",
   "msgItemCount": "{} items",
