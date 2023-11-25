@@ -85,6 +85,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final FToast _fToast = FToast();
   final _routeObserver = serviceLocator<RouteObserver<PageRoute>>();
   DateTime? lastPressed;
+  int _rewardedAdRetryAttempt = 1;
 
   @override
   void initState() {
@@ -583,6 +584,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
+            _rewardedAdRetryAttempt = 1;
             ad.fullScreenContentCallback = FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
               _loadRewardedAd(adRequestIntervalTime);
@@ -598,7 +600,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           },
           onAdFailedToLoad: (err) async {
             try {
-              await Future.delayed(Duration(milliseconds: adRequestIntervalTime));
+              await Future.delayed(Duration(milliseconds: adRequestIntervalTime * _rewardedAdRetryAttempt++));
               _loadRewardedAd(adRequestIntervalTime);
               _bloc.add(MainSetRewardAd(null));
               FortuneLogger.error(message: "광고 로딩 실패 : $err");

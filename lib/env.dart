@@ -185,17 +185,17 @@ class Environment {
 
 // baseUrl 가져옴.
 Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
-  final remoteConfig = FirebaseRemoteConfig.instance;
-
-  /// 0초을 사용하여 서버에서 강제로 가져옵니다.
-  await remoteConfig.setConfigSettings(
-    RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: const Duration(minutes: 5),
-    ),
-  );
-
   try {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+
+    /// 0초을 사용하여 서버에서 강제로 가져옵니다.
+    await remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: const Duration(minutes: 5),
+      ),
+    );
+
     await remoteConfig.fetchAndActivate();
     final mixpanelDevelopToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelDevelopToken));
     final mixpanelReleaseToken = remoteConfig.getString(describeEnum(EnvKey.mixpanelReleaseToken));
@@ -253,6 +253,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       admobStatus: admobStatus,
     );
   } catch (e) {
-    throw (e is Exception) ? e.handleException() : e;
+    FortuneLogger.error(message: e.toString());
+    rethrow;
   }
 }

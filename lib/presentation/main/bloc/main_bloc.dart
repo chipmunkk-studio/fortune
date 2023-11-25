@@ -371,5 +371,5 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   _hasAnimation(IngredientType ingredientType) =>
-      IngredientType.coin != ingredientType && IngredientType.randomNormal != ingredientType;
+      IngredientType.coin != ingredientType && IngredientType.randomScratchSingle != ingredientType;
 }

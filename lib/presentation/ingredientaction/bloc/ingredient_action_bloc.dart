@@ -24,72 +24,102 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     required this.env,
   }) : super(IngredientActionState.initial()) {
     on<IngredientActionInit>(init);
-    on<IngredientActionShowAdCounting>(showAdComplete);
+    on<IngredientActionShowAdCounting>(showAdProcess);
   }
 
   FutureOr<void> init(IngredientActionInit event, Emitter<IngredientActionState> emit) async {
-    emit(state.copyWith(adMobStatus: env.remoteConfig.admobStatus));
+    emit(
+      state.copyWith(
+        entity: event.param,
+        adMobStatus: env.remoteConfig.admobStatus,
+      ),
+    );
+    await _processIngredientAction(event, emit);
+  }
+
+  _processIngredientAction(
+    IngredientActionInit event,
+    Emitter<IngredientActionState> emit,
+  ) async {
     switch (event.param.ingredient.type) {
-      case IngredientType.randomNormal:
+      // 랜덤 노말 일 경우.
+      case IngredientType.randomScratchSingle:
         await processRandomNormalIngredient(event.param, emit);
         break;
+      // 코인 일 경우.
+      case IngredientType.coin:
+        await processCoinIngredient(event.param, emit);
+        break;
+      // 노말/스페셜(서버 컨트롤) 일 경우 그냥 획득.
+      case IngredientType.normal:
+      case IngredientType.special:
+        emit(state.copyWith(isLoading: false));
+        produceSideEffect(IngredientProcessObtainAction(ingredient: event.param.ingredient, result: true));
+        break;
       default:
-        _emitProcessAction(event.param, emit);
         break;
     }
   }
 
+  // 코인 일 경우.
+  Future<void> processCoinIngredient(IngredientActionParam param, Emitter<IngredientActionState> emit) async {
+    emit(state.copyWith(isLoading: false));
+    if (param.isShowAd) {
+      // 광고를 봐야할 경우.
+      produceSideEffect(IngredientProcessShowAdAction(param, state.adMobStatus));
+    } else {
+      // 광고를 안봐도 될 경우.
+      add(IngredientActionShowAdCounting());
+    }
+  }
+
   // 랜덤노말 타입 일 경우.
-  Future<void> processRandomNormalIngredient(IngredientActionParam param, Emitter<IngredientActionState> emit) async {
+  Future<void> processRandomNormalIngredient(
+    IngredientActionParam param,
+    Emitter<IngredientActionState> emit,
+  ) async {
     final result = await getIngredientsByTypeUseCase([
       IngredientType.normal,
-      IngredientType.normalNotProvide,
+      IngredientType.randomScratchSingleOnly,
     ]);
     result.fold(
       (failure) => produceSideEffect(IngredientActionError(failure)), // 에러 처리 추가
       (ingredients) {
         if (ingredients.isNotEmpty) {
-          List<IngredientEntity> finalResult = [];
+          List<IngredientEntity> randomNormalIngredients = [];
           for (var ingredient in ingredients) {
-            finalResult.add(ingredient);
+            randomNormalIngredients.add(ingredient);
             if (ingredient.type == IngredientType.normal) {
-              finalResult.add(ingredient);
+              randomNormalIngredients.add(ingredient);
             }
           }
           // 노말 타입만 2배로 늘림.
-          final randomIndex = math.Random().nextInt(finalResult.length);
+          final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
           final nextParam = param.copyWith(
-            ingredient: finalResult[randomIndex].copyWith(
+            ingredient: randomNormalIngredients[randomIndex].copyWith(
               distance: param.ingredient.distance,
               rewardTicket: param.ingredient.rewardTicket,
               type: param.ingredient.type,
             ),
           );
-          _emitProcessAction(nextParam, emit);
+          emit(
+            state.copyWith(
+              randomScratcherSelected: nextParam,
+              randomScratchersItems: randomNormalIngredients,
+              isLoading: false,
+            ),
+          );
         }
       },
     );
   }
 
-  _emitProcessAction(
-    IngredientActionParam param,
-    Emitter<IngredientActionState> emit,
-  ) {
-    emit(state.copyWith(entity: param));
-    produceSideEffect(
-      IngredientProcessAction(
-        param,
-        state.adMobStatus,
-      ),
-    );
-  }
-
-  FutureOr<void> showAdComplete(IngredientActionShowAdCounting event, Emitter<IngredientActionState> emit) async {
+  FutureOr<void> showAdProcess(IngredientActionShowAdCounting event, Emitter<IngredientActionState> emit) async {
     await setShowAdUseCase().then(
       (value) => value.fold(
         (l) => null,
         (r) => produceSideEffect(
-          IngredientAdShowComplete(
+          IngredientProcessObtainAction(
             ingredient: state.entity.ingredient,
             result: true,
           ),

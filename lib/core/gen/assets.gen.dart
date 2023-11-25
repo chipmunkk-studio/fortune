@@ -303,12 +303,15 @@ class $AssetsImagesGen {
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
 
+  /// File path: assets/images/scratch.png
+  AssetGenImage get scratch => const AssetGenImage('assets/images/scratch.png');
+
   /// File path: assets/images/web_main.png
   AssetGenImage get webMain =>
       const AssetGenImage('assets/images/web_main.png');
 
   /// List of all assets
-  List<dynamic> get values => [icLauncher, ivDefaultProfile, webMain];
+  List<dynamic> get values => [icLauncher, ivDefaultProfile, scratch, webMain];
 }
 
 class $AssetsLottieGen {

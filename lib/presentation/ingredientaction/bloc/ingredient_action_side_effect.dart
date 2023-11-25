@@ -16,11 +16,11 @@ class IngredientActionError extends IngredientActionSideEffect {
   List<Object?> get props => [];
 }
 
-class IngredientProcessAction extends IngredientActionSideEffect {
+class IngredientProcessShowAdAction extends IngredientActionSideEffect {
   final IngredientActionParam param;
   final bool adMobStatus;
 
-  IngredientProcessAction(
+  IngredientProcessShowAdAction(
     this.param,
     this.adMobStatus,
   );
@@ -29,11 +29,11 @@ class IngredientProcessAction extends IngredientActionSideEffect {
   List<Object?> get props => [];
 }
 
-class IngredientAdShowComplete extends IngredientActionSideEffect {
+class IngredientProcessObtainAction extends IngredientActionSideEffect {
   final IngredientEntity ingredient;
   final bool result;
 
-  IngredientAdShowComplete({
+  IngredientProcessObtainAction({
     required this.ingredient,
     required this.result,
   });

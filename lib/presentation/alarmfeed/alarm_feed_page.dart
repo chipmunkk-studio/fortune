@@ -112,7 +112,11 @@ class _AlarmFeedPageState extends State<_AlarmFeedPage> {
                             } else {
                               final item = state.feeds[index];
                               return Bounceable(
-                                onTap: () => _bloc.add(AlarmRewardReceive(item)),
+                                onTap: () {
+                                  if (item.reward.id != -1) {
+                                    _bloc.add(AlarmRewardReceive(item));
+                                  }
+                                },
                                 child: ItemAlarmFeed(
                                   item,
                                   tracker: _tracker,
