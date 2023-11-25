@@ -62,6 +62,7 @@ class Assets {
   static const String iconsIcXcircleFill24 = 'assets/icons/ic_xcircle_fill_24.svg';
   static const String imagesIcLauncher = 'assets/images/ic_launcher.png';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
+  static const String imagesScratch = 'assets/images/scratch.png';
   static const String imagesWebMain = 'assets/images/web_main.png';
   static const String lottieLoading = 'assets/lottie/loading.lottie';
   static const String onboardingGuide1 = 'assets/images/onboarding/guide1.png';

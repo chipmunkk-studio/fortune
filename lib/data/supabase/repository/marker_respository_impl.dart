@@ -70,10 +70,12 @@ class MarkerRepositoryImpl extends MarkerRepository {
     required int markerCount,
   }) async {
     try {
-      // 노말인 마커들만 뿌림.
+      /// 노말인 마커들만 뿌림.
+      /// 여기에서 어떤 마커들이 뿌려질지 결정 됨.
       final nonTicketAndUniqueIngredients = ingredients
           .where(
-            (ingredient) => ingredient.type == IngredientType.normal || ingredient.type == IngredientType.randomNormal,
+            (ingredient) => ingredient.type == IngredientType.normal ||
+                ingredient.type == IngredientType.randomScratchSingle,
           )
           .toList();
 

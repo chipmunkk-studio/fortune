@@ -23,11 +23,11 @@ class GetAlarmFeedUseCase implements UseCase0<List<AlarmFeedsEntity>> {
       final alarms = await alarmFeedsRepository.findAllAlarmsByUserId(
         user.id,
         columnsToSelect: [
+          AlarmFeedColumn.type,
           AlarmFeedColumn.createdAt,
           AlarmFeedColumn.headings,
           AlarmFeedColumn.content,
           AlarmFeedColumn.alarmRewards,
-          AlarmFeedColumn.type,
         ],
       );
       return Right(alarms);

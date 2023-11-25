@@ -123,48 +123,52 @@ final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
 
 Future<void> init() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  /// Firebase 초기화.
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  /// 앱로거
-  await initAppLogger();
-
-  /// 로컬 데이터 - Preference.
-  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  serviceLocator
-    ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
-    ..registerLazySingleton<LocalDataSource>(
-      () => LocalDataSourceImpl(),
+    /// Firebase 초기화.
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
     );
 
-  /// 개발 환경 설정.
-  await initEnvironment(kIsWeb);
+    /// 앱로거
+    await initAppLogger();
 
-  /// Supabase
-  await Supabase.initialize(
-    url: serviceLocator<Environment>().remoteConfig.baseUrl,
-    anonKey: serviceLocator<Environment>().remoteConfig.anonKey,
-    debug: false,
-  );
+    /// 로컬 데이터 - Preference.
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    serviceLocator
+      ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
+      ..registerLazySingleton<LocalDataSource>(
+        () => LocalDataSourceImpl(),
+      );
 
-  /// 믹스 패널.
-  await initMixPanel();
+    /// 개발 환경 설정.
+    await initEnvironment(kIsWeb);
 
-  /// FCM todo 나중에 작업할 때 다시 활성화.
-  await initFCM();
+    /// Supabase
+    await Supabase.initialize(
+      url: serviceLocator<Environment>().remoteConfig.baseUrl,
+      anonKey: serviceLocator<Environment>().remoteConfig.anonKey,
+      debug: false,
+    );
 
-  /// 다국어 설정.
-  await EasyLocalization.ensureInitialized();
+    /// 믹스 패널.
+    await initMixPanel();
 
-  /// Router.
-  initRouter(kIsWeb);
+    /// FCM todo 나중에 작업할 때 다시 활성화.
+    await initFCM();
 
-  /// Supabase
-  await initSupabase(kIsWeb);
+    /// 다국어 설정.
+    await EasyLocalization.ensureInitialized();
+
+    /// Router.
+    initRouter(kIsWeb);
+
+    /// Supabase
+    await initSupabase(kIsWeb);
+  } catch (e) {
+    rethrow;
+  }
 }
 
 initMixPanel() async {
@@ -214,8 +218,10 @@ initEnvironment(bool kIsWeb) async {
   // source가 app이면 앱에서 실행된 웹임.
   String source = uri.queryParameters['source'] ?? 'web';
 
+  final remoteConfig = await getRemoteConfigArgs();
+
   final Environment environment = Environment.create(
-    remoteConfig: await getRemoteConfigArgs(),
+    remoteConfig: remoteConfig,
     source: source,
   )..init(kIsWeb);
   serviceLocator.registerLazySingleton<Environment>(() => environment);
