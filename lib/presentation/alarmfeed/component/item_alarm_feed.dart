@@ -39,7 +39,9 @@ class ItemAlarmFeed extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Assets.icons.icGift.svg(width: 20, height: 20),
+              item.type == AlarmFeedType.server
+                  ? Assets.icons.icMegaphone.svg(width: 20, height: 20)
+                  : Assets.icons.icGift.svg(width: 20, height: 20),
               const SizedBox(width: 12),
               Flexible(
                 child: Column(
