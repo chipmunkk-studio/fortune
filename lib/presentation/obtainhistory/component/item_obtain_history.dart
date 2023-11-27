@@ -32,7 +32,7 @@ class ItemObtainHistory extends StatelessWidget {
                 painter: SquirclePainter(color: ColorName.grey800),
                 child: Container(
                   padding: const EdgeInsets.all(4),
-                  child: item.ingredient.imageUrl.isEmpty
+                  child: item.ingredient.image.imageUrl.isEmpty
                       ? Assets.icons.icLock.svg(
                           width: 24,
                           height: 24,

@@ -33,7 +33,7 @@ class ObtainHistoryService {
         if (column == ObtainHistoryColumn.ingredient) {
           return '${ObtainHistoryColumn.ingredient.name}('
               '${IngredientColumn.imageUrl.name},'
-              '${IngredientColumn.playType.name}'
+              '${IngredientColumn.imageUrl.name}(*)'
               ')';
         } else if (column == ObtainHistoryColumn.users) {
           return '${TableName.users}(${UserColumn.nickname.name})';
@@ -80,7 +80,7 @@ class ObtainHistoryService {
       if (column == ObtainHistoryColumn.ingredient) {
         return '${ObtainHistoryColumn.ingredient.name}('
             '${IngredientColumn.id.name},'
-            '${IngredientColumn.playType.name}'
+            '${IngredientColumn.imageUrl.name}(*)'
             ')';
       }
       return column.name;
@@ -117,8 +117,8 @@ class ObtainHistoryService {
             '${IngredientColumn.krName.name},'
             '${IngredientColumn.enName.name},'
             '${IngredientColumn.rewardTicket.name},'
-            '${IngredientColumn.playType.name},'
-            '${IngredientColumn.type.name}'
+            '${IngredientColumn.type.name},'
+            '${IngredientColumn.imageUrl.name}(*)'
             ')';
       }
       return column.name;
