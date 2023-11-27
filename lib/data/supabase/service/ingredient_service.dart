@@ -6,7 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IngredientService {
   static const _ingredientTableName = "ingredients";
-  static const fullSelectQuery = '*';
+  static const fullSelectQuery = '*, image_url(*)';
 
   final SupabaseClient _client = Supabase.instance.client;
 

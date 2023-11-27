@@ -1,6 +1,8 @@
 import 'package:fortune/core/util/locale.dart';
+import 'package:fortune/data/supabase/response/ingredient_image_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_image_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ingredient_response.g.dart';
@@ -13,7 +15,6 @@ enum IngredientColumn {
   rewardTicket,
   imageUrl,
   distance,
-  playType,
 }
 
 extension IngredientColumnExtension on IngredientColumn {
@@ -33,8 +34,6 @@ extension IngredientColumnExtension on IngredientColumn {
         return 'image_url';
       case IngredientColumn.distance:
         return 'distance';
-      case IngredientColumn.playType:
-        return 'play_type';
     }
   }
 }
@@ -52,13 +51,11 @@ class IngredientResponse extends IngredientEntity {
   @JsonKey(name: 'reward_ticket')
   final int? rewardTicket_;
   @JsonKey(name: 'image_url')
-  final String? imageUrl_;
+  final IngredientImageResponse? imageUrl_;
   @JsonKey(name: 'description')
   final String? desc_;
   @JsonKey(name: 'distance')
   final int? distance_;
-  @JsonKey(name: 'play_type')
-  final String? playType_;
 
   IngredientResponse({
     required this.id_,
@@ -69,16 +66,14 @@ class IngredientResponse extends IngredientEntity {
     required this.rewardTicket_,
     required this.distance_,
     required this.desc_,
-    required this.playType_,
   }) : super(
           id: id_?.toInt() ?? -1,
           exposureName: getLocaleContent(en: enName_ ?? '', kr: krName_ ?? ''),
           krName: krName_ ?? '',
           enName: enName_ ?? '',
-          imageUrl: imageUrl_ ?? '',
+          image: imageUrl_ ?? IngredientImageEntity.empty(),
           rewardTicket: rewardTicket_ ?? 0,
           type: getIngredientType(type_),
-          playType: getIngredientPlayType(playType_),
           distance: distance_ ?? 500,
           desc: desc_ ?? '',
         );
