@@ -32,7 +32,6 @@ class ObtainHistoryService {
       final selectColumns = columnsToSelect.map((column) {
         if (column == ObtainHistoryColumn.ingredient) {
           return '${ObtainHistoryColumn.ingredient.name}('
-              '${IngredientColumn.imageUrl.name},'
               '${IngredientColumn.imageUrl.name}(*)'
               ')';
         } else if (column == ObtainHistoryColumn.users) {
