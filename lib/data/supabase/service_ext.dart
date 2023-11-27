@@ -17,10 +17,12 @@ enum IngredientType {
   epic, // 등급 업.
   rare, // 릴레이 미션.
   randomScratchSingle, // 랜덤 스크래치(싱글) > 맵에 뿌려지는거.
+  randomScratchMulti, // 랜덤 스크래치(멀티) > 맵에 뿌려지는거.
   randomScratchSingleOnly, // 랜덤 스크래쳐 싱글 아이템(맵에 뿌려지지않고, 랜덤 스크래쳐 싱글 박스에 포함시킴)
+  randomScratchMultiOnly, // 랜덤 스크래쳐 멀티 아이템(맵에 뿌려지지않고, 랜덤 스크래쳐 멀티 박스에 포함시킴)
 }
 
-enum IngredientPlayType {
+enum IngredientImageType {
   webp,
   lottie,
 }
@@ -64,16 +66,20 @@ getIngredientType(String? type) {
     return IngredientType.randomScratchSingle;
   } else if (IngredientType.randomScratchSingleOnly.name == type) {
     return IngredientType.randomScratchSingleOnly;
+  } else if (IngredientType.randomScratchMulti.name == type) {
+    return IngredientType.randomScratchMulti;
+  } else if (IngredientType.randomScratchMultiOnly.name == type) {
+    return IngredientType.randomScratchMultiOnly;
   } else {
     return IngredientType.none;
   }
 }
 
 getIngredientPlayType(String? type) {
-  if (IngredientPlayType.webp.name == type) {
-    return IngredientPlayType.webp;
-  } else if (IngredientPlayType.lottie.name == type) {
-    return IngredientPlayType.lottie;
+  if (IngredientImageType.webp.name == type) {
+    return IngredientImageType.webp;
+  } else if (IngredientImageType.lottie.name == type) {
+    return IngredientImageType.lottie;
   } else {
     return IngredientType.none;
   }

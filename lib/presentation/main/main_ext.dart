@@ -103,10 +103,10 @@ buildIngredientByPlayType(
   double? height,
   ImageShape? imageShape,
 }) {
-  switch (ingredientEntity.playType) {
-    case IngredientPlayType.lottie:
+  switch (ingredientEntity.image.type) {
+    case IngredientImageType.lottie:
       return FortuneLottieWidget(
-        lottieUrl: ingredientEntity.imageUrl,
+        lottieUrl: ingredientEntity.image.imageUrl,
         width: width,
         height: height,
       );
@@ -114,7 +114,7 @@ buildIngredientByPlayType(
       return FortuneCachedNetworkImage(
         width: width,
         height: height,
-        imageUrl: ingredientEntity.imageUrl,
+        imageUrl: ingredientEntity.image.imageUrl,
         imageShape: imageShape ?? ImageShape.circle,
         placeholder: Container(),
         fit: BoxFit.fill,

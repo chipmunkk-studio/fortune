@@ -78,6 +78,7 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     IngredientActionParam param,
     Emitter<IngredientActionState> emit,
   ) async {
+    /// 노말과 랜덤 스크래치(싱글)만 골라옴.
     final result = await getIngredientsByTypeUseCase([
       IngredientType.normal,
       IngredientType.randomScratchSingleOnly,

@@ -38,7 +38,7 @@ class MissionsClearConditionsService {
             '${IngredientColumn.imageUrl.name},'
             '${IngredientColumn.krName.name},'
             '${IngredientColumn.enName.name},'
-            '${IngredientColumn.playType.name}'
+            '${IngredientColumn.imageUrl.name}(*)'
             ')';
       } else if (column == MissionClearConditionColumn.missions) {
         return '${TableName.missions}('

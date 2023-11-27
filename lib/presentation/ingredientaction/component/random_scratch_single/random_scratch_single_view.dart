@@ -158,7 +158,7 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
                   child: Padding(
                     padding: const EdgeInsets.all(48.0),
                     child: FortuneCachedNetworkImage(
-                      imageUrl: state.randomNormalSelected.ingredient.imageUrl,
+                      imageUrl: state.randomNormalSelected.ingredient.image.imageUrl,
                       imageShape: ImageShape.squircle,
                       width: state.size,
                       height: state.size,

@@ -18,7 +18,7 @@ class MissionsTopContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<MissionsBloc>()..add(MissionsTopInit()),
-      child: const _MissionsTopContents(),
+      child: const _MissionsTopContents (),
     );
   }
 }
