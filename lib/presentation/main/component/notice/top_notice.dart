@@ -90,16 +90,24 @@ class _TopNoticeState extends State<TopNotice> {
                                 children: [
                                   Row(
                                     children: [
-                                      Text(
-                                        e.user.nickname.isEmpty ? FortuneTr.msgUnknownUser : e.user.nickname,
-                                        style: FortuneTextStyle.body3Semibold(),
-                                      ),
                                       Flexible(
                                         child: Text(
-                                          FortuneTr.msgHelpedBy,
-                                          style: FortuneTextStyle.body3Light(),
+                                          e.user.nickname.isEmpty ? FortuneTr.msgUnknownUser : e.user.nickname,
+                                          style: FortuneTextStyle.body3Semibold(),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      )
+                                      ),
+                                      Text(
+                                        FortuneTr.msgHelpedBy,
+                                        style: FortuneTextStyle.body3Light(),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      Text(
+                                        e.createdAt,
+                                        style: FortuneTextStyle.body3Light(
+                                          color: ColorName.grey200,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(height: 3),
