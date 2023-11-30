@@ -14,12 +14,12 @@ class TopLocationArea extends StatelessWidget {
   final bool hasNewAlarm;
 
   const TopLocationArea({
-    Key? key,
+    super.key,
     required this.onProfileTap,
     required this.onHistoryTap,
     required this.onAlarmClick,
     required this.hasNewAlarm,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
