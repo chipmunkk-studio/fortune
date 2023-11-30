@@ -70,12 +70,15 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       );
 
       // 내 주변 마커 리스트.(티켓 X, 노말O, 스페셜O, 랜덤스크래치O)
+      /// 여기에서 코인을 제외한 내 주변의 마커들을 가져옴.
+      /// 서버컨트롤, 노말, 랜덤박스(싱글,멀티)
       final markersNearsByMeWithNotTicket = markersNearByMe
           .where(
             (element) =>
                 element.ingredient.type != IngredientType.coin &&
                 (element.ingredient.type == IngredientType.normal ||
                     element.ingredient.type == IngredientType.randomScratchSingle ||
+                    element.ingredient.type == IngredientType.randomScratchMulti ||
                     element.ingredient.type == IngredientType.special),
           )
           .toList();
@@ -86,8 +89,8 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
       // 재료 목록 가져옴.
       final ingredients = await ingredientRepository.findAllIngredients();
 
-      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 3;
-      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 3;
+      final keepMarkerCount = kReleaseMode ? remoteConfig.markerCount : 4;
+      final keepTicketCount = kReleaseMode ? remoteConfig.ticketCount : 2;
 
       final markerCount = markersNearsByMeWithNotTicket.length < keepMarkerCount
           ? keepMarkerCount - markersNearsByMeWithNotTicket.length
