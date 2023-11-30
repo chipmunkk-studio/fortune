@@ -50,7 +50,7 @@ class MissionClearUserHistoriesResponse extends MissionClearUserHistoriesEntity 
   }) : super(
           mission: mission_ ?? MissionsEntity.empty(),
           user: user_ ?? FortuneUserEntity.empty(),
-          createdAt: FortuneDateExtension.formattedDate(createdAt_),
+          createdAt: FortuneDateExtension.convertTimeAgo(createdAt_),
         );
 
   factory MissionClearUserHistoriesResponse.fromJson(Map<String, dynamic> json) =>
