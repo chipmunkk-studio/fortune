@@ -4,23 +4,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/presentation/ingredientaction/component/random_scratch_single_box.dart';
+import 'package:fortune/presentation/ingredientaction/component/random_scratch_multi_box.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/main/main_ext.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
-import 'bloc/random_scratch_single.dart';
+import 'bloc/random_scratch_multi.dart';
 
-class RandomScratchSingleView extends StatelessWidget {
+class RandomScratchMultiView extends StatelessWidget {
   final List<IngredientEntity> randomNormalIngredients;
   final IngredientActionParam randomNormalSelected;
 
   final dartz.Function1<IngredientActionParam, void> onReceive;
 
-  const RandomScratchSingleView({
+  const RandomScratchMultiView({
     super.key,
     required this.randomNormalIngredients,
     required this.randomNormalSelected,
@@ -30,40 +31,40 @@ class RandomScratchSingleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => RandomScratchSingleBloc()
+      create: (_) => RandomScratchMultiBloc()
         ..add(
-          RandomScratchSingleInit(
-            randomNormalSelected: randomNormalSelected,
-            randomNormalIngredients: randomNormalIngredients,
+          RandomScratchMultiInit(
+            randomScratchSelected: randomNormalSelected,
+            randomScratchIngredients: randomNormalIngredients,
           ),
         ),
-      child: _RandomScratchSingleView(
+      child: _RandomScratchMultiView(
         onReceive: onReceive,
       ),
     );
   }
 }
 
-class _RandomScratchSingleView extends StatefulWidget {
+class _RandomScratchMultiView extends StatefulWidget {
   final dartz.Function1<IngredientActionParam, void> onReceive;
 
-  const _RandomScratchSingleView({
+  const _RandomScratchMultiView({
     required this.onReceive,
   });
 
   @override
-  State<_RandomScratchSingleView> createState() => _RandomScratchSingleViewState();
+  State<_RandomScratchMultiView> createState() => _RandomScratchMultiViewState();
 }
 
-class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with SingleTickerProviderStateMixin {
-  late RandomScratchSingleBloc _bloc;
+class _RandomScratchMultiViewState extends State<_RandomScratchMultiView> with SingleTickerProviderStateMixin {
+  late RandomScratchMultiBloc _bloc;
   late AnimationController _animationController;
   late Animation<double> _animation;
+
   final FToast _fToast = FToast();
 
   @override
   void initState() {
-    super.initState();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -80,7 +81,8 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
         curve: Curves.elasticIn,
       ),
     );
-    _bloc = BlocProvider.of<RandomScratchSingleBloc>(context);
+    _bloc = BlocProvider.of<RandomScratchMultiBloc>(context);
+    super.initState();
   }
 
   @override
@@ -92,9 +94,15 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
 
   @override
   Widget build(BuildContext context) {
-    return BlocSideEffectListener<RandomScratchSingleBloc, RandomScratchSingleSideEffect>(
+    return BlocSideEffectListener<RandomScratchMultiBloc, RandomScratchMultiSideEffect>(
       listener: (context, sideEffect) async {
-        if (sideEffect is RandomScratchSingleProgressEnd) {
+        if (sideEffect is RandomScratchMultiError) {
+          dialogService.showAppErrorDialog(
+            context,
+            sideEffect.error,
+            needToFinish: true,
+          );
+        } else if (sideEffect is RandomScratchMultiProgressEnd) {
           final ingredient = sideEffect.randomNormalSelected.ingredient;
           _animationController.addStatusListener((status) {
             if (status == AnimationStatus.completed) {
@@ -120,14 +128,28 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
         child: Column(
           children: [
             const SizedBox(height: 20),
-            Flexible(
-              child: BlocBuilder<RandomScratchSingleBloc, RandomScratchSingleState>(
+            Expanded(
+              child: BlocBuilder<RandomScratchMultiBloc, RandomScratchMultiState>(
                 builder: (context, state) {
-                  return RandomScratchSingleBox(
-                    coverImage: Assets.images.scratch.image(),
-                    itemImageUrl: state.randomScratchSelected.ingredient.image.imageUrl,
-                    onScratch: () => _bloc.add(RandomScratchSingleEnd()),
-                    animation: _animation,
+                  return GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                    ),
+                    itemCount: state.gridItems.length,
+                    itemBuilder: (context, index) {
+                      final item = state.gridItems[index];
+                      return RandomScratchMultiBox(
+                        coverImage: Assets.images.scratch.image(),
+                        itemImageUrl: item.ingredient.image.imageUrl,
+                        animation: item.isWinner ? _animation : null,
+                        onScratch: () {
+                          _bloc.add(RandomScratchMultiEnd(item: item, index: index));
+                        },
+                      );
+                    },
                   );
                 },
               ),
@@ -135,6 +157,24 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
           ],
         ),
       ),
+    );
+  }
+
+  _showRequireProgressToast({
+    required String message,
+  }) {
+    _fToast.showToast(
+      child: fortuneToastContent(
+        icon: Assets.icons.icWarningCircle24.svg(),
+        content: message,
+      ),
+      positionedToastBuilder: (context, child) => Positioned(
+        bottom: 40,
+        left: 0,
+        right: 0,
+        child: child,
+      ),
+      toastDuration: const Duration(seconds: 2),
     );
   }
 }

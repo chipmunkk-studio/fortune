@@ -10,7 +10,6 @@ class RandomScratchSingleBloc extends Bloc<RandomScratchSingleEvent, RandomScrat
   static const tag = "[RandomScratchSingleBloc]";
 
   RandomScratchSingleBloc() : super(RandomScratchSingleState.initial()) {
-    on<RandomScratchSingleProgress>(onProgress);
     on<RandomScratchSingleEnd>(scratchEnd);
     on<RandomScratchSingleInit>(init);
   }
@@ -18,18 +17,14 @@ class RandomScratchSingleBloc extends Bloc<RandomScratchSingleEvent, RandomScrat
   FutureOr<void> init(RandomScratchSingleInit event, Emitter<RandomScratchSingleState> emit) {
     emit(
       state.copyWith(
-        randomNormalIngredients: event.randomNormalIngredients,
-        randomNormalSelected: event.randomNormalSelected,
+        randomScratchIngredients: event.randomNormalIngredients,
+        randomScratchSelected: event.randomNormalSelected,
       ),
     );
   }
 
-  FutureOr<void> onProgress(RandomScratchSingleProgress event, Emitter<RandomScratchSingleState> emit) {
-    emit(state.copyWith(progress: event.progress));
-  }
-
   FutureOr<void> scratchEnd(RandomScratchSingleEnd event, Emitter<RandomScratchSingleState> emit) {
     emit(state.copyWith(thresholdReached: true));
-    produceSideEffect(RandomScratchSingleProgressEnd(state.randomNormalSelected));
+    produceSideEffect(RandomScratchSingleProgressEnd(state.randomScratchSelected));
   }
 }

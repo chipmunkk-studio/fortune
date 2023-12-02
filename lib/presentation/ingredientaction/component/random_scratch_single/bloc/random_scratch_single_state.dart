@@ -7,28 +7,17 @@ part 'random_scratch_single_state.freezed.dart';
 @freezed
 class RandomScratchSingleState with _$RandomScratchSingleState {
   factory RandomScratchSingleState({
-    required double brushSize,
-    required double progress,
-    required double threshold,
     required bool thresholdReached,
-    required double size,
-    required List<IngredientEntity> randomNormalIngredients,
-    required IngredientActionParam randomNormalSelected,
+    required List<IngredientEntity> randomScratchIngredients,
+    required IngredientActionParam randomScratchSelected,
   }) = _RandomScratchSingleState;
 
   factory RandomScratchSingleState.initial([
-    double? brushSize,
-    double? progress,
-    double? threshold,
     bool? thresholdReached,
   ]) =>
       RandomScratchSingleState(
-        brushSize: brushSize ?? 48,
-        progress: progress ?? 0,
-        threshold: threshold ?? 50,
-        size: 200,
         thresholdReached: thresholdReached ?? false,
-        randomNormalIngredients: List.empty(),
-        randomNormalSelected: IngredientActionParam.empty(),
+        randomScratchIngredients: List.empty(),
+        randomScratchSelected: IngredientActionParam.empty(),
       );
 }

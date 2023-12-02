@@ -42,9 +42,10 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     Emitter<IngredientActionState> emit,
   ) async {
     switch (event.param.ingredient.type) {
-      // 랜덤 노말 일 경우.
+      // 랜덤 싱글/멀티 일 경우.
       case IngredientType.randomScratchSingle:
-        await processRandomNormalIngredient(event.param, emit);
+      case IngredientType.randomScratchMulti:
+        await processRandomIngredient(event.param, emit);
         break;
       // 코인 일 경우.
       case IngredientType.coin:
@@ -74,15 +75,17 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
   }
 
   // 랜덤노말 타입 일 경우.
-  Future<void> processRandomNormalIngredient(
+  Future<void> processRandomIngredient(
     IngredientActionParam param,
     Emitter<IngredientActionState> emit,
   ) async {
     /// 노말과 랜덤 스크래치(싱글)만 골라옴.
     final result = await getIngredientsByTypeUseCase([
       IngredientType.normal,
-      IngredientType.randomScratchSingleOnly,
+      if (param.ingredient.type == IngredientType.randomScratchSingle) IngredientType.randomScratchSingleOnly,
+      if (param.ingredient.type == IngredientType.randomScratchMulti) IngredientType.randomScratchMultiOnly,
     ]);
+
     result.fold(
       (failure) => produceSideEffect(IngredientActionError(failure)), // 에러 처리 추가
       (ingredients) {
@@ -98,15 +101,18 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
           final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
           final nextParam = param.copyWith(
             ingredient: randomNormalIngredients[randomIndex].copyWith(
+              // 랜덤박스에 있는 거리 그대로 복사.
               distance: param.ingredient.distance,
+              // 랜덤박스에 있는 티켓 수 복사.
               rewardTicket: param.ingredient.rewardTicket,
+              // 랜덤박스의 타입 그대로 복사.
               type: param.ingredient.type,
             ),
           );
           emit(
             state.copyWith(
               randomScratcherSelected: nextParam,
-              randomScratchersItems: randomNormalIngredients,
+              randomScratchersItems: ingredients,
               isLoading: false,
             ),
           );

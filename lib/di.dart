@@ -6,7 +6,6 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
-import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
@@ -91,7 +90,6 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart';
-import 'package:vungle/vungle.dart';
 
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';

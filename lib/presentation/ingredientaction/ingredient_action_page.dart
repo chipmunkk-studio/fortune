@@ -11,6 +11,7 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'component/ad_loading_view.dart';
 import 'component/default_background_view.dart';
+import 'component/random_scratch_multi/random_scratch_multi_view.dart';
 import 'component/random_scratch_single/random_scratch_single_view.dart';
 import 'ingredient_action_param.dart';
 import 'ingredient_action_response.dart';
@@ -89,6 +90,17 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
               return const AdLoadingView();
             case IngredientType.randomScratchSingle:
               return RandomScratchSingleView(
+                randomNormalIngredients: state.randomScratchersItems,
+                randomNormalSelected: state.randomScratcherSelected,
+                onReceive: (selected) {
+                  _returnActionComplete(
+                    returnIngredient: selected.ingredient,
+                    result: true,
+                  );
+                },
+              );
+            case IngredientType.randomScratchMulti:
+              return RandomScratchMultiView(
                 randomNormalIngredients: state.randomScratchersItems,
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
