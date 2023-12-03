@@ -47,11 +47,11 @@ class _RandomScratchSingleBoxState extends State<RandomScratchSingleBox> {
       brushSize: 48,
       threshold: 50,
       onThreshold: () {
+        widget.onScratch?.call();
         setState(() {
           opacity = 1;
           isScratched = true;
         });
-        widget.onScratch?.call();
       },
       child: Container(
         child: widget.animation == null
