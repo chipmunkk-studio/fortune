@@ -1,4 +1,5 @@
 import 'package:fortune/core/util/locale.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -14,6 +15,7 @@ enum MissionRewardColumn {
   krNote,
   enNote,
   createdAt,
+  type,
 }
 
 extension MissionRewardColumnExtension on MissionRewardColumn {
@@ -37,6 +39,8 @@ extension MissionRewardColumnExtension on MissionRewardColumn {
         return 'en_note';
       case MissionRewardColumn.createdAt:
         return 'created_at';
+      case MissionRewardColumn.type:
+        return 'type';
     }
   }
 }
@@ -61,6 +65,8 @@ class MissionRewardResponse extends MissionRewardEntity {
   final String? enNote_;
   @JsonKey(name: 'created_at')
   final String? createdAt_;
+  @JsonKey(name: 'type')
+  final String? type_;
 
   MissionRewardResponse({
     required this.id_,
@@ -72,6 +78,7 @@ class MissionRewardResponse extends MissionRewardEntity {
     required this.enNote_,
     required this.krNote_,
     required this.createdAt_,
+    required this.type_,
   }) : super(
           id: id_?.toInt() ?? -1,
           totalCount: totalCount_ ?? 0,
@@ -80,6 +87,7 @@ class MissionRewardResponse extends MissionRewardEntity {
           image: rewardImage_ ?? '',
           note: getLocaleContent(en: enNote_ ?? '', kr: krNote_ ?? ''),
           createdAt: createdAt_ ?? '',
+          type: getRewardImageType(type_),
         );
 
   factory MissionRewardResponse.fromJson(Map<String, dynamic> json) => _$MissionRewardResponseFromJson(json);

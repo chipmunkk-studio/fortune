@@ -302,6 +302,7 @@ class $AssetsImagesGen {
 
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
+  $AssetsImagesRandomGen get random => const $AssetsImagesRandomGen();
 
   /// File path: assets/images/scratch.png
   AssetGenImage get scratch => const AssetGenImage('assets/images/scratch.png');
@@ -354,6 +355,64 @@ class $AssetsImagesOnboardingGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [guide1, guide2, guide3];
+}
+
+class $AssetsImagesRandomGen {
+  const $AssetsImagesRandomGen();
+
+  /// File path: assets/images/random/scratch_multi_cover_0.png
+  AssetGenImage get scratchMultiCover0 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_0.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_1.png
+  AssetGenImage get scratchMultiCover1 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_1.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_2.png
+  AssetGenImage get scratchMultiCover2 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_2.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_3.png
+  AssetGenImage get scratchMultiCover3 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_3.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_4.png
+  AssetGenImage get scratchMultiCover4 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_4.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_5.png
+  AssetGenImage get scratchMultiCover5 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_5.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_6.png
+  AssetGenImage get scratchMultiCover6 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_6.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_7.png
+  AssetGenImage get scratchMultiCover7 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_7.png');
+
+  /// File path: assets/images/random/scratch_multi_cover_8.png
+  AssetGenImage get scratchMultiCover8 =>
+      const AssetGenImage('assets/images/random/scratch_multi_cover_8.png');
+
+  /// File path: assets/images/random/scratch_single_cover.png
+  AssetGenImage get scratchSingleCover =>
+      const AssetGenImage('assets/images/random/scratch_single_cover.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        scratchMultiCover0,
+        scratchMultiCover1,
+        scratchMultiCover2,
+        scratchMultiCover3,
+        scratchMultiCover4,
+        scratchMultiCover5,
+        scratchMultiCover6,
+        scratchMultiCover7,
+        scratchMultiCover8,
+        scratchSingleCover
+      ];
 }
 
 class Assets {

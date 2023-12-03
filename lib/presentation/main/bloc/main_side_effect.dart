@@ -117,3 +117,15 @@ class MainRotateEffect extends MainSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+
+class MainRequiredTicket extends MainSideEffect {
+
+  final int requiredTicket;
+
+  MainRequiredTicket(this.requiredTicket);
+
+  @override
+  List<Object?> get props => [];
+}
+

@@ -5,6 +5,7 @@ import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
+import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_reward_entity.dart';
 
@@ -30,15 +31,8 @@ class ExchangeBottom extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox.square(
-            dimension: 128,
-            child: FortuneCachedNetworkImage(
-              imageUrl: entity.image,
-              placeholder: Container(),
-              fit: BoxFit.fill,
-              imageShape: ImageShape.circle,
-            ),
-          ),
+          const SizedBox(height: 16),
+          _buildMissionRewardImage(entity),
           const SizedBox(height: 32),
           Text(
             entity.name,
@@ -67,5 +61,29 @@ class ExchangeBottom extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _buildMissionRewardImage(MissionRewardEntity entity) {
+    switch (entity.type) {
+      case RewardImageType.rectangle:
+        return ClipRect(
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: FortuneCachedNetworkImage(
+              imageUrl: entity.image,
+              placeholder: Container(),
+            ),
+          ),
+        );
+      default:
+        return SizedBox.square(
+          dimension: 128,
+          child: FortuneCachedNetworkImage(
+            imageUrl: entity.image,
+            placeholder: Container(),
+            imageShape: ImageShape.circle,
+          ),
+        );
+    }
   }
 }

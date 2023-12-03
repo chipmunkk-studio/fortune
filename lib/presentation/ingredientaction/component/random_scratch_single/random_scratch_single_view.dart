@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
+import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
-import 'package:fortune/core/util/toast.dart';
-import 'package:fortune/core/widgets/button/fortune_text_button.dart';
-import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
+import 'package:fortune/presentation/ingredientaction/component/random_scratch_single/random_scratch_single_box.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
+import 'package:fortune/presentation/ingredientaction/ingredient_action_response.dart';
 import 'package:fortune/presentation/main/main_ext.dart';
-import 'package:scratcher/scratcher.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
+import 'package:skeletons/skeletons.dart';
 
 import 'bloc/random_scratch_single.dart';
 
@@ -48,9 +50,9 @@ class RandomScratchSingleView extends StatelessWidget {
 }
 
 class _RandomScratchSingleView extends StatefulWidget {
-  dartz.Function1<IngredientActionParam, void> onReceive;
+  final dartz.Function1<IngredientActionParam, void> onReceive;
 
-  _RandomScratchSingleView({
+  const _RandomScratchSingleView({
     required this.onReceive,
   });
 
@@ -59,15 +61,38 @@ class _RandomScratchSingleView extends StatefulWidget {
 }
 
 class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with SingleTickerProviderStateMixin {
-  final key = GlobalKey<ScratcherState>();
   late RandomScratchSingleBloc _bloc;
-
-  final FToast _fToast = FToast();
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  final _router = serviceLocator<FortuneAppRouter>().router;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..addStatusListener(
+        (listener) {
+          if (listener == AnimationStatus.completed) {
+            _animationController.reverse();
+          }
+        },
+      );
+    _animation = Tween(begin: 1.0, end: 1.25).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.elasticIn,
+      ),
+    );
     _bloc = BlocProvider.of<RandomScratchSingleBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,118 +101,99 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
       listener: (context, sideEffect) async {
         if (sideEffect is RandomScratchSingleProgressEnd) {
           final ingredient = sideEffect.randomNormalSelected.ingredient;
-          dialogService.showFortuneDialog(
-            context,
-            dismissOnBackKeyPress: true,
-            dismissOnTouchOutside: true,
-            subTitle: ingredient.exposureName,
-            btnOkText: FortuneTr.msgReceive,
-            btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
-            topContent: buildIngredientByPlayType(
-              ingredient,
-              width: 84,
-              height: 84,
-            ),
-          );
+          _animationController.addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              dialogService.showFortuneDialog(
+                context,
+                dismissOnBackKeyPress: false,
+                dismissOnTouchOutside: false,
+                subTitle: ingredient.exposureName,
+                btnOkText: FortuneTr.msgReceive,
+                btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
+                topContent: buildIngredientByPlayType(
+                  ingredient,
+                  width: 84,
+                  height: 84,
+                ),
+              );
+            }
+          });
+          _animationController.forward();
         }
       },
-      child: FortuneScaffold(
-        child: Column(
-          children: [
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: BlocBuilder<RandomScratchSingleBloc, RandomScratchSingleState>(
+        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+        builder: (context, state) {
+          return Skeleton(
+            isLoading: state.isLoading,
+            skeleton: const SizedBox.shrink(),
+            child: FortuneScaffold(
+              appBar: FortuneCustomAppBar.leadingAppBar(context, onPressed: () {
+                _router.pop(context, ScratchCancel());
+              }),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  FortuneTextButton(
-                    onPress: () {
-                      key.currentState?.reset(
-                        duration: const Duration(milliseconds: 2000),
-                      );
-                    },
-                    text: '새로고침',
+                  const SizedBox(height: 16),
+                  Text(
+                    FortuneTr.msgTryScratching,
+                    style: FortuneTextStyle.headLine2(),
                   ),
-                  FortuneTextButton(
-                    onPress: () {
-                      key.currentState?.reveal(
-                        duration: const Duration(milliseconds: 2000),
-                      );
-                    },
-                    text: '다보이기',
+                  const SizedBox(height: 16),
+                  Text(
+                    FortuneTr.msgGuaranteedMarkerReward,
+                    style: FortuneTextStyle.body1Light(
+                      color: ColorName.grey200,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.center,
+                    child: BlocBuilder<RandomScratchSingleBloc, RandomScratchSingleState>(
+                      builder: (context, state) {
+                        return RandomScratchSingleBox(
+                          coverImage: Assets.images.random.scratchSingleCover.image(),
+                          itemImageUrl: state.randomScratchSelected.ingredient.image.imageUrl,
+                          onScratch: () => _bloc.add(RandomScratchSingleEnd()),
+                          animation: _animation,
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: FortuneTr.msgGreenFourLeafClover,
+                                style: FortuneTextStyle.body2Semibold(color: ColorName.primary),
+                              ),
+                              TextSpan(
+                                text: " ${FortuneTr.msgMarkerIs}",
+                                style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          FortuneTr.msgHiddenInScratch,
+                          style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            BlocBuilder<RandomScratchSingleBloc, RandomScratchSingleState>(
-              builder: (context, state) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 12,
-                  ),
-                  color: Colors.black,
-                  child: Text(
-                    '${state.progress.floor().toString()}% '
-                    '(${state.thresholdReached ? '다긁음' : '긁는중'})',
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            BlocBuilder<RandomScratchSingleBloc, RandomScratchSingleState>(
-              builder: (context, state) {
-                return Scratcher(
-                  key: key,
-                  accuracy: ScratchAccuracy.low,
-                  image: Assets.images.scratch.image(),
-                  brushSize: state.brushSize,
-                  threshold: state.threshold,
-                  onThreshold: () => _bloc.add(RandomScratchSingleEnd()),
-                  onChange: (value) => _bloc.add(RandomScratchSingleProgress(progress: value)),
-                  onScratchStart: () {},
-                  onScratchUpdate: () {},
-                  onScratchEnd: () {
-                    if (!state.thresholdReached) {
-                      _showRequireProgressToast(message: '조금만 더 긁어보세요!');
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(48.0),
-                    child: FortuneCachedNetworkImage(
-                      imageUrl: state.randomNormalSelected.ingredient.image.imageUrl,
-                      imageShape: ImageShape.squircle,
-                      width: state.size,
-                      height: state.size,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
-    );
-  }
-
-  _showRequireProgressToast({
-    required String message,
-  }) {
-    _fToast.showToast(
-      child: fortuneToastContent(
-        icon: Assets.icons.icWarningCircle24.svg(),
-        content: message,
-      ),
-      positionedToastBuilder: (context, child) => Positioned(
-        bottom: 40,
-        left: 0,
-        right: 0,
-        child: child,
-      ),
-      toastDuration: const Duration(seconds: 2),
     );
   }
 }

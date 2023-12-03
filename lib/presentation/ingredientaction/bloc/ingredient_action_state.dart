@@ -21,8 +21,8 @@ class IngredientActionState with _$IngredientActionState {
     bool? isLoading,
   ]) =>
       IngredientActionState(
-        entity: param ?? IngredientActionParam.empty(),
-        randomScratcherSelected: randomNormalSelected ?? IngredientActionParam.empty(),
+        entity: param ?? IngredientActionParam.initial(),
+        randomScratcherSelected: randomNormalSelected ?? IngredientActionParam.initial(),
         randomScratchersItems: List.empty(),
         adMobStatus: adMobStatus ?? true,
         isLoading: isLoading ?? true,

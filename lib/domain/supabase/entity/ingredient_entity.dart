@@ -32,7 +32,7 @@ class IngredientEntity {
       krName: '',
       enName: '',
       image: IngredientImageEntity.empty(),
-      rewardTicket: 0,
+      rewardTicket: -1,
       type: IngredientType.none,
       distance: 0,
       desc: '',
