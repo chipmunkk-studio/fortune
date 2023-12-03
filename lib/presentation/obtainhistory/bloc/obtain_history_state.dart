@@ -12,6 +12,7 @@ class ObtainHistoryState with _$ObtainHistoryState {
     required String query,
     required bool isLoading,
     required bool isNextPageLoading,
+    required bool isSearching,
   }) = _ObtainHistoryState;
 
   factory ObtainHistoryState.initial() => ObtainHistoryState(
@@ -21,5 +22,6 @@ class ObtainHistoryState with _$ObtainHistoryState {
         query: '',
         isLoading: true,
         isNextPageLoading: false,
+        isSearching: false,
       );
 }

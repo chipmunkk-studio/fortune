@@ -28,3 +28,12 @@ class ObtainHistorySearchText extends ObtainHistoryEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ObtainHistorySearchHistory extends ObtainHistoryEvent {
+  final String text;
+
+  ObtainHistorySearchHistory(this.text);
+
+  @override
+  List<Object?> get props => [];
+}
