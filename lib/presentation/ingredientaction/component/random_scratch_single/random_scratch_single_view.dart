@@ -103,19 +103,23 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
           final ingredient = sideEffect.randomNormalSelected.ingredient;
           _animationController.addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              dialogService.showFortuneDialog(
-                context,
-                dismissOnBackKeyPress: false,
-                dismissOnTouchOutside: false,
-                subTitle: ingredient.exposureName,
-                btnOkText: FortuneTr.msgReceive,
-                btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
-                topContent: buildIngredientByPlayType(
-                  ingredient,
-                  width: 84,
-                  height: 84,
-                ),
-              );
+              try {
+                dialogService.showFortuneDialog(
+                  context,
+                  dismissOnBackKeyPress: false,
+                  dismissOnTouchOutside: false,
+                  subTitle: ingredient.exposureName,
+                  btnOkText: FortuneTr.msgReceive,
+                  btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
+                  topContent: buildIngredientByPlayType(
+                    ingredient,
+                    width: 84,
+                    height: 84,
+                  ),
+                );
+              } catch (e) {
+                widget.onReceive(sideEffect.randomNormalSelected);
+              }
             }
           });
           _animationController.forward();

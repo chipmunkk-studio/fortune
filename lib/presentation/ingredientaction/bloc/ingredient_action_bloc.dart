@@ -32,7 +32,7 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
     on<IngredientActionObtainSuccess>(
       obtainSuccess,
       transformer: throttle(
-        const Duration(seconds: 3),
+        const Duration(seconds: 1),
       ),
     );
   }
