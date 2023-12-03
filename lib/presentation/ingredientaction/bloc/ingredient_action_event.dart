@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 
 @immutable
@@ -16,6 +17,15 @@ class IngredientActionInit extends IngredientActionEvent {
 
 class IngredientActionShowAdCounting extends IngredientActionEvent {
   IngredientActionShowAdCounting();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class IngredientActionObtainSuccess extends IngredientActionEvent {
+  final IngredientEntity entity;
+
+  IngredientActionObtainSuccess(this.entity);
 
   @override
   List<Object?> get props => [];

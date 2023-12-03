@@ -86,7 +86,6 @@ class MissionNormalCard extends StatelessWidget {
               FortuneCachedNetworkImage(
                 width: 84,
                 height: 84,
-                imageShape: ImageShape.circle,
                 imageUrl: item.mission.image,
                 placeholder: Container(),
                 errorWidget: Container(
@@ -103,7 +102,7 @@ class MissionNormalCard extends StatelessWidget {
                     child: Assets.images.ivDefaultProfile.svg(),
                   ),
                 ),
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
             ],
           ),

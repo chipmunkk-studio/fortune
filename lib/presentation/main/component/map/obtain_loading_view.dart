@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/main/main_ext.dart';
 
@@ -31,6 +32,7 @@ class ObtainLoadingView extends StatelessWidget {
                       processingMarker?.ingredient ?? IngredientEntity.empty(),
                       width: 92,
                       height: 92,
+                      imageShape: ImageShape.none,
                     ),
                     const SizedBox(height: 16),
                     Text(

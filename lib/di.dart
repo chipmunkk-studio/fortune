@@ -6,7 +6,6 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/notification/notification_ext.dart';
 import 'package:fortune/core/notification/notification_manager.dart';
-import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
@@ -53,6 +52,7 @@ import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -91,7 +91,6 @@ import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart';
-import 'package:vungle/vungle.dart';
 
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
@@ -384,7 +383,7 @@ _initUseCase() async {
       () => ObtainMarkerUseCase(
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
-        eventNoticesRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
         rewardRepository: serviceLocator(),
@@ -549,6 +548,14 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<ReduceCoinUseCase>(
+      () => ReduceCoinUseCase(
+        userRepository: serviceLocator(),
+        ingredientRepository: serviceLocator(),
+        rewardRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetPrivacyPolicyUseCase>(
       () => GetPrivacyPolicyUseCase(
         repository: serviceLocator(),
@@ -685,6 +692,7 @@ _initAppBloc() {
         setShowAdUseCase: serviceLocator(),
         getIngredientsByTypeUseCase: serviceLocator(),
         env: serviceLocator(),
+        reduceCoinUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

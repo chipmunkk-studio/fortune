@@ -1,11 +1,15 @@
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 
-class IngredientActionResponse {
-  final IngredientEntity ingredient;
-  final bool result;
+abstract class IngredientActionResponse {}
 
-  IngredientActionResponse({
+class ObtainSuccess extends IngredientActionResponse {
+  final IngredientEntity ingredient;
+
+  ObtainSuccess({
     required this.ingredient,
-    required this.result,
   });
 }
+
+class NoAds extends IngredientActionResponse {}
+
+class ScratchCancel extends IngredientActionResponse {}

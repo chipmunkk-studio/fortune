@@ -17,9 +17,9 @@ class NormalMission extends StatelessWidget {
 
   const NormalMission(
     this.state, {
-    Key? key,
+    super.key,
     required this.onExchangeClick,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

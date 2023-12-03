@@ -102,6 +102,7 @@ buildIngredientByPlayType(
   double? width,
   double? height,
   ImageShape? imageShape,
+  BoxFit? fit,
 }) {
   switch (ingredientEntity.image.type) {
     case IngredientImageType.lottie:
@@ -117,7 +118,8 @@ buildIngredientByPlayType(
         imageUrl: ingredientEntity.image.imageUrl,
         imageShape: imageShape ?? ImageShape.circle,
         placeholder: Container(),
-        fit: BoxFit.fill,
+        errorWidget: const SizedBox.shrink(),
+        fit: fit ?? BoxFit.contain,
       );
   }
 }

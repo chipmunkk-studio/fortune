@@ -36,9 +36,9 @@ class IngredientActionAdManager {
   void handleAdDisplay(IngredientProcessShowAdAction sideEffect) {
     final param = sideEffect.param;
     final adMobStatus = sideEffect.adMobStatus;
-    if (param.ad == null && adMobStatus) {
-      noAdAction(param);
-    } else if (!adMobStatus) {
+
+    // 애드몹 상태가 false 이거나 광고가 없을 경우.
+    if (!adMobStatus || param.ad == null) {
       _playVungleAd(param);
     } else {
       _showAdMobAd(param);
@@ -54,5 +54,4 @@ class IngredientActionAdManager {
       noAdAction(param);
     }
   }
-
 }

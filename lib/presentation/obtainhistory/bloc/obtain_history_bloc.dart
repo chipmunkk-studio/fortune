@@ -29,7 +29,7 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
       searchText,
       transformer: debounce(
         const Duration(
-          milliseconds: 200,
+          milliseconds: 2000,
         ),
       ),
     );

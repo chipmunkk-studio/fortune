@@ -68,6 +68,16 @@ class Assets {
   static const String onboardingGuide1 = 'assets/images/onboarding/guide1.png';
   static const String onboardingGuide2 = 'assets/images/onboarding/guide2.png';
   static const String onboardingGuide3 = 'assets/images/onboarding/guide3.png';
+  static const String randomScratchMultiCover0 = 'assets/images/random/scratch_multi_cover_0.png';
+  static const String randomScratchMultiCover1 = 'assets/images/random/scratch_multi_cover_1.png';
+  static const String randomScratchMultiCover2 = 'assets/images/random/scratch_multi_cover_2.png';
+  static const String randomScratchMultiCover3 = 'assets/images/random/scratch_multi_cover_3.png';
+  static const String randomScratchMultiCover4 = 'assets/images/random/scratch_multi_cover_4.png';
+  static const String randomScratchMultiCover5 = 'assets/images/random/scratch_multi_cover_5.png';
+  static const String randomScratchMultiCover6 = 'assets/images/random/scratch_multi_cover_6.png';
+  static const String randomScratchMultiCover7 = 'assets/images/random/scratch_multi_cover_7.png';
+  static const String randomScratchMultiCover8 = 'assets/images/random/scratch_multi_cover_8.png';
+  static const String randomScratchSingleCover = 'assets/images/random/scratch_single_cover.png';
   static const String splashAndroid12splash = 'assets/images/splash/android12splash.png';
   static const String splashSplashDefault = 'assets/images/splash/splash_default.png';
   static const String translationsEnUS = 'assets/translations/en-US.json';
