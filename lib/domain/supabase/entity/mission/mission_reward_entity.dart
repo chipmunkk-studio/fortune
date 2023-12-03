@@ -1,3 +1,5 @@
+import 'package:fortune/data/supabase/service_ext.dart';
+
 class MissionRewardEntity {
   final int id;
   final int totalCount;
@@ -6,6 +8,7 @@ class MissionRewardEntity {
   final String image;
   final String note;
   final String createdAt;
+  final RewardImageType type;
 
   MissionRewardEntity({
     required this.id,
@@ -15,6 +18,7 @@ class MissionRewardEntity {
     required this.image,
     required this.note,
     required this.createdAt,
+    required this.type,
   });
 
   factory MissionRewardEntity.empty() => MissionRewardEntity(
@@ -25,5 +29,6 @@ class MissionRewardEntity {
         image: '',
         note: '',
         createdAt: '',
+        type: RewardImageType.circle,
       );
 }

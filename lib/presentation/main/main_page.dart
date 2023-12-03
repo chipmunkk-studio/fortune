@@ -265,6 +265,14 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           }
         } else if (sideEffect is MainRotateEffect) {
           _animateCameraRotate(sideEffect.prevData, sideEffect.nextData);
+        } else if (sideEffect is MainRequiredTicket) {
+          dialogService.showFortuneDialog(
+            context,
+            subTitle: FortuneTr.requireMoreTicket(sideEffect.requiredTicket.toString()),
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            btnOkPressed: () {},
+          );
         }
       },
       child: FortuneScaffold(
@@ -662,24 +670,36 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       ),
     );
 
-    if (response != null && response.result) {
+    if (response != null) {
+      _processIngredientActionReturn(param, response);
+    }
+  }
+
+  _processIngredientActionReturn(
+    MainShowObtainDialog param,
+    IngredientActionResponse response,
+  ) {
+    if (response is NoAds) {
+      _showIngredientActionReturnToast(FortuneTr.msgNoAdsAvailable);
+    } else if (response is ObtainSuccess) {
       _bloc.add(
         MainMarkerObtain(
           data: param.data.copyWith(ingredient: response.ingredient),
           key: param.key,
         ),
       );
+    } else if (response is ScratchCancel) {
     } else {
-      _showNoAdsAvailableToast();
+      // 나머지 케이스.
     }
   }
 
   // 광고가 없을 경우 토스트 노출.
-  void _showNoAdsAvailableToast() {
+  void _showIngredientActionReturnToast(String text) {
     _fToast.showToast(
       child: fortuneToastContent(
         icon: Assets.icons.icWarningCircle24.svg(),
-        content: FortuneTr.msgNoAdsAvailable,
+        content: text,
       ),
       positionedToastBuilder: (context, child) => Positioned(
         bottom: 40,

@@ -22,7 +22,7 @@ import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart
 class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
-  final AlarmFeedsRepository eventNoticesRepository;
+  final AlarmFeedsRepository alarmFeedsRepository;
   final AlarmRewardRepository rewardRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final MissionsRepository missionsRepository;
@@ -31,7 +31,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   ObtainMarkerUseCase({
     required this.markerRepository,
     required this.userRepository,
-    required this.eventNoticesRepository,
+    required this.alarmFeedsRepository,
     required this.obtainHistoryRepository,
     required this.missionsRepository,
     required this.rewardRepository,
@@ -41,7 +41,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   @override
   Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
-      final ingredient = param.marker.ingredient;
       final marker = param.marker;
       final currentUser = await userRepository.findUserByEmailNonNull(
         columnsToSelect: [
@@ -54,14 +53,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         ],
       );
 
-      // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
-      final currentTicket = currentUser.ticket;
-      final requiredTicket = marker.ingredient.rewardTicket.abs();
-
-      if (currentTicket < requiredTicket && marker.ingredient.type != IngredientType.coin) {
-        throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));
-      }
-
       // 마커 재배치.
       await markerRepository.reLocateMarker(
         userId: currentUser.id,
@@ -69,29 +60,6 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         ingredient: marker.ingredient,
         markerId: marker.id,
       );
-
-      int updatedTicket = currentUser.ticket;
-      int markerObtainCount = currentUser.markerObtainCount;
-
-      // 티켓 및 획득 카운트 업데이트.
-      updatedTicket = currentUser.ticket + ingredient.rewardTicket;
-      markerObtainCount =
-          param.marker.ingredient.type != IngredientType.coin ? markerObtainCount + 1 : markerObtainCount;
-
-      // 사용자 티켓 정보 업데이트.
-      final updateUser = await userRepository.updateUserTicket(
-        currentUser.email,
-        ticket: updatedTicket < 0 ? 0 : updatedTicket,
-        markerObtainCount: markerObtainCount,
-      );
-
-      // 레벨업 혹은 등급 업을 했을 경우.
-      if (currentUser.level != updateUser.level) {
-        await _generateLevelOrGradeUpRewardHistory(
-          updateUser: updateUser,
-          currentUser: currentUser,
-        );
-      }
 
       // 히스토리 추가.
       if (marker.ingredient.type != IngredientType.coin) {
@@ -127,7 +95,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
 
       return Right(
         MarkerObtainEntity(
-          user: updateUser,
+          user: currentUser,
           haveCount: histories.length,
         ),
       );
@@ -159,7 +127,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         );
 
         // 알람에 추가.
-        await eventNoticesRepository.insertAlarm(
+        await alarmFeedsRepository.insertAlarm(
           RequestAlarmFeeds.insert(
             headings: FortuneTr.msgRelayMissionHeadings,
             content: FortuneTr.msgRelayMissionContents,
@@ -176,39 +144,5 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
         );
       }
     }
-  }
-
-  _generateLevelOrGradeUpRewardHistory({
-    required FortuneUserEntity updateUser,
-    required FortuneUserEntity currentUser,
-  }) async {
-    final isGradeUp = currentUser.grade.name != updateUser.grade.name;
-    // 리워드 정보 가져옴. (레벨업/등급업)
-    final rewardInfo = await rewardRepository.findRewardInfoByType(
-      isGradeUp ? AlarmRewardType.grade : AlarmRewardType.level,
-    );
-
-    // 리워드 정보에 따라 재료 생성.
-    final ingredient = await ingredientRepository.generateIngredientByRewardInfoType(rewardInfo);
-
-    // 보상 히스토리 등록.
-    final response = await rewardRepository.insertRewardHistory(
-      user: updateUser,
-      alarmRewardInfo: rewardInfo,
-      ingredient: ingredient,
-    );
-
-    // 알람 등록.
-    await eventNoticesRepository.insertAlarm(
-      RequestAlarmFeeds.insert(
-        type: AlarmFeedType.user.name,
-        headings: isGradeUp ? FortuneTr.msgNewGradeReached : FortuneTr.msgLevelUpHeadings,
-        content: isGradeUp
-            ? FortuneTr.msgAchievedGrade(updateUser.grade.name)
-            : FortuneTr.msgLevelUpContents(updateUser.level.toString()),
-        users: updateUser.id,
-        alarmRewardHistory: response.id,
-      ),
-    );
   }
 }

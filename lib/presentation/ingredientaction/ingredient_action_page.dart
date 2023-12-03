@@ -4,7 +4,6 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_ad_manager.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -56,7 +55,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
       // 광고가 없을 경우.
       noAdAction: (param) {
         _mixpanelTracker.trackEvent('광고 없음', properties: param.user?.toJson());
-        _router.pop(context, IngredientActionResponse(ingredient: param.ingredient, result: false));
+        _router.pop(context, NoAds());
       },
       // 광고를 모두 봤을 경우.
       showAdSuccess: (param, type) {
@@ -75,10 +74,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
         } else if (sideEffect is IngredientProcessShowAdAction) {
           _adManager.handleAdDisplay(sideEffect);
         } else if (sideEffect is IngredientProcessObtainAction) {
-          _returnActionComplete(
-            returnIngredient: sideEffect.ingredient,
-            result: sideEffect.result,
-          );
+          _router.pop(context, ObtainSuccess(ingredient: sideEffect.ingredient));
         }
       },
       child: BlocBuilder<IngredientActionBloc, IngredientActionState>(
@@ -93,10 +89,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalIngredients: state.randomScratchersItems,
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
-                  _returnActionComplete(
-                    returnIngredient: selected.ingredient,
-                    result: true,
-                  );
+                  _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
               );
             case IngredientType.randomScratchMulti:
@@ -104,29 +97,13 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalIngredients: state.randomScratchersItems,
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
-                  _returnActionComplete(
-                    returnIngredient: selected.ingredient,
-                    result: true,
-                  );
+                  _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
               );
             default:
               return const DefaultBackgroundView();
           }
         },
-      ),
-    );
-  }
-
-  _returnActionComplete({
-    required IngredientEntity returnIngredient,
-    required bool result,
-  }) {
-    _router.pop(
-      context,
-      IngredientActionResponse(
-        ingredient: returnIngredient,
-        result: result,
       ),
     );
   }

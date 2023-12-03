@@ -52,6 +52,7 @@ import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -382,7 +383,7 @@ _initUseCase() async {
       () => ObtainMarkerUseCase(
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
-        eventNoticesRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
         obtainHistoryRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
         rewardRepository: serviceLocator(),
@@ -547,6 +548,14 @@ _initUseCase() async {
         userRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<ReduceCoinUseCase>(
+      () => ReduceCoinUseCase(
+        userRepository: serviceLocator(),
+        ingredientRepository: serviceLocator(),
+        rewardRepository: serviceLocator(),
+        alarmFeedsRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetPrivacyPolicyUseCase>(
       () => GetPrivacyPolicyUseCase(
         repository: serviceLocator(),
@@ -683,6 +692,7 @@ _initAppBloc() {
         setShowAdUseCase: serviceLocator(),
         getIngredientsByTypeUseCase: serviceLocator(),
         env: serviceLocator(),
+        reduceCoinUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

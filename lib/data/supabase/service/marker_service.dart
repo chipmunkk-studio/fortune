@@ -4,6 +4,7 @@ import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_marker_random_insert.dart';
 import 'package:fortune/data/supabase/request/request_marker_update.dart';
+import 'package:fortune/data/supabase/response/ingredient_response.dart';
 import 'package:fortune/data/supabase/response/marker_response.dart';
 import 'package:fortune/data/supabase/service/ingredient_service.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
@@ -54,6 +55,7 @@ class MarkerService {
       final response = await _client
           .from(TableName.markers)
           .select(selectColumns.join(","))
+          .eq("${TableName.ingredients}.${IngredientColumn.isOn.name}", true)
           .gte(MarkerColumn.latitude.name, minLat)
           .lte(MarkerColumn.latitude.name, maxLat)
           .gte(MarkerColumn.longitude.name, minLng)

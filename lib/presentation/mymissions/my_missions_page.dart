@@ -14,7 +14,7 @@ import 'component/item_my_mission_reward.dart';
 import 'component/top_area.dart';
 
 class MyMissionsPage extends StatelessWidget {
-  const MyMissionsPage({Key? key}) : super(key: key);
+  const MyMissionsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class MyMissionsPage extends StatelessWidget {
 }
 
 class _MyMissionsPage extends StatefulWidget {
-  const _MyMissionsPage({Key? key}) : super(key: key);
+  const _MyMissionsPage();
 
   @override
   State<_MyMissionsPage> createState() => _MyMissionsPageState();

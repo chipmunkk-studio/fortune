@@ -50,11 +50,19 @@ abstract class FortuneTr {
   static final msgUpdateUserInfo = tr('msgUpdateUserInfo');
   static final msgNotUpdateUser = tr('msgNotUpdateUser');
   static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
+  static final msgMarkerIs = tr('msgMarkerIs');
+  static final msgHiddenInScratch = tr('msgHiddenInScratch');
+  static final msgWhatHappensThreeMatches = tr('msgWhatHappensThreeMatches');
+  static final msgGoldenFourLeafClover = tr('msgGoldenFourLeafClover');
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');
   static final msgPressAgainToExit = tr('msgPressAgainToExit');
   static final msgUpdateTitle = tr('msgUpdateTitle');
   static final msgUpdateMessage = tr('msgUpdateMessage');
+
+  static final msgTryScratching = tr('msgTryScratching');
+  static final msgGuaranteedMarkerReward = tr('msgGuaranteedMarkerReward');
+  static final msgGreenFourLeafClover = tr('msgGreenFourLeafClover');
 
   static final msgWelcome = tr('msgWelcome');
   static final msgFortuneCookieReward = tr('msgFortuneCookieReward');

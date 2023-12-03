@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:scratcher/scratcher.dart';
 
@@ -26,7 +27,6 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
 
   @override
   Widget build(BuildContext context) {
-
     var icon = AnimatedOpacity(
       opacity: opacity,
       duration: const Duration(milliseconds: 750),
@@ -35,6 +35,7 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
           imageShape: ImageShape.squircle,
+          fit: BoxFit.contain,
           width: 96,
           height: 96,
         ),
@@ -43,6 +44,7 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
 
     return Scratcher(
       accuracy: ScratchAccuracy.high,
+      color: Colors.transparent,
       image: widget.coverImage,
       brushSize: 28,
       threshold: 50,
@@ -54,6 +56,9 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
         widget.onScratch?.call();
       },
       child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
         child: widget.animation == null
             ? icon
             : ScaleTransition(

@@ -73,6 +73,7 @@ class RandomScratchMultiBloc extends Bloc<RandomScratchMultiEvent, RandomScratch
       state.copyWith(
         gridItems: grid,
         randomScratchSelected: event.randomScratchSelected,
+        isLoading: false,
       ),
     );
   }
@@ -86,6 +87,7 @@ class RandomScratchMultiBloc extends Bloc<RandomScratchMultiEvent, RandomScratch
     int winnerCount = newGrid.where((item) => item.isWinner && item.isScratched).length;
     // 3개 이상 당첨된 경우 당첨 처리
     if (winnerCount >= 3) {
+      emit(state.copyWith(isObtaining: true));
       produceSideEffect(
         RandomScratchMultiProgressEnd(
           state.randomScratchSelected,

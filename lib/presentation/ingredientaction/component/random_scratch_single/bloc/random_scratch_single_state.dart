@@ -10,6 +10,7 @@ class RandomScratchSingleState with _$RandomScratchSingleState {
     required bool thresholdReached,
     required List<IngredientEntity> randomScratchIngredients,
     required IngredientActionParam randomScratchSelected,
+    required bool isLoading,
   }) = _RandomScratchSingleState;
 
   factory RandomScratchSingleState.initial([
@@ -18,6 +19,7 @@ class RandomScratchSingleState with _$RandomScratchSingleState {
       RandomScratchSingleState(
         thresholdReached: thresholdReached ?? false,
         randomScratchIngredients: List.empty(),
-        randomScratchSelected: IngredientActionParam.empty(),
+        randomScratchSelected: IngredientActionParam.initial(),
+        isLoading: true,
       );
 }

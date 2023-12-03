@@ -31,11 +31,9 @@ class IngredientProcessShowAdAction extends IngredientActionSideEffect {
 
 class IngredientProcessObtainAction extends IngredientActionSideEffect {
   final IngredientEntity ingredient;
-  final bool result;
 
   IngredientProcessObtainAction({
     required this.ingredient,
-    required this.result,
   });
 
   @override

@@ -15,6 +15,7 @@ enum IngredientColumn {
   rewardTicket,
   imageUrl,
   distance,
+  isOn,
 }
 
 extension IngredientColumnExtension on IngredientColumn {
@@ -34,6 +35,8 @@ extension IngredientColumnExtension on IngredientColumn {
         return 'image_url';
       case IngredientColumn.distance:
         return 'distance';
+      case IngredientColumn.isOn:
+        return 'is_on';
     }
   }
 }

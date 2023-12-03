@@ -19,6 +19,7 @@ class RandomScratchSingleBloc extends Bloc<RandomScratchSingleEvent, RandomScrat
       state.copyWith(
         randomScratchIngredients: event.randomNormalIngredients,
         randomScratchSelected: event.randomNormalSelected,
+        isLoading: false,
       ),
     );
   }

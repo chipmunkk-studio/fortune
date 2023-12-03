@@ -246,9 +246,19 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final distance = event.distance;
     final isShowAd = await getShowAdUseCase().then((value) => value.getOrElse(() => false));
 
-    // 거리가 모자랄 경우
+    /// 거리가 모자랄 경우
     if (event.distance > 0 && kReleaseMode) {
       add(MainRequireInCircleMetersEvent(distance));
+      return;
+    }
+
+    final currentUserTicket = state.user?.ticket ?? 0;
+    final ingredient = data.ingredient;
+    final requiredTicket = ingredient.rewardTicket.abs();
+
+    /// 티켓이 모자랄 경우.
+    if (currentUserTicket < requiredTicket && ingredient.type != IngredientType.coin) {
+      produceSideEffect(MainRequiredTicket(requiredTicket - currentUserTicket));
       return;
     }
 
@@ -371,5 +381,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   _hasAnimation(IngredientType ingredientType) =>
-      IngredientType.coin != ingredientType && IngredientType.randomScratchSingle != ingredientType;
+      IngredientType.coin != ingredientType &&
+      IngredientType.randomScratchSingle != ingredientType &&
+      IngredientType.randomScratchMulti != ingredientType;
 }

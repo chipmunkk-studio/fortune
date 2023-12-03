@@ -27,6 +27,11 @@ enum IngredientImageType {
   lottie,
 }
 
+enum RewardImageType {
+  circle,
+  rectangle,
+}
+
 enum AlarmFeedType {
   user,
   server,
@@ -82,6 +87,16 @@ getIngredientPlayType(String? type) {
     return IngredientImageType.lottie;
   } else {
     return IngredientType.none;
+  }
+}
+
+getRewardImageType(String? type) {
+  if (RewardImageType.circle.name == type) {
+    return RewardImageType.circle;
+  } else if (RewardImageType.rectangle.name == type) {
+    return RewardImageType.rectangle;
+  } else {
+    return RewardImageType.circle;
   }
 }
 

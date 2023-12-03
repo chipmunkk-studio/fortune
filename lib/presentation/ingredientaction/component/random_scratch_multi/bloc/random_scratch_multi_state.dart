@@ -9,6 +9,8 @@ class RandomScratchMultiState with _$RandomScratchMultiState {
   factory RandomScratchMultiState({
     required List<RandomScratchGridItem> gridItems,
     required IngredientActionParam randomScratchSelected,
+    required bool isLoading,
+    required bool isObtaining,
   }) = _RandomScratchMultiState;
 
   factory RandomScratchMultiState.initial([
@@ -16,7 +18,9 @@ class RandomScratchMultiState with _$RandomScratchMultiState {
     IngredientActionParam? randomScratchSelected,
   ]) =>
       RandomScratchMultiState(
-        randomScratchSelected: randomScratchSelected ?? IngredientActionParam.empty(),
+        randomScratchSelected: randomScratchSelected ?? IngredientActionParam.initial(),
         gridItems: List.empty(),
+        isLoading: true,
+        isObtaining: false,
       );
 }

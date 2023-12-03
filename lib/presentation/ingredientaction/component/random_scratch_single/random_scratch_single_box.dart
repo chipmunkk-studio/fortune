@@ -34,6 +34,7 @@ class _RandomScratchSingleBoxState extends State<RandomScratchSingleBox> {
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
           imageShape: ImageShape.squircle,
+          fit: BoxFit.contain,
           width: 200,
           height: 200,
         ),
@@ -42,6 +43,7 @@ class _RandomScratchSingleBoxState extends State<RandomScratchSingleBox> {
     return Scratcher(
       accuracy: ScratchAccuracy.high,
       image: widget.coverImage,
+      color: Colors.transparent,
       brushSize: 48,
       threshold: 50,
       onThreshold: () {

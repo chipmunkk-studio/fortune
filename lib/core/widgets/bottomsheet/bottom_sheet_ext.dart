@@ -17,6 +17,7 @@ extension FortuneBottomSheet on BuildContext {
     return await showModalBottomSheet(
       context: this,
       isScrollControlled: true,
+      backgroundColor: ColorName.grey800,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -91,6 +92,7 @@ extension FortuneBottomSheet on BuildContext {
     return await showModalBottomSheet(
       context: this,
       isScrollControlled: true,
+      backgroundColor: ColorName.grey800,
       isDismissible: isDismissible,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

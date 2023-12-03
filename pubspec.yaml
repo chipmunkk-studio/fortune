@@ -185,6 +185,7 @@ flutter:
     - assets/translations/
     - assets/images/
     - assets/images/onboarding/
+    - assets/images/random/
     - assets/icons/
     - assets/lottie/
 

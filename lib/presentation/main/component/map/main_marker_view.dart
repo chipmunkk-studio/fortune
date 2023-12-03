@@ -34,7 +34,9 @@ class _MainMarkerViewState extends State<MainMarkerView> {
         },
         child: Container(
           key: widget.marker.globalKey,
-          child: buildIngredientByPlayType(widget.marker.ingredient),
+          child: buildIngredientByPlayType(
+            widget.marker.ingredient,
+          ),
         ),
       ),
     );

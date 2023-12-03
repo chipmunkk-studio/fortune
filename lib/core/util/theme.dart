@@ -157,6 +157,7 @@ appBarTheme() {
     // 상단 스테이터스 바 컬러.
     color: ColorName.grey900,
     elevation: 0,
+    surfaceTintColor: Colors.transparent,
     iconTheme: const IconThemeData(color: Colors.white24),
     toolbarTextStyle: FortuneTextStyle.subTitle2Medium(),
     titleTextStyle: FortuneTextStyle.subTitle2Medium(),
