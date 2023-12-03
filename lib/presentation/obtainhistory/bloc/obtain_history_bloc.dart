@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/domain/supabase/entity/obtain_history_entity.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_histories_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
@@ -27,9 +26,12 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
     );
     on<ObtainHistorySearchText>(
       searchText,
+    );
+    on<ObtainHistorySearchHistory>(
+      _searchHistory,
       transformer: debounce(
         const Duration(
-          milliseconds: 2000,
+          seconds: 1,
         ),
       ),
     );
@@ -74,7 +76,11 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
           },
           (r) async {
             // 뷰스테이트가 로딩 상태로 바뀌기 전까지 1초정도 딜레이를 줌.
-            final filteredItems = state.histories.whereNot((item) => item is ObtainHistoryLoadingViewItem).toList();
+            final filteredItems = state.histories
+                .whereNot(
+                  (item) => item is ObtainHistoryLoadingViewItem,
+                )
+                .toList();
             await Future.delayed(const Duration(milliseconds: 200));
             emit(
               state.copyWith(
@@ -92,6 +98,11 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
   }
 
   FutureOr<void> searchText(ObtainHistorySearchText event, Emitter<ObtainHistoryState> emit) async {
+    emit(state.copyWith(isSearching: true));
+    add(ObtainHistorySearchHistory(event.text));
+  }
+
+  FutureOr<void> _searchHistory(ObtainHistorySearchHistory event, Emitter<ObtainHistoryState> emit) async {
     await _getHistories(emit, query: event.text);
   }
 
@@ -105,26 +116,24 @@ class ObtainHistoryBloc extends Bloc<ObtainHistoryEvent, ObtainHistoryState>
         end: 19,
         query: query,
       ),
-    )
-        .then(
-          (value) => value.fold(
-            (l) => produceSideEffect(ObtainHistoryError(l)),
-            (r) {
-              emit(
-                state.copyWith(
-                  isLoading: false,
-                  histories: r,
-                  query: query,
-                ),
-              );
-              produceSideEffect(ObtainHistoryInitSearchText(query));
-            },
-          ),
-        )
-        .onError(
-          (error, stackTrace) => FortuneLogger.error(
-            message: error.toString(),
-          ),
-        );
+    ).then(
+      (value) => value.fold(
+        (l) {
+          emit(state.copyWith(isSearching: false));
+          produceSideEffect(ObtainHistoryError(l));
+        },
+        (r) {
+          emit(
+            state.copyWith(
+              isLoading: false,
+              isSearching: false,
+              histories: r,
+              query: query,
+            ),
+          );
+          produceSideEffect(ObtainHistoryInitSearchText(query));
+        },
+      ),
+    );
   }
 }

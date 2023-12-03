@@ -49,11 +49,11 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
       brushSize: 28,
       threshold: 50,
       onThreshold: () {
+        widget.onScratch?.call();
         setState(() {
           opacity = 1;
           isScratched = true;
         });
-        widget.onScratch?.call();
       },
       child: Container(
         decoration: BoxDecoration(

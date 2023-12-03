@@ -80,7 +80,7 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                 centerTitle: FortuneTr.historyFortuneSpot,
                 searchIconColor: Colors.white,
                 searchBarHeight: 56,
-                textStyle: FortuneTextStyle.body2Light(),
+                textStyle: FortuneTextStyle.body1Light(),
                 hintStyle: FortuneTextStyle.body1Light(color: ColorName.grey200),
                 closeIconColor: Colors.white,
                 cursorColor: Colors.white,
@@ -94,7 +94,8 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
           ),
         ),
         child: BlocBuilder<ObtainHistoryBloc, ObtainHistoryState>(
-          buildWhen: (previous, current) => previous.histories != current.histories,
+          buildWhen: (previous, current) =>
+              previous.histories != current.histories || previous.isSearching != current.isSearching,
           builder: (context, state) {
             return Skeleton(
               skeleton: const Padding(
@@ -102,42 +103,60 @@ class _ObtainHistoryPageState extends State<_ObtainHistoryPage> {
                 child: ObtainHistorySkeleton(),
               ),
               isLoading: state.isLoading,
-              child: state.histories.isNotEmpty
-                  ? ListView.separated(
-                      controller: _scrollController,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: state.histories.length,
-                      padding: const EdgeInsets.only(top: 16),
-                      separatorBuilder: (context, index) => const Divider(
-                        height: 36,
-                        thickness: 0.5,
-                        color: ColorName.grey700,
-                      ),
-                      itemBuilder: (context, index) {
-                        final item = state.histories[index];
-                        if (item is ObtainHistoryContentViewItem) {
-                          return ItemObtainHistory(item);
-                        } else {
-                          return const Center(
-                            child: SizedBox.square(
-                              dimension: 32,
-                              child: CircularProgressIndicator(
-                                color: ColorName.primary,
-                              ),
-                            ),
-                          );
-                        }
-                      },
+              child: state.isSearching
+                  ? _buildTopCenterLog(
+                      FortuneTr.msgSearchingHistory,
+                      color: ColorName.grey400,
                     )
-                  : Center(
-                      child: Text(
-                        FortuneTr.noHistory,
-                        style: FortuneTextStyle.subTitle2SemiBold(),
-                      ),
-                    ),
+                  : state.histories.isNotEmpty
+                      ? ListView.separated(
+                          controller: _scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: state.histories.length,
+                          padding: const EdgeInsets.only(top: 16),
+                          separatorBuilder: (context, index) => const Divider(
+                            height: 36,
+                            thickness: 0.5,
+                            color: ColorName.grey700,
+                          ),
+                          itemBuilder: (context, index) {
+                            final item = state.histories[index];
+                            if (item is ObtainHistoryContentViewItem) {
+                              return ItemObtainHistory(item);
+                            } else {
+                              return const Center(
+                                child: SizedBox.square(
+                                  dimension: 32,
+                                  child: CircularProgressIndicator(
+                                    color: ColorName.primary,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        )
+                      : _buildTopCenterLog(
+                          FortuneTr.noHistory,
+                          color: ColorName.white,
+                        ),
             );
           },
         ),
+      ),
+    );
+  }
+
+  _buildTopCenterLog(String message, {required Color color}) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        children: [
+          const SizedBox(height: 24),
+          Text(
+            message,
+            style: FortuneTextStyle.body1Light(color: color),
+          ),
+        ],
       ),
     );
   }

@@ -66,6 +66,12 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
   }
 
   @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<IngredientActionBloc, IngredientActionSideEffect>(
       listener: (context, sideEffect) async {

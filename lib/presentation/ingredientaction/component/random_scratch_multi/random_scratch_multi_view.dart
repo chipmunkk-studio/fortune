@@ -35,8 +35,7 @@ class RandomScratchMultiView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-      RandomScratchMultiBloc()
+      create: (_) => RandomScratchMultiBloc()
         ..add(
           RandomScratchMultiInit(
             randomScratchSelected: randomNormalSelected,
@@ -85,9 +84,8 @@ class _RandomScratchMultiViewState extends State<_RandomScratchMultiView> with S
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
-    )
-      ..addStatusListener(
-            (listener) {
+    )..addStatusListener(
+        (listener) {
           if (listener == AnimationStatus.completed) {
             _animationController.reverse();
           }
@@ -123,23 +121,19 @@ class _RandomScratchMultiViewState extends State<_RandomScratchMultiView> with S
           final ingredient = sideEffect.randomNormalSelected.ingredient;
           _animationController.addStatusListener((status) {
             if (status == AnimationStatus.completed) {
-              try {
-                dialogService.showFortuneDialog(
-                  context,
-                  dismissOnBackKeyPress: false,
-                  dismissOnTouchOutside: false,
-                  subTitle: ingredient.exposureName,
-                  btnOkText: FortuneTr.msgReceive,
-                  btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
-                  topContent: buildIngredientByPlayType(
-                    ingredient,
-                    width: 84,
-                    height: 84,
-                  ),
-                );
-              } catch (e) {
-                widget.onReceive(sideEffect.randomNormalSelected);
-              }
+              dialogService.showFortuneDialog(
+                context,
+                dismissOnBackKeyPress: false,
+                dismissOnTouchOutside: false,
+                subTitle: ingredient.exposureName,
+                btnOkText: FortuneTr.msgReceive,
+                btnOkPressed: () => widget.onReceive(sideEffect.randomNormalSelected),
+                topContent: buildIngredientByPlayType(
+                  ingredient,
+                  width: 84,
+                  height: 84,
+                ),
+              );
             }
           });
           _animationController.forward();
