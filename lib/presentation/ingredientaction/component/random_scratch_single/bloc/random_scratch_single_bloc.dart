@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -10,8 +11,13 @@ class RandomScratchSingleBloc extends Bloc<RandomScratchSingleEvent, RandomScrat
   static const tag = "[RandomScratchSingleBloc]";
 
   RandomScratchSingleBloc() : super(RandomScratchSingleState.initial()) {
-    on<RandomScratchSingleEnd>(scratchEnd);
     on<RandomScratchSingleInit>(init);
+    on<RandomScratchSingleEnd>(
+      scratchEnd,
+      transformer: throttle(
+        const Duration(seconds: 3),
+      ),
+    );
   }
 
   FutureOr<void> init(RandomScratchSingleInit event, Emitter<RandomScratchSingleState> emit) {

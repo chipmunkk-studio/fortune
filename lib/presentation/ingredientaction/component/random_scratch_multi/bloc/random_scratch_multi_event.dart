@@ -32,3 +32,14 @@ class RandomScratchMultiEnd extends RandomScratchMultiEvent {
   @override
   List<Object?> get props => [];
 }
+
+
+class RandomScratchMultiShowReceive extends RandomScratchMultiEvent {
+  final IngredientActionParam randomNormalSelected;
+
+  RandomScratchMultiShowReceive(this.randomNormalSelected);
+
+  @override
+  List<Object?> get props => [];
+}
+

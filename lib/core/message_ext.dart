@@ -52,6 +52,7 @@ abstract class FortuneTr {
   static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
   static final msgMarkerIs = tr('msgMarkerIs');
   static final msgHiddenInScratch = tr('msgHiddenInScratch');
+  static final msgSearchingHistory = tr('msgSearchingHistory');
   static final msgWhatHappensThreeMatches = tr('msgWhatHappensThreeMatches');
   static final msgGoldenFourLeafClover = tr('msgGoldenFourLeafClover');
   static final msgCoinReward = tr('msgCoinReward');

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
@@ -14,8 +15,12 @@ class RandomScratchMultiBloc extends Bloc<RandomScratchMultiEvent, RandomScratch
   static const tag = "[RandomScratchMultiBloc]";
 
   RandomScratchMultiBloc() : super(RandomScratchMultiState.initial()) {
-    on<RandomScratchMultiEnd>(scratchEnd);
     on<RandomScratchMultiInit>(init);
+    on<RandomScratchMultiEnd>(scratchEnd);
+    on<RandomScratchMultiShowReceive>(
+      _showReceive,
+      transformer: throttle(const Duration(seconds: 3)),
+    );
   }
 
   FutureOr<void> init(RandomScratchMultiInit event, Emitter<RandomScratchMultiState> emit) async {
@@ -88,13 +93,17 @@ class RandomScratchMultiBloc extends Bloc<RandomScratchMultiEvent, RandomScratch
     // 3개 이상 당첨된 경우 당첨 처리
     if (winnerCount >= 3) {
       emit(state.copyWith(isObtaining: true));
-      produceSideEffect(
-        RandomScratchMultiProgressEnd(
-          state.randomScratchSelected,
-        ),
-      );
+      add(RandomScratchMultiShowReceive(state.randomScratchSelected));
     }
     // 상태 업데이트
     emit(state.copyWith(gridItems: newGrid));
+  }
+
+  FutureOr<void> _showReceive(RandomScratchMultiShowReceive event, Emitter<RandomScratchMultiState> emit) {
+    produceSideEffect(
+      RandomScratchMultiProgressEnd(
+        state.randomScratchSelected,
+      ),
+    );
   }
 }
