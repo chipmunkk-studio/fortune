@@ -38,6 +38,7 @@ enum EnvKey {
   mapType,
   adRequestIntervalTime,
   admobStatus,
+  adShowThreshold,
 }
 
 enum MapType {
@@ -71,6 +72,7 @@ class FortuneRemoteConfig {
   final int ticketCount;
   final MapType mapType;
   final int adRequestIntervalTime;
+  final int adShowThreshold;
   final bool admobStatus;
 
   FortuneRemoteConfig({
@@ -89,6 +91,7 @@ class FortuneRemoteConfig {
     required this.refreshTime,
     required this.mapType,
     required this.adRequestIntervalTime,
+    required this.adShowThreshold,
     required this.admobStatus,
   });
 
@@ -108,6 +111,7 @@ class FortuneRemoteConfig {
         "randomDistance: $randomDistance\n"
         "mapType: $mapType\n"
         "adRequestIntervalTime: $adRequestIntervalTime\n"
+        "adShowThreshold: $adShowThreshold\n"
         "admobStatus: $admobStatus\n"
         "anonKey: ${anonKey.shortenForPrint()}\n";
   }
@@ -210,6 +214,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
     final mapType = remoteConfig.getString(describeEnum(EnvKey.mapType)).toMapType();
     final adRequestIntervalTime = remoteConfig.getInt(describeEnum(EnvKey.adRequestIntervalTime));
+    final adShowThreshold = remoteConfig.getInt(describeEnum(EnvKey.adShowThreshold));
     final admobStatus = remoteConfig.getBool(describeEnum(EnvKey.admobStatus));
 
     final baseUrl = remoteConfig.getString(() {
@@ -249,6 +254,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       testSignInEmail: testSignInEmail,
       testSignInPassword: testSignInPassword,
       adRequestIntervalTime: adRequestIntervalTime,
+      adShowThreshold: adShowThreshold,
       mapType: mapType,
       admobStatus: admobStatus,
     );

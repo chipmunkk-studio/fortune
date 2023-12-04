@@ -133,16 +133,18 @@ Future<void> init() async {
     /// 앱로거
     await initAppLogger();
 
+    /// 개발 환경 설정.
+    await initEnvironment(kIsWeb);
+
     /// 로컬 데이터 - Preference.
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     serviceLocator
       ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
       ..registerLazySingleton<LocalDataSource>(
-        () => LocalDataSourceImpl(),
+        () => LocalDataSourceImpl(
+          remoteConfig:serviceLocator<Environment>().remoteConfig,
+        ),
       );
-
-    /// 개발 환경 설정.
-    await initEnvironment(kIsWeb);
 
     /// Supabase
     await Supabase.initialize(
