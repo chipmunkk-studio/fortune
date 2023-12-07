@@ -177,7 +177,7 @@ class _RandomScratchMultiViewState extends State<_RandomScratchMultiView> with S
                               image: Assets.images.random.scratchSingleCover.image(),
                               color: Colors.transparent,
                               brushSize: 48,
-                              threshold: 50,
+                              threshold: 55,
                               onThreshold: () {
                                 _bloc.add(RandomScratchMultiEnd());
                               },
