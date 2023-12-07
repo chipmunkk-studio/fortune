@@ -5,7 +5,12 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 
 class AdLoadingView extends StatelessWidget {
-  const AdLoadingView({super.key});
+  final bool isShowAd;
+
+  const AdLoadingView(
+    this.isShowAd, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +20,19 @@ class AdLoadingView extends StatelessWidget {
         backgroundColor: Colors.black.withOpacity(0.5),
       ),
       backgroundColor: Colors.black.withOpacity(0.8),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 80.h),
-          child: Text(
-            FortuneTr.msgAdPlaying,
-            style: FortuneTextStyle.body1Light(height: 1.3),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+      child: isShowAd
+          ? Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 80.h),
+                child: Text(
+                  FortuneTr.msgAdPlaying,
+                  style: FortuneTextStyle.body1Light(height: 1.3),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

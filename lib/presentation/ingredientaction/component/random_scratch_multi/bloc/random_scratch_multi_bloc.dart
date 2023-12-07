@@ -85,18 +85,7 @@ class RandomScratchMultiBloc extends Bloc<RandomScratchMultiEvent, RandomScratch
 
   FutureOr<void> scratchEnd(RandomScratchMultiEnd event, Emitter<RandomScratchMultiState> emit) {
     // 현재 상태에서 grid 복사
-    var newGrid = List<RandomScratchGridItem>.from(state.gridItems);
-    // 선택된 아이템의 isScratched를 true로 설정
-    newGrid[event.index] = newGrid[event.index].copyWith(isScratched: true);
-    // 당첨 카운트 확인
-    int winnerCount = newGrid.where((item) => item.isWinner && item.isScratched).length;
-    // 3개 이상 당첨된 경우 당첨 처리
-    if (winnerCount >= 3) {
-      emit(state.copyWith(isObtaining: true));
-      add(RandomScratchMultiShowReceive(state.randomScratchSelected));
-    }
-    // 상태 업데이트
-    emit(state.copyWith(gridItems: newGrid));
+    add(RandomScratchMultiShowReceive(state.randomScratchSelected));
   }
 
   FutureOr<void> _showReceive(RandomScratchMultiShowReceive event, Emitter<RandomScratchMultiState> emit) {

@@ -14,6 +14,7 @@ import 'package:fortune/presentation/ingredientaction/component/random_scratch_m
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_response.dart';
 import 'package:fortune/presentation/main/main_ext.dart';
+import 'package:scratcher/scratcher.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -171,26 +172,30 @@ class _RandomScratchMultiViewState extends State<_RandomScratchMultiView> with S
                       Flexible(
                         child: BlocBuilder<RandomScratchMultiBloc, RandomScratchMultiState>(
                           builder: (context, state) {
-                            return GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                              ),
-                              shrinkWrap: true,
-                              itemCount: state.gridItems.length,
-                              itemBuilder: (context, index) {
-                                final item = state.gridItems[index];
-                                return RandomScratchMultiBox(
-                                  coverImage: scratchMultiCoverImages[index],
-                                  itemImageUrl: item.ingredient.image.imageUrl,
-                                  animation: item.isWinner ? _animation : null,
-                                  onScratch: () {
-                                    _bloc.add(RandomScratchMultiEnd(item: item, index: index));
-                                  },
-                                );
+                            return Scratcher(
+                              accuracy: ScratchAccuracy.high,
+                              image: Assets.images.random.scratchSingleCover.image(),
+                              color: Colors.transparent,
+                              brushSize: 48,
+                              threshold: 50,
+                              onThreshold: () {
+                                _bloc.add(RandomScratchMultiEnd());
                               },
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                ),
+                                shrinkWrap: true,
+                                itemCount: state.gridItems.length,
+                                itemBuilder: (context, index) {
+                                  final item = state.gridItems[index];
+                                  return RandomScratchMultiBox(
+                                    itemImageUrl: item.ingredient.image.imageUrl,
+                                    animation: item.isWinner ? _animation : null,
+                                  );
+                                },
+                              ),
                             );
                           },
                         ),

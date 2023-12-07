@@ -6,15 +6,11 @@ import 'package:scratcher/scratcher.dart';
 class RandomScratchMultiBox extends StatefulWidget {
   const RandomScratchMultiBox({
     super.key,
-    required this.coverImage,
     required this.itemImageUrl,
-    this.onScratch,
     this.animation,
   });
 
-  final Image coverImage;
   final String itemImageUrl;
-  final VoidCallback? onScratch;
   final Animation<double>? animation;
 
   @override
@@ -22,13 +18,10 @@ class RandomScratchMultiBox extends StatefulWidget {
 }
 
 class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
-  bool isScratched = false;
-  double opacity = 0.5;
-
   @override
   Widget build(BuildContext context) {
     var icon = AnimatedOpacity(
-      opacity: opacity,
+      opacity: 1,
       duration: const Duration(milliseconds: 750),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -42,30 +35,16 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
       ),
     );
 
-    return Scratcher(
-      accuracy: ScratchAccuracy.high,
-      color: Colors.transparent,
-      image: widget.coverImage,
-      brushSize: 28,
-      threshold: 50,
-      onThreshold: () {
-        widget.onScratch?.call();
-        setState(() {
-          opacity = 1;
-          isScratched = true;
-        });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-        ),
-        child: widget.animation == null
-            ? icon
-            : ScaleTransition(
-                scale: widget.animation!,
-                child: icon,
-              ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
       ),
+      child: widget.animation == null
+          ? icon
+          : ScaleTransition(
+              scale: widget.animation!,
+              child: icon,
+            ),
     );
   }
 }
