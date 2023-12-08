@@ -72,7 +72,6 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
   ) async {
     /// 노말과 랜덤 스크래치(싱글)만 골라옴.
     final result = await getIngredientsByTypeUseCase([
-      IngredientType.coin,
       IngredientType.normal,
       if (param.ingredient.type == IngredientType.randomScratchSingle) IngredientType.randomScratchSingleOnly,
       if (param.ingredient.type == IngredientType.randomScratchMulti) IngredientType.randomScratchMultiOnly,
