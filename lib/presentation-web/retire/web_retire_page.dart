@@ -18,9 +18,7 @@ import 'component/web_retire_button.dart';
 import 'component/web_retire_email_input_field.dart';
 
 class WebRetirePage extends StatelessWidget {
-  const WebRetirePage({
-    super.key,
-  });
+  const WebRetirePage({super.key});
 
   @override
   Widget build(BuildContext context) {
