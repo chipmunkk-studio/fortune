@@ -90,7 +90,12 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
       // 광고를 안봐도 될 경우.
       add(IngredientActionShowAdCounting());
     }
-    emit(state.copyWith(entity: param, isLoading: false));
+    emit(
+      state.copyWith(
+        entity: param,
+        isLoading: false,
+      ),
+    );
   }
 
   // 랜덤노말 타입 일 경우.

@@ -3,7 +3,6 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
@@ -39,6 +38,7 @@ enum EnvKey {
   adRequestIntervalTime,
   admobStatus,
   adShowThreshold,
+  randomBoxTimer,
 }
 
 enum MapType {
@@ -73,6 +73,7 @@ class FortuneRemoteConfig {
   final MapType mapType;
   final int adRequestIntervalTime;
   final int adShowThreshold;
+  final int randomBoxTimer;
   final bool admobStatus;
 
   FortuneRemoteConfig({
@@ -92,6 +93,7 @@ class FortuneRemoteConfig {
     required this.mapType,
     required this.adRequestIntervalTime,
     required this.adShowThreshold,
+    required this.randomBoxTimer,
     required this.admobStatus,
   });
 
@@ -109,6 +111,7 @@ class FortuneRemoteConfig {
         "ticketCount: $ticketCount\n"
         "markerCount: $markerCount\n"
         "randomDistance: $randomDistance\n"
+        "randomBoxTimer: $randomBoxTimer\n"
         "mapType: $mapType\n"
         "adRequestIntervalTime: $adRequestIntervalTime\n"
         "adShowThreshold: $adShowThreshold\n"
@@ -210,6 +213,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final refreshTime = remoteConfig.getInt(describeEnum(EnvKey.refreshTime));
     final ticketCount = remoteConfig.getInt(describeEnum(EnvKey.ticketCount));
     final markerCount = remoteConfig.getInt(describeEnum(EnvKey.markerCount));
+    final randomBoxTimer = remoteConfig.getInt(describeEnum(EnvKey.randomBoxTimer));
     final testSignInPassword = remoteConfig.getString(describeEnum(EnvKey.testSignInPassword));
     final testSignInEmail = remoteConfig.getString(describeEnum(EnvKey.testSignInEmail));
     final mapType = remoteConfig.getString(describeEnum(EnvKey.mapType)).toMapType();
@@ -249,6 +253,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       anonKey: anonKey,
       randomDistance: randomDistance,
       refreshTime: refreshTime,
+      randomBoxTimer: randomBoxTimer,
       markerCount: markerCount,
       ticketCount: ticketCount,
       testSignInEmail: testSignInEmail,

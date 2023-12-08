@@ -60,6 +60,8 @@ abstract class FortuneTr {
   static final msgPressAgainToExit = tr('msgPressAgainToExit');
   static final msgUpdateTitle = tr('msgUpdateTitle');
   static final msgUpdateMessage = tr('msgUpdateMessage');
+  static final msgGiftBox = tr('msgGiftBox');
+  static final msgOpenGiftBox = tr('msgOpenGiftBox');
 
   static final msgTryScratching = tr('msgTryScratching');
   static final msgGuaranteedMarkerReward = tr('msgGuaranteedMarkerReward');

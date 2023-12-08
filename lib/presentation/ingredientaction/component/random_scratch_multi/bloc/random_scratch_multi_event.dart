@@ -21,13 +21,7 @@ class RandomScratchMultiInit extends RandomScratchMultiEvent {
 }
 
 class RandomScratchMultiEnd extends RandomScratchMultiEvent {
-  final RandomScratchGridItem item;
-  final int index;
-
-  RandomScratchMultiEnd({
-    required this.item,
-    required this.index,
-  });
+  RandomScratchMultiEnd();
 
   @override
   List<Object?> get props => [];

@@ -26,8 +26,11 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/env.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_response.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_response.dart';
+import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:fortune/presentation/missions/missions_bottom_contents.dart';
 import 'package:fortune/presentation/missions/missions_top_contents.dart';
 import 'package:fortune/presentation/myingredients/my_ingredients_page.dart';
@@ -41,6 +44,7 @@ import 'package:vungle/vungle.dart';
 
 import 'bloc/main.dart';
 import 'component/map/main_map.dart';
+import 'component/map/random_box_widget.dart';
 import 'component/notice/top_information_area.dart';
 import 'component/notice/top_location_area.dart';
 import 'component/notice/top_notice.dart';
@@ -86,6 +90,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   final _routeObserver = serviceLocator<RouteObserver<PageRoute>>();
   DateTime? lastPressed;
   int _rewardedAdRetryAttempt = 1;
+
+  Timer? _giftBoxTimer;
 
   @override
   void initState() {
@@ -273,6 +279,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             dismissOnBackKeyPress: false,
             btnOkPressed: () {},
           );
+        } else if (sideEffect is MainNavigateOpenRandomBox) {
+          _openRandomBox(sideEffect);
         }
       },
       child: FortuneScaffold(
@@ -377,64 +385,103 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     top: 13,
                     right: 20,
                     left: 20,
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      const SizedBox(height: 10),
-                      BlocBuilder<MainBloc, MainState>(
-                        buildWhen: (previous, current) => previous.hasNewAlarm != current.hasNewAlarm,
-                        builder: (context, state) {
-                          return TopLocationArea(
-                            hasNewAlarm: state.hasNewAlarm,
-                            onProfileTap: () {
-                              _tracker.trackEvent('메인_프로필_클릭');
-                              _router.navigateTo(
-                                context,
-                                AppRoutes.myPageRoute,
-                              );
-                            },
-                            onHistoryTap: () {
-                              _tracker.trackEvent('메인_히스토리_클릭');
-                              _router.navigateTo(
-                                context,
-                                AppRoutes.obtainHistoryRoute,
-                              );
-                            },
-                            onAlarmClick: () {
-                              _tracker.trackEvent('메인_알림_클릭');
-                              if (state.hasNewAlarm) {
-                                _bloc.add(MainAlarmRead());
-                              }
-                              _router.navigateTo(
-                                context,
-                                AppRoutes.alarmFeedRoute,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TopNotice(
-                        onTap: () {},
-                      ),
-                      const SizedBox(height: 10),
-                      TopInformationArea(
-                        _cartKey,
-                        onInventoryTap: () {
-                          _tracker.trackEvent('메인_인벤토리_클릭');
-                          _locationChangeSubscription.pause();
-                          context
-                              .showBottomSheet(
-                                isDismissible: true,
-                                content: (context) => const MyIngredientsPage(),
-                              )
-                              .then((value) => _locationChangeSubscription.resume());
-                        },
-                        onGradeAreaTap: () {
-                          _tracker.trackEvent('메인_레벨_클릭');
-                          _router.navigateTo(context, AppRoutes.rankingRoutes);
-                        },
-                        onCoinTap: _showCoinDialog,
-                      ),
-                    ]),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        BlocBuilder<MainBloc, MainState>(
+                          buildWhen: (previous, current) => previous.hasNewAlarm != current.hasNewAlarm,
+                          builder: (context, state) {
+                            return TopLocationArea(
+                              hasNewAlarm: state.hasNewAlarm,
+                              onProfileTap: () {
+                                _tracker.trackEvent('메인_프로필_클릭');
+                                _router.navigateTo(
+                                  context,
+                                  AppRoutes.myPageRoute,
+                                );
+                              },
+                              onHistoryTap: () {
+                                _tracker.trackEvent('메인_히스토리_클릭');
+                                _router.navigateTo(
+                                  context,
+                                  AppRoutes.obtainHistoryRoute,
+                                );
+                              },
+                              onAlarmClick: () {
+                                _tracker.trackEvent('메인_알림_클릭');
+                                if (state.hasNewAlarm) {
+                                  _bloc.add(MainAlarmRead());
+                                }
+                                _router.navigateTo(
+                                  context,
+                                  AppRoutes.alarmFeedRoute,
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        TopNotice(
+                          onTap: () {},
+                        ),
+                        const SizedBox(height: 10),
+                        TopInformationArea(
+                          _cartKey,
+                          onInventoryTap: () {
+                            _tracker.trackEvent('메인_인벤토리_클릭');
+                            _locationChangeSubscription.pause();
+                            context
+                                .showBottomSheet(
+                                  isDismissible: true,
+                                  content: (context) => const MyIngredientsPage(),
+                                )
+                                .then((value) => _locationChangeSubscription.resume());
+                          },
+                          onGradeAreaTap: () {
+                            _tracker.trackEvent('메인_레벨_클릭');
+                            _router.navigateTo(context, AppRoutes.rankingRoutes);
+                          },
+                          onCoinTap: _showCoinDialog,
+                        ),
+                        BlocConsumer<MainBloc, MainState>(
+                          listenWhen: (previous, current) =>
+                              previous.isLoading != current.isLoading ||
+                              previous.randomBoxTimerSecond != current.randomBoxTimerSecond,
+                          listener: (context, state) {
+                            _giftBoxTimer?.cancel();
+                            if (!state.randomBoxOpenable) {
+                              _giftBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+                                final newSeconds = state.randomBoxTimerSecond - 1;
+                                if (newSeconds <= 0) {
+                                  _giftBoxTimer?.cancel();
+                                }
+                                _bloc.add(MainRandomBoxTimerCount(newSeconds));
+                              });
+                            }
+                          },
+                          buildWhen: (previous, current) =>
+                              previous.isLoading != current.isLoading ||
+                              previous.randomBoxTimerSecond != current.randomBoxTimerSecond,
+                          builder: (context, state) {
+                            return BlocBuilder<MainBloc, MainState>(
+                              buildWhen: (previous, current) =>
+                                  previous.randomBoxTimerSecond != current.randomBoxTimerSecond ||
+                                  previous.isLoading != current.isLoading,
+                              builder: (context, state) {
+                                return state.isLoading
+                                    ? const SizedBox.shrink()
+                                    : RandomBoxWidget(
+                                        _bloc,
+                                        randomBoxTimerSecond: state.randomBoxTimerSecond,
+                                        isOpenable: state.randomBoxOpenable,
+                                      );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 // 하단 그라데이션.
@@ -671,12 +718,17 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     );
 
     if (response != null) {
-      _processIngredientActionReturn(param, response);
+      _processIngredientActionReturn(
+        param.data,
+        param.key,
+        response,
+      );
     }
   }
 
   _processIngredientActionReturn(
-    MainShowObtainDialog param,
+    MainLocationData data,
+    GlobalKey key,
     IngredientActionResponse response,
   ) {
     if (response is NoAds) {
@@ -684,8 +736,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     } else if (response is ObtainSuccess) {
       _bloc.add(
         MainMarkerObtain(
-          data: param.data.copyWith(ingredient: response.ingredient),
-          key: param.key,
+          data: data.copyWith(ingredient: response.ingredient),
+          key: key,
         ),
       );
     } else if (response is ScratchCancel) {
@@ -774,5 +826,30 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     //     ),
     //   ),
     // );
+  }
+
+  void _openRandomBox(MainNavigateOpenRandomBox sideEffect) async {
+    final markerData = sideEffect.data;
+    final GiftboxActionResponse? actionResponse = await _router.navigateTo(
+      context,
+      AppRoutes.giftBoxActionRoute,
+      routeSettings: RouteSettings(
+        arguments: GiftboxActionParam(
+          ad: sideEffect.ad,
+          ingredient: markerData.ingredient,
+          user: sideEffect.user,
+          giftType: sideEffect.type,
+        ),
+      ),
+    );
+    if (actionResponse != null) {
+      _bloc.add(
+        MainMarkerObtainFromRandomBox(
+          markerData.copyWith(
+            ingredient: actionResponse.ingredient,
+          ),
+        ),
+      );
+    }
   }
 }

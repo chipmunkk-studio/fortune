@@ -19,7 +19,7 @@ import 'package:fortune/domain/supabase/repository/obtain_history_repository.dar
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
 
-class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
+class ObtainMarkerMainUseCase implements UseCase1<MarkerObtainEntity, RequestObtainMarkerParam> {
   final MarkerRepository markerRepository;
   final UserRepository userRepository;
   final AlarmFeedsRepository alarmFeedsRepository;
@@ -28,7 +28,7 @@ class ObtainMarkerUseCase implements UseCase1<MarkerObtainEntity, RequestObtainM
   final MissionsRepository missionsRepository;
   final IngredientRepository ingredientRepository;
 
-  ObtainMarkerUseCase({
+  ObtainMarkerMainUseCase({
     required this.markerRepository,
     required this.userRepository,
     required this.alarmFeedsRepository,

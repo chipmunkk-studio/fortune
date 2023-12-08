@@ -5,7 +5,7 @@
 // import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 // import 'package:fortune/core/widgets/fortune_scaffold.dart';
 // import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-// import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
+// import 'package:fortune/presentation/ingredientaction/giftbox_action_param.dart';
 // import 'package:scratcher/scratcher.dart';
 // class RandomScratcherView extends StatefulWidget {
 //   final List<IngredientEntity> randomNormalIngredients;
