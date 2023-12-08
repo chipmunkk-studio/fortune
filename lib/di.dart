@@ -68,6 +68,7 @@ import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
 import 'package:fortune/presentation-web/login/bloc/web_login.dart';
+import 'package:fortune/presentation-web/retire/bloc/web_retire.dart';
 import 'package:fortune/presentation-web/verifycode/bloc/web_verify_code.dart';
 import 'package:fortune/presentation-web/writepost/bloc/write_post.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
@@ -796,7 +797,15 @@ _initWebBloc() {
       () => WebVerifyCodeBloc(
         verifyEmailUseCase: serviceLocator(),
         checkVerifySmsTimeUseCase: serviceLocator(),
+        withdrawalUseCase: serviceLocator(),
         signUpOrInUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => WebRetireBloc(
+        getUserUseCase: serviceLocator(),
+        signInWithEmailUseCase: serviceLocator(),
+        env: serviceLocator(),
       ),
     )
     ..registerFactory(

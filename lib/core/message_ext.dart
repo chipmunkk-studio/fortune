@@ -47,6 +47,7 @@ abstract class FortuneTr {
   // 사용자
   static final msgNotExistUser = tr('msgNotExistUser');
   static final msgNotExistTerms = tr('msgNotExistTerms');
+  static final msgWithdrawalComplete = tr('msgWithdrawalComplete');
   static final msgUpdateUserInfo = tr('msgUpdateUserInfo');
   static final msgNotUpdateUser = tr('msgNotUpdateUser');
   static final msgRenewAuthInfo = tr('msgRenewAuthInfo');

@@ -123,6 +123,7 @@
   "msgUpdateMarkerInfo": "새로운 마커 정보를 갱신합니다",
   "msgConfirmWithdrawal": "탈퇴하시겠어요?",
   "msgHiddenInScratch": "스크래치 속에 숨어있어요.",
+  "msgWithdrawalComplete": "탈퇴 완료",
   "msgSearchingHistory": "히스토리 검색 중..",
   "msgWithdrawalWarning": "탈퇴 시 30일 이내 보유한 모든 코인과\n마커가 모두 사라지고\n신규 회원으로만 재가입 가능합니다.\n정말 탈퇴하시겠습니까?",
   "msgWithdrawal": "탈퇴",

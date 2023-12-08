@@ -7,7 +7,7 @@ part 'web_verify_code_state.freezed.dart';
 @freezed
 class WebVerifyCodeState with _$WebVerifyCodeState {
   factory WebVerifyCodeState({
-    required String phoneNumber,
+    required String email,
     required List<AgreeTermsEntity> agreeTerms,
     required String verifyCode,
     required int verifyTime,
@@ -15,14 +15,15 @@ class WebVerifyCodeState with _$WebVerifyCodeState {
     required bool isLoginProcessing,
     required bool isConfirmEnable,
     required bool isTestAccount,
+    required bool isRetire,
   }) = _WebVerifyCodeState;
 
   factory WebVerifyCodeState.initial([
     List<AgreeTermsEntity>? agreeTerms,
-    String? phoneNumber,
+    String? email,
   ]) =>
       WebVerifyCodeState(
-        phoneNumber: phoneNumber ?? "",
+        email: email ?? "",
         agreeTerms: agreeTerms ?? List.empty(),
         verifyCode: "",
         verifyTime: VerifyCodeBloc.verifyTime,
@@ -30,5 +31,6 @@ class WebVerifyCodeState with _$WebVerifyCodeState {
         isLoginProcessing: false,
         isConfirmEnable: false,
         isTestAccount: false,
+        isRetire: false,
       );
 }

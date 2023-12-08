@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/supabase/request/request_sign_up_param.dart';
@@ -9,7 +10,7 @@ import 'package:fortune/domain/supabase/request/request_verify_phone_number_para
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'web_verify_code.dart';
@@ -18,6 +19,8 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
     with SideEffectBlocMixin<WebVerifyCodeEvent, WebVerifyCodeState, WebVerifyCodeSideEffect> {
   final VerifyEmailUseCase verifyEmailUseCase;
   final CheckVerifySmsTimeUseCase checkVerifySmsTimeUseCase;
+
+  final WithdrawalUseCase withdrawalUseCase;
   final SignUpOrInUseCase signUpOrInUseCase;
   static const tag = "[PhoneNumberBloc]";
   static const verifyTime = 180;
@@ -25,6 +28,7 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
   WebVerifyCodeBloc({
     required this.verifyEmailUseCase,
     required this.checkVerifySmsTimeUseCase,
+    required this.withdrawalUseCase,
     required this.signUpOrInUseCase,
   }) : super(WebVerifyCodeState.initial()) {
     on<WebVerifyCodeInit>(init);
@@ -40,7 +44,12 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
   }
 
   FutureOr<void> init(WebVerifyCodeInit event, Emitter<WebVerifyCodeState> emit) async {
-    emit(state.copyWith(phoneNumber: event.phoneNumber));
+    emit(
+      state.copyWith(
+        email: event.email,
+        isRetire: event.isRetire,
+      ),
+    );
     await _requestSignUpOrIn(emit);
   }
 
@@ -70,6 +79,17 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
   FutureOr<void> verifyConfirm(WebVerifyConfirm event, Emitter<WebVerifyCodeState> emit) async {
     emit(state.copyWith(isLoginProcessing: true));
 
+    if (state.isRetire) {
+      await withdrawalUseCase(state.email).then(
+        (value) => value.fold((l) {
+          produceSideEffect(WebVerifyCodeError(l));
+        }, (r) {
+          produceSideEffect(WebVerifyCodeRetireSuccess());
+        }),
+      );
+      return;
+    }
+
     // 테스트 계정 일 경우 바이 패스.
     if (state.isTestAccount) {
       produceSideEffect(WebVerifyCodeLandingRoute(AppRoutes.mainRoute));
@@ -78,7 +98,7 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
 
     await verifyEmailUseCase(
       RequestVerifyEmailParam(
-        email: state.phoneNumber,
+        email: state.email,
         verifyCode: state.verifyCode,
       ),
     ).then(
@@ -97,9 +117,7 @@ class WebVerifyCodeBloc extends Bloc<WebVerifyCodeEvent, WebVerifyCodeState>
 
   _requestSignUpOrIn(Emitter<WebVerifyCodeState> emit) async {
     await signUpOrInUseCase(
-      RequestSignUpParam(
-        email: state.phoneNumber,
-      ),
+      RequestSignUpParam(email: state.email),
     ).then(
       (value) => value.fold(
         (l) => produceSideEffect(WebVerifyCodeError(l)),

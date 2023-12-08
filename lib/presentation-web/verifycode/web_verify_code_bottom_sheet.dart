@@ -13,16 +13,24 @@ import 'component/web_verify_code_number_input.dart';
 
 class WebVerifyCodeBottomSheet extends StatelessWidget {
   final String email;
+  final bool isRetire;
 
   const WebVerifyCodeBottomSheet({
     required this.email,
+    this.isRetire = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<WebVerifyCodeBloc>()..add(WebVerifyCodeInit(phoneNumber: email)),
+      create: (_) => serviceLocator<WebVerifyCodeBloc>()
+        ..add(
+          WebVerifyCodeInit(
+            email: email,
+            isRetire: isRetire,
+          ),
+        ),
       child: const _WebVerifyCodeBottomSheet(),
     );
   }
@@ -67,6 +75,13 @@ class _WebVerifyCodeBottomSheetState extends State<_WebVerifyCodeBottomSheet> {
             context,
             sideEffect.landingRoute,
             clearStack: sideEffect.landingRoute == WebRoutes.mainRoute,
+          );
+        } else if (sideEffect is WebVerifyCodeRetireSuccess) {
+          dialogService.showFortuneDialog(
+            context,
+            subTitle: FortuneTr.msgWithdrawalComplete,
+            dismissOnBackKeyPress: true,
+            btnOkPressed: () {},
           );
         }
       },

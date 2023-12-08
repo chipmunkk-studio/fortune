@@ -49,7 +49,7 @@ class _WebVerifyCodeNumberInputState extends State<WebVerifyCodeNumberInput> {
           Stack(
             children: [
               BlocBuilder<WebVerifyCodeBloc, WebVerifyCodeState>(
-                buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+                buildWhen: (previous, current) => previous.email != current.email,
                 builder: (context, state) {
                   return TextFormField(
                     autofocus: true,

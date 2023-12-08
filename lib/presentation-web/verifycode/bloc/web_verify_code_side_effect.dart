@@ -23,3 +23,11 @@ class WebVerifyCodeLandingRoute extends WebVerifyCodeSideEffect {
   @override
   List<Object?> get props => [];
 }
+
+class WebVerifyCodeRetireSuccess extends WebVerifyCodeSideEffect {
+
+  WebVerifyCodeRetireSuccess();
+
+  @override
+  List<Object?> get props => [];
+}

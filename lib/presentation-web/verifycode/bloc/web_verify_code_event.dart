@@ -7,10 +7,12 @@ import 'package:fortune/presentation/login/bloc/login_state.dart';
 abstract class WebVerifyCodeEvent extends Equatable {}
 
 class WebVerifyCodeInit extends WebVerifyCodeEvent {
-  final String phoneNumber;
+  final String email;
+  final bool isRetire;
 
   WebVerifyCodeInit({
-    required this.phoneNumber,
+    required this.email,
+    required this.isRetire,
   });
 
   @override

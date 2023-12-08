@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/presentation-web/login/web_login_page.dart';
+import 'package:fortune/presentation-web/retire/web_retire_page.dart';
 import 'package:fortune/presentation-web/viewpost/view_post_page.dart';
 import 'package:fortune/presentation-web/writepost/write_post.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
@@ -21,6 +22,12 @@ class FortuneWebRouter {
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const WebLoginPage();
+    },
+  );
+
+  static var retireHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const WebRetirePage();
     },
   );
 
@@ -61,6 +68,12 @@ class FortuneWebRouter {
       ..define(
         WebRoutes.loginRoute,
         handler: loginHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+      /// 회원탈퇴
+      ..define(
+        WebRoutes.retireRoute,
+        handler: retireHandler,
         transitionType: TransitionType.fadeIn,
       )
 
@@ -110,4 +123,5 @@ class WebRoutes {
   static const String writePostRoute = 'writePost';
   static const String viewPostRoute = 'viewPost';
   static const String readRoute = 'read';
+  static const String retireRoute = 'retire';
 }
