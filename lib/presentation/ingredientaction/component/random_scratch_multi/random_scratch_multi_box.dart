@@ -28,6 +28,7 @@ class _RandomScratchMultiBoxState extends State<RandomScratchMultiBox> {
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
           imageShape: ImageShape.squircle,
+          placeholder: Container(),
           fit: BoxFit.contain,
           width: 96,
           height: 96,

@@ -83,9 +83,9 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<int> getRandomBoxTimerCounter() async {
+  Future<int> getRandomBoxRemainTime() async {
     try {
-      final result = await localDataSource.getRandomBoxRefreshTime();
+      final result = await localDataSource.getRandomBoxRemainTime();
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -95,9 +95,33 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<void> setRandomBoxTimerCounter(int time) async {
+  Future<void> setRandomStopTime(int time) async {
     try {
-      final result = await localDataSource.setRandomBoxRefreshTime(time);
+      final result = await localDataSource.setRandomBoxStopTime(time);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<void> setRandomRemainTime(int time) async {
+    try {
+      final result = await localDataSource.setRandomBoxRemainTime(time);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<int> getRandomBoxStopTime() async {
+    try {
+      final result = await localDataSource.getRandomBoxStopTime();
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(

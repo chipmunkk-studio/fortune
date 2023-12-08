@@ -176,7 +176,7 @@ class _GiftboxScratchMultiViewState extends State<_GiftboxScratchMultiView> with
                               image: Assets.images.random.scratchSingleCover.image(),
                               color: Colors.transparent,
                               brushSize: 48,
-                              threshold: 55,
+                              threshold: 65,
                               onThreshold: () {
                                 _bloc.add(GiftboxScratchMultiEnd());
                               },

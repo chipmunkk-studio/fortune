@@ -11,20 +11,25 @@ abstract class LocalDataSource {
 
   Future<int> getVerifySmsTime();
 
-  Future<int> getRandomBoxRefreshTime();
+  Future<int> getRandomBoxRemainTime();
+
+  Future<int> getRandomBoxStopTime();
 
   Future<bool> getShowAd();
 
   Future<void> setShowAdCounter();
 
-  Future<void> setRandomBoxRefreshTime(int time);
+  Future<void> setRandomBoxRemainTime(int time);
+
+  Future<void> setRandomBoxStopTime(int time);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
   final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
   final Storage<int> _adCounter = SharedPrefsStorage<int>.primitive(itemKey: adCounter);
-  final Storage<int> _randomBoxTimeCounter = SharedPrefsStorage<int>.primitive(itemKey: randomBoxTimeCounter);
+  final Storage<int> _randomBoxRemainTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxRemainTime);
+  final Storage<int> _randomBoxStopTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxStopTime);
 
   final FortuneRemoteConfig remoteConfig;
 
@@ -32,7 +37,8 @@ class LocalDataSourceImpl extends LocalDataSource {
   static const pushAlarmKey = "pushAlarm";
   static const verifySmsTimeKey = "verifySmsTimeKey";
   static const adCounter = "adCounter";
-  static const randomBoxTimeCounter = "randomBoxTimeCounter";
+  static const randomBoxRemainTime = "randomBoxRemainTime";
+  static const randomBoxStopTime = "randomBoxStopTime";
 
   final int adShowThreshold;
 
@@ -79,13 +85,24 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<int> getRandomBoxRefreshTime() async {
-    final time = await _randomBoxTimeCounter.get();
+  Future<int> getRandomBoxRemainTime() async {
+    final time = await _randomBoxRemainTime.get();
     return (time != null && time >= 0) ? time : remoteConfig.randomBoxTimer;
   }
 
   @override
-  Future<void> setRandomBoxRefreshTime(int time) async {
-    _randomBoxTimeCounter.save(time);
+  Future<void> setRandomBoxRemainTime(int time) async {
+    await _randomBoxRemainTime.save(time);
+  }
+
+  @override
+  Future<void> setRandomBoxStopTime(int time) async {
+    await _randomBoxStopTime.save(time);
+  }
+
+  @override
+  Future<int> getRandomBoxStopTime() async {
+    final time = await _randomBoxStopTime.get();
+    return (time != null && time >= 0) ? time : DateTime.now().millisecondsSinceEpoch;
   }
 }

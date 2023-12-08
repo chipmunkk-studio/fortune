@@ -41,7 +41,8 @@ import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_privacy_policy_usecase.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_timer_counter_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_random_box_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_random_box_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
@@ -55,7 +56,8 @@ import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_timer_counter_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_random_box_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_random_box_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -456,13 +458,23 @@ _initUseCase() async {
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<SetRandomBoxTimerCounterUseCase>(
-      () => SetRandomBoxTimerCounterUseCase(
+    ..registerLazySingleton<SetRandomBoxRemainTimeUseCase>(
+      () => SetRandomBoxRemainTimeUseCase(
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetRandomBoxTimerCounterUseCase>(
-      () => GetRandomBoxTimerCounterUseCase(
+    ..registerLazySingleton<GetRandomBoxRemainTimeUseCase>(
+      () => GetRandomBoxRemainTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<SetRandomBoxStopTimeUseCase>(
+      () => SetRandomBoxStopTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetRandomBoxStopTimeUseCase>(
+      () => GetRandomBoxStopTimeUseCase(
         repository: serviceLocator(),
       ),
     )
@@ -682,8 +694,10 @@ _initAppBloc() {
         getAppUpdate: serviceLocator(),
         getIngredientsByTypeUseCase: serviceLocator(),
         tracker: serviceLocator<MixpanelTracker>(),
-        setRandomBoxTimerCounterUseCase: serviceLocator(),
-        getRandomBoxTimerCounterUseCase: serviceLocator(),
+        setRandomBoxRemainTimeUseCase: serviceLocator(),
+        setRandomBoxStopTimeUseCase: serviceLocator(),
+        getRandomBoxRemainTimeUseCase: serviceLocator(),
+        getRandomBoxStopTimeUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

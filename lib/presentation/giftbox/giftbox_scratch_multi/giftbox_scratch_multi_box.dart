@@ -27,6 +27,7 @@ class _GiftboxScratchMultiBoxState extends State<GiftboxScratchMultiBox> {
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
           imageShape: ImageShape.squircle,
+          placeholder: Container(),
           fit: BoxFit.contain,
           width: 96,
           height: 96,

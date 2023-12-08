@@ -33,6 +33,7 @@ class _GiftboxScratchSingleBoxState extends State<GiftboxScratchSingleBox> {
         padding: const EdgeInsets.all(48.0),
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
+          placeholder: Container(),
           imageShape: ImageShape.squircle,
           fit: BoxFit.contain,
           width: 200,

@@ -16,13 +16,15 @@ import 'package:fortune/domain/supabase/request/request_main_param.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_app_update.dart';
 import 'package:fortune/domain/supabase/usecase/get_ingredients_by_type_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_timer_counter_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_random_box_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_random_box_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_default_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_timer_counter_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_random_box_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_random_box_stop_time_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -47,8 +49,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final GetIngredientsByTypeUseCase getIngredientsByTypeUseCase;
   final MixpanelTracker tracker;
   final ObtainMarkerDefaultUseCase obtainMarkerDefaultUseCase;
-  final SetRandomBoxTimerCounterUseCase setRandomBoxTimerCounterUseCase;
-  final GetRandomBoxTimerCounterUseCase getRandomBoxTimerCounterUseCase;
+  final SetRandomBoxRemainTimeUseCase setRandomBoxRemainTimeUseCase;
+  final GetRandomBoxRemainTimeUseCase getRandomBoxRemainTimeUseCase;
+  final SetRandomBoxStopTimeUseCase setRandomBoxStopTimeUseCase;
+  final GetRandomBoxStopTimeUseCase getRandomBoxStopTimeUseCase;
 
   MainBloc({
     required this.remoteConfig,
@@ -60,8 +64,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.getIngredientsByTypeUseCase,
     required this.obtainMarkerDefaultUseCase,
     required this.tracker,
-    required this.setRandomBoxTimerCounterUseCase,
-    required this.getRandomBoxTimerCounterUseCase,
+    required this.setRandomBoxRemainTimeUseCase,
+    required this.setRandomBoxStopTimeUseCase,
+    required this.getRandomBoxRemainTimeUseCase,
+    required this.getRandomBoxStopTimeUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -142,14 +148,12 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
             final isShowTestLocation = isPhysicalDevice ? false : isTestAccount;
-            final randomBoxInitialTime = await getRandomBoxTimerCounterUseCase().then(
-              (value) => value.getOrElse(() => remoteConfig.randomBoxTimer),
-            );
+            final remainSeconds = await _getGiftboxRemainSeconds(giftBoxTime: remoteConfig.randomBoxTimer);
 
             emit(
               state.copyWith(
-                randomBoxTimerSecond: randomBoxInitialTime,
-                randomBoxOpenable: randomBoxInitialTime == 0,
+                randomBoxTimerSecond: remainSeconds,
+                randomBoxOpenable: remainSeconds == 0,
                 myLocation: isShowTestLocation ? simulatorLocation : null,
                 isShowTestLocation: isShowTestLocation,
                 locationName: isShowTestLocation
@@ -401,16 +405,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     );
   }
 
-  FutureOr<void> _randomBoxTimerCount(MainRandomBoxTimerCount event, Emitter<MainState> emit) {
-    setRandomBoxTimerCounterUseCase(event.timerCount).then(
+  FutureOr<void> _randomBoxTimerCount(MainRandomBoxTimerCount event, Emitter<MainState> emit) async {
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    await setRandomBoxStopTimeUseCase(currentTime).then((value) => null);
+    await setRandomBoxRemainTimeUseCase(event.timerCount).then(
       (value) => value.fold(
         (l) => null,
-        (r) => emit(
-          state.copyWith(
-            randomBoxOpenable: event.timerCount == 0 && !state.randomBoxOpenable,
-            randomBoxTimerSecond: event.timerCount,
-          ),
-        ),
+        (r) {
+          emit(
+            state.copyWith(
+              randomBoxOpenable: event.timerCount == 0 && !state.randomBoxOpenable,
+              randomBoxTimerSecond: event.timerCount,
+            ),
+          );
+        },
       ),
     );
   }
@@ -442,7 +450,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   FutureOr<void> _markerObtainFromRandomBox(MainMarkerObtainFromRandomBox event, Emitter<MainState> emit) async {
     add(MainScreenFreeze(flag: true, data: event.data));
-    await setRandomBoxTimerCounterUseCase(remoteConfig.randomBoxTimer).then(
+    await setRandomBoxRemainTimeUseCase(remoteConfig.randomBoxTimer).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
@@ -465,6 +473,30 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       ),
     );
   }
+
+  /// 기프트 박스 남은 시간 불러오기.
+  _getGiftboxRemainSeconds({
+    required int giftBoxTime,
+  }) async {
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    // 저장된 타이머 종료 시간 불러오기
+    final savedStopTime = await getRandomBoxStopTimeUseCase().then(
+      (value) => value.getOrElse(() => currentTime),
+    );
+
+    // 저장된 남은 시간 불러오기
+    final savedRemainSecond = await getRandomBoxRemainTimeUseCase().then(
+      (value) => value.getOrElse(() => giftBoxTime),
+    );
+
+    // 경과된 시간 계산
+    final timePassed = (currentTime - savedStopTime) ~/ 1000;
+
+    // 남은 시간 계산
+    return savedRemainSecond == giftBoxTime ? giftBoxTime : math.max(0, savedRemainSecond - timePassed);
+  }
+
   _hasAnimation(IngredientType ingredientType) =>
       IngredientType.coin != ingredientType &&
       IngredientType.randomScratchSingle != ingredientType &&
