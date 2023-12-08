@@ -321,8 +321,11 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/loading.lottie
   String get loading => 'assets/lottie/loading.lottie';
 
+  /// File path: assets/lottie/random_marker_box.lottie
+  String get randomMarkerBox => 'assets/lottie/random_marker_box.lottie';
+
   /// List of all assets
-  List<String> get values => [loading];
+  List<String> get values => [loading, randomMarkerBox];
 }
 
 class $AssetsTranslationsGen {

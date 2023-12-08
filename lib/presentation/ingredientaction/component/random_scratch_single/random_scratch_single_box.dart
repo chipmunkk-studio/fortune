@@ -34,6 +34,7 @@ class _RandomScratchSingleBoxState extends State<RandomScratchSingleBox> {
         child: FortuneCachedNetworkImage(
           imageUrl: widget.itemImageUrl,
           imageShape: ImageShape.squircle,
+          placeholder: Container(),
           fit: BoxFit.contain,
           width: 200,
           height: 200,

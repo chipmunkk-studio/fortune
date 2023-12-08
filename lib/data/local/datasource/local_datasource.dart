@@ -11,15 +11,25 @@ abstract class LocalDataSource {
 
   Future<int> getVerifySmsTime();
 
+  Future<int> getRandomBoxRemainTime();
+
+  Future<int> getRandomBoxStopTime();
+
   Future<bool> getShowAd();
 
   Future<void> setShowAdCounter();
+
+  Future<void> setRandomBoxRemainTime(int time);
+
+  Future<void> setRandomBoxStopTime(int time);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
   final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
   final Storage<int> _adCounter = SharedPrefsStorage<int>.primitive(itemKey: adCounter);
+  final Storage<int> _randomBoxRemainTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxRemainTime);
+  final Storage<int> _randomBoxStopTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxStopTime);
 
   final FortuneRemoteConfig remoteConfig;
 
@@ -27,6 +37,8 @@ class LocalDataSourceImpl extends LocalDataSource {
   static const pushAlarmKey = "pushAlarm";
   static const verifySmsTimeKey = "verifySmsTimeKey";
   static const adCounter = "adCounter";
+  static const randomBoxRemainTime = "randomBoxRemainTime";
+  static const randomBoxStopTime = "randomBoxStopTime";
 
   final int adShowThreshold;
 
@@ -70,5 +82,27 @@ class LocalDataSourceImpl extends LocalDataSource {
     } else {
       _adCounter.save(time + 1);
     }
+  }
+
+  @override
+  Future<int> getRandomBoxRemainTime() async {
+    final time = await _randomBoxRemainTime.get();
+    return (time != null && time >= 0) ? time : remoteConfig.randomBoxTimer;
+  }
+
+  @override
+  Future<void> setRandomBoxRemainTime(int time) async {
+    await _randomBoxRemainTime.save(time);
+  }
+
+  @override
+  Future<void> setRandomBoxStopTime(int time) async {
+    await _randomBoxStopTime.save(time);
+  }
+
+  @override
+  Future<int> getRandomBoxStopTime() async {
+    final time = await _randomBoxStopTime.get();
+    return (time != null && time >= 0) ? time : DateTime.now().millisecondsSinceEpoch;
   }
 }

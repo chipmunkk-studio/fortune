@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -114,6 +115,33 @@ class MainMapRotate extends MainEvent {
   final CompassEvent data;
 
   MainMapRotate(this.data);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainRandomBoxTimerCount extends MainEvent {
+  final int timerCount;
+
+  MainRandomBoxTimerCount(this.timerCount);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainOpenRandomBox extends MainEvent {
+  final GiftboxType type;
+
+  MainOpenRandomBox(this.type);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainMarkerObtainFromRandomBox extends MainEvent {
+  final MainLocationData data;
+
+  MainMarkerObtainFromRandomBox(this.data);
 
   @override
   List<Object?> get props => [];

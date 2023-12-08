@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/app_update_view_entity.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/src/ad_containers.dart';
@@ -118,9 +119,7 @@ class MainRotateEffect extends MainSideEffect {
   List<Object?> get props => [];
 }
 
-
 class MainRequiredTicket extends MainSideEffect {
-
   final int requiredTicket;
 
   MainRequiredTicket(this.requiredTicket);
@@ -129,3 +128,19 @@ class MainRequiredTicket extends MainSideEffect {
   List<Object?> get props => [];
 }
 
+class MainNavigateOpenRandomBox extends MainSideEffect {
+  final MainLocationData data;
+  final FortuneUserEntity? user;
+  final RewardedAd? ad;
+  final GiftboxType type;
+
+  MainNavigateOpenRandomBox({
+    required this.data,
+    required this.user,
+    required this.ad,
+    required this.type,
+  });
+
+  @override
+  List<Object?> get props => [];
+}

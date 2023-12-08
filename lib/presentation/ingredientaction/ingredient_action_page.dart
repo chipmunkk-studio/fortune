@@ -89,7 +89,7 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
           final currentIngredient = state.entity.ingredient;
           switch (currentIngredient.type) {
             case IngredientType.coin:
-              return const AdLoadingView();
+              return AdLoadingView(state.entity.isShowAd);
             case IngredientType.randomScratchSingle:
               return RandomScratchSingleView(
                 randomNormalIngredients: state.randomScratchersItems,

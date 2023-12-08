@@ -9,6 +9,8 @@ import 'package:fortune/presentation-web/viewpost/view_post_page.dart';
 import 'package:fortune/presentation-web/writepost/write_post.dart';
 import 'package:fortune/presentation/alarmfeed/alarm_feed_page.dart';
 import 'package:fortune/presentation/countrycode/country_code_page.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_page.dart';
+import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/gradeguide/grade_guide_page.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:fortune/presentation/login/bloc/login.dart';
@@ -103,6 +105,13 @@ class FortuneAppRouter {
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       final args = context?.settings?.arguments as IngredientActionParam?;
       return args != null ? IngredientActionPage(args) : null;
+    },
+  );
+
+  static var giftboxActionHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as GiftboxActionParam?;
+      return args != null ? GiftboxActionPage(args) : null;
     },
   );
 
@@ -328,6 +337,13 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 랜덤박스.
+      ..define(
+        AppRoutes.giftBoxActionRoute,
+        handler: giftboxActionHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+
       /// todo 삭제해야 됨.
       ..define(
         AppRoutes.writePostRoutes,
@@ -375,6 +391,7 @@ class AppRoutes {
   static const String faqsRoute = 'faqs';
   static const String nickNameRoute = 'nickName';
   static const String noticesRoutes = 'notices';
+  static const String giftBoxActionRoute = 'giftBox';
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
   static const String rankingRoutes = 'ranking';
