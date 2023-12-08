@@ -18,6 +18,7 @@ class MainState with _$MainState {
     required Position? myLocation,
     required FortuneUserEntity? user,
     required MainLocationData? processingMarker,
+    required MainLocationData? randomBoxMarker,
     required List<AlarmFeedsEntity> notices,
     required int haveCount,
     required bool isObtainProcessing,
@@ -26,10 +27,12 @@ class MainState with _$MainState {
     required String locationName,
     required bool isLoading,
     required double clickableRadiusLength,
+    required int randomBoxTimerSecond,
     required double zoomThreshold,
     required double turns,
     required double prevHeadings,
     required bool isShowTestLocation,
+    required bool randomBoxOpenable,
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
@@ -40,6 +43,7 @@ class MainState with _$MainState {
         user: null,
         myLocation: null,
         processingMarker: null,
+        randomBoxMarker: null,
         notices: List.empty(),
         haveCount: 0,
         isObtainProcessing: false,
@@ -50,6 +54,8 @@ class MainState with _$MainState {
         prevHeadings: 0,
         isShowTestLocation: false,
         clickableRadiusLength: 60,
+        randomBoxTimerSecond: 0,
+        randomBoxOpenable: false,
         zoomThreshold: 18,
       );
 }

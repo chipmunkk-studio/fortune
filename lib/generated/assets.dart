@@ -65,6 +65,7 @@ class Assets {
   static const String imagesScratch = 'assets/images/scratch.png';
   static const String imagesWebMain = 'assets/images/web_main.png';
   static const String lottieLoading = 'assets/lottie/loading.lottie';
+  static const String lottieRandomMarkerBox = 'assets/lottie/random_marker_box.lottie';
   static const String onboardingGuide1 = 'assets/images/onboarding/guide1.png';
   static const String onboardingGuide2 = 'assets/images/onboarding/guide2.png';
   static const String onboardingGuide3 = 'assets/images/onboarding/guide3.png';

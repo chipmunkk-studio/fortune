@@ -81,4 +81,28 @@ class LocalRepositoryImpl extends LocalRepository {
       );
     }
   }
+
+  @override
+  Future<int> getRandomBoxTimerCounter() async {
+    try {
+      final result = await localDataSource.getRandomBoxRefreshTime();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<void> setRandomBoxTimerCounter(int time) async {
+    try {
+      final result = await localDataSource.setRandomBoxRefreshTime(time);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
 }

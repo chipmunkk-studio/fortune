@@ -41,6 +41,7 @@ import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_privacy_policy_usecase.dart';
+import 'package:fortune/domain/supabase/usecase/get_random_box_timer_counter_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
@@ -48,11 +49,13 @@ import 'package:fortune/domain/supabase/usecase/get_user_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/grade_guide_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/obtain_marker_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/obtain_marker_default_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/obtain_marker_main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_random_box_timer_counter_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -68,6 +71,7 @@ import 'package:fortune/presentation-web/writepost/bloc/write_post.dart';
 import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
 import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
 import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
+import 'package:fortune/presentation/giftbox/bloc/giftbox_action.dart';
 import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
 import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
 import 'package:fortune/presentation/login/bloc/login_bloc.dart';
@@ -142,7 +146,7 @@ Future<void> init() async {
       ..registerLazySingleton<SharedPreferences>(() => sharedPreferences)
       ..registerLazySingleton<LocalDataSource>(
         () => LocalDataSourceImpl(
-          remoteConfig:serviceLocator<Environment>().remoteConfig,
+          remoteConfig: serviceLocator<Environment>().remoteConfig,
         ),
       );
 
@@ -381,8 +385,8 @@ _initRepository() {
 
 _initUseCase() async {
   serviceLocator
-    ..registerLazySingleton<ObtainMarkerUseCase>(
-      () => ObtainMarkerUseCase(
+    ..registerLazySingleton<ObtainMarkerMainUseCase>(
+      () => ObtainMarkerMainUseCase(
         markerRepository: serviceLocator(),
         userRepository: serviceLocator(),
         alarmFeedsRepository: serviceLocator(),
@@ -449,6 +453,16 @@ _initUseCase() async {
     )
     ..registerLazySingleton<GetCountryInfoUseCase>(
       () => GetCountryInfoUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<SetRandomBoxTimerCounterUseCase>(
+      () => SetRandomBoxTimerCounterUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetRandomBoxTimerCounterUseCase>(
+      () => GetRandomBoxTimerCounterUseCase(
         repository: serviceLocator(),
       ),
     )
@@ -576,6 +590,12 @@ _initUseCase() async {
         repository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<ObtainMarkerDefaultUseCase>(
+      () => ObtainMarkerDefaultUseCase(
+        userRepository: serviceLocator(),
+        historyRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<GetIngredientsByTypeUseCase>(
       () => GetIngredientsByTypeUseCase(
         ingredientRepository: serviceLocator(),
@@ -646,14 +666,24 @@ _initAppBloc() {
       ),
     )
     ..registerFactory(
+      () => GiftboxActionBloc(
+        getIngredientsByTypeUseCase: serviceLocator(),
+        env: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => MainBloc(
         remoteConfig: serviceLocator<Environment>().remoteConfig,
         mainUseCase: serviceLocator(),
-        obtainMarkerUseCase: serviceLocator(),
+        obtainMarkerMainUseCase: serviceLocator(),
         getShowAdUseCase: serviceLocator(),
         readAlarmFeedUseCase: serviceLocator(),
+        obtainMarkerDefaultUseCase: serviceLocator(),
         getAppUpdate: serviceLocator(),
+        getIngredientsByTypeUseCase: serviceLocator(),
         tracker: serviceLocator<MixpanelTracker>(),
+        setRandomBoxTimerCounterUseCase: serviceLocator(),
+        getRandomBoxTimerCounterUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -11,15 +11,20 @@ abstract class LocalDataSource {
 
   Future<int> getVerifySmsTime();
 
+  Future<int> getRandomBoxRefreshTime();
+
   Future<bool> getShowAd();
 
   Future<void> setShowAdCounter();
+
+  Future<void> setRandomBoxRefreshTime(int time);
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
   final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
   final Storage<int> _adCounter = SharedPrefsStorage<int>.primitive(itemKey: adCounter);
+  final Storage<int> _randomBoxTimeCounter = SharedPrefsStorage<int>.primitive(itemKey: randomBoxTimeCounter);
 
   final FortuneRemoteConfig remoteConfig;
 
@@ -27,6 +32,7 @@ class LocalDataSourceImpl extends LocalDataSource {
   static const pushAlarmKey = "pushAlarm";
   static const verifySmsTimeKey = "verifySmsTimeKey";
   static const adCounter = "adCounter";
+  static const randomBoxTimeCounter = "randomBoxTimeCounter";
 
   final int adShowThreshold;
 
@@ -70,5 +76,16 @@ class LocalDataSourceImpl extends LocalDataSource {
     } else {
       _adCounter.save(time + 1);
     }
+  }
+
+  @override
+  Future<int> getRandomBoxRefreshTime() async {
+    final time = await _randomBoxTimeCounter.get();
+    return (time != null && time >= 0) ? time : remoteConfig.randomBoxTimer;
+  }
+
+  @override
+  Future<void> setRandomBoxRefreshTime(int time) async {
+    _randomBoxTimeCounter.save(time);
   }
 }
