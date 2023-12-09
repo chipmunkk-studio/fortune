@@ -191,7 +191,7 @@ class _Grade extends StatelessWidget {
                 Flexible(
                   child: Text(
                     FortuneTr.gradeGuide,
-                    style: FortuneTextStyle.body3Light(color: ColorName.grey200),
+                    style: FortuneTextStyle.body3Regular(color: ColorName.grey200),
                   ),
                 ),
                 const SizedBox(width: 4),

@@ -1,26 +1,29 @@
-import 'dart:async';
-
 import 'package:dotlottie_loader/dotlottie_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:lottie/lottie.dart';
 
 class RandomBoxWidget extends StatefulWidget {
-  final int randomBoxTimerSecond;
+  final int timerSeccond;
   final bool isOpenable;
   final MainBloc mainBloc;
+
+  final GiftboxType type;
 
   const RandomBoxWidget(
     this.mainBloc, {
     super.key,
-    required this.randomBoxTimerSecond,
+    required this.timerSeccond,
     required this.isOpenable,
+    required this.type,
   });
 
   @override
@@ -28,17 +31,18 @@ class RandomBoxWidget extends StatefulWidget {
 }
 
 class _RandomBoxWidgetState extends State<RandomBoxWidget> {
+  final FToast _fToast = FToast();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.isOpenable ? () => widget.mainBloc.add(MainOpenRandomBox(GiftboxType.random)) : null,
+      onTap: _handleTap,
       child: Align(
         alignment: Alignment.topLeft,
         child: Stack(
           children: [
             DotLottieLoader.fromAsset(
-              Assets.lottie.randomMarkerBox,
+              widget.type == GiftboxType.random ? Assets.lottie.giftBox : Assets.lottie.coinPig,
               frameBuilder: (ctx, dotlottie) {
                 return dotlottie != null
                     ? Lottie.memory(
@@ -61,12 +65,13 @@ class _RandomBoxWidgetState extends State<RandomBoxWidget> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        color: widget.isOpenable
-                            ? ColorName.secondary.withOpacity(0.7)
-                            : ColorName.primary.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: widget.isOpenable
+                          ? ColorName.secondary.withOpacity(widget.type == GiftboxType.random ? 0.7 : 0.8)
+                          : ColorName.primary.withOpacity(0.5),
+                    ),
                     child: Text(
-                      widget.isOpenable ? FortuneTr.msgOpenGiftBox : _formatSeconds(widget.randomBoxTimerSecond),
+                      widget.isOpenable ? FortuneTr.msgOpenGiftBox : _formatSeconds(widget.timerSeccond),
                       style: FortuneTextStyle.caption3Semibold(
                         color: ColorName.white,
                       ),
@@ -79,6 +84,26 @@ class _RandomBoxWidgetState extends State<RandomBoxWidget> {
         ),
       ),
     );
+  }
+
+  _handleTap() {
+    if (widget.isOpenable) {
+      widget.mainBloc.add(MainOpenRandomBox(widget.type));
+    } else {
+      _fToast.showToast(
+        child: fortuneToastContent(
+          icon: Assets.icons.icInfo.svg(),
+          content: FortuneTr.msgRequireMoreTime,
+        ),
+        positionedToastBuilder: (context, child) => Positioned(
+          bottom: 40,
+          left: 0,
+          right: 0,
+          child: child,
+        ),
+        toastDuration: const Duration(seconds: 2),
+      );
+    }
   }
 
   String _formatSeconds(int seconds) {

@@ -61,7 +61,7 @@ class ItemRankingContent extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           FortuneTr.msgItemCount(count),
-          style: FortuneTextStyle.body3Light(color: ColorName.grey100),
+          style: FortuneTextStyle.body3Regular(color: ColorName.grey100),
         ),
       ],
     );

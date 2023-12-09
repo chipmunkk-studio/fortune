@@ -40,7 +40,7 @@ class ItemGrade extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 8),
-              Text(rewardGuideText, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
+              Text(rewardGuideText, style: FortuneTextStyle.body3Regular(color: ColorName.grey200)),
             ],
           ),
           const Spacer(),

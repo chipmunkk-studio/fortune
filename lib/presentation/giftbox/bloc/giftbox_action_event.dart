@@ -15,8 +15,8 @@ class GiftboxActionInit extends GiftboxActionEvent {
   List<Object?> get props => [];
 }
 
-class GiftboxActionShowAdCounting extends GiftboxActionEvent {
-  GiftboxActionShowAdCounting();
+class GiftboxActionCloseAd extends GiftboxActionEvent {
+  GiftboxActionCloseAd();
 
   @override
   List<Object?> get props => [];

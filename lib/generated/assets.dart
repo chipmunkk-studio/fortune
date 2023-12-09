@@ -60,12 +60,14 @@ class Assets {
   static const String iconsIcWarningCircle24 = 'assets/icons/ic_warning_circle_24.svg';
   static const String iconsIcWebCi = 'assets/icons/ic_web_ci.svg';
   static const String iconsIcXcircleFill24 = 'assets/icons/ic_xcircle_fill_24.svg';
+  static const String imagesCustomerAd = 'assets/images/customer_ad.webp';
+  static const String imagesCustomerAdCi = 'assets/images/customer_ad_ci.svg';
   static const String imagesIcLauncher = 'assets/images/ic_launcher.png';
   static const String imagesIvDefaultProfile = 'assets/images/iv_default_profile.svg';
-  static const String imagesScratch = 'assets/images/scratch.png';
   static const String imagesWebMain = 'assets/images/web_main.png';
+  static const String lottieCoinPig = 'assets/lottie/coin_pig.lottie';
+  static const String lottieGiftBox = 'assets/lottie/gift_box.lottie';
   static const String lottieLoading = 'assets/lottie/loading.lottie';
-  static const String lottieRandomMarkerBox = 'assets/lottie/random_marker_box.lottie';
   static const String onboardingGuide1 = 'assets/images/onboarding/guide1.png';
   static const String onboardingGuide2 = 'assets/images/onboarding/guide2.png';
   static const String onboardingGuide3 = 'assets/images/onboarding/guide3.png';

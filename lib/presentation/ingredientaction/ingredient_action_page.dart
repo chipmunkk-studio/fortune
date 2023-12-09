@@ -95,6 +95,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalIngredients: state.randomScratchersItems,
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
+                  _mixpanelTracker.trackEvent("랜덤_싱글박스_오픈", properties: {
+                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName
+                  });
                   _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
               );
@@ -103,6 +106,9 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalIngredients: state.randomScratchersItems,
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
+                  _mixpanelTracker.trackEvent("랜덤_멀티박스_오픈", properties: {
+                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName
+                  });
                   _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
               );

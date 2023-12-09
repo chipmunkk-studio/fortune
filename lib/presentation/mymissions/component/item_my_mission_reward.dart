@@ -50,7 +50,7 @@ class ItemMyMissionReward extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   item.mission.reward.name,
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey100),
+                  style: FortuneTextStyle.body3Regular(color: ColorName.grey100),
                 ),
               ],
             ),

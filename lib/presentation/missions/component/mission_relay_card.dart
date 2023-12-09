@@ -69,7 +69,7 @@ class MissionRelayCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "${item.userHaveCount}(보유한 갯수)",
-                                style: FortuneTextStyle.body3Light(color: Colors.white),
+                                style: FortuneTextStyle.body3Regular(color: Colors.white),
                               ),
                               TextSpan(
                                 text: "/${item.requiredTotalCount}",
@@ -151,11 +151,11 @@ class MissionRelayCard extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: "${item.satisfiedCount}(요구 갯수)",
-                        style: FortuneTextStyle.body3Light(color: ColorName.primary),
+                        style: FortuneTextStyle.body3Regular(color: ColorName.primary),
                       ),
                       TextSpan(
                         text: "/${item.totalConditionSize}",
-                        style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                        style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                       ),
                     ],
                   ),

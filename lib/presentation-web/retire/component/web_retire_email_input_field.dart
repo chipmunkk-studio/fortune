@@ -38,7 +38,7 @@ class WebRetireEmailInputField extends StatelessWidget {
         counterText: "",
         hintStyle: FortuneTextStyle.subTitle2Medium(color: ColorName.grey500),
         errorText: FortuneValidator.isValidEmail(_email) || _email.isEmpty ? null : FortuneTr.msgInputEmailNotValid,
-        errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
+        errorStyle: FortuneTextStyle.body3Regular(color: ColorName.negative),
       ),
     );
   }

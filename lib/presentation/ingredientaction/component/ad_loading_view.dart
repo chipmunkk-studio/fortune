@@ -27,7 +27,7 @@ class AdLoadingView extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 80.h),
                 child: Text(
                   FortuneTr.msgAdPlaying,
-                  style: FortuneTextStyle.body1Light(height: 1.3),
+                  style: FortuneTextStyle.body1Regular(height: 1.3),
                   textAlign: TextAlign.center,
                 ),
               ),

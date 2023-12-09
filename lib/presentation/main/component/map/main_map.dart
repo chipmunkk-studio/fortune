@@ -67,7 +67,7 @@ class MainMap extends StatelessWidget {
                   },
                   onTap: (tapPosition, point) {
                     FortuneLogger.debug(
-                      tag: "gradeTest",
+                      tag: "LocationTest",
                       "point: $point, distance: ${isMarkerInsideCircle(
                         LatLng(
                           _bloc.state.myLocation!.latitude,

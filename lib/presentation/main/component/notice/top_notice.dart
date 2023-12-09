@@ -99,12 +99,12 @@ class _TopNoticeState extends State<TopNotice> {
                                       ),
                                       Text(
                                         FortuneTr.msgHelpedBy,
-                                        style: FortuneTextStyle.body3Light(),
+                                        style: FortuneTextStyle.body3Regular(),
                                       ),
                                       const SizedBox(width: 3),
                                       Text(
                                         e.createdAt,
-                                        style: FortuneTextStyle.body3Light(
+                                        style: FortuneTextStyle.body3Regular(
                                           color: ColorName.grey200,
                                         ),
                                       ),
@@ -118,14 +118,14 @@ class _TopNoticeState extends State<TopNotice> {
                                         Flexible(
                                           child: Text(
                                             e.mission.title,
-                                            style: FortuneTextStyle.body3Light(),
+                                            style: FortuneTextStyle.body3Regular(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                         Text(
                                           " ${FortuneTr.msgAcquired}",
-                                          style: FortuneTextStyle.body3Light(),
+                                          style: FortuneTextStyle.body3Regular(),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -175,7 +175,7 @@ class _TopNoticeState extends State<TopNotice> {
               children: [
                 Text(
                   FortuneTr.msgNoMissionCompletion,
-                  style: FortuneTextStyle.body3Light(height: 1.3),
+                  style: FortuneTextStyle.body3Regular(height: 1.3),
                 ),
                 const SizedBox(
                   width: 40,

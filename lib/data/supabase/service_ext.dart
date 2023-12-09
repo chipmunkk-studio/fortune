@@ -13,6 +13,7 @@ enum IngredientType {
   normal, // 일반
   special, // 서버 컨트롤.
   coin, // 코인
+  multiCoin, // 멀티코인
   unique, // 레벨 업 시
   epic, // 등급 업.
   rare, // 릴레이 미션.
@@ -75,6 +76,8 @@ getIngredientType(String? type) {
     return IngredientType.randomScratchMulti;
   } else if (IngredientType.randomScratchMultiOnly.name == type) {
     return IngredientType.randomScratchMultiOnly;
+  } else if (IngredientType.multiCoin.name == type) {
+    return IngredientType.multiCoin;
   } else {
     return IngredientType.none;
   }

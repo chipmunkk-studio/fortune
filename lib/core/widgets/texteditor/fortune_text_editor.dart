@@ -68,8 +68,8 @@ class FortuneQuillTextEditor extends StatelessWidget {
                 imageButtonOptions: QuillToolbarImageButtonOptions(
                   fillColor: ColorName.white,
                   dialogTheme: QuillDialogTheme(
-                    labelTextStyle: FortuneTextStyle.body1Light(),
-                    buttonTextStyle: FortuneTextStyle.body1Light(),
+                    labelTextStyle: FortuneTextStyle.body1Regular(),
+                    buttonTextStyle: FortuneTextStyle.body1Regular(),
                   ),
                 ),
               ),

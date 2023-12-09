@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:fortune/env.dart';
 import 'package:single_item_shared_prefs/single_item_shared_prefs.dart';
 import 'package:single_item_storage/storage.dart';
@@ -11,25 +12,35 @@ abstract class LocalDataSource {
 
   Future<int> getVerifySmsTime();
 
-  Future<int> getRandomBoxRemainTime();
-
-  Future<int> getRandomBoxStopTime();
-
   Future<bool> getShowAd();
 
   Future<void> setShowAdCounter();
 
-  Future<void> setRandomBoxRemainTime(int time);
+  Future<int> getGiftBoxRemainTime();
 
-  Future<void> setRandomBoxStopTime(int time);
+  Future<int> getGiftBoxStopTime();
+
+  Future<void> setGiftBoxRemainTime(int time);
+
+  Future<void> setGiftBoxStopTime(int time);
+
+  Future<void> setCoinBoxRemainTime(int time);
+
+  Future<void> setCoinBoxStopTime(int time);
+
+  Future<int> getCoinBoxRemainTime();
+
+  Future<int> getCoinBoxStopTime();
 }
 
 class LocalDataSourceImpl extends LocalDataSource {
   final Storage<bool> _pushAlarm = SharedPrefsStorage<bool>.primitive(itemKey: pushAlarmKey);
   final Storage<int> _verifySmsTime = SharedPrefsStorage<int>.primitive(itemKey: verifySmsTimeKey);
   final Storage<int> _adCounter = SharedPrefsStorage<int>.primitive(itemKey: adCounter);
-  final Storage<int> _randomBoxRemainTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxRemainTime);
-  final Storage<int> _randomBoxStopTime = SharedPrefsStorage<int>.primitive(itemKey: randomBoxStopTime);
+  final Storage<int> _giftBoxRemainTime = SharedPrefsStorage<int>.primitive(itemKey: giftBoxRemainTime);
+  final Storage<int> _giftBoxStopTime = SharedPrefsStorage<int>.primitive(itemKey: giftBoxStopTime);
+  final Storage<int> _coinBoxRemainTime = SharedPrefsStorage<int>.primitive(itemKey: coinBoxRemainTime);
+  final Storage<int> _coinBoxStopTime = SharedPrefsStorage<int>.primitive(itemKey: coinBoxStopTime);
 
   final FortuneRemoteConfig remoteConfig;
 
@@ -37,8 +48,10 @@ class LocalDataSourceImpl extends LocalDataSource {
   static const pushAlarmKey = "pushAlarm";
   static const verifySmsTimeKey = "verifySmsTimeKey";
   static const adCounter = "adCounter";
-  static const randomBoxRemainTime = "randomBoxRemainTime";
-  static const randomBoxStopTime = "randomBoxStopTime";
+  static const giftBoxRemainTime = "giftBoxRemainTime";
+  static const giftBoxStopTime = "giftBoxStopTime";
+  static const coinBoxRemainTime = "coinBoxRemainTime";
+  static const coinBoxStopTime = "coinBoxStopTime";
 
   final int adShowThreshold;
 
@@ -85,24 +98,54 @@ class LocalDataSourceImpl extends LocalDataSource {
   }
 
   @override
-  Future<int> getRandomBoxRemainTime() async {
-    final time = await _randomBoxRemainTime.get();
-    return (time != null && time >= 0) ? time : remoteConfig.randomBoxTimer;
+  Future<int> getGiftBoxRemainTime() async {
+    final time = await _giftBoxRemainTime.get();
+    return (time != null && time >= 0)
+        ? time
+        : kReleaseMode
+            ? remoteConfig.randomBoxTimer
+            : 60;
   }
 
   @override
-  Future<void> setRandomBoxRemainTime(int time) async {
-    await _randomBoxRemainTime.save(time);
+  Future<void> setGiftBoxRemainTime(int time) async {
+    await _giftBoxRemainTime.save(time);
   }
 
   @override
-  Future<void> setRandomBoxStopTime(int time) async {
-    await _randomBoxStopTime.save(time);
+  Future<void> setGiftBoxStopTime(int time) async {
+    await _giftBoxStopTime.save(time);
   }
 
   @override
-  Future<int> getRandomBoxStopTime() async {
-    final time = await _randomBoxStopTime.get();
+  Future<int> getGiftBoxStopTime() async {
+    final time = await _giftBoxStopTime.get();
     return (time != null && time >= 0) ? time : DateTime.now().millisecondsSinceEpoch;
+  }
+
+  @override
+  Future<int> getCoinBoxRemainTime() async {
+    final time = await _coinBoxRemainTime.get();
+    return (time != null && time >= 0)
+        ? time
+        : kReleaseMode
+            ? remoteConfig.randomBoxTimer + 600
+            : 30;
+  }
+
+  @override
+  Future<int> getCoinBoxStopTime() async {
+    final time = await _coinBoxStopTime.get();
+    return (time != null && time >= 0) ? time : DateTime.now().millisecondsSinceEpoch;
+  }
+
+  @override
+  Future<void> setCoinBoxRemainTime(int time) async {
+    await _coinBoxRemainTime.save(time);
+  }
+
+  @override
+  Future<void> setCoinBoxStopTime(int time) async {
+    await _coinBoxStopTime.save(time);
   }
 }

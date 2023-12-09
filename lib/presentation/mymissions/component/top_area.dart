@@ -27,7 +27,7 @@ class TopArea extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(FortuneTr.msgCompletedMissions, style: FortuneTextStyle.body2Light(color: ColorName.grey200)),
+            Text(FortuneTr.msgCompletedMissions, style: FortuneTextStyle.body2Regular(color: ColorName.grey200)),
             const SizedBox(height: 8),
             Text('$count건', style: FortuneTextStyle.subTitle2SemiBold(color: ColorName.white)),
           ],

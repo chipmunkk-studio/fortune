@@ -97,12 +97,12 @@ class _GradeGuidePageState extends State<_GradeGuidePage> {
                 const SizedBox(height: 24),
                 Text(
                   "· ${FortuneTr.msgRewardInProgress}",
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                  style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   "· ${FortuneTr.msgGradeChangeNotice}",
-                  style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                  style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                 ),
                 const SizedBox(height: 40),
               ],

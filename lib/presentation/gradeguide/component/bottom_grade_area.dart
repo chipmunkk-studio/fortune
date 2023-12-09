@@ -22,12 +22,12 @@ class BottomGradeArea extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               children: [
-                TextSpan(text: FortuneTr.msgUntilNextLevel, style: FortuneTextStyle.body3Light(color: ColorName.grey200)),
+                TextSpan(text: FortuneTr.msgUntilNextLevel, style: FortuneTextStyle.body3Regular(color: ColorName.grey200)),
                 const TextSpan(text: "\u00A0"),
                 TextSpan(text: "$remainCount${FortuneTr.msgNumberPrefix}", style: FortuneTextStyle.body3Semibold()),
                 TextSpan(
                   text: FortuneTr.msgMarkerRequirement,
-                  style: FortuneTextStyle.body3Light(
+                  style: FortuneTextStyle.body3Regular(
                     color: ColorName.grey200,
                   ),
                 ),

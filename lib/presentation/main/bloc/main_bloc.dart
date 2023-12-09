@@ -15,16 +15,20 @@ import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/request/request_main_param.dart';
 import 'package:fortune/domain/supabase/request/request_obtain_marker_param.dart';
 import 'package:fortune/domain/supabase/usecase/get_app_update.dart';
+import 'package:fortune/domain/supabase/usecase/get_coinbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_coinbox_stop_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_giftbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_giftbox_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_ingredients_by_type_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_remain_time_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_default_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_remain_time_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_stop_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_coinbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_coinbox_stop_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_giftbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_giftbox_stop_time_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -49,10 +53,15 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final GetIngredientsByTypeUseCase getIngredientsByTypeUseCase;
   final MixpanelTracker tracker;
   final ObtainMarkerDefaultUseCase obtainMarkerDefaultUseCase;
-  final SetRandomBoxRemainTimeUseCase setRandomBoxRemainTimeUseCase;
-  final GetRandomBoxRemainTimeUseCase getRandomBoxRemainTimeUseCase;
-  final SetRandomBoxStopTimeUseCase setRandomBoxStopTimeUseCase;
-  final GetRandomBoxStopTimeUseCase getRandomBoxStopTimeUseCase;
+  final SetGiftboxRemainTimeUseCase setRandomBoxRemainTimeUseCase;
+  final GetGiftboxRemainTimeUseCase getRandomBoxRemainTimeUseCase;
+  final SetGiftboxStopTimeUseCase setRandomBoxStopTimeUseCase;
+  final GetGiftboxStopTimeUseCase getRandomBoxStopTimeUseCase;
+
+  final SetCoinboxRemainTimeUseCase setCoinboxRemainTimeUseCase;
+  final SetCoinboxStopTimeUseCase setCoinboxStopTimeUseCase;
+  final GetCoinboxRemainTimeUseCase getCoinboxRemainTimeUseCase;
+  final GetCoinboxStopTimeUseCase getCoinboxStopTimeUseCase;
 
   MainBloc({
     required this.remoteConfig,
@@ -68,6 +77,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required this.setRandomBoxStopTimeUseCase,
     required this.getRandomBoxRemainTimeUseCase,
     required this.getRandomBoxStopTimeUseCase,
+    required this.setCoinboxRemainTimeUseCase,
+    required this.setCoinboxStopTimeUseCase,
+    required this.getCoinboxRemainTimeUseCase,
+    required this.getCoinboxStopTimeUseCase,
   }) : super(MainState.initial()) {
     on<MainInit>(init);
     on<MainLandingPage>(landingPage);
@@ -92,9 +105,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       _markerObtain,
       transformer: sequential(),
     );
-    on<MainRandomBoxTimerCount>(_randomBoxTimerCount);
+    on<MainRandomBoxTimerCount>(_giftOrCoinBoxTimerCount);
     on<MainOpenRandomBox>(_openRandomBox);
     on<MainMarkerObtainFromRandomBox>(_markerObtainFromRandomBox);
+    on<MainMarkerObtainFromRandomBoxCancel>(_markerObtainFromRandomBoxCancel);
   }
 
   FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) async {
@@ -148,12 +162,19 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             final currentUserEmail = Supabase.instance.client.auth.currentUser?.email;
             final isTestAccount = currentUserEmail == remoteConfig.testSignInEmail;
             final isShowTestLocation = isPhysicalDevice ? false : isTestAccount;
-            final remainSeconds = await _getGiftboxRemainSeconds(giftBoxTime: remoteConfig.randomBoxTimer);
+            final remainGiftBoxSeconds = await _getGiftboxRemainSeconds(
+              giftBoxTime: _getGiftBoxTimer(GiftboxType.random),
+            );
+            final remainCoinBoxSeconds = await _getCoinboxRemainSeconds(
+              coinBoxTime: _getGiftBoxTimer(GiftboxType.coin),
+            );
 
             emit(
               state.copyWith(
-                randomBoxTimerSecond: remainSeconds,
-                randomBoxOpenable: remainSeconds == 0,
+                giftBoxTimerSecond: remainGiftBoxSeconds,
+                giftBoxOpenable: remainGiftBoxSeconds == 0,
+                coinBoxTimerSecond: remainCoinBoxSeconds,
+                coinBoxOpenable: remainCoinBoxSeconds == 0,
                 myLocation: isShowTestLocation ? simulatorLocation : null,
                 isShowTestLocation: isShowTestLocation,
                 locationName: isShowTestLocation
@@ -405,33 +426,57 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     );
   }
 
-  FutureOr<void> _randomBoxTimerCount(MainRandomBoxTimerCount event, Emitter<MainState> emit) async {
+  FutureOr<void> _giftOrCoinBoxTimerCount(MainRandomBoxTimerCount event, Emitter<MainState> emit) async {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
-    await setRandomBoxStopTimeUseCase(currentTime).then((value) => null);
-    await setRandomBoxRemainTimeUseCase(event.timerCount).then(
-      (value) => value.fold(
-        (l) => null,
-        (r) {
-          emit(
-            state.copyWith(
-              randomBoxOpenable: event.timerCount == 0 && !state.randomBoxOpenable,
-              randomBoxTimerSecond: event.timerCount,
-            ),
-          );
-        },
-      ),
-    );
+    switch (event.type) {
+      case GiftboxType.random:
+        await setRandomBoxStopTimeUseCase(currentTime).then((value) => null);
+        await setRandomBoxRemainTimeUseCase(event.timerCount).then(
+          (value) => value.fold(
+            (l) => null,
+            (r) {
+              emit(
+                state.copyWith(
+                  giftBoxOpenable: event.timerCount <= 0 && !state.giftBoxOpenable,
+                  giftBoxTimerSecond: event.timerCount,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      case GiftboxType.coin:
+        await setCoinboxStopTimeUseCase(currentTime).then((value) => null);
+        await setCoinboxRemainTimeUseCase(event.timerCount).then(
+          (value) => value.fold(
+            (l) => null,
+            (r) {
+              emit(
+                state.copyWith(
+                  coinBoxOpenable: event.timerCount <= 0 && !state.coinBoxOpenable,
+                  coinBoxTimerSecond: event.timerCount,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      default:
+    }
   }
 
   FutureOr<void> _openRandomBox(MainOpenRandomBox event, Emitter<MainState> emit) async {
+    /// 랜덤박스 유형은 2가지 중 하나.
     final result = await getIngredientsByTypeUseCase([
-      if (event.type == GiftboxType.random) IngredientType.randomScratchSingle,
-      if (event.type == GiftboxType.random) IngredientType.randomScratchMulti,
+      IngredientType.randomScratchSingle,
+      IngredientType.randomScratchMulti,
     ]);
     result.fold(
       (l) => produceSideEffect(MainError(l)),
       (r) {
         final ingredient = r[math.Random().nextInt(r.length)];
+
+        /// 기본 생성 포맷 때문에 MainLocationData 클래스를 사용.
         final data = MainLocationData(
           location: LatLng(state.myLocation?.latitude ?? 0, state.myLocation?.longitude ?? 0),
           ingredient: ingredient,
@@ -450,28 +495,102 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
   FutureOr<void> _markerObtainFromRandomBox(MainMarkerObtainFromRandomBox event, Emitter<MainState> emit) async {
     add(MainScreenFreeze(flag: true, data: event.data));
-    await setRandomBoxRemainTimeUseCase(remoteConfig.randomBoxTimer).then(
-      (value) => value.fold(
-        (l) => produceSideEffect(MainError(l)),
-        (r) async {
-          await obtainMarkerDefaultUseCase(event.data.ingredient).then(
-            (value) => value.fold(
-              (l) => produceSideEffect(MainError(l)),
-              (r) async {
-                await Future.delayed(const Duration(milliseconds: 200));
-                emit(
-                  state.copyWith(
-                    randomBoxOpenable: false,
-                    randomBoxTimerSecond: remoteConfig.randomBoxTimer,
-                  ),
-                );
-                add(MainScreenFreeze(flag: false, data: event.data));
-              },
-            ),
-          );
-        },
-      ),
-    );
+    final coinBoxTimer = _getGiftBoxTimer(GiftboxType.coin);
+    final giftBoxTimer = _getGiftBoxTimer(GiftboxType.random);
+    switch (event.type) {
+      case GiftboxType.random:
+        await setRandomBoxRemainTimeUseCase(giftBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              await obtainMarkerDefaultUseCase(event.data.ingredient).then(
+                (value) => value.fold(
+                  (l) => produceSideEffect(MainError(l)),
+                  (r) async {
+                    emit(
+                      state.copyWith(
+                        giftBoxOpenable: false,
+                        giftBoxTimerSecond: giftBoxTimer,
+                      ),
+                    );
+                    await getMain(emit);
+                    add(MainScreenFreeze(flag: false, data: event.data));
+                  },
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      case GiftboxType.coin:
+        await setCoinboxRemainTimeUseCase(coinBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              await obtainMarkerDefaultUseCase(event.data.ingredient).then(
+                (value) => value.fold(
+                  (l) => produceSideEffect(MainError(l)),
+                  (r) async {
+                    emit(
+                      state.copyWith(
+                        coinBoxOpenable: false,
+                        coinBoxTimerSecond: coinBoxTimer,
+                      ),
+                    );
+                    await getMain(emit);
+                    add(MainScreenFreeze(flag: false, data: event.data));
+                  },
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
+  FutureOr<void> _markerObtainFromRandomBoxCancel(
+    MainMarkerObtainFromRandomBoxCancel event,
+    Emitter<MainState> emit,
+  ) async {
+    final coinBoxTimer = _getGiftBoxTimer(GiftboxType.coin);
+    final giftBoxTimer = _getGiftBoxTimer(GiftboxType.random);
+    switch (event.type) {
+      case GiftboxType.random:
+        await setRandomBoxRemainTimeUseCase(giftBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              emit(
+                state.copyWith(
+                  giftBoxOpenable: false,
+                  giftBoxTimerSecond: giftBoxTimer,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      case GiftboxType.coin:
+        await setCoinboxRemainTimeUseCase(coinBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              emit(
+                state.copyWith(
+                  coinBoxOpenable: false,
+                  coinBoxTimerSecond: coinBoxTimer,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      default:
+        break;
+    }
   }
 
   /// 기프트 박스 남은 시간 불러오기.
@@ -479,26 +598,47 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     required int giftBoxTime,
   }) async {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
-
     // 저장된 타이머 종료 시간 불러오기
     final savedStopTime = await getRandomBoxStopTimeUseCase().then(
       (value) => value.getOrElse(() => currentTime),
     );
-
     // 저장된 남은 시간 불러오기
     final savedRemainSecond = await getRandomBoxRemainTimeUseCase().then(
-      (value) => value.getOrElse(() => giftBoxTime),
+      (value) => value.getOrElse(() => kReleaseMode ? giftBoxTime : 60),
     );
-
     // 경과된 시간 계산
     final timePassed = (currentTime - savedStopTime) ~/ 1000;
-
     // 남은 시간 계산
     return savedRemainSecond == giftBoxTime ? giftBoxTime : math.max(0, savedRemainSecond - timePassed);
+  }
+
+  /// 코인 박스 남은 시간 불러오기.
+  _getCoinboxRemainSeconds({
+    required int coinBoxTime,
+  }) async {
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    // 저장된 타이머 종료 시간 불러오기
+    final savedStopTime = await getCoinboxStopTimeUseCase().then(
+      (value) => value.getOrElse(() => currentTime),
+    );
+    // 저장된 남은 시간 불러오기
+    final savedRemainSecond = await getCoinboxRemainTimeUseCase().then(
+      (value) => value.getOrElse(() => kReleaseMode ? coinBoxTime : 30),
+    );
+    // 경과된 시간 계산
+    final timePassed = (currentTime - savedStopTime) ~/ 1000;
+    // 남은 시간 계산
+    return savedRemainSecond == coinBoxTime ? coinBoxTime : math.max(0, savedRemainSecond - timePassed);
   }
 
   _hasAnimation(IngredientType ingredientType) =>
       IngredientType.coin != ingredientType &&
       IngredientType.randomScratchSingle != ingredientType &&
       IngredientType.randomScratchMulti != ingredientType;
+
+  _getGiftBoxTimer(GiftboxType type) {
+    final coinBoxTimer = kReleaseMode ? remoteConfig.randomBoxTimer + 600 : 30;
+    final giftBoxTimer = kReleaseMode ? remoteConfig.randomBoxTimer : 60;
+    return type == GiftboxType.coin ? coinBoxTimer : giftBoxTimer;
+  }
 }

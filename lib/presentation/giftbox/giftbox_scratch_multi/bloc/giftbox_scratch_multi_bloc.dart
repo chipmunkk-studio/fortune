@@ -28,7 +28,7 @@ class GiftboxScratchMultiBloc extends Bloc<GiftboxScratchMultiEvent, GiftboxScra
     // 선택된 마커가 아닌 것들만 뽑아서 만듬.
     final randomScratchersItems = event.randomScratchIngredients
         .where(
-          (element) => element.exposureName != event.randomScratchSelected.ingredient.exposureName,
+          (element) => element.id != event.randomScratchSelected.ingredient.id,
         )
         .toList();
     Map<String, int> nonWinnerGrid = {};
