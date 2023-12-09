@@ -28,7 +28,7 @@ class ViewPostPage extends StatelessWidget {
               ),
               Text(
                 "헬로우",
-                style: FortuneTextStyle.body1Light(),
+                style: FortuneTextStyle.body1Regular(),
               ),
             ],
           ),

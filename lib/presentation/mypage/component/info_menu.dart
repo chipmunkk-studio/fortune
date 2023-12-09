@@ -34,7 +34,7 @@ class InfoMenu extends StatelessWidget {
             children: [
               icon,
               const SizedBox(width: 12),
-              Text(title, style: FortuneTextStyle.body1Light()),
+              Text(title, style: FortuneTextStyle.body1Regular()),
               if (hasNew) ...[
                 const SizedBox(width: 12),
                 Container(

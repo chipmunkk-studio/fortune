@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:dotlottie_loader/dotlottie_loader.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,7 +12,7 @@ import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:lottie/lottie.dart';
 
 class RandomBoxWidget extends StatefulWidget {
-  final int randomBoxTimerSecond;
+  final int timerSeccond;
   final bool isOpenable;
   final MainBloc mainBloc;
 
@@ -24,7 +21,7 @@ class RandomBoxWidget extends StatefulWidget {
   const RandomBoxWidget(
     this.mainBloc, {
     super.key,
-    required this.randomBoxTimerSecond,
+    required this.timerSeccond,
     required this.isOpenable,
     required this.type,
   });
@@ -68,12 +65,13 @@ class _RandomBoxWidgetState extends State<RandomBoxWidget> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16.r),
-                        color: widget.isOpenable
-                            ? ColorName.secondary.withOpacity(0.7)
-                            : ColorName.primary.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(16.r),
+                      color: widget.isOpenable
+                          ? ColorName.secondary.withOpacity(widget.type == GiftboxType.random ? 0.7 : 0.8)
+                          : ColorName.primary.withOpacity(0.5),
+                    ),
                     child: Text(
-                      widget.isOpenable ? FortuneTr.msgOpenGiftBox : _formatSeconds(widget.randomBoxTimerSecond),
+                      widget.isOpenable ? FortuneTr.msgOpenGiftBox : _formatSeconds(widget.timerSeccond),
                       style: FortuneTextStyle.caption3Semibold(
                         color: ColorName.white,
                       ),

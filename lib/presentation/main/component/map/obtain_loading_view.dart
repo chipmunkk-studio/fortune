@@ -37,7 +37,7 @@ class ObtainLoadingView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       FortuneTr.msgCollectingMarker(processingMarker?.ingredient.exposureName ?? ''),
-                      style: FortuneTextStyle.body3Light(),
+                      style: FortuneTextStyle.body3Regular(),
                       textAlign: TextAlign.center,
                     ),
                   ],

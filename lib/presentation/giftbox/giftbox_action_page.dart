@@ -71,7 +71,6 @@ class _GiftboxActionPageState extends State<_GiftboxActionPage> {
         buildWhen: (previous, current) =>
             previous.isLoading != current.isLoading || previous.isReadyToAd != current.isReadyToAd,
         builder: (context, state) {
-          final currentGiftbox = state.entity.ingredient;
           final isReadyToAd = state.isReadyToAd;
           return isReadyToAd
               ? CustomerAdView(
@@ -98,6 +97,10 @@ class _GiftboxActionPageState extends State<_GiftboxActionPage> {
           randomNormalIngredients: randomScratchersItems,
           randomNormalSelected: randomScratcherSelected,
           onReceive: (selected) {
+            _mixpanelTracker.trackEvent("기프티_싱글박스_오픈", properties: {
+              'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
+              'type': _bloc.state.entity.giftType.name,
+            });
             _bloc.add(GiftboxActionObtainSuccess(selected.ingredient));
           },
         );
@@ -106,6 +109,10 @@ class _GiftboxActionPageState extends State<_GiftboxActionPage> {
           randomNormalIngredients: randomScratchersItems,
           randomNormalSelected: randomScratcherSelected,
           onReceive: (selected) {
+            _mixpanelTracker.trackEvent("기프티_멀티박스_오픈", properties: {
+              'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
+              'type': _bloc.state.entity.giftType.name,
+            });
             _bloc.add(GiftboxActionObtainSuccess(selected.ingredient));
           },
         );

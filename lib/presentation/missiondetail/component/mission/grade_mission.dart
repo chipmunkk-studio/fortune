@@ -41,7 +41,7 @@ class GradeMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.content,
-                      style: FortuneTextStyle.body1Light(
+                      style: FortuneTextStyle.body1Regular(
                         color: ColorName.grey200,
                         height: 1.3,
                       ),
@@ -81,7 +81,7 @@ class GradeMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.note,
-                      style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+                      style: FortuneTextStyle.body3Regular(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -94,7 +94,7 @@ class GradeMission extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       state.entity.mission.reward.note,
-                      style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+                      style: FortuneTextStyle.body3Regular(color: ColorName.grey200, height: 1.4),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -141,11 +141,11 @@ class GradeMission extends StatelessWidget {
         children: [
           Text(
             FortuneTr.msgMissionEarlyEnd,
-            style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+            style: FortuneTextStyle.body3Regular(color: ColorName.grey200, height: 1.4),
           ),
           Text(
             FortuneTr.msgUnfairParticipation,
-            style: FortuneTextStyle.body3Light(color: ColorName.grey200, height: 1.4),
+            style: FortuneTextStyle.body3Regular(color: ColorName.grey200, height: 1.4),
           ),
         ],
       ),

@@ -115,7 +115,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
                           FortuneTr.nickname,
-                          style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                          style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -138,7 +138,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
                           FortuneTr.email,
-                          style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                          style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -167,7 +167,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                               },
                               child: Text(
                                 FortuneTr.logout,
-                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                                style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -194,7 +194,7 @@ class _NickNamePageState extends State<_NickNamePage> {
                               },
                               child: Text(
                                 FortuneTr.withdrawal,
-                                style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+                                style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
                               ),
                             ),
                           ],

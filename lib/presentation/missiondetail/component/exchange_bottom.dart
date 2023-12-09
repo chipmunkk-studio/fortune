@@ -43,13 +43,13 @@ class ExchangeBottom extends StatelessWidget {
           Text(
             user.email,
             textAlign: TextAlign.center,
-            style: FortuneTextStyle.body3Light(color: ColorName.grey400),
+            style: FortuneTextStyle.body3Regular(color: ColorName.grey400),
           ),
           const SizedBox(height: 16),
           Text(
             FortuneTr.msgRewardRedemptionNotice,
             textAlign: TextAlign.center,
-            style: FortuneTextStyle.body1Light(color: ColorName.grey200, height: 1.5),
+            style: FortuneTextStyle.body1Regular(color: ColorName.grey200, height: 1.5),
           ),
           const SizedBox(height: 40),
           FortuneScaleButton(

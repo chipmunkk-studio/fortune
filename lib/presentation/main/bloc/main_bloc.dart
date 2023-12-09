@@ -108,6 +108,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     on<MainRandomBoxTimerCount>(_giftOrCoinBoxTimerCount);
     on<MainOpenRandomBox>(_openRandomBox);
     on<MainMarkerObtainFromRandomBox>(_markerObtainFromRandomBox);
+    on<MainMarkerObtainFromRandomBoxCancel>(_markerObtainFromRandomBoxCancel);
   }
 
   FutureOr<void> landingPage(MainLandingPage event, Emitter<MainState> emit) async {
@@ -546,6 +547,49 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         );
         break;
       default:
+        break;
+    }
+  }
+
+  FutureOr<void> _markerObtainFromRandomBoxCancel(
+    MainMarkerObtainFromRandomBoxCancel event,
+    Emitter<MainState> emit,
+  ) async {
+    final coinBoxTimer = _getGiftBoxTimer(GiftboxType.coin);
+    final giftBoxTimer = _getGiftBoxTimer(GiftboxType.random);
+    switch (event.type) {
+      case GiftboxType.random:
+        await setRandomBoxRemainTimeUseCase(giftBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              emit(
+                state.copyWith(
+                  giftBoxOpenable: false,
+                  giftBoxTimerSecond: giftBoxTimer,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      case GiftboxType.coin:
+        await setCoinboxRemainTimeUseCase(coinBoxTimer).then(
+          (value) => value.fold(
+            (l) => produceSideEffect(MainError(l)),
+            (r) async {
+              emit(
+                state.copyWith(
+                  coinBoxOpenable: false,
+                  coinBoxTimerSecond: coinBoxTimer,
+                ),
+              );
+            },
+          ),
+        );
+        break;
+      default:
+        break;
     }
   }
 

@@ -456,7 +456,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        randomBoxTimerSecond: state.giftBoxTimerSecond,
+                                        timerSeccond: state.giftBoxTimerSecond,
                                         isOpenable: state.giftBoxOpenable,
                                         type: GiftboxType.random,
                                       );
@@ -493,7 +493,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        randomBoxTimerSecond: state.coinBoxTimerSecond,
+                                        timerSeccond: state.coinBoxTimerSecond,
                                         isOpenable: state.coinBoxOpenable,
                                         type: GiftboxType.coin,
                                       );
@@ -854,6 +854,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           type: sideEffect.type,
         ),
       );
+    } else {
+      _bloc.add(MainMarkerObtainFromRandomBoxCancel(sideEffect.type));
     }
   }
 }

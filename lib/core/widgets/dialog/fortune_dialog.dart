@@ -121,7 +121,7 @@ class FortuneDialogService {
                 const SizedBox(height: 20),
                 Text(
                   error.description ?? error.message ?? FortuneTr.msgUnknownError,
-                  style: FortuneTextStyle.body1Light(
+                  style: FortuneTextStyle.body1Regular(
                     color: ColorName.grey200,
                     height: 1.3,
                   ),
@@ -194,7 +194,7 @@ class FortuneDialogService {
                   const SizedBox(height: 12),
                   Text(
                     subTitle,
-                    style: FortuneTextStyle.body1Light(
+                    style: FortuneTextStyle.body1Regular(
                       color: ColorName.grey200,
                       height: 1.3,
                     ),

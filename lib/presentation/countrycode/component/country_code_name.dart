@@ -47,7 +47,7 @@ class CountryCodeName extends StatelessWidget {
                       ? FortuneTextStyle.body1Semibold(
                           color: ColorName.white,
                         )
-                      : FortuneTextStyle.body1Light(
+                      : FortuneTextStyle.body1Regular(
                           color: ColorName.grey600,
                         ),
                 ),

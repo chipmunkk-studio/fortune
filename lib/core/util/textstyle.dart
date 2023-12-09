@@ -43,6 +43,7 @@ abstract class FortuneTextStyle {
       color: fontColor ?? ColorName.white,
     );
   }
+
   static TextStyle subTitle1Bold({Color? fontColor}) {
     return TextStyle(
       fontSize: 22.spMin,
@@ -97,7 +98,7 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body1Light({
+  static TextStyle body1Regular({
     Color? color,
     double height = 1.0,
   }) {
@@ -106,7 +107,7 @@ abstract class FortuneTextStyle {
       height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
-      fontFamily: FontFamily.pretendardLight,
+      fontFamily: FontFamily.pretendardRegular,
       color: color ?? ColorName.white,
     );
   }
@@ -125,12 +126,16 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body2Light({Color? color}) {
+  static TextStyle body2Regular({
+    Color? color,
+    double height = 1.0,
+  }) {
     return TextStyle(
       fontSize: 16.spMin,
       letterSpacing: -0.06,
+      height: height,
       fontStyle: FontStyle.normal,
-      fontFamily: FontFamily.pretendardLight,
+      fontFamily: FontFamily.pretendardRegular,
       color: color ?? ColorName.white,
     );
   }
@@ -145,7 +150,7 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle body3Light({
+  static TextStyle body3Regular({
     Color? color,
     double height = 1.0,
   }) {
@@ -154,7 +159,7 @@ abstract class FortuneTextStyle {
       height: height,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
-      fontFamily: FontFamily.pretendardLight,
+      fontFamily: FontFamily.pretendardRegular,
       color: color ?? ColorName.white,
     );
   }

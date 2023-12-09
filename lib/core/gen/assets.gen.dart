@@ -292,6 +292,14 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/customer_ad.webp
+  AssetGenImage get customerAd =>
+      const AssetGenImage('assets/images/customer_ad.webp');
+
+  /// File path: assets/images/customer_ad_ci.svg
+  SvgGenImage get customerAdCi =>
+      const SvgGenImage('assets/images/customer_ad_ci.svg');
+
   /// File path: assets/images/ic_launcher.png
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/images/ic_launcher.png');
@@ -304,15 +312,13 @@ class $AssetsImagesGen {
       const $AssetsImagesOnboardingGen();
   $AssetsImagesRandomGen get random => const $AssetsImagesRandomGen();
 
-  /// File path: assets/images/scratch.png
-  AssetGenImage get scratch => const AssetGenImage('assets/images/scratch.png');
-
   /// File path: assets/images/web_main.png
   AssetGenImage get webMain =>
       const AssetGenImage('assets/images/web_main.png');
 
   /// List of all assets
-  List<dynamic> get values => [icLauncher, ivDefaultProfile, scratch, webMain];
+  List<dynamic> get values =>
+      [customerAd, customerAdCi, icLauncher, ivDefaultProfile, webMain];
 }
 
 class $AssetsLottieGen {

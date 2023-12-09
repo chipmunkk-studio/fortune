@@ -154,3 +154,11 @@ class MainMarkerObtainFromRandomBox extends MainEvent {
   @override
   List<Object?> get props => [];
 }
+
+class MainMarkerObtainFromRandomBoxCancel extends MainEvent {
+  final GiftboxType type;
+  MainMarkerObtainFromRandomBoxCancel(this.type);
+
+  @override
+  List<Object?> get props => [];
+}

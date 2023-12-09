@@ -46,7 +46,7 @@ class _GiftboxScratchSingleBoxState extends State<GiftboxScratchSingleBox> {
       image: widget.coverImage,
       color: Colors.transparent,
       brushSize: 48,
-      threshold: 50,
+      threshold: 40,
       onThreshold: () {
         widget.onScratch?.call();
         setState(() {

@@ -105,7 +105,7 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
                         Expanded(
                           child: Text(
                             item.title,
-                            style: FortuneTextStyle.body1Light(
+                            style: FortuneTextStyle.body1Regular(
                               color: ColorName.grey200,
                             ),
                           ),

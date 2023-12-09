@@ -6,6 +6,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
@@ -132,6 +133,7 @@ class _GiftboxScratchMultiViewState extends State<_GiftboxScratchMultiView> with
                   ingredient,
                   width: 84,
                   height: 84,
+                  imageShape: ImageShape.none,
                 ),
               );
             }
@@ -162,7 +164,7 @@ class _GiftboxScratchMultiViewState extends State<_GiftboxScratchMultiView> with
                       const SizedBox(height: 16),
                       Text(
                         FortuneTr.msgWhatHappensThreeMatches,
-                        style: FortuneTextStyle.body1Light(
+                        style: FortuneTextStyle.body1Regular(
                           color: ColorName.grey200,
                           height: 1.3,
                         ),
