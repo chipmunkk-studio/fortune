@@ -42,7 +42,7 @@ class MissionGradeCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       item.mission.content,
-                      style: FortuneTextStyle.body2Light(
+                      style: FortuneTextStyle.body2Regular(
                         color: ColorName.grey200,
                       ),
                     ),

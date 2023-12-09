@@ -36,13 +36,13 @@ import 'package:fortune/domain/supabase/repository/obtain_history_repository.dar
 import 'package:fortune/domain/supabase/repository/support_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/usecase/check_verify_sms_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_coinbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/get_coinbox_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_faqs_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_my_ingredients_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_notices_usecase.dart';
 import 'package:fortune/domain/supabase/usecase/get_obtain_histories_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_privacy_policy_usecase.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_remain_time_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/get_random_box_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_by_index_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/get_terms_use_case.dart';
@@ -56,8 +56,8 @@ import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_remain_time_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/set_random_box_stop_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_coinbox_remain_time_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/set_coinbox_stop_time_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/set_show_ad_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
@@ -114,6 +114,8 @@ import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_app_update.dart';
 import 'domain/supabase/usecase/get_country_info_use_case.dart';
+import 'domain/supabase/usecase/get_giftbox_remain_time_use_case.dart';
+import 'domain/supabase/usecase/get_giftbox_stop_time_use_case.dart';
 import 'domain/supabase/usecase/get_ingredients_by_type_use_case.dart';
 import 'domain/supabase/usecase/get_mission_clear_conditions_use_case.dart';
 import 'domain/supabase/usecase/get_mission_detail_use_case.dart';
@@ -121,6 +123,8 @@ import 'domain/supabase/usecase/get_missions_use_case.dart';
 import 'domain/supabase/usecase/my_missions_use_case.dart';
 import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
+import 'domain/supabase/usecase/set_giftbox_remain_time_use_case.dart';
+import 'domain/supabase/usecase/set_giftbox_stop_time_use_case.dart';
 import 'env.dart';
 import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
 import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
@@ -459,23 +463,43 @@ _initUseCase() async {
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<SetRandomBoxRemainTimeUseCase>(
-      () => SetRandomBoxRemainTimeUseCase(
+    ..registerLazySingleton<SetGiftboxRemainTimeUseCase>(
+      () => SetGiftboxRemainTimeUseCase(
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetRandomBoxRemainTimeUseCase>(
-      () => GetRandomBoxRemainTimeUseCase(
+    ..registerLazySingleton<GetGiftboxRemainTimeUseCase>(
+      () => GetGiftboxRemainTimeUseCase(
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<SetRandomBoxStopTimeUseCase>(
-      () => SetRandomBoxStopTimeUseCase(
+    ..registerLazySingleton<SetGiftboxStopTimeUseCase>(
+      () => SetGiftboxStopTimeUseCase(
         repository: serviceLocator(),
       ),
     )
-    ..registerLazySingleton<GetRandomBoxStopTimeUseCase>(
-      () => GetRandomBoxStopTimeUseCase(
+    ..registerLazySingleton<GetGiftboxStopTimeUseCase>(
+      () => GetGiftboxStopTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<SetCoinboxRemainTimeUseCase>(
+      () => SetCoinboxRemainTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetCoinboxRemainTimeUseCase>(
+      () => GetCoinboxRemainTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<SetCoinboxStopTimeUseCase>(
+      () => SetCoinboxStopTimeUseCase(
+        repository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<GetCoinboxStopTimeUseCase>(
+      () => GetCoinboxStopTimeUseCase(
         repository: serviceLocator(),
       ),
     )
@@ -699,6 +723,10 @@ _initAppBloc() {
         setRandomBoxStopTimeUseCase: serviceLocator(),
         getRandomBoxRemainTimeUseCase: serviceLocator(),
         getRandomBoxStopTimeUseCase: serviceLocator(),
+        setCoinboxRemainTimeUseCase: serviceLocator(),
+        setCoinboxStopTimeUseCase: serviceLocator(),
+        getCoinboxRemainTimeUseCase: serviceLocator(),
+        getCoinboxStopTimeUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -7,10 +7,10 @@ class LinearBounceAnimation extends StatefulWidget {
   final int duration;
 
   const LinearBounceAnimation({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = 2000,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _LinearBounceAnimationState();

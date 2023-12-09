@@ -106,7 +106,7 @@ class _WebAgreeTermsBottomSheetState extends State<_WebAgreeTermsBottomSheet> {
                         Expanded(
                           child: Text(
                             item.title,
-                            style: FortuneTextStyle.body1Light(
+                            style: FortuneTextStyle.body1Regular(
                               color: ColorName.grey200,
                             ),
                           ),

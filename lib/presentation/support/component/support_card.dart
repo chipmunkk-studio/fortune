@@ -56,7 +56,7 @@ class _SupportCardState extends State<SupportCard> {
               const SizedBox(height: 8),
               Text(
                 widget.date,
-                style: FortuneTextStyle.body2Light(color: ColorName.grey200),
+                style: FortuneTextStyle.body2Regular(color: ColorName.grey200),
               ),
             ],
             const SizedBox(height: 16),
@@ -86,7 +86,7 @@ class _SupportCardState extends State<SupportCard> {
             ),
             child: Text(
               widget.content,
-              style: FortuneTextStyle.body3Light(
+              style: FortuneTextStyle.body3Regular(
                 color: ColorName.grey100,
                 height: 1.5,
               ),

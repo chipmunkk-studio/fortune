@@ -86,7 +86,7 @@ class MyIngredientList extends StatelessWidget {
               Text(
                 FortuneTr.msgNoMarkers,
                 textAlign: TextAlign.center,
-                style: FortuneTextStyle.body1Light(
+                style: FortuneTextStyle.body1Regular(
                   height: 1.4,
                   color: ColorName.white.withOpacity(
                     0.5,

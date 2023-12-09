@@ -27,12 +27,14 @@ class MainState with _$MainState {
     required String locationName,
     required bool isLoading,
     required double clickableRadiusLength,
-    required int randomBoxTimerSecond,
+    required int giftBoxTimerSecond,
+    required bool giftBoxOpenable,
+    required int coinBoxTimerSecond,
+    required bool coinBoxOpenable,
     required double zoomThreshold,
     required double turns,
     required double prevHeadings,
     required bool isShowTestLocation,
-    required bool randomBoxOpenable,
   }) = _MainState;
 
   // 60/18, 120/17, 240/16, 480/15(2.4,-0.01), 960/14(2.4,-0.005)
@@ -54,8 +56,10 @@ class MainState with _$MainState {
         prevHeadings: 0,
         isShowTestLocation: false,
         clickableRadiusLength: 60,
-        randomBoxTimerSecond: 0,
-        randomBoxOpenable: false,
+        giftBoxTimerSecond: 0,
+        giftBoxOpenable: false,
+        coinBoxTimerSecond: 0,
+        coinBoxOpenable: false,
         zoomThreshold: 18,
       );
 }

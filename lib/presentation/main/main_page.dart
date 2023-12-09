@@ -92,6 +92,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   int _rewardedAdRetryAttempt = 1;
 
   Timer? _giftBoxTimer;
+  Timer? _coinBoxTimer;
 
   @override
   void initState() {
@@ -353,24 +354,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                     ),
                   ),
                 ),
-                if (!kReleaseMode)
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    child: Bounceable(
-                      onTap: _onCommunityClick,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ColorName.secondary,
-                          borderRadius: BorderRadius.circular(50.r),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Assets.icons.icGift.svg(),
-                        ),
-                      ),
-                    ),
-                  ),
                 AddToCartAnimation(
                   cartKey: _cartKey,
                   opacity: 0.85,
@@ -447,34 +430,72 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         BlocConsumer<MainBloc, MainState>(
                           listenWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
-                              previous.randomBoxTimerSecond != current.randomBoxTimerSecond,
+                              previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
                           listener: (context, state) {
                             _giftBoxTimer?.cancel();
-                            if (!state.randomBoxOpenable) {
+                            if (!state.giftBoxOpenable) {
                               _giftBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-                                final newSeconds = state.randomBoxTimerSecond - 1;
+                                final newSeconds = state.giftBoxTimerSecond - 1;
                                 if (newSeconds <= 0) {
                                   _giftBoxTimer?.cancel();
                                 }
-                                _bloc.add(MainRandomBoxTimerCount(newSeconds));
+                                _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.random));
                               });
                             }
                           },
                           buildWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
-                              previous.randomBoxTimerSecond != current.randomBoxTimerSecond,
+                              previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
                           builder: (context, state) {
                             return BlocBuilder<MainBloc, MainState>(
                               buildWhen: (previous, current) =>
-                                  previous.randomBoxTimerSecond != current.randomBoxTimerSecond ||
+                                  previous.giftBoxTimerSecond != current.giftBoxTimerSecond ||
                                   previous.isLoading != current.isLoading,
                               builder: (context, state) {
                                 return state.isLoading
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        randomBoxTimerSecond: state.randomBoxTimerSecond,
-                                        isOpenable: state.randomBoxOpenable,
+                                        timerSeccond: state.giftBoxTimerSecond,
+                                        isOpenable: state.giftBoxOpenable,
+                                        type: GiftboxType.random,
+                                      );
+                              },
+                            );
+                          },
+                        ),
+                        BlocConsumer<MainBloc, MainState>(
+                          listenWhen: (previous, current) =>
+                              previous.isLoading != current.isLoading ||
+                              previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
+                          listener: (context, state) {
+                            _coinBoxTimer?.cancel();
+                            if (!state.coinBoxOpenable) {
+                              _coinBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+                                final newSeconds = state.coinBoxTimerSecond - 1;
+                                if (newSeconds <= 0) {
+                                  _coinBoxTimer?.cancel();
+                                }
+                                _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.coin));
+                              });
+                            }
+                          },
+                          buildWhen: (previous, current) =>
+                              previous.isLoading != current.isLoading ||
+                              previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
+                          builder: (context, state) {
+                            return BlocBuilder<MainBloc, MainState>(
+                              buildWhen: (previous, current) =>
+                                  previous.coinBoxTimerSecond != current.coinBoxTimerSecond ||
+                                  previous.isLoading != current.isLoading,
+                              builder: (context, state) {
+                                return state.isLoading
+                                    ? const SizedBox.shrink()
+                                    : RandomBoxWidget(
+                                        _bloc,
+                                        timerSeccond: state.coinBoxTimerSecond,
+                                        isOpenable: state.coinBoxOpenable,
+                                        type: GiftboxType.coin,
                                       );
                               },
                             );
@@ -810,24 +831,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _locationChangeSubscription = await listenLocationChange();
   }
 
-  _onCommunityClick() {
-    _router.navigateTo(
-      context,
-      AppRoutes.writePostRoutes,
-    );
-    // _router.navigateTo(
-    //   context,
-    //   AppRoutes.fortuneWebViewRoutes,
-    //   routeSettings: RouteSettings(
-    //     arguments: FortuneWebViewArgs(
-    //       url: FortuneWebExtension.makeWebUrl(
-    //         queryParams: {'source': 'app'},
-    //       ),
-    //     ),
-    //   ),
-    // );
-  }
-
   void _openRandomBox(MainNavigateOpenRandomBox sideEffect) async {
     final markerData = sideEffect.data;
     final GiftboxActionResponse? actionResponse = await _router.navigateTo(
@@ -848,8 +851,11 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
           markerData.copyWith(
             ingredient: actionResponse.ingredient,
           ),
+          type: sideEffect.type,
         ),
       );
+    } else {
+      _bloc.add(MainMarkerObtainFromRandomBoxCancel(sideEffect.type));
     }
   }
 }

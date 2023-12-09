@@ -69,7 +69,7 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                       errorText: FortuneValidator.isValidVerifyCode(widget._verifyCode) || widget._verifyCode.isEmpty
                           ? null
                           : FortuneTr.msgRequireVerifySixNumberContent,
-                      errorStyle: FortuneTextStyle.body3Light(color: ColorName.negative),
+                      errorStyle: FortuneTextStyle.body3Regular(color: ColorName.negative),
                     ),
                   );
                 },
@@ -107,7 +107,7 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                                   "${min.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}";
                               return Text(
                                 state.verifyTime != 180 ? displayTime : '',
-                                style: FortuneTextStyle.body2Light(
+                                style: FortuneTextStyle.body2Regular(
                                   color: ColorName.grey200,
                                 ),
                               );

@@ -22,7 +22,7 @@ fortuneToastContent({
           const SizedBox(width: 12.0),
           Text(
             content,
-            style: FortuneTextStyle.body3Light(color: ColorName.grey900),
+            style: FortuneTextStyle.body3Regular(color: ColorName.grey900),
           ),
           const SizedBox(width: 12.0),
         ],

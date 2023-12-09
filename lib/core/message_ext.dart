@@ -37,6 +37,8 @@ abstract class FortuneTr {
 
   static String msgItemCount(String count) => tr('msgItemCount', args: [count]);
 
+  static String msgButtonActivationCountdown(int count) => tr('msgButtonActivationCountdown', args: [count.toString()]);
+
   static String msgAcquireMarker(
     String nickname,
     String location,
@@ -63,10 +65,12 @@ abstract class FortuneTr {
   static final msgUpdateMessage = tr('msgUpdateMessage');
   static final msgGiftBox = tr('msgGiftBox');
   static final msgOpenGiftBox = tr('msgOpenGiftBox');
+  static final msgRequireMoreTime = tr('msgRequireMoreTime');
 
   static final msgTryScratching = tr('msgTryScratching');
   static final msgGuaranteedMarkerReward = tr('msgGuaranteedMarkerReward');
   static final msgGreenFourLeafClover = tr('msgGreenFourLeafClover');
+  static final msgScratchToReveal = tr('msgScratchToReveal');
 
   static final msgWelcome = tr('msgWelcome');
   static final msgFortuneCookieReward = tr('msgFortuneCookieReward');

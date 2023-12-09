@@ -47,7 +47,7 @@ class _MissionsTopContentsState extends State<_MissionsTopContents> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
             FortuneTr.msgMissionReward,
-            style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+            style: FortuneTextStyle.body1Regular(color: ColorName.grey200),
           ),
         ),
         const SizedBox(height: 20),

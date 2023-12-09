@@ -3,18 +3,18 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/domain/local/local_respository.dart';
 
-class GetRandomBoxRemainTimeUseCase implements UseCase0<int> {
+class SetGiftboxRemainTimeUseCase implements UseCase1<void, int> {
   final LocalRepository repository;
 
-  GetRandomBoxRemainTimeUseCase({
+  SetGiftboxRemainTimeUseCase({
     required this.repository,
   });
 
   @override
-  Future<FortuneResult<int>> call() async {
+  Future<FortuneResult<void>> call(int time) async {
     try {
-      final time = await repository.getRandomBoxRemainTime();
-      return Right(time);
+      final result = await repository.setGiftboxRemainTime(time);
+      return Right(result);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

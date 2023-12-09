@@ -100,7 +100,7 @@ class _MyMissionsPageState extends State<_MyMissionsPage> {
       child: Center(
         child: Text(
           FortuneTr.msgNoCompletedMissions,
-          style: FortuneTextStyle.body1Light(color: ColorName.grey200),
+          style: FortuneTextStyle.body1Regular(color: ColorName.grey200),
         ),
       ),
     );
