@@ -26,16 +26,3 @@ class GiftboxProcessObtainAction extends GiftboxActionSideEffect {
   @override
   List<Object?> get props => [];
 }
-
-class GiftboxProcessShowAdAction extends GiftboxActionSideEffect {
-  final GiftboxActionParam param;
-  final bool adMobStatus;
-
-  GiftboxProcessShowAdAction(
-    this.param,
-    this.adMobStatus,
-  );
-
-  @override
-  List<Object?> get props => [];
-}

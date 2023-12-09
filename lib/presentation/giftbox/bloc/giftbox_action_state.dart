@@ -11,20 +11,20 @@ class GiftboxActionState with _$GiftboxActionState {
     required List<IngredientEntity> randomScratchersItems,
     required GiftboxActionParam randomScratcherSelected,
     required bool isLoading,
-    required bool adMobStatus,
+    required bool isReadyToAd,
   }) = _GiftboxActionState;
 
   factory GiftboxActionState.initial([
     GiftboxActionParam? param,
     GiftboxActionParam? randomNormalSelected,
-    bool? adMobStatus,
+    bool? isReadyToAd,
     bool? isLoading,
   ]) =>
       GiftboxActionState(
         entity: param ?? GiftboxActionParam.initial(),
         randomScratcherSelected: randomNormalSelected ?? GiftboxActionParam.initial(),
         randomScratchersItems: List.empty(),
-        adMobStatus: adMobStatus ?? true,
+        isReadyToAd: isReadyToAd ?? false,
         isLoading: isLoading ?? true,
       );
 }

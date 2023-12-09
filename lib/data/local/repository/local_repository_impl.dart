@@ -83,9 +83,9 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<int> getRandomBoxRemainTime() async {
+  Future<int> getGiftboxRemainTime() async {
     try {
-      final result = await localDataSource.getRandomBoxRemainTime();
+      final result = await localDataSource.getGiftBoxRemainTime();
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -95,9 +95,9 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<void> setRandomStopTime(int time) async {
+  Future<void> setGiftboxStopTime(int time) async {
     try {
-      final result = await localDataSource.setRandomBoxStopTime(time);
+      final result = await localDataSource.setGiftBoxStopTime(time);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -107,9 +107,9 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<void> setRandomRemainTime(int time) async {
+  Future<void> setGiftboxRemainTime(int time) async {
     try {
-      final result = await localDataSource.setRandomBoxRemainTime(time);
+      final result = await localDataSource.setGiftBoxRemainTime(time);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(
@@ -119,9 +119,57 @@ class LocalRepositoryImpl extends LocalRepository {
   }
 
   @override
-  Future<int> getRandomBoxStopTime() async {
+  Future<int> getGiftboxStopTime() async {
     try {
-      final result = await localDataSource.getRandomBoxStopTime();
+      final result = await localDataSource.getGiftBoxStopTime();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<int> getCoinboxRemainTime() async {
+    try {
+      final result = await localDataSource.getCoinBoxRemainTime();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<int> getCoinboxStopTime() async {
+    try {
+      final result = await localDataSource.getCoinBoxStopTime();
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<void> setCoinboxRemainTime(int time) async {
+    try {
+      final result = await localDataSource.setCoinBoxRemainTime(time);
+      return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure(
+        description: '${e.description}',
+      );
+    }
+  }
+
+  @override
+  Future<void> setCoinboxStopTime(int time) async {
+    try {
+      final result = await localDataSource.setCoinBoxStopTime(time);
       return result;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure(

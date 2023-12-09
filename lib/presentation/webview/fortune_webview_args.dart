@@ -8,3 +8,14 @@ class FortuneWebViewArgs {
     this.url = kReleaseMode ? FortuneWebExtension.webMainUrl : FortuneWebExtension.webMainDebugUrl,
   });
 }
+// _router.navigateTo(
+//   context,
+//   AppRoutes.fortuneWebViewRoutes,
+//   routeSettings: RouteSettings(
+//     arguments: FortuneWebViewArgs(
+//       url: FortuneWebExtension.makeWebUrl(
+//         queryParams: {'source': 'app'},
+//       ),
+//     ),
+//   ),
+// );

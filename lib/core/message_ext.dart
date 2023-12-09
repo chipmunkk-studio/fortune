@@ -63,6 +63,7 @@ abstract class FortuneTr {
   static final msgUpdateMessage = tr('msgUpdateMessage');
   static final msgGiftBox = tr('msgGiftBox');
   static final msgOpenGiftBox = tr('msgOpenGiftBox');
+  static final msgRequireMoreTime = tr('msgRequireMoreTime');
 
   static final msgTryScratching = tr('msgTryScratching');
   static final msgGuaranteedMarkerReward = tr('msgGuaranteedMarkerReward');

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
@@ -49,17 +51,21 @@ class ReduceCoinUseCase implements UseCase1<FortuneUserEntity, IngredientEntity>
         throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));
       }
 
-      int updatedTicket = currentUser.ticket;
+      int updatedTicket = currentUser.ticket + ingredient.rewardTicket;
       int markerObtainCount = currentUser.markerObtainCount;
 
-      // 티켓 및 획득 카운트 업데이트.
-      updatedTicket = currentUser.ticket + ingredient.rewardTicket;
-      markerObtainCount = ingredient.type != IngredientType.coin ? markerObtainCount + 1 : markerObtainCount;
+      // 획득 카운트 업데이트 (코인 타입이 아닌 경우)
+      if (ingredient.type != IngredientType.coin) {
+        markerObtainCount += 1;
+      }
 
-      /// 다음 유저 상태 > 사용자 티켓 정보 업데이트.
+      // 티켓 수는 음수가 될 수 없음
+      updatedTicket = max(0, updatedTicket);
+
+      // 사용자 티켓 정보 업데이트
       final updateUser = await userRepository.updateUserTicket(
         currentUser.email,
-        ticket: updatedTicket < 0 ? 0 : updatedTicket,
+        ticket: updatedTicket,
         markerObtainCount: markerObtainCount,
       );
 

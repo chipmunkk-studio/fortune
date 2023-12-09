@@ -22,7 +22,7 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
     required this.env,
   }) : super(GiftboxActionState.initial()) {
     on<GiftboxActionInit>(init);
-    on<GiftboxActionShowAdCounting>(showAdProcess);
+    on<GiftboxActionCloseAd>(closeAd);
     on<GiftboxActionObtainSuccess>(
       obtainSuccess,
       transformer: throttle(
@@ -32,7 +32,6 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
   }
 
   FutureOr<void> init(GiftboxActionInit event, Emitter<GiftboxActionState> emit) async {
-    emit(state.copyWith(adMobStatus: env.remoteConfig.admobStatus));
     await _processGiftboxAction(event, emit);
   }
 
@@ -45,24 +44,14 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
       case GiftboxType.random:
         await processRandomIngredient(event.param, emit);
         break;
-      // 코인 일 경우.
+      // 코인 박스 인경우.
       case GiftboxType.coin:
-        await processCoinIngredient(event.param, emit);
+        emit(state.copyWith(isReadyToAd: true));
+        await processMultiCoin(event.param, emit);
         break;
       default:
         break;
     }
-  }
-
-  // 코인 일 경우.
-  Future<void> processCoinIngredient(GiftboxActionParam param, Emitter<GiftboxActionState> emit) async {
-    produceSideEffect(GiftboxProcessShowAdAction(param, state.adMobStatus));
-    emit(
-      state.copyWith(
-        entity: param,
-        isLoading: false,
-      ),
-    );
   }
 
   // 랜덤노말 타입 일 경우.
@@ -96,8 +85,6 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
               distance: param.ingredient.distance,
               // 랜덤박스에 있는 티켓 수 복사.
               rewardTicket: param.ingredient.rewardTicket,
-              // 랜덤박스의 타입 그대로 복사.
-              type: param.ingredient.type,
             ),
           );
           emit(
@@ -113,12 +100,50 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
     );
   }
 
-  FutureOr<void> showAdProcess(GiftboxActionShowAdCounting event, Emitter<GiftboxActionState> emit) {
-    produceSideEffect(
-      GiftboxProcessObtainAction(
-        ingredient: state.entity.ingredient,
-      ),
+  Future<void> processMultiCoin(
+    GiftboxActionParam param,
+    Emitter<GiftboxActionState> emit,
+  ) async {
+    /// 노말과 랜덤 스크래치(싱글)만 골라옴.
+    final result = await getIngredientsByTypeUseCase([
+      IngredientType.coin,
+      IngredientType.multiCoin,
+    ]);
+
+    result.fold(
+      (failure) => produceSideEffect(GiftboxActionError(failure)), // 에러 처리 추가
+      (ingredients) {
+        if (ingredients.isNotEmpty) {
+          List<IngredientEntity> randomNormalIngredients = [];
+          for (var ingredient in ingredients) {
+            randomNormalIngredients.add(ingredient);
+            if (ingredient.type == IngredientType.coin) {
+              randomNormalIngredients.addAll(List.generate(20, (index) => ingredient));
+            }
+          }
+          // 일반 코인 타입만 50배로 늘림.
+          final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
+          final nextParam = param.copyWith(
+            ingredient: randomNormalIngredients[randomIndex].copyWith(
+              // 랜덤박스에 있는 거리 그대로 복사.
+              distance: param.ingredient.distance,
+            ),
+          );
+          emit(
+            state.copyWith(
+              entity: param,
+              randomScratcherSelected: nextParam,
+              randomScratchersItems: ingredients,
+              isLoading: false,
+            ),
+          );
+        }
+      },
     );
+  }
+
+  FutureOr<void> closeAd(GiftboxActionCloseAd event, Emitter<GiftboxActionState> emit) {
+    emit(state.copyWith(isReadyToAd: false));
   }
 
   FutureOr<void> obtainSuccess(GiftboxActionObtainSuccess event, Emitter<GiftboxActionState> emit) {

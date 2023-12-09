@@ -122,8 +122,12 @@ class MainMapRotate extends MainEvent {
 
 class MainRandomBoxTimerCount extends MainEvent {
   final int timerCount;
+  final GiftboxType type;
 
-  MainRandomBoxTimerCount(this.timerCount);
+  MainRandomBoxTimerCount(
+    this.timerCount, {
+    required this.type,
+  });
 
   @override
   List<Object?> get props => [];
@@ -140,8 +144,12 @@ class MainOpenRandomBox extends MainEvent {
 
 class MainMarkerObtainFromRandomBox extends MainEvent {
   final MainLocationData data;
+  final GiftboxType type;
 
-  MainMarkerObtainFromRandomBox(this.data);
+  MainMarkerObtainFromRandomBox(
+    this.data, {
+    required this.type,
+  });
 
   @override
   List<Object?> get props => [];

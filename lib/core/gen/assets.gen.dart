@@ -318,14 +318,17 @@ class $AssetsImagesGen {
 class $AssetsLottieGen {
   const $AssetsLottieGen();
 
+  /// File path: assets/lottie/coin_pig.lottie
+  String get coinPig => 'assets/lottie/coin_pig.lottie';
+
+  /// File path: assets/lottie/gift_box.lottie
+  String get giftBox => 'assets/lottie/gift_box.lottie';
+
   /// File path: assets/lottie/loading.lottie
   String get loading => 'assets/lottie/loading.lottie';
 
-  /// File path: assets/lottie/random_marker_box.lottie
-  String get randomMarkerBox => 'assets/lottie/random_marker_box.lottie';
-
   /// List of all assets
-  List<String> get values => [loading, randomMarkerBox];
+  List<String> get values => [coinPig, giftBox, loading];
 }
 
 class $AssetsTranslationsGen {

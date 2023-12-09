@@ -17,10 +17,17 @@ abstract class LocalRepository {
   // 광고 노출 횟수 카운터
   Future<void> setShowAdCounter();
 
-  Future<void> setRandomStopTime(int time);
+  Future<void> setGiftboxStopTime(int time);
 
-  Future<void> setRandomRemainTime(int time);
+  Future<void> setGiftboxRemainTime(int time);
 
-  Future<int> getRandomBoxRemainTime();
-  Future<int> getRandomBoxStopTime();
+  Future<int> getGiftboxRemainTime();
+  Future<int> getGiftboxStopTime();
+
+  Future<void> setCoinboxStopTime(int time);
+
+  Future<void> setCoinboxRemainTime(int time);
+
+  Future<int> getCoinboxRemainTime();
+  Future<int> getCoinboxStopTime();
 }
