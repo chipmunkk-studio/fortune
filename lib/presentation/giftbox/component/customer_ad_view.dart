@@ -116,27 +116,28 @@ class _CustomerAdViewState extends State<CustomerAdView> {
             bottom: 40, // 버튼의 아래쪽 여백 설정
             left: 16, // 버튼의 왼쪽 여백 설정
             right: 16, // 버튼의 오른쪽 여백 설정
-            child: Column(
-              children: [
-                Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        ColorName.grey900.withOpacity(1.0),
-                        ColorName.grey900.withOpacity(0.0),
-                      ],
-                    ),
-                  ),
+            child: FortuneScaleButton(
+              text: buttonText,
+              isEnabled: isButtonEnabled,
+              onPress: widget.onPressed,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 30,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    ColorName.grey900.withOpacity(1.0),
+                    ColorName.grey900.withOpacity(0.0),
+                  ],
                 ),
-                FortuneScaleButton(
-                  text: buttonText,
-                  isEnabled: isButtonEnabled,
-                  onPress: widget.onPressed,
-                ),
-              ],
+              ),
             ),
           ),
         ],
