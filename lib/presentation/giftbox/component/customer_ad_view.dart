@@ -28,7 +28,7 @@ class _CustomerAdViewState extends State<CustomerAdView> {
   String buttonText = FortuneTr.msgButtonActivationCountdown(5);
 
   final String _content = "본 공고에서 궁금하신 점이나 광고 요청은\n"
-      "chipmunkk.studio@gmailcom으로 연락주세요.\n"
+      "chipmunkk.studio@gmail.com으로 연락주세요.\n"
       "광고에 필요한 디자인은 포춘레이더가\n"
       "추가 비용 없이 무료로 만들어드립니다.";
 
