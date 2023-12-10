@@ -117,9 +117,6 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
           List<IngredientEntity> randomNormalIngredients = [];
           for (var ingredient in ingredients) {
             randomNormalIngredients.add(ingredient);
-            if (ingredient.type == IngredientType.coin) {
-              randomNormalIngredients.addAll(List.generate(20, (index) => ingredient));
-            }
           }
           // 일반 코인 타입만 50배로 늘림.
           final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
