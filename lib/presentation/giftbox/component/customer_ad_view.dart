@@ -68,7 +68,7 @@ class _CustomerAdViewState extends State<CustomerAdView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 80),
                   Assets.images.customerAdCi.svg(),
                   const SizedBox(height: 40),
                   Text(
