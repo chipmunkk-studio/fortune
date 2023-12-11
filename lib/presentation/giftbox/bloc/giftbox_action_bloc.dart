@@ -74,7 +74,7 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
           for (var ingredient in ingredients) {
             randomNormalIngredients.add(ingredient);
             if (ingredient.type == IngredientType.normal) {
-              randomNormalIngredients.addAll(List.generate(100, (index) => ingredient));
+              randomNormalIngredients.addAll(List.generate(env.remoteConfig.randomBoxProbability, (index) => ingredient));
             }
           }
           // 노말 타입만 10배로 늘림.

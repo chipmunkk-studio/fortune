@@ -96,7 +96,8 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
                   _mixpanelTracker.trackEvent("랜덤_싱글박스_오픈", properties: {
-                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName
+                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
+                    'randomBoxProbability': _bloc.state.randomScratchersItems.length
                   });
                   _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
@@ -107,7 +108,8 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
                 randomNormalSelected: state.randomScratcherSelected,
                 onReceive: (selected) {
                   _mixpanelTracker.trackEvent("랜덤_멀티박스_오픈", properties: {
-                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName
+                    'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
+                    'randomBoxProbability': _bloc.state.randomScratchersItems.length
                   });
                   _bloc.add(IngredientActionObtainSuccess(selected.ingredient));
                 },
