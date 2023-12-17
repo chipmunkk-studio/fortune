@@ -106,7 +106,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       transformer: sequential(),
     );
     on<MainRandomBoxTimerCount>(_giftOrCoinBoxTimerCount);
-    on<MainOpenRandomBox>(_openRandomBox);
+    on<MainOpenRandomBox>(
+      _openRandomBox,
+      transformer: throttle(const Duration(seconds: 2)),
+    );
     on<MainMarkerObtainFromRandomBox>(_markerObtainFromRandomBox);
     on<MainMarkerObtainFromRandomBoxCancel>(_markerObtainFromRandomBoxCancel);
   }
@@ -505,7 +508,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             (r) async {
               await obtainMarkerDefaultUseCase(event.data.ingredient).then(
                 (value) => value.fold(
-                  (l) => produceSideEffect(MainError(l)),
+                  (l) {
+                    add(MainScreenFreeze(flag: false, data: event.data));
+                    produceSideEffect(MainError(l));
+                  },
                   (r) async {
                     emit(
                       state.copyWith(
@@ -529,7 +535,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
             (r) async {
               await obtainMarkerDefaultUseCase(event.data.ingredient).then(
                 (value) => value.fold(
-                  (l) => produceSideEffect(MainError(l)),
+                  (l) {
+                    add(MainScreenFreeze(flag: false, data: event.data));
+                    produceSideEffect(MainError(l));
+                  },
                   (r) async {
                     emit(
                       state.copyWith(

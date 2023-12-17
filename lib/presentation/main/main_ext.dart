@@ -16,6 +16,7 @@ import 'component/map/main_location_data.dart';
 import 'component/map/main_marker_view.dart';
 
 const LocationAccuracy mapLocationAccuracy = LocationAccuracy.high;
+const  ticketThreshold = 2000;
 
 class MainLandingArgs {
   // 히스토리 검색.

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dartz/dartz.dart';
+import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/usecase.dart';
@@ -11,6 +12,7 @@ import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 
 class ObtainMarkerDefaultUseCase implements UseCase1<FortuneUserEntity, IngredientEntity> {
   final UserRepository userRepository;
@@ -26,6 +28,11 @@ class ObtainMarkerDefaultUseCase implements UseCase1<FortuneUserEntity, Ingredie
     try {
       // 유저 정보 가져오기
       var user = await _getUserByEmail();
+
+      if (user.ticket >= ticketThreshold && param.rewardTicket > 0) {
+        throw CommonFailure(errorMessage: FortuneTr.msgNoHasCoin);
+      }
+
       // 조건에 따른 처리
       if (_isCoinType(param.type)) {
         user = await _updateUserTickets(user, param);
@@ -45,6 +52,7 @@ class ObtainMarkerDefaultUseCase implements UseCase1<FortuneUserEntity, Ingredie
         UserColumn.id,
         UserColumn.email,
         UserColumn.nickname,
+        UserColumn.profileImage,
         UserColumn.ticket,
         UserColumn.markerObtainCount,
       ],

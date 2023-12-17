@@ -28,7 +28,7 @@ class _CustomerAdViewState extends State<CustomerAdView> {
   String buttonText = FortuneTr.msgButtonActivationCountdown(5);
 
   final String _content = "본 공고에서 궁금하신 점이나 광고 요청은\n"
-      "chipmunkk.studio@gmailcom으로 연락주세요.\n"
+      "chipmunkk.studio@gmail.com으로 연락주세요.\n"
       "광고에 필요한 디자인은 포춘레이더가\n"
       "추가 비용 없이 무료로 만들어드립니다.";
 
@@ -68,7 +68,7 @@ class _CustomerAdViewState extends State<CustomerAdView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 80),
                   Assets.images.customerAdCi.svg(),
                   const SizedBox(height: 40),
                   Text(
@@ -116,27 +116,28 @@ class _CustomerAdViewState extends State<CustomerAdView> {
             bottom: 40, // 버튼의 아래쪽 여백 설정
             left: 16, // 버튼의 왼쪽 여백 설정
             right: 16, // 버튼의 오른쪽 여백 설정
-            child: Column(
-              children: [
-                Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        ColorName.grey900.withOpacity(1.0),
-                        ColorName.grey900.withOpacity(0.0),
-                      ],
-                    ),
-                  ),
+            child: FortuneScaleButton(
+              text: buttonText,
+              isEnabled: isButtonEnabled,
+              onPress: widget.onPressed,
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 30,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    ColorName.grey900.withOpacity(1.0),
+                    ColorName.grey900.withOpacity(0.0),
+                  ],
                 ),
-                FortuneScaleButton(
-                  text: buttonText,
-                  isEnabled: isButtonEnabled,
-                  onPress: widget.onPressed,
-                ),
-              ],
+              ),
             ),
           ),
         ],

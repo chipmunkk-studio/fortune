@@ -162,31 +162,38 @@ class _GiftboxScratchSingleViewState extends State<_GiftboxScratchSingleView> wi
                     ),
                   ),
                   const SizedBox(height: 28),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: FortuneTr.msgGreenFourLeafClover,
-                                style: FortuneTextStyle.body2Semibold(color: ColorName.primary),
+                  BlocBuilder<GiftboxScratchSingleBloc, GiftboxScratchSingleState>(
+                    builder: (context, state) {
+                      final giftType = state.randomScratchSelected.giftType;
+                      return giftType == GiftboxType.random
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: FortuneTr.msgGreenFourLeafClover,
+                                          style: FortuneTextStyle.body2Semibold(color: ColorName.primary),
+                                        ),
+                                        TextSpan(
+                                          text: " ${FortuneTr.msgMarkerIs}",
+                                          style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    FortuneTr.msgHiddenInScratch,
+                                    style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                                  ),
+                                ],
                               ),
-                              TextSpan(
-                                text: " ${FortuneTr.msgMarkerIs}",
-                                style: FortuneTextStyle.body2Semibold(color: ColorName.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          FortuneTr.msgHiddenInScratch,
-                          style: FortuneTextStyle.body2Semibold(color: ColorName.white),
-                        ),
-                      ],
-                    ),
+                            )
+                          : const SizedBox.shrink();
+                    },
                   ),
                 ],
               ),

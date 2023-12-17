@@ -100,6 +100,7 @@ class _GiftboxActionPageState extends State<_GiftboxActionPage> {
             _mixpanelTracker.trackEvent("기프티_싱글박스_오픈", properties: {
               'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
               'type': _bloc.state.entity.giftType.name,
+              'randomBoxProbability': _bloc.state.randomScratchersItems.length
             });
             _bloc.add(GiftboxActionObtainSuccess(selected.ingredient));
           },
@@ -112,6 +113,7 @@ class _GiftboxActionPageState extends State<_GiftboxActionPage> {
             _mixpanelTracker.trackEvent("기프티_멀티박스_오픈", properties: {
               'ingredient': _bloc.state.randomScratcherSelected.ingredient.exposureName,
               'type': _bloc.state.entity.giftType.name,
+              'randomBoxProbability': _bloc.state.randomScratchersItems.length
             });
             _bloc.add(GiftboxActionObtainSuccess(selected.ingredient));
           },

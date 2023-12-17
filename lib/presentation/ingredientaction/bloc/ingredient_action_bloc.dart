@@ -118,10 +118,15 @@ class IngredientActionBloc extends Bloc<IngredientActionEvent, IngredientActionS
           for (var ingredient in ingredients) {
             randomNormalIngredients.add(ingredient);
             if (ingredient.type == IngredientType.normal) {
-              randomNormalIngredients.addAll(List.generate(100, (index) => ingredient));
+              randomNormalIngredients.addAll(
+                List.generate(
+                  env.remoteConfig.randomBoxProbability,
+                  (index) => ingredient,
+                ),
+              );
             }
           }
-          // 노말 타입만 10배로 늘림.
+          // 노말 타입만 env.remoteConfig.randomBoxProbability 만큼 배로 늘림.
           final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
           final nextParam = param.copyWith(
             ingredient: randomNormalIngredients[randomIndex].copyWith(
