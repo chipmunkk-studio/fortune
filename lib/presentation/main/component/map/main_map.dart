@@ -1,4 +1,3 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,8 @@ import 'package:fortune/core/widgets/animation/scale_animation.dart';
 import 'package:fortune/core/widgets/fortune_loading_view.dart';
 import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_map_grid_painter.dart';
+import 'package:fortune/core/widgets/painter/fortune_radar_background.dart';
+import 'package:fortune/core/widgets/painter/fortune_radar_painter.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -29,6 +30,7 @@ class MainMap extends StatelessWidget {
   final Position? myLocation;
   final Function0 onZoomChanged;
 
+  final AnimationController centerRotateController;
   static const accessToken = 'accessToken';
   static const mapStyleId = 'mapStyleId';
 
@@ -40,6 +42,7 @@ class MainMap extends StatelessWidget {
     required this.mapController,
     required this.myLocation,
     required this.onZoomChanged,
+    required this.centerRotateController,
   });
 
   @override
@@ -90,32 +93,14 @@ class MainMap extends StatelessWidget {
                       );
                     },
                   ),
-                  IgnorePointer(
-                    child: BlocBuilder<MainBloc, MainState>(
-                      buildWhen: (previous, current) =>
-                          previous.myLocation != current.myLocation ||
-                          previous.clickableRadiusLength != current.clickableRadiusLength,
-                      builder: (context, state) {
-                        return CircleLayer(
-                          circles: <CircleMarker>[
-                            CircleMarker(
-                              point: LatLng(
-                                state.myLocation!.latitude,
-                                state.myLocation!.longitude,
-                              ),
-                              color: _isOpenStreetMap()
-                                  ? ColorName.primary.withOpacity(0.25)
-                                  : ColorName.secondary.withOpacity(0.1),
-                              borderStrokeWidth: 0,
-                              useRadiusInMeter: true,
-                              radius: state.clickableRadiusLength,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
                 ],
+              ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: FortuneRadarBackground(),
+                  ),
+                ),
               ),
               Positioned.fill(
                 child: IgnorePointer(
@@ -136,32 +121,37 @@ class MainMap extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned.fill(
+              Center(
                 child: IgnorePointer(
-                  child: AvatarGlow(
-                    glowColor: _isOpenStreetMap() ? ColorName.primary : ColorName.secondary.withOpacity(0.5),
-                    duration: const Duration(milliseconds: 2000),
-                    repeat: true,
-                    showTwoGlows: true,
-                    repeatPauseDuration: const Duration(seconds: 1),
-                    endRadius: 120,
+                  child: AnimatedBuilder(
+                    animation: centerRotateController,
+                    builder: (BuildContext context, Widget? child) {
+                      return CustomPaint(
+                        painter: FortuneRadarPainter(
+                          rotation: centerRotateController.value * 2 * pi,
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Center(
+                child: IgnorePointer(
+                  child: ScaleAnimation(
                     child: BlocBuilder<MainBloc, MainState>(
                       buildWhen: (previous, current) => previous.user?.profileImage != current.user?.profileImage,
                       builder: (context, state) {
-                        return ScaleAnimation(
-                          child: CenterProfile(
-                            imageUrl: state.user?.profileImage ?? "",
-                            backgroundColor: _isOpenStreetMap()
-                                ? ColorName.primary.withOpacity(0.5)
-                                : ColorName.secondary.withOpacity(1.0),
-                          ),
+                        return CenterProfile(
+                          imageUrl: state.user?.profileImage ?? "",
+                          backgroundColor: _isOpenStreetMap()
+                              ? ColorName.primary.withOpacity(0.5)
+                              : ColorName.secondary.withOpacity(1.0),
                         );
                       },
                     ),
                   ),
                 ),
               ),
-
               // 로딩 뷰.
               Positioned.fill(
                 child: BlocBuilder<MainBloc, MainState>(

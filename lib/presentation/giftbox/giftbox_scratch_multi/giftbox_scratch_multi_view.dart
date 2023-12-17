@@ -202,31 +202,38 @@ class _GiftboxScratchMultiViewState extends State<_GiftboxScratchMultiView> with
                         ),
                       ),
                       const SizedBox(height: 28),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: FortuneTr.msgGoldenFourLeafClover,
-                                    style: FortuneTextStyle.body2Semibold(color: ColorName.primary),
+                      BlocBuilder<GiftboxScratchMultiBloc, GiftboxScratchMultiState>(
+                        builder: (context, state) {
+                          final currentType = state.randomScratchSelected.giftType;
+                          return currentType == GiftboxType.random
+                              ? Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    children: [
+                                      RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: FortuneTr.msgGoldenFourLeafClover,
+                                              style: FortuneTextStyle.body2Semibold(color: ColorName.primary),
+                                            ),
+                                            TextSpan(
+                                              text: ' ${FortuneTr.msgMarkerIs}',
+                                              style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        FortuneTr.msgHiddenInScratch,
+                                        style: FortuneTextStyle.body2Semibold(color: ColorName.white),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: ' ${FortuneTr.msgMarkerIs}',
-                                    style: FortuneTextStyle.body2Semibold(color: ColorName.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              FortuneTr.msgHiddenInScratch,
-                              style: FortuneTextStyle.body2Semibold(color: ColorName.white),
-                            ),
-                          ],
-                        ),
+                                )
+                              : const SizedBox.shrink();
+                        },
                       ),
                       BlocBuilder<GiftboxScratchMultiBloc, GiftboxScratchMultiState>(
                         buildWhen: (previous, current) => previous.isObtaining != current.isObtaining,

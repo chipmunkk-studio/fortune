@@ -35,25 +35,24 @@ class FortuneDialogService {
     _fortuneErrorDialog(
       context,
       error,
-      btnOkOnPress ??
-          () {
-            if (error is AuthFailure) {
-              _isDialogShowing = false;
-              // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
-              if (needToFinish) {
-                _sClient.auth.signOut();
-                router.navigateTo(
-                  context,
-                  "${AppRoutes.loginRoute}/:${LoginUserState.needToLogin}",
-                  clearStack: true,
-                  replace: false,
-                );
-              }
-            } else {
-              _isDialogShowing = false;
-              btnOkOnPress?.call();
-            }
-          },
+      () {
+        if (error is AuthFailure) {
+          _isDialogShowing = false;
+          // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
+          if (needToFinish) {
+            _sClient.auth.signOut();
+            router.navigateTo(
+              context,
+              "${AppRoutes.loginRoute}/:${LoginUserState.needToLogin}",
+              clearStack: true,
+              replace: false,
+            );
+          }
+        } else {
+          _isDialogShowing = false;
+          btnOkOnPress?.call();
+        }
+      },
       needToFinish,
     ).show();
   }
@@ -72,25 +71,24 @@ class FortuneDialogService {
     _fortuneErrorDialog(
       context,
       error,
-      btnOkOnPress ??
-          () {
-            if (error is AuthFailure) {
-              _isDialogShowing = false;
-              // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
-              if (needToFinish) {
-                _sClient.auth.signOut();
-                router.navigateTo(
-                  context,
-                  WebRoutes.loginRoute,
-                  clearStack: true,
-                  replace: false,
-                );
-              }
-            } else {
-              _isDialogShowing = false;
-              btnOkOnPress?.call();
-            }
-          },
+      () {
+        if (error is AuthFailure) {
+          _isDialogShowing = false;
+          // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
+          if (needToFinish) {
+            _sClient.auth.signOut();
+            router.navigateTo(
+              context,
+              WebRoutes.loginRoute,
+              clearStack: true,
+              replace: false,
+            );
+          }
+        } else {
+          _isDialogShowing = false;
+          btnOkOnPress?.call();
+        }
+      },
       needToFinish,
     ).show();
   }

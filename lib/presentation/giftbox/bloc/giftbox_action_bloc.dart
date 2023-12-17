@@ -74,7 +74,8 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
           for (var ingredient in ingredients) {
             randomNormalIngredients.add(ingredient);
             if (ingredient.type == IngredientType.normal) {
-              randomNormalIngredients.addAll(List.generate(100, (index) => ingredient));
+              randomNormalIngredients
+                  .addAll(List.generate(env.remoteConfig.randomBoxProbability, (index) => ingredient));
             }
           }
           // 노말 타입만 10배로 늘림.
@@ -116,9 +117,18 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
         if (ingredients.isNotEmpty) {
           List<IngredientEntity> randomNormalIngredients = [];
           for (var ingredient in ingredients) {
+            if ((ingredient.type == IngredientType.multiCoin && ingredient.rewardTicket == 2) ||
+                ingredient.type == IngredientType.coin) {
+              randomNormalIngredients.addAll(
+                List.generate(
+                  25,
+                  (index) => ingredient,
+                ),
+              );
+            }
             randomNormalIngredients.add(ingredient);
           }
-          // 일반 코인 타입만 50배로 늘림.
+
           final randomIndex = math.Random().nextInt(randomNormalIngredients.length);
           final nextParam = param.copyWith(
             ingredient: randomNormalIngredients[randomIndex].copyWith(
