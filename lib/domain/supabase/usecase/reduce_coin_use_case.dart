@@ -14,6 +14,7 @@ import 'package:fortune/domain/supabase/repository/alarm_feeds_repository.dart';
 import 'package:fortune/domain/supabase/repository/alarm_reward_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
+import 'package:fortune/presentation/main/main_ext.dart';
 
 class ReduceCoinUseCase implements UseCase1<FortuneUserEntity, IngredientEntity> {
   final UserRepository userRepository;
@@ -46,6 +47,10 @@ class ReduceCoinUseCase implements UseCase1<FortuneUserEntity, IngredientEntity>
       // 유저의 티켓이 없고, 리워드 티켓이 감소 일 경우.
       final currentTicket = currentUser.ticket;
       final requiredTicket = ingredient.rewardTicket.abs();
+
+      if (currentTicket >= ticketThreshold && (ingredient.type == IngredientType.coin || ingredient.rewardTicket > 0)) {
+        throw CommonFailure(errorMessage: FortuneTr.msgNoHasCoin);
+      }
 
       if (currentTicket < requiredTicket && ingredient.type != IngredientType.coin) {
         throw CommonFailure(errorMessage: FortuneTr.requireMoreTicket((requiredTicket - currentTicket).toString()));

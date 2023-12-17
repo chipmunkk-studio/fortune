@@ -97,14 +97,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  avatar_glow:
-    dependency: "direct main"
-    description:
-      name: avatar_glow
-      sha256: "3627f6f97d1f10d3c1996ae108d3488eabaf68c0cf0c3eac7e7c746a3812881d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   awesome_dialog:
     dependency: "direct main"
     description:
@@ -613,26 +605,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_messaging
-      sha256: b9b94c7d932d83d36efcf7eb21caf50486a8f330c6f681bb68e7b979d036491e
+      sha256: "199fe8186a5370d1cf5ce0819191079afc305914e8f38715f5e23943940dfe2d"
       url: "https://pub.dev"
     source: hosted
-    version: "14.7.8"
+    version: "14.7.9"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
-      sha256: "200f27b70a6330d1ac3f0fbf5328412ef3b215cd9dbb7dcea1701d1fd705d37a"
+      sha256: "54e283a0e41d81d854636ad0dad73066adc53407a60a7c3189c9656e2f1b6107"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.17"
+    version: "4.5.18"
   firebase_messaging_web:
     dependency: transitive
     description:
       name: firebase_messaging_web
-      sha256: "1c254306714d4d76aea612d81775e8f18c712219f096a7e6abfa234de9fd4bd2"
+      sha256: "90dc7ed885e90a24bb0e56d661d4d2b5f84429697fd2cbb9e5890a0ca370e6f4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.17"
+    version: "3.5.18"
   firebase_remote_config:
     dependency: "direct main"
     description:
@@ -665,6 +657,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  flash:
+    dependency: "direct main"
+    description:
+      name: flash
+      sha256: "1bb5a53158d7834ce0db8b15a0b948ee369698e59c907b751035c3a787f347ac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   fluro:
     dependency: "direct main"
     description:
@@ -682,10 +682,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_animate
-      sha256: "62f346340a96192070e31e3f2a1bd30a28530f1fe8be978821e06cd56b74d6d2"
+      sha256: "1dbc1aabfb8ec1e9d9feed2b675c21fb6b0a11f99be53ec3bc0f1901af6a8eb7"
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.0+1"
+    version: "4.3.0"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -1004,10 +1004,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg_provider
-      sha256: "13d85033c6ae63c8073268f9c5c3c74e5de178224183eaff1d47f08f70c59fcc"
+      sha256: cda47ab350671ba51ae4605d48f4c82fa5a2c399d22ebda367c1b407234c5048
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -1030,10 +1030,10 @@ packages:
     dependency: "direct dev"
     description:
       name: freezed
-      sha256: "21bf2825311de65501d22e563e3d7605dff57fb5e6da982db785ae5372ff018a"
+      sha256: "6c5031daae12c7072b3a87eff98983076434b4889ef2a44384d0cae3f82372ba"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.5"
+    version: "2.4.6"
   freezed_annotation:
     dependency: "direct main"
     description:
@@ -1067,10 +1067,10 @@ packages:
     dependency: transitive
     description:
       name: gal
-      sha256: "571ef8a7ca6a3b0ff0da20a53372ea61c248c00dabe7286e25f4f0b218870d36"
+      sha256: "88f8e87074c7935c49b30910f4afabf1fa9e42a5a1f9b2f6d295c7ef55be29e5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.3"
+    version: "2.2.0"
   geocoding:
     dependency: "direct main"
     description:
@@ -1283,10 +1283,10 @@ packages:
     dependency: "direct main"
     description:
       name: image_picker
-      sha256: "7d7f2768df2a8b0a3cefa5ef4f84636121987d403130e70b17ef7e2cf650ba84"
+      sha256: fc712337719239b0b6e41316aa133350b078fa39b6cbd706b61f3fd421b03c77
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   image_picker_android:
     dependency: transitive
     description:
@@ -2312,10 +2312,10 @@ packages:
     dependency: "direct main"
     description:
       name: url_launcher
-      sha256: b1c9e98774adf8820c96fbc7ae3601231d324a7d5ebd8babe27b6dfac91357ba
+      sha256: e9aa5ea75c84cf46b3db4eea212523591211c3cf2e13099ee4ec147f54201c86
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.1"
+    version: "6.2.2"
   url_launcher_android:
     dependency: transitive
     description:

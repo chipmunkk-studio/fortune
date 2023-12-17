@@ -88,6 +88,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   bool _detectPermission = false;
   final FToast _fToast = FToast();
   final _routeObserver = serviceLocator<RouteObserver<PageRoute>>();
+
+  late AnimationController _centerRotateController;
   DateTime? lastPressed;
   int _rewardedAdRetryAttempt = 1;
 
@@ -106,9 +108,18 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _loadRewardedAd(_remoteConfig.adRequestIntervalTime);
     _initVungleAd();
     _listeningLocationChange();
+    _initAnimationController();
+
   }
 
-  void _initVungleAd() {
+  _initAnimationController() {
+    _centerRotateController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat();
+  }
+
+  _initVungleAd() {
     Vungle.init(VungleAdHelper.appKey);
     Vungle.onInitilizeListener = () {
       Vungle.onAdPlayableListener = (playable, placementId) async {
@@ -129,6 +140,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _locationChangeSubscription.cancel();
     _rotateChangeEvent?.cancel();
     _routeObserver.unsubscribe(this);
+    _centerRotateController.dispose();
     _bloc.close();
   }
 
@@ -324,6 +336,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   mainContext: context,
                   remoteConfigArgs: _remoteConfig,
                   mapController: _mapController,
+                  centerRotateController:_centerRotateController,
                   myLocation: _myLocation,
                   onZoomChanged: () {
                     _animatedMapMove(
@@ -858,4 +871,5 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       _bloc.add(MainMarkerObtainFromRandomBoxCancel(sideEffect.type));
     }
   }
+
 }

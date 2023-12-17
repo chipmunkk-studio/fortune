@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
@@ -67,7 +68,6 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
 
   @override
   void dispose() {
-    _bloc.close();
     super.dispose();
   }
 
@@ -76,7 +76,18 @@ class _IngredientActionPageState extends State<_IngredientActionPage> {
     return BlocSideEffectListener<IngredientActionBloc, IngredientActionSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is IngredientActionError) {
-          dialogService.showAppErrorDialog(context, sideEffect.error);
+          try{
+            dialogService.showAppErrorDialog(
+              context,
+              sideEffect.error,
+              btnOkOnPress: () {
+                _router.pop(context, null);
+              },
+            );
+          } catch (e){
+            FortuneLogger.info(e.toString());
+          }
+
         } else if (sideEffect is IngredientProcessShowAdAction) {
           _adManager.handleAdDisplay(sideEffect);
         } else if (sideEffect is IngredientProcessObtainAction) {

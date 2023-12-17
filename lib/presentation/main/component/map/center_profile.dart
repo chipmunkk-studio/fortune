@@ -15,34 +15,36 @@ class CenterProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      SizedBox(
-        width: 48,
-        height: 53,
-        child: CustomPaint(
-          painter: _CenterProfileBackgroundPainter(backgroundColor),
-        ),
-      ),
-      Positioned(
-        left: 3,
-        right: 3,
-        top: 3,
-        child: FortuneCachedNetworkImage(
-          imageUrl: imageUrl,
-          width: 42,
-          height: 42,
-          placeholder: CustomPaint(
-            painter: SquirclePainter(),
-            child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
+    return Stack(
+      children: [
+        SizedBox(
+          width: 48,
+          height: 53,
+          child: CustomPaint(
+            painter: _CenterProfileBackgroundPainter(backgroundColor),
           ),
-          errorWidget: CustomPaint(
-            painter: SquirclePainter(),
-            child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
-          ),
-          imageShape: ImageShape.squircle,
         ),
-      ),
-    ]);
+        Positioned(
+          left: 3,
+          right: 3,
+          top: 3,
+          child: FortuneCachedNetworkImage(
+            imageUrl: imageUrl,
+            width: 42,
+            height: 42,
+            placeholder: CustomPaint(
+              painter: SquirclePainter(),
+              child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
+            ),
+            errorWidget: CustomPaint(
+              painter: SquirclePainter(),
+              child: Assets.images.ivDefaultProfile.svg(fit: BoxFit.none),
+            ),
+            imageShape: ImageShape.squircle,
+          ),
+        ),
+      ],
+    );
   }
 }
 

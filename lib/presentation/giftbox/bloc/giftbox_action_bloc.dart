@@ -117,10 +117,11 @@ class GiftboxActionBloc extends Bloc<GiftboxActionEvent, GiftboxActionState>
         if (ingredients.isNotEmpty) {
           List<IngredientEntity> randomNormalIngredients = [];
           for (var ingredient in ingredients) {
-            if (ingredient.type == IngredientType.multiCoin && ingredient.rewardTicket == 2) {
+            if ((ingredient.type == IngredientType.multiCoin && ingredient.rewardTicket == 2) ||
+                ingredient.type == IngredientType.coin) {
               randomNormalIngredients.addAll(
                 List.generate(
-                  50,
+                  25,
                   (index) => ingredient,
                 ),
               );

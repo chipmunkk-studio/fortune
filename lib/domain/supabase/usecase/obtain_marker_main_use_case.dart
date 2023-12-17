@@ -48,6 +48,7 @@ class ObtainMarkerMainUseCase implements UseCase1<MarkerObtainEntity, RequestObt
           UserColumn.email,
           UserColumn.level,
           UserColumn.nickname,
+          UserColumn.profileImage,
           UserColumn.ticket,
           UserColumn.markerObtainCount,
         ],

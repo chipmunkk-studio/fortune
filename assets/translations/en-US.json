@@ -19,6 +19,7 @@
   "msgRenewAuthInfo": "Refreshing authentication...",
   "msgNoCompletedMissions": "You haven't completed any missions yet.",
   "msgGoldenFourLeafClover": "Golden Four-Leaf Clover",
+  "msgNoHasCoin": "You can no longer carry coins",
   "msgRequireMoreTime": "\"There's still some time left!",
   "msgButtonActivationCountdown": "{} seconds until activation",
   "msgScratchToReveal": "Scratch to Reveal",
