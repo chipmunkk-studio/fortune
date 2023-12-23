@@ -15,8 +15,8 @@ class FortuneRadarBackground extends CustomPainter {
     final Offset center = Offset(size.width / 2, size.height / 2);
     const double radiusInPixels = 150;
 
-    // 원 그리기
-    for (int i = 1; i <= 5; i++) {
+    // 원 그리기, 가장 안쪽 원을 제외함
+    for (int i = 2; i <= 5; i++) { // i의 시작을 2로 변경
       final double radiusStep = radiusInPixels * (i / 5);
       if (i == 5) {
         strokePaint
