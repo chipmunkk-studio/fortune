@@ -6,27 +6,19 @@ class FortuneRadarBackground extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint strokePaint = Paint()
       ..style = PaintingStyle.stroke
-      ..color = ColorName.primary; // 선 색상 설정
+      ..color = ColorName.primary.withOpacity(0.2); // 선 색상의 투명도를 0.05로 고정
 
     final Paint fillPaint = Paint()
       ..style = PaintingStyle.fill
-      ..color = ColorName.primary.withOpacity(0.05); // 내부 색상의 투명도를 낮춤
+      ..color = ColorName.primary.withOpacity(0.05); // 내부 색상의 투명도도 0.05로 설정
 
     final Offset center = Offset(size.width / 2, size.height / 2);
     const double radiusInPixels = 150;
 
     // 원 그리기, 가장 안쪽 원을 제외함
-    for (int i = 2; i <= 5; i++) { // i의 시작을 2로 변경
+    for (int i = 2; i <= 5; i++) {
       final double radiusStep = radiusInPixels * (i / 5);
-      if (i == 5) {
-        strokePaint
-          ..strokeWidth = 3
-          ..color = ColorName.primary.withOpacity(0.2); // 가장 바깥쪽 원은 두껍고 진하게
-      } else {
-        strokePaint
-          ..strokeWidth = 1
-          ..color = ColorName.primary.withOpacity(0.2); // 나머지 원은 보다 투명하게
-      }
+      strokePaint.strokeWidth = (i == 5) ? 3.5 : 1.5; // 가장 바깥쪽 원은 두껍게, 나머지는 일반적으로
 
       canvas.drawCircle(center, radiusStep, fillPaint);
       canvas.drawCircle(center, radiusStep, strokePaint);
@@ -34,9 +26,7 @@ class FortuneRadarBackground extends CustomPainter {
 
     // 십자선 그리기
     const double lineLength = radiusInPixels * 2;
-    strokePaint
-      ..strokeWidth = 1
-      ..color = ColorName.primary.withOpacity(0.2); // 십자선은 기본 스타일로 설정
+    strokePaint.strokeWidth = 1; // 십자선의 두께 설정
 
     canvas.drawLine(
       Offset(center.dx, center.dy - lineLength / 2),

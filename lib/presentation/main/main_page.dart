@@ -438,6 +438,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           },
                           onCoinTap: _showCoinDialog,
                         ),
+                        const SizedBox(height: 20),
                         BlocConsumer<MainBloc, MainState>(
                           listenWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
@@ -467,7 +468,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        timerSeccond: state.giftBoxTimerSecond,
+                                        timerSecond: state.giftBoxTimerSecond,
                                         isOpenable: state.giftBoxOpenable,
                                         type: GiftboxType.random,
                                       );
@@ -475,6 +476,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                             );
                           },
                         ),
+                        const SizedBox(height: 12),
                         BlocConsumer<MainBloc, MainState>(
                           listenWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
@@ -504,7 +506,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        timerSeccond: state.coinBoxTimerSecond,
+                                        timerSecond: state.coinBoxTimerSecond,
                                         isOpenable: state.coinBoxOpenable,
                                         type: GiftboxType.coin,
                                       );
