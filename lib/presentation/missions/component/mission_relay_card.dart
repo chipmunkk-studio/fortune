@@ -41,8 +41,9 @@ class MissionRelayCard extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: Text(
                         item.mission.content,
-                        style: FortuneTextStyle.body2Semibold(
+                        style: FortuneTextStyle.body2Regular(
                           color: ColorName.grey200,
+                          height: 1.3,
                         ),
                         maxLines: 2,
                       ),

@@ -58,6 +58,7 @@ abstract class FortuneTr {
   static final msgSearchingHistory = tr('msgSearchingHistory');
   static final msgWhatHappensThreeMatches = tr('msgWhatHappensThreeMatches');
   static final msgNoHasCoin = tr('msgNoHasCoin');
+  static final msgCoinPick = tr('msgCoinPick');
   static final msgGoldenFourLeafClover = tr('msgGoldenFourLeafClover');
   static final msgCoinReward = tr('msgCoinReward');
   static final msgUpdateMarkerInfo = tr('msgUpdateMarkerInfo');

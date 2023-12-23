@@ -13,32 +13,28 @@ class FortuneRadarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final centerX = size.width / 2;
     final centerY = size.height / 2;
-    const radius = 130.0; // 아크의 반지름
-    const startAngle = -math.pi / 180 * 145; // 시작 각도
-    const sweepAngle = math.pi / 180 * 37.5; // 스윕 각도
+    const radius = 150.0; // 아크의 반지름
+
+    const startAngle = -math.pi / 2; // 시작 각도를 -90도로 설정
+    const sweepAngle = math.pi / 2; // 스윕 각도를 90도로 설정 (1/4 원)
+
+    final Offset gradientStart = Offset(
+      centerX + radius * math.cos(startAngle + 0.1), // 그라데이션 시작점 조정
+      centerY + radius * math.sin(startAngle + 0.1),
+    );
 
     final paint = Paint()
       ..shader = ui.Gradient.linear(
-        Offset(
-          centerX + radius * math.cos(startAngle),
-          centerY + radius * math.sin(startAngle),
-        ),
-        Offset(
-          centerX + radius * math.cos(startAngle + sweepAngle),
-          centerY + radius * math.sin(startAngle + sweepAngle),
-        ),
+        gradientStart,
+        Offset(centerX + radius, centerY),
         [
-          ColorName.primary.withOpacity(0.0),
-          ColorName.primary.withOpacity(0.02),
-          ColorName.primary.withOpacity(0.3),
-          ColorName.primary.withOpacity(0.8),
+          Colors.transparent, // 시작 부분 완전 투명
+          Colors.transparent, // 시작 부분 완전 투명
+          ColorName.primary.withOpacity(0.1), // 중간 부분 약간 투명한 초록색
+          ColorName.primary.withOpacity(0.4), // 더 진한 초록색
+          ColorName.primary, // 끝 부분 완전 불투명한 초록색
         ],
-        [
-          0.0,
-          0.02,
-          0.3,
-          0.8,
-        ], // colorStopsps
+        [0.0,0.0, 0.3, 0.7, 1.0], // colorStops: 시작, 중간, 끝
       )
       ..style = PaintingStyle.fill;
 

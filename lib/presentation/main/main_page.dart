@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -109,13 +108,12 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     _initVungleAd();
     _listeningLocationChange();
     _initAnimationController();
-
   }
 
   _initAnimationController() {
     _centerRotateController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 7),
     )..repeat();
   }
 
@@ -336,7 +334,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   mainContext: context,
                   remoteConfigArgs: _remoteConfig,
                   mapController: _mapController,
-                  centerRotateController:_centerRotateController,
+                  centerRotateController: _centerRotateController,
                   myLocation: _myLocation,
                   onZoomChanged: () {
                     _animatedMapMove(
@@ -440,6 +438,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           },
                           onCoinTap: _showCoinDialog,
                         ),
+                        const SizedBox(height: 20),
                         BlocConsumer<MainBloc, MainState>(
                           listenWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
@@ -469,7 +468,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        timerSeccond: state.giftBoxTimerSecond,
+                                        timerSecond: state.giftBoxTimerSecond,
                                         isOpenable: state.giftBoxOpenable,
                                         type: GiftboxType.random,
                                       );
@@ -477,6 +476,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                             );
                           },
                         ),
+                        const SizedBox(height: 12),
                         BlocConsumer<MainBloc, MainState>(
                           listenWhen: (previous, current) =>
                               previous.isLoading != current.isLoading ||
@@ -506,7 +506,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                                     ? const SizedBox.shrink()
                                     : RandomBoxWidget(
                                         _bloc,
-                                        timerSeccond: state.coinBoxTimerSecond,
+                                        timerSecond: state.coinBoxTimerSecond,
                                         isOpenable: state.coinBoxOpenable,
                                         type: GiftboxType.coin,
                                       );
@@ -871,5 +871,4 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
       _bloc.add(MainMarkerObtainFromRandomBoxCancel(sideEffect.type));
     }
   }
-
 }

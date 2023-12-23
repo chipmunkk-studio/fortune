@@ -8,6 +8,7 @@
   "silver": "Silver",
   "gold": "Gold",
   "platinum": "Platinum",
+  "msgCoinPick": "Pick Coin",
   "diamond": "Diamond",
   "msgNotExistUser": "User not found.",
   "msgNotExistTerms": "Terms of Service unavailable.",

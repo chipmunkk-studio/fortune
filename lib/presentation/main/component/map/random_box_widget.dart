@@ -12,7 +12,7 @@ import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:lottie/lottie.dart';
 
 class RandomBoxWidget extends StatefulWidget {
-  final int timerSeccond;
+  final int timerSecond;
   final bool isOpenable;
   final MainBloc mainBloc;
 
@@ -21,7 +21,7 @@ class RandomBoxWidget extends StatefulWidget {
   const RandomBoxWidget(
     this.mainBloc, {
     super.key,
-    required this.timerSeccond,
+    required this.timerSecond,
     required this.isOpenable,
     required this.type,
   });
@@ -39,47 +39,38 @@ class _RandomBoxWidgetState extends State<RandomBoxWidget> {
       onTap: _handleTap,
       child: Align(
         alignment: Alignment.topLeft,
-        child: Stack(
+        child: Column(
           children: [
-            DotLottieLoader.fromAsset(
-              widget.type == GiftboxType.random ? Assets.lottie.giftBox : Assets.lottie.coinPig,
-              frameBuilder: (ctx, dotlottie) {
-                return dotlottie != null
-                    ? Lottie.memory(
-                        dotlottie.animations.values.single,
-                        width: 64,
-                        height: 64,
-                      )
-                    : Container();
-              },
-              errorBuilder: (ctx, e, s) => Container(),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Opacity(
-                opacity: 0.9,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
-                      color: widget.isOpenable
-                          ? ColorName.secondary.withOpacity(widget.type == GiftboxType.random ? 0.7 : 0.8)
-                          : ColorName.primary.withOpacity(0.5),
-                    ),
+            Container(
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.r),
+                color: ColorName.grey700,
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  _getIcon(widget.type),
+                  Positioned(
+                    bottom: -6,
+                    left: 0,
+                    right: 0,
                     child: Text(
-                      widget.isOpenable ? FortuneTr.msgOpenGiftBox : _formatSeconds(widget.timerSeccond),
+                      widget.isOpenable ? "Open" : _formatSeconds(widget.timerSecond),
+                      textAlign: TextAlign.center,
                       style: FortuneTextStyle.caption3Semibold(
                         color: ColorName.white,
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            )
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _getTitle(widget.type),
+              style: FortuneTextStyle.caption1SemiBold(),
+            ),
           ],
         ),
       ),
@@ -111,5 +102,21 @@ class _RandomBoxWidgetState extends State<RandomBoxWidget> {
     final minutes = twoDigits(seconds ~/ 60);
     final remainingSeconds = twoDigits(seconds % 60);
     return "$minutes:$remainingSeconds";
+  }
+
+  _getIcon(GiftboxType type) {
+    if (widget.type == GiftboxType.coin) {
+      return Assets.icons.icCoinPocket.svg(width: 32, height: 32);
+    } else {
+      return Assets.icons.icRandomBox.svg(width: 32, height: 32);
+    }
+  }
+
+  _getTitle(GiftboxType type) {
+    if (widget.type == GiftboxType.coin) {
+      return FortuneTr.msgCoinPick;
+    } else {
+      return FortuneTr.msgGiftBox;
+    }
   }
 }
