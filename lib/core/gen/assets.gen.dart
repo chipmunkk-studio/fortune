@@ -196,6 +196,10 @@ class $AssetsIconsGen {
   SvgGenImage get icQuestion =>
       const SvgGenImage('assets/icons/ic_question.svg');
 
+  /// File path: assets/icons/ic_radar_rotate.svg
+  SvgGenImage get icRadarRotate =>
+      const SvgGenImage('assets/icons/ic_radar_rotate.svg');
+
   /// File path: assets/icons/ic_ranking_1.svg
   SvgGenImage get icRanking1 =>
       const SvgGenImage('assets/icons/ic_ranking_1.svg');
@@ -276,6 +280,7 @@ class $AssetsIconsGen {
         icProfileSetting,
         icPushAlarm,
         icQuestion,
+        icRadarRotate,
         icRanking1,
         icRanking2,
         icRanking3,

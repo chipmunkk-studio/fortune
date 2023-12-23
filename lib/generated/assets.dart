@@ -50,6 +50,7 @@ class Assets {
   static const String iconsIcProfileSetting = 'assets/icons/ic_profile_setting.svg';
   static const String iconsIcPushAlarm = 'assets/icons/ic_push_alarm.svg';
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';
+  static const String iconsIcRadarRotate = 'assets/icons/ic_radar_rotate.svg';
   static const String iconsIcRanking1 = 'assets/icons/ic_ranking_1.svg';
   static const String iconsIcRanking2 = 'assets/icons/ic_ranking_2.svg';
   static const String iconsIcRanking3 = 'assets/icons/ic_ranking_3.svg';
