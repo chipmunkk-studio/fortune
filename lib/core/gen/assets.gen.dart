@@ -94,6 +94,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_clock.svg
   SvgGenImage get icClock => const SvgGenImage('assets/icons/ic_clock.svg');
 
+  /// File path: assets/icons/ic_coin_pocket.svg
+  SvgGenImage get icCoinPocket =>
+      const SvgGenImage('assets/icons/ic_coin_pocket.svg');
+
   /// File path: assets/icons/ic_fortune_cookie_1.svg
   SvgGenImage get icFortuneCookie1 =>
       const SvgGenImage('assets/icons/ic_fortune_cookie_1.svg');
@@ -196,6 +200,14 @@ class $AssetsIconsGen {
   SvgGenImage get icQuestion =>
       const SvgGenImage('assets/icons/ic_question.svg');
 
+  /// File path: assets/icons/ic_radar_rotate.svg
+  SvgGenImage get icRadarRotate =>
+      const SvgGenImage('assets/icons/ic_radar_rotate.svg');
+
+  /// File path: assets/icons/ic_random_box.svg
+  SvgGenImage get icRandomBox =>
+      const SvgGenImage('assets/icons/ic_random_box.svg');
+
   /// File path: assets/icons/ic_ranking_1.svg
   SvgGenImage get icRanking1 =>
       const SvgGenImage('assets/icons/ic_ranking_1.svg');
@@ -248,6 +260,7 @@ class $AssetsIconsGen {
         icCheckCircleFill24,
         icChecklist24,
         icClock,
+        icCoinPocket,
         icFortuneCookie1,
         icFortuneCookie2,
         icFortuneMoney,
@@ -276,6 +289,8 @@ class $AssetsIconsGen {
         icProfileSetting,
         icPushAlarm,
         icQuestion,
+        icRadarRotate,
+        icRandomBox,
         icRanking1,
         icRanking2,
         icRanking3,

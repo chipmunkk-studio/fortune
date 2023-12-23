@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fortune/core/fortune_ext.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
@@ -11,7 +12,6 @@ import 'package:fortune/core/widgets/fortune_loading_view.dart';
 import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_map_grid_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_radar_background.dart';
-import 'package:fortune/core/widgets/painter/fortune_radar_painter.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
@@ -126,10 +126,9 @@ class MainMap extends StatelessWidget {
                   child: AnimatedBuilder(
                     animation: centerRotateController,
                     builder: (BuildContext context, Widget? child) {
-                      return CustomPaint(
-                        painter: FortuneRadarPainter(
-                          rotation: centerRotateController.value * 2 * pi,
-                        ),
+                      return Transform.rotate(
+                        angle: centerRotateController.value * 2 * pi,
+                        child: Assets.icons.icRadarRotate.svg(),
                       );
                     },
                   ),

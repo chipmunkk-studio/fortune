@@ -55,7 +55,7 @@ class MainState with _$MainState {
         turns: 0,
         prevHeadings: 0,
         isShowTestLocation: false,
-        clickableRadiusLength: 60,
+        clickableRadiusLength: 72,
         giftBoxTimerSecond: 0,
         giftBoxOpenable: false,
         coinBoxTimerSecond: 0,
