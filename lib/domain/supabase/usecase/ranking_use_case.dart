@@ -5,14 +5,17 @@ import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
+import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 import 'package:fortune/domain/supabase/request/request_get_all_users_param.dart';
 
 class RankingUseCase implements UseCase1<RankingViewItemEntity, RequestRankingParam> {
   final UserRepository userRepository;
+  final MissionsRepository missionsRepository;
 
   RankingUseCase({
     required this.userRepository,
+    required this.missionsRepository,
   });
 
   @override

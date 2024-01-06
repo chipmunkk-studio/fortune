@@ -272,7 +272,6 @@ class AuthService {
   }
 
   Future<void> persistSession(Session session) async {
-    FortuneLogger.info('PersistSession:: ${session.persistSessionString}');
-    await preferences.setString(supabaseSessionKey, session.persistSessionString);
+    await preferences.setString(supabaseSessionKey, json.encode(session));
   }
 }

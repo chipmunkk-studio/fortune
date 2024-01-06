@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:flash/flash.dart';
+import 'package:flash/flash_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
@@ -19,6 +21,7 @@ import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
+import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
@@ -259,27 +262,31 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
             ),
           );
         } else if (sideEffect is MainShowAppUpdate) {
-          if (sideEffect.entity.isForceUpdate) {
-            dialogService.showFortuneDialog(
-              context,
-              title: FortuneTr.msgUpdateTitle,
-              subTitle: FortuneTr.msgUpdateMessage,
-              btnOkText: FortuneTr.confirm,
-              btnOkPressed: () {
+          final dialogTitle = sideEffect.isForceUpdate ? FortuneTr.msgUpdateTitle : sideEffect.title;
+          final dialogContent = sideEffect.isForceUpdate ? FortuneTr.msgUpdateMessage : sideEffect.content;
+          // 강업/공지사항 일 경우.
+          dialogService.showFortuneDialog(
+            context,
+            title: dialogTitle,
+            subTitle: dialogContent,
+            btnOkText: FortuneTr.confirm,
+            btnOkPressed: () {
+              if (sideEffect.isForceUpdate) {
                 launchStore(() {
                   _bloc.add(MainInit());
                 });
-              },
-            );
-          } else {
-            dialogService.showFortuneDialog(
-              context,
-              title: sideEffect.entity.title,
-              subTitle: sideEffect.entity.content,
-              btnOkText: FortuneTr.confirm,
-              btnOkPressed: () => sideEffect.entity.isAlert ? null : _bloc.add(MainInit()),
-            );
-          }
+              } else {
+                _bloc.add(MainInit());
+              }
+            },
+          );
+        } else if (sideEffect is MainShowBottomSnackBar) {
+          _showBottomSnackBar(
+            context,
+            sideEffect.title,
+            sideEffect.content,
+            sideEffect.landingRoute,
+          );
         } else if (sideEffect is MainRotateEffect) {
           _animateCameraRotate(sideEffect.prevData, sideEffect.nextData);
         } else if (sideEffect is MainRequiredTicket) {
@@ -870,5 +877,56 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
     } else {
       _bloc.add(MainMarkerObtainFromRandomBoxCancel(sideEffect.type));
     }
+  }
+
+  _showBottomSnackBar(
+    BuildContext parentContext,
+    String title,
+    String content,
+    String landingRoute,
+  ) {
+    parentContext.showFlash<bool>(
+      barrierColor: Colors.black54,
+      barrierBlur: 1,
+      barrierDismissible: true,
+      builder: (context, controller) => FlashBar(
+        controller: controller,
+        behavior: FlashBehavior.floating,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          side: BorderSide(
+            color: Colors.yellow,
+            strokeAlign: BorderSide.strokeAlignInside,
+          ),
+        ),
+        backgroundColor: ColorName.secondary,
+        clipBehavior: Clip.antiAlias,
+        margin: const EdgeInsets.all(32.0),
+        title: Text(
+          title,
+          style: FortuneTextStyle.headLine2(),
+        ),
+        content: Text(
+          content,
+          style: FortuneTextStyle.body1Regular(),
+        ),
+        actions: [
+          TextButton(
+            onPressed: controller.dismiss,
+            child: Text('닫기'),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.dismiss(true);
+              _router.navigateTo(
+                parentContext,
+                landingRoute,
+              );
+            },
+            child: Text('확인'),
+          )
+        ],
+      ),
+    );
   }
 }

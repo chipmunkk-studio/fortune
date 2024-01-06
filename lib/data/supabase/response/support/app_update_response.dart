@@ -9,6 +9,8 @@ class AppUpdateResponse extends AppUpdateEntity {
   final String? title_;
   @JsonKey(name: 'content')
   final String? content_;
+  @JsonKey(name: 'landing_route')
+  final String? landingRoute_;
   @JsonKey(name: 'is_active')
   final bool? isActive_;
   @JsonKey(name: 'android')
@@ -29,6 +31,7 @@ class AppUpdateResponse extends AppUpdateEntity {
     this.content_,
     this.isActive_,
     this.minVersion_,
+    this.landingRoute_,
     this.minVersionCode_,
     this.isAlert_,
     this.android_,
@@ -37,6 +40,7 @@ class AppUpdateResponse extends AppUpdateEntity {
   }) : super(
           title: title_ ?? '',
           content: content_ ?? '',
+          landingRoute: landingRoute_ ?? '',
           isActive: isActive_ ?? false,
           minVersion: minVersion_ ?? '',
           minVersionCode: minVersionCode_ ?? -1,

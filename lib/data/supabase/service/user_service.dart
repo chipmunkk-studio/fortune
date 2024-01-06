@@ -102,7 +102,7 @@ class UserService {
 
   // 휴대폰 번호로 사용자를 찾음.
   Future<FortuneUserEntity?> findUserByEmail(
-    String? email, {
+    String email, {
     required List<UserColumn> columnsToSelect,
   }) async {
     try {

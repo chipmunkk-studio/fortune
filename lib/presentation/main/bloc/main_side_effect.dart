@@ -96,16 +96,37 @@ class MainSchemeLandingPage extends MainSideEffect {
 }
 
 class MainShowAppUpdate extends MainSideEffect {
-  final AppUpdateViewEntity entity;
+  final bool isAlert;
+  final bool isForceUpdate;
+  final String title;
+  final String content;
 
   MainShowAppUpdate({
-    required this.entity,
+    required this.isAlert,
+    required this.title,
+    required this.content,
+    required this.isForceUpdate,
   });
 
   @override
   List<Object?> get props => [];
 }
 
+class MainShowBottomSnackBar extends MainSideEffect {
+  final String title;
+  final String content;
+
+  final String landingRoute;
+
+  MainShowBottomSnackBar({
+    required this.title,
+    required this.content,
+    required this.landingRoute,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
 class MainRotateEffect extends MainSideEffect {
   final double nextData;
   final double prevData;

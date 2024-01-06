@@ -119,7 +119,7 @@ class MissionClearUserHistoriesService {
   }
 
   // 미션 클리어 사용자 추가.
-  Future<void> insert(
+  Future<MissionClearUserHistoriesResponse> insert(
     RequestMissionClearUser request,
   ) async {
     try {

@@ -6,6 +6,7 @@ class AppUpdateEntity {
   final bool ios;
   final String createdAt;
   final String minVersion;
+  final String landingRoute;
   final int minVersionCode;
   final bool isAlert;
 
@@ -19,5 +20,6 @@ class AppUpdateEntity {
     required this.minVersion,
     required this.minVersionCode,
     required this.isAlert,
+    required this.landingRoute,
   });
 }

@@ -67,7 +67,7 @@ class AlarmFeedsService {
   }
 
   // 알림 업데이트.
-  Future<void> update(
+  Future<AlarmFeedsResponse> update(
     int alarmId, {
     required RequestAlarmFeeds request,
   }) async {
