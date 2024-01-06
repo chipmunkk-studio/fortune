@@ -544,6 +544,7 @@ _initUseCase() async {
     ..registerLazySingleton<RankingUseCase>(
       () => RankingUseCase(
         userRepository: serviceLocator<UserRepository>(),
+        missionsRepository: serviceLocator<MissionsRepository>(),
       ),
     )
     ..registerLazySingleton<GetAlarmFeedUseCase>(
