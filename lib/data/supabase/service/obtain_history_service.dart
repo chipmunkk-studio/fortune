@@ -155,7 +155,7 @@ class ObtainHistoryService {
   // 히스토리 삭제.
   Future<void> delete(List<int> list) async {
     try {
-      await _client.from(_obtainHistoryTableName).delete().in_('id', list);
+      await _client.from(_obtainHistoryTableName).delete().inFilter('id', list);
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

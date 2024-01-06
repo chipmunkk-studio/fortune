@@ -47,21 +47,19 @@ class SupportService {
 
   Future<List<FaqsEntity>> findAllFaqCount() async {
     try {
-      final PostgrestResponse response = await _client
+      final response = await _client
           .from(
             _faqsTableName,
           )
           .select(
             'created_at',
-            const FetchOptions(count: CountOption.exact),
           );
 
-      if (response.data == null || (response.data as List).isEmpty) {
+      if (response.isEmpty) {
         return List.empty();
       }
 
-      final dataList = response.data as List<dynamic>;
-      return dataList.map((e) => FaqsResponse.fromJson(e)).toList();
+      return response.map((e) => FaqsResponse.fromJson(e)).toList();
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
@@ -89,23 +87,19 @@ class SupportService {
 
   Future<List<NoticesEntity>> findAllNoticesCount() async {
     try {
-      final PostgrestResponse response = await _client
+      final response = await _client
           .from(
             _noticesTableName,
           )
           .select(
             'created_at',
-            const FetchOptions(
-              count: CountOption.exact,
-            ),
           );
 
-      if (response.data == null || (response.data as List).isEmpty) {
+      if (response.isEmpty) {
         return List.empty();
       }
 
-      final dataList = response.data as List<dynamic>;
-      return dataList.map((e) => NoticesResponse.fromJson(e)).toList();
+      return response.map((e) => NoticesResponse.fromJson(e)).toList();
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
