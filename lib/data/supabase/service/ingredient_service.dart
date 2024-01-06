@@ -37,7 +37,7 @@ class IngredientService {
           .from(_ingredientTableName)
           .select(fullSelectQuery)
           .filter(IngredientColumn.isOn.name, 'eq', true)
-          .in_(IngredientColumn.type.name, types.map((type) => type.name).toList())
+          .inFilter(IngredientColumn.type.name, types.map((type) => type.name).toList())
           .toSelect();
       if (response.isEmpty) {
         return List.empty();

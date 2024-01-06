@@ -72,8 +72,7 @@ class AlarmRewardHistoryService {
           .delete()
           .lte(AlarmRewardHistoryColumn.createdAt.name, boundaryDate.toUtc())
           .eq(AlarmRewardHistoryColumn.users.name, userId)
-          .eq(AlarmRewardHistoryColumn.isReceive.name, true)
-          .execute();
+          .eq(AlarmRewardHistoryColumn.isReceive.name, true);
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }

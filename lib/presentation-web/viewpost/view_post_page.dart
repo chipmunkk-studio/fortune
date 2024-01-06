@@ -23,9 +23,9 @@ class ViewPostPage extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              FortuneQuillTextViewer(
-                json: args.json,
-              ),
+              // FortuneQuillTextViewer(
+              //   json: args.json,
+              // ),
               Text(
                 "헬로우",
                 style: FortuneTextStyle.body1Regular(),

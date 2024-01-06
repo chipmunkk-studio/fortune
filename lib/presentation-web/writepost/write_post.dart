@@ -58,11 +58,11 @@ class _WritePostPageState extends State<_WritePostPage> {
         child: Scaffold(
           body: Column(
             children: [
-              Expanded(
-                child: FortuneQuillTextEditor(
-                  controller: _inputController,
-                ),
-              ),
+              // Expanded(
+              //   child: FortuneQuillTextEditor(
+              //     controller: _inputController,
+              //   ),
+              // ),
               FortuneTextButton(
                 onPress: () {
                   _bloc.add(
