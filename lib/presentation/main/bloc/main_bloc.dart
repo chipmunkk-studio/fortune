@@ -149,9 +149,28 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
         (r) async {
-          if (r != null && (r.isActive || r.isForceUpdate)) {
-            produceSideEffect(MainShowAppUpdate(entity: r));
+          /// 활성화된 공지사항이 있거나, 강업이 필요할 때. (알럿은 아님)
+          if (r.isActive && !r.isAlert) {
+            produceSideEffect(
+              MainShowAppUpdate(
+                isAlert: r.isAlert,
+                isForceUpdate: r.isForceUpdate,
+                title: r.title,
+                content: r.content,
+              ),
+            );
           } else {
+            // 스낵바 노출.
+            if (r.isActive && r.isAlert) {
+              produceSideEffect(
+                MainShowBottomSnackBar(
+                  title: r.title,
+                  content: r.content,
+                  landingRoute: r.landingRoute,
+                ),
+              );
+            }
+
             final notificationEntity = event.notificationEntity;
             bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
             // 위치 권한이 없을 경우.

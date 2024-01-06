@@ -107,7 +107,7 @@ class SupportService {
 
   Future<List<AppUpdateEntity>> findAllAppUpdate() async {
     try {
-      final List<dynamic> response = await _client
+      final response = await _client
           .from(_appUpdateTableName)
           .select("*")
           .filter('is_active', 'eq', true)
