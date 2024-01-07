@@ -12,7 +12,7 @@ import 'package:fortune/domain/supabase/request/request_get_all_users_param.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserRepositoryImpl extends UserRepository {
-  final UserService _userService;
+  final FortuneUserService _userService;
   final MixpanelTracker _mixpanelTracker;
   final _supabaseClient = Supabase.instance.client;
 

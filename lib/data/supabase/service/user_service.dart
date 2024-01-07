@@ -13,14 +13,14 @@ import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_ranking_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide UserResponse;
 
-class UserService {
+class FortuneUserService {
   final SupabaseClient _client = Supabase.instance.client;
   final _userTableName = TableName.users;
   final FortuneNotificationsManager notificationManager;
 
   static const fullSelectQuery = '*';
 
-  UserService({
+  FortuneUserService({
     required this.notificationManager,
   });
 

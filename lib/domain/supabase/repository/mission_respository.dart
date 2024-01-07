@@ -2,6 +2,8 @@ import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_e
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 
+import '../entity/mission/mission_clear_user_count_entity.dart';
+
 abstract class MissionsRepository {
   // 미션 목록 불러오기.
   Future<List<MissionsEntity>> getAllMissions();
@@ -18,15 +20,16 @@ abstract class MissionsRepository {
     required int userId,
   });
 
-
   // 미션 아이디로 조회.
   Future<MissionsEntity> getMissionById(int missionId);
 
   // 미션 클리어 유저 조회.
   Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsers({
     int start = 0,
-    int end = 20,
+    int end = 30,
   });
 
   Future<List<MissionClearUserHistoriesEntity>> getMissionClearUsersByUserId(int userId);
+
+  Future<List<MissionClearUserCountEntity>> getMissionClearUsersByRanking();
 }

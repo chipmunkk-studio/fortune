@@ -276,8 +276,8 @@ initAppLogger() {
 /// Service.
 _initService() {
   serviceLocator
-    ..registerLazySingleton<UserService>(
-      () => UserService(notificationManager: serviceLocator()),
+    ..registerLazySingleton<FortuneUserService>(
+      () => FortuneUserService(notificationManager: serviceLocator()),
     )
     ..registerLazySingleton<IngredientService>(
       () => IngredientService(),
@@ -330,7 +330,7 @@ _initRepository() {
   serviceLocator
     ..registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(
-        serviceLocator<UserService>(),
+        serviceLocator<FortuneUserService>(),
         serviceLocator<MixpanelTracker>(),
       ),
     )
@@ -379,12 +379,13 @@ _initRepository() {
         missionClearConditionsService: serviceLocator<MissionsClearConditionsService>(),
         missionClearUserService: serviceLocator<MissionClearUserHistoriesService>(),
         missionRewardService: serviceLocator<MissionRewardService>(),
+        userService: serviceLocator<FortuneUserService>(),
       ),
     )
     ..registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(
         serviceLocator<AuthService>(),
-        serviceLocator<UserService>(),
+        serviceLocator<FortuneUserService>(),
         serviceLocator<MixpanelTracker>(),
       ),
     );
