@@ -1,3 +1,5 @@
+import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
+
 class RankingViewItemEntity {
   List<RankingPagingViewItem> rankingItems;
 
@@ -15,11 +17,15 @@ class RankingPagingViewItemEntity extends RankingPagingViewItem {
   final String nickName;
   final String count;
   final String profile;
+  final int level;
+  final FortuneUserGradeEntity grade;
 
   RankingPagingViewItemEntity({
     required this.nickName,
     required this.count,
     required this.profile,
+    required this.level,
+    required this.grade,
   });
 }
 
@@ -31,12 +37,16 @@ class RankingMyRankingViewItem {
   final String profile;
 
   final String index;
+  final int level;
+  final FortuneUserGradeEntity grade;
 
   RankingMyRankingViewItem({
     required this.index,
     required this.nickName,
     required this.count,
     required this.profile,
+    required this.level,
+    required this.grade,
   });
 
   factory RankingMyRankingViewItem.empty() {
@@ -45,6 +55,8 @@ class RankingMyRankingViewItem {
       count: '',
       profile: '',
       index: '',
+      level: 0,
+      grade: GradeBronze(),
     );
   }
 }

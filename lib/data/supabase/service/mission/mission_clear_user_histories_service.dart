@@ -1,4 +1,3 @@
-import 'package:fortune/core/error/failure/common_failure.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user.dart';
 import 'package:fortune/data/supabase/request/request_mission_clear_user_histories.dart';
@@ -144,5 +143,62 @@ class MissionClearUserHistoriesService {
     } on Exception catch (e) {
       throw (e.handleException()); // using extension method here
     }
+  }
+
+  // 사용자 미션 클리어 랭킹 조회.
+  Future<Map<String, int>> findAllMissionClearCountsByRanking() async {
+    try {
+      final response = await _client
+          .from(_tableClearUserHistoriesName)
+          .select(
+            _getSelectColumns(
+              [
+                MissionClearUserHistoriesColumn.users,
+              ],
+            ),
+          )
+          .toSelect();
+
+      final countIdMap = <String, int>{};
+      final users = response.map((e) => MissionClearUserHistoriesResponse.fromJson(e)).toList();
+
+      for (var record in users) {
+        countIdMap[record.user.email] = (countIdMap[record.user.email] ?? 0) + 1;
+      }
+
+      return countIdMap;
+    } on Exception catch (e) {
+      throw (e.handleException()); // using extension method here
+    }
+  }
+
+  String _getSelectColumns(List<MissionClearUserHistoriesColumn> columns) {
+    final columnsList = columns.map((column) {
+      if (column == MissionClearUserHistoriesColumn.users) {
+        return '${TableName.users}('
+            '${UserColumn.email.name},'
+            '${UserColumn.nickname.name},'
+            '${UserColumn.level.name},'
+            '${UserColumn.markerObtainCount.name},'
+            '${UserColumn.profileImage.name}'
+            ')';
+      } else if (column == MissionClearUserHistoriesColumn.missions) {
+        // 리워드 컬럼.
+        final rewardColumn = "${TableName.missionReward}("
+            "${MissionRewardColumn.rewardImage.name},"
+            "${MissionRewardColumn.enRewardName.name},"
+            "${MissionRewardColumn.krRewardName.name},"
+            "${MissionRewardColumn.createdAt.name}"
+            ")";
+
+        return "${TableName.missions}("
+            '${MissionsColumn.krTitle.name},'
+            '${MissionsColumn.enTitle.name},'
+            '$rewardColumn'
+            ")";
+      }
+      return column.name;
+    }).toList();
+    return columnsList.join(',');
   }
 }

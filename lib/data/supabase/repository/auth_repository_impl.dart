@@ -12,7 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthService _authService;
-  final UserService _userService;
+  final FortuneUserService _userService;
 
   final MixpanelTracker _tracker;
 
