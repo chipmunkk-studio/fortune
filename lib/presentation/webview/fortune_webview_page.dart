@@ -75,7 +75,7 @@ class _FortuneWebViewPageState extends State<_FortuneWebViewPage> {
               },
             ),
             InAppWebView(
-              initialUrlRequest: URLRequest(url: WebUri(widget.args.url)),
+              initialUrlRequest: URLRequest(url: Uri.parse(widget.args.url)),
               onWebViewCreated: (InAppWebViewController webViewController) {
                 controller = webViewController;
               },

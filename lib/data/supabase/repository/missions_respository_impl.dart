@@ -7,7 +7,9 @@ import 'package:fortune/data/supabase/service/mission/mission_clear_conditions_s
 import 'package:fortune/data/supabase/service/mission/mission_clear_user_histories_service.dart';
 import 'package:fortune/data/supabase/service/mission/mission_reward_service.dart';
 import 'package:fortune/data/supabase/service/mission/missions_service.dart';
+import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_condition_entity.dart';
+import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_count_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_clear_user_histories_entity.dart';
 import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 import 'package:fortune/domain/supabase/repository/mission_respository.dart';
@@ -18,11 +20,14 @@ class MissionsRepositoryImpl extends MissionsRepository {
   final MissionRewardService missionRewardService;
   final MissionsClearConditionsService missionClearConditionsService;
 
+  final FortuneUserService userService;
+
   MissionsRepositoryImpl({
     required this.missionNormalService,
     required this.missionClearConditionsService,
     required this.missionClearUserService,
     required this.missionRewardService,
+    required this.userService,
   });
 
   @override
@@ -122,6 +127,27 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearUserService.findAllMissionClearUserByUserId(userId);
       return result;
+    } on FortuneFailure catch (e) {
+      throw e.handleFortuneFailure();
+    }
+  }
+
+  @override
+  Future<List<MissionClearUserCountEntity>> getMissionClearUsersByRanking() async {
+    try {
+      final countMap = await missionClearUserService.findAllMissionClearCountsByRanking();
+      final List<MissionClearUserCountEntity> rankingList = [];
+      for (var email in countMap.keys) {
+        final user = await userService.findUserByEmail(email, columnsToSelect: []); // 이메일로 사용자 조회
+        if (user != null) {
+          rankingList.add(MissionClearUserCountEntity(user: user, clearCount: countMap[email]!));
+        }
+      }
+      // 미션 클리어 횟수에 따라 정렬
+      rankingList.sort((a, b) => b.clearCount.compareTo(a.clearCount));
+
+      // 지정된 범위의 랭킹만 반환
+      return rankingList;
     } on FortuneFailure catch (e) {
       throw e.handleFortuneFailure();
     }
