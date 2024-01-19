@@ -14,7 +14,6 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'bloc/ranking.dart';
-import 'component/top_area.dart';
 
 class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
@@ -40,7 +39,6 @@ class _RankingPage extends StatefulWidget {
 }
 
 class _RankingPageState extends State<_RankingPage> {
-  static const offsetVisibleThreshold = 50.0;
   final _router = serviceLocator<FortuneAppRouter>().router;
   final _tracker = serviceLocator<MixpanelTracker>();
   late RankingBloc _bloc;
@@ -51,7 +49,7 @@ class _RankingPageState extends State<_RankingPage> {
     super.initState();
     _tracker.trackEvent('랭킹_랜딩');
     _bloc = BlocProvider.of<RankingBloc>(context);
-    _scrollController = ScrollController()..addListener(_onScroll);
+    _scrollController = ScrollController();
   }
 
   @override
@@ -80,31 +78,20 @@ class _RankingPageState extends State<_RankingPage> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TopArea(
-                            items: state.rankingItems
-                                .take(3)
-                                .map(
-                                  (e) => e as RankingPagingViewItemEntity,
-                                )
-                                .toList(),
-                          ),
                           Expanded(
                             child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: state.rankingItems.length - 3,
+                              itemCount: state.rankingItems.length,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(vertical: 44.h),
-                              separatorBuilder: (context, index) => Divider(
-                                height: 21.h,
-                                color: ColorName.grey800,
-                              ),
+                              padding: const EdgeInsets.only(top: 16, bottom: 64),
+                              separatorBuilder: (context, index) => Divider(height: 21.h, color: ColorName.grey800),
                               itemBuilder: (context, index) {
-                                final item = state.rankingItems[index + 3];
+                                final item = state.rankingItems[index];
                                 if (item is RankingPagingViewItemEntity) {
                                   return ItemRanking(
                                     item: item,
-                                    index: (index + 4).toString(),
+                                    index: index + 1,
                                   );
                                 } else {
                                   return Center(
@@ -116,7 +103,6 @@ class _RankingPageState extends State<_RankingPage> {
                                     ),
                                   );
                                 }
-                                return Container();
                               },
                             ),
                           ),
@@ -144,7 +130,9 @@ class _RankingPageState extends State<_RankingPage> {
                                   ItemRankingContent(
                                     nickName: state.me.nickName,
                                     profile: state.me.profile,
-                                    index: state.me.index,
+                                    grade: state.me.grade,
+                                    level: state.me.level,
+                                    index: int.parse(state.me.index),
                                     count: state.me.count,
                                   ),
                                   SizedBox(height: 20.h),
@@ -161,14 +149,5 @@ class _RankingPageState extends State<_RankingPage> {
         },
       ),
     );
-  }
-
-  void _onScroll() {
-    final max = _scrollController.position.maxScrollExtent;
-    final offset = _scrollController.offset;
-
-    if (offset + offsetVisibleThreshold >= max) {
-      _bloc.add(RankingNextPage());
-    }
   }
 }

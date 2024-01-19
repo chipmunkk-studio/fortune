@@ -53,6 +53,7 @@ import 'package:fortune/domain/supabase/usecase/my_page_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_default_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/obtain_marker_main_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/ranking_user_by_mission_clear_count_case.dart';
 import 'package:fortune/domain/supabase/usecase/read_alarm_feed_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/receive_alarm_reward_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/reduce_coin_use_case.dart';
@@ -413,6 +414,12 @@ _initUseCase() async {
       () => GetUserUseCase(
         userRepository: serviceLocator(),
         authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<RankingUserByMissionClearCountUseCase>(
+      () => RankingUserByMissionClearCountUseCase(
+        userRepository: serviceLocator(),
+        missionsRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<VerifyEmailUseCase>(

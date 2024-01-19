@@ -676,7 +676,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   void _loadRewardedAd(int adRequestIntervalTime) async {
     try {
       RewardedAd.load(
-        adUnitId: GoogleAdHelper.rewardedAdUnitId,
+        adUnitId: AdmobHelper.rewardedAdUnitId,
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {

@@ -5,14 +5,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
 import 'package:fortune/domain/supabase/request/request_get_all_users_param.dart';
-import 'package:fortune/domain/supabase/usecase/ranking_use_case.dart';
+import 'package:fortune/domain/supabase/usecase/ranking_user_by_mission_clear_count_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'ranking.dart';
 
 class RankingBloc extends Bloc<RankingEvent, RankingState>
     with SideEffectBlocMixin<RankingEvent, RankingState, RankingSideEffect> {
-  final RankingUseCase rankingUseCase;
+  final RankingUserByMissionClearCountUseCase rankingUseCase;
 
   RankingBloc({
     required this.rankingUseCase,
@@ -41,13 +41,7 @@ class RankingBloc extends Bloc<RankingEvent, RankingState>
     required int end,
     required RankingFilterType type,
   }) async {
-    await rankingUseCase(
-      RequestRankingParam(
-        start: start,
-        end: end,
-        type: type,
-      ),
-    ).then(
+    await rankingUseCase().then(
       (value) => value.fold(
         (l) {
           emit(

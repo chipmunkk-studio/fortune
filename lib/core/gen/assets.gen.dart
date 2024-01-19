@@ -208,6 +208,18 @@ class $AssetsIconsGen {
   SvgGenImage get icRandomBox =>
       const SvgGenImage('assets/icons/ic_random_box.svg');
 
+  /// File path: assets/icons/ic_rank_bronze.svg
+  SvgGenImage get icRankBronze =>
+      const SvgGenImage('assets/icons/ic_rank_bronze.svg');
+
+  /// File path: assets/icons/ic_rank_gold.svg
+  SvgGenImage get icRankGold =>
+      const SvgGenImage('assets/icons/ic_rank_gold.svg');
+
+  /// File path: assets/icons/ic_rank_silver.svg
+  SvgGenImage get icRankSilver =>
+      const SvgGenImage('assets/icons/ic_rank_silver.svg');
+
   /// File path: assets/icons/ic_ranking_1.svg
   SvgGenImage get icRanking1 =>
       const SvgGenImage('assets/icons/ic_ranking_1.svg');
@@ -291,6 +303,9 @@ class $AssetsIconsGen {
         icQuestion,
         icRadarRotate,
         icRandomBox,
+        icRankBronze,
+        icRankGold,
+        icRankSilver,
         icRanking1,
         icRanking2,
         icRanking3,
