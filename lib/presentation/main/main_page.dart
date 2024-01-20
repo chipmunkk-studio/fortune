@@ -24,6 +24,7 @@ import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/bottomsheet/bottom_sheet_ext.dart';
+import 'package:fortune/core/widgets/button/fortune_default_button.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
@@ -358,18 +359,110 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 Positioned(
                   bottom: 16,
                   right: 16,
-                  child: Bounceable(
-                    onTap: _onMyBagClick,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: ColorName.grey700,
-                        borderRadius: BorderRadius.circular(50.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      BlocConsumer<MainBloc, MainState>(
+                        listenWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading ||
+                            previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
+                        listener: (context, state) {
+                          _giftBoxTimer?.cancel();
+                          if (!state.giftBoxOpenable) {
+                            _giftBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+                              final newSeconds = state.giftBoxTimerSecond - 1;
+                              if (newSeconds <= 0) {
+                                _giftBoxTimer?.cancel();
+                              }
+                              _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.random));
+                            });
+                          }
+                        },
+                        buildWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading ||
+                            previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
+                        builder: (context, state) {
+                          return BlocBuilder<MainBloc, MainState>(
+                            buildWhen: (previous, current) =>
+                                previous.giftBoxTimerSecond != current.giftBoxTimerSecond ||
+                                previous.isLoading != current.isLoading,
+                            builder: (context, state) {
+                              return state.isLoading
+                                  ? const SizedBox.shrink()
+                                  : RandomBoxWidget(
+                                      _bloc,
+                                      timerSecond: state.giftBoxTimerSecond,
+                                      isOpenable: state.giftBoxOpenable,
+                                      type: GiftboxType.random,
+                                    );
+                            },
+                          );
+                        },
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Assets.icons.icInventory.svg(),
+                      const SizedBox(height: 12),
+                      BlocConsumer<MainBloc, MainState>(
+                        listenWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading ||
+                            previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
+                        listener: (context, state) {
+                          _coinBoxTimer?.cancel();
+                          if (!state.coinBoxOpenable) {
+                            _coinBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+                              final newSeconds = state.coinBoxTimerSecond - 1;
+                              if (newSeconds <= 0) {
+                                _coinBoxTimer?.cancel();
+                              }
+                              _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.coin));
+                            });
+                          }
+                        },
+                        buildWhen: (previous, current) =>
+                            previous.isLoading != current.isLoading ||
+                            previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
+                        builder: (context, state) {
+                          return BlocBuilder<MainBloc, MainState>(
+                            buildWhen: (previous, current) =>
+                                previous.coinBoxTimerSecond != current.coinBoxTimerSecond ||
+                                previous.isLoading != current.isLoading,
+                            builder: (context, state) {
+                              return state.isLoading
+                                  ? const SizedBox.shrink()
+                                  : RandomBoxWidget(
+                                      _bloc,
+                                      timerSecond: state.coinBoxTimerSecond,
+                                      isOpenable: state.coinBoxOpenable,
+                                      type: GiftboxType.coin,
+                                    );
+                            },
+                          );
+                        },
                       ),
-                    ),
+                      const SizedBox(height: 24),
+                      Bounceable(
+                        onTap: _onMyBagClick,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 17),
+                          decoration: ShapeDecoration(
+                            color: ColorName.grey700,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Assets.icons.icInventory.svg(width: 20, height: 20),
+                              const SizedBox(width: 12),
+                              Text(
+                                "내 미션 현황",
+                                style: FortuneTextStyle.subTitle2SemiBold(),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 AddToCartAnimation(
@@ -445,82 +538,6 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           },
                           onCoinTap: _showCoinDialog,
                         ),
-                        const SizedBox(height: 20),
-                        BlocConsumer<MainBloc, MainState>(
-                          listenWhen: (previous, current) =>
-                              previous.isLoading != current.isLoading ||
-                              previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
-                          listener: (context, state) {
-                            _giftBoxTimer?.cancel();
-                            if (!state.giftBoxOpenable) {
-                              _giftBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-                                final newSeconds = state.giftBoxTimerSecond - 1;
-                                if (newSeconds <= 0) {
-                                  _giftBoxTimer?.cancel();
-                                }
-                                _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.random));
-                              });
-                            }
-                          },
-                          buildWhen: (previous, current) =>
-                              previous.isLoading != current.isLoading ||
-                              previous.giftBoxTimerSecond != current.giftBoxTimerSecond,
-                          builder: (context, state) {
-                            return BlocBuilder<MainBloc, MainState>(
-                              buildWhen: (previous, current) =>
-                                  previous.giftBoxTimerSecond != current.giftBoxTimerSecond ||
-                                  previous.isLoading != current.isLoading,
-                              builder: (context, state) {
-                                return state.isLoading
-                                    ? const SizedBox.shrink()
-                                    : RandomBoxWidget(
-                                        _bloc,
-                                        timerSecond: state.giftBoxTimerSecond,
-                                        isOpenable: state.giftBoxOpenable,
-                                        type: GiftboxType.random,
-                                      );
-                              },
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 12),
-                        BlocConsumer<MainBloc, MainState>(
-                          listenWhen: (previous, current) =>
-                              previous.isLoading != current.isLoading ||
-                              previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
-                          listener: (context, state) {
-                            _coinBoxTimer?.cancel();
-                            if (!state.coinBoxOpenable) {
-                              _coinBoxTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-                                final newSeconds = state.coinBoxTimerSecond - 1;
-                                if (newSeconds <= 0) {
-                                  _coinBoxTimer?.cancel();
-                                }
-                                _bloc.add(MainRandomBoxTimerCount(newSeconds, type: GiftboxType.coin));
-                              });
-                            }
-                          },
-                          buildWhen: (previous, current) =>
-                              previous.isLoading != current.isLoading ||
-                              previous.coinBoxTimerSecond != current.coinBoxTimerSecond,
-                          builder: (context, state) {
-                            return BlocBuilder<MainBloc, MainState>(
-                              buildWhen: (previous, current) =>
-                                  previous.coinBoxTimerSecond != current.coinBoxTimerSecond ||
-                                  previous.isLoading != current.isLoading,
-                              builder: (context, state) {
-                                return state.isLoading
-                                    ? const SizedBox.shrink()
-                                    : RandomBoxWidget(
-                                        _bloc,
-                                        timerSecond: state.coinBoxTimerSecond,
-                                        isOpenable: state.coinBoxOpenable,
-                                        type: GiftboxType.coin,
-                                      );
-                              },
-                            );
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -531,7 +548,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   left: 0,
                   right: 0,
                   child: Container(
-                    height: 24,
+                    height: 12,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
@@ -887,43 +904,58 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
   ) {
     parentContext.showFlash<bool>(
       barrierColor: Colors.black54,
-      barrierBlur: 1,
+      barrierBlur: 0.8,
       barrierDismissible: true,
       builder: (context, controller) => FlashBar(
         controller: controller,
         behavior: FlashBehavior.floating,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          side: BorderSide(
-            color: Colors.yellow,
-            strokeAlign: BorderSide.strokeAlignInside,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.r)),
+          side: const BorderSide(
+            color: ColorName.grey800,
+            strokeAlign: BorderSide.strokeAlignOutside,
           ),
         ),
-        backgroundColor: ColorName.secondary,
-        clipBehavior: Clip.antiAlias,
+        backgroundColor: ColorName.grey800,
         margin: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.only(top: 36, bottom: 20, left: 20, right: 20),
         title: Text(
           title,
-          style: FortuneTextStyle.headLine2(),
+          style: FortuneTextStyle.subTitle2SemiBold(),
         ),
         content: Text(
           content,
-          style: FortuneTextStyle.body1Regular(),
+          style: FortuneTextStyle.body2Regular(
+            color: ColorName.grey200,
+            height: 1.4,
+          ),
         ),
         actions: [
-          TextButton(
-            onPressed: controller.dismiss,
-            child: Text('닫기'),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.dismiss(true);
-              _router.navigateTo(
-                parentContext,
-                landingRoute,
-              );
-            },
-            child: Text('확인'),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                FortuneDefaultButton(
+                  text: FortuneTr.close,
+                  textColor: ColorName.grey400,
+                  onPress: controller.dismiss,
+                  backgroundColor: ColorName.grey600,
+                ),
+                const SizedBox(width: 12),
+                FortuneDefaultButton(
+                  text: FortuneTr.confirm,
+                  textColor: ColorName.grey900,
+                  onPress: () {
+                    controller.dismiss(true);
+                    _router.navigateTo(
+                      parentContext,
+                      landingRoute,
+                    );
+                  },
+                  backgroundColor: ColorName.primary,
+                )
+              ],
+            ),
           )
         ],
       ),

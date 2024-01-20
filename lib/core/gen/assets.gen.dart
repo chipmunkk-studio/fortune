@@ -66,6 +66,10 @@ class $AssetsIconsGen {
   SvgGenImage get icArrowUp =>
       const SvgGenImage('assets/icons/ic_arrow_up.svg');
 
+  /// File path: assets/icons/ic_arrows_down_up.svg
+  SvgGenImage get icArrowsDownUp =>
+      const SvgGenImage('assets/icons/ic_arrows_down_up.svg');
+
   /// File path: assets/icons/ic_bell.svg
   SvgGenImage get icBell => const SvgGenImage('assets/icons/ic_bell.svg');
 
@@ -97,6 +101,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_coin_pocket.svg
   SvgGenImage get icCoinPocket =>
       const SvgGenImage('assets/icons/ic_coin_pocket.svg');
+
+  /// File path: assets/icons/ic_collect_complete.svg
+  SvgGenImage get icCollectComplete =>
+      const SvgGenImage('assets/icons/ic_collect_complete.svg');
 
   /// File path: assets/icons/ic_fortune_cookie_1.svg
   SvgGenImage get icFortuneCookie1 =>
@@ -264,6 +272,7 @@ class $AssetsIconsGen {
         icArrowRight16,
         icArrowRight20,
         icArrowUp,
+        icArrowsDownUp,
         icBell,
         icCamera,
         icCamera32,
@@ -273,6 +282,7 @@ class $AssetsIconsGen {
         icChecklist24,
         icClock,
         icCoinPocket,
+        icCollectComplete,
         icFortuneCookie1,
         icFortuneCookie2,
         icFortuneMoney,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
+import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
@@ -70,21 +72,36 @@ class _RankingPageState extends State<_RankingPage> {
         buildWhen: (previous, current) => previous.rankingItems != current.rankingItems,
         builder: (context, state) {
           return Skeleton(
-            skeleton: Container(),
+            skeleton: const _RankingPageSkeleton(),
             isLoading: state.isLoading,
             child: state.rankingItems.isNotEmpty
                 ? Stack(
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Assets.icons.icArrowsDownUp.svg(width: 16, height: 16),
+                              const SizedBox(width: 3),
+                              Text(
+                                FortuneTr.msgOrderOfMissionCompletion,
+                                style: FortuneTextStyle.body3Semibold(
+                                  color: ColorName.grey200,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
                           Expanded(
                             child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.rankingItems.length,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: const EdgeInsets.only(top: 16, bottom: 64),
+                              padding: const EdgeInsets.only(top: 4, bottom: 100),
                               separatorBuilder: (context, index) => Divider(height: 21.h, color: ColorName.grey800),
                               itemBuilder: (context, index) {
                                 final item = state.rankingItems[index];
@@ -126,7 +143,7 @@ class _RankingPageState extends State<_RankingPage> {
                               ),
                               child: Column(
                                 children: [
-                                  SizedBox(height: 20.h),
+                                  SizedBox(height: 12.h),
                                   ItemRankingContent(
                                     nickName: state.me.nickName,
                                     profile: state.me.profile,
@@ -134,6 +151,7 @@ class _RankingPageState extends State<_RankingPage> {
                                     level: state.me.level,
                                     index: int.parse(state.me.index),
                                     count: state.me.count,
+                                    isMe: true,
                                   ),
                                   SizedBox(height: 20.h),
                                 ],
@@ -147,6 +165,84 @@ class _RankingPageState extends State<_RankingPage> {
                 : const SizedBox.shrink(),
           );
         },
+      ),
+    );
+  }
+}
+
+class _RankingPageSkeleton extends StatelessWidget {
+  const _RankingPageSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Spacer(),
+              SkeletonLine(
+                style: SkeletonLineStyle(
+                  width: 120,
+                  height: 30,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+        ],
       ),
     );
   }

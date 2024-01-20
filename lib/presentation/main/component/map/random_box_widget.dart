@@ -1,4 +1,3 @@
-import 'package:dotlottie_loader/dotlottie_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +8,6 @@ import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
-import 'package:lottie/lottie.dart';
 
 class RandomBoxWidget extends StatefulWidget {
   final int timerSecond;

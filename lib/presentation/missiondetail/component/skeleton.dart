@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
 class MissionDetailSkeleton extends StatelessWidget {
-  const MissionDetailSkeleton({Key? key}) : super(key: key);
+  const MissionDetailSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

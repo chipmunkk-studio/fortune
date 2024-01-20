@@ -104,7 +104,7 @@ class FortuneDialogService {
       animType: AnimType.scale,
       dialogType: DialogType.noHeader,
       dialogBackgroundColor: ColorName.grey800,
-      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey800),
+      buttonsTextStyle: FortuneTextStyle.button1Medium(color: ColorName.grey800),
       dismissOnTouchOutside: false,
       dismissOnBackKeyPress: false,
       body: Wrap(
@@ -162,7 +162,7 @@ class FortuneDialogService {
       animType: AnimType.scale,
       dialogType: DialogType.noHeader,
       dialogBackgroundColor: ColorName.grey800,
-      buttonsTextStyle: FortuneTextStyle.button1Medium(fontColor: btnTextColor ?? ColorName.grey900),
+      buttonsTextStyle: FortuneTextStyle.button1Medium(color: btnTextColor ?? ColorName.grey900),
       dismissOnTouchOutside: dismissOnTouchOutside,
       dismissOnBackKeyPress: dismissOnBackKeyPress,
       body: Wrap(

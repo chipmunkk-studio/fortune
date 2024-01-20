@@ -21,7 +21,7 @@ abstract class FortuneTr {
 
   static String msgHoursAgo(String hour) => tr('msgHoursAgo', args: [hour]);
 
-  static String msgCenterLevel(String hour) => tr('msgCenterLevel', args: [hour]);
+  static String msgCenterLevel(String level) => tr('msgCenterLevel', args: [level]);
 
   static String msgMinutesAgo(String minute) => tr('msgMinutesAgo', args: [minute]);
 
@@ -53,6 +53,9 @@ abstract class FortuneTr {
   static final msgUpdateUserInfo = tr('msgUpdateUserInfo');
   static final msgNotUpdateUser = tr('msgNotUpdateUser');
   static final msgRenewAuthInfo = tr('msgRenewAuthInfo');
+
+  static final msgOrderOfMissionCompletion = tr('msgOrderOfMissionCompletion');
+
   static final msgMarkerIs = tr('msgMarkerIs');
   static final msgHiddenInScratch = tr('msgHiddenInScratch');
   static final msgSearchingHistory = tr('msgSearchingHistory');
@@ -87,6 +90,7 @@ abstract class FortuneTr {
   static final myInfo = tr('myInfo');
   static final countryCode = tr('countryCode');
   static final save = tr('save');
+  static final close = tr('close');
   static final email = tr('email');
   static final logout = tr('logout');
   static final withdrawal = tr('withdrawal');

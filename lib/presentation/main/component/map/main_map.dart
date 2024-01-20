@@ -175,9 +175,8 @@ class MainMap extends StatelessWidget {
     switch (remoteConfigArgs.mapType) {
       case MapType.openStreet:
         return TileLayer(
-          tileSize: 512,
-          zoomOffset: -1,
           urlTemplate: openStreetMap,
+          tileBuilder: _darkModeTileBuilder,
         );
       case MapType.mapBox:
         return kReleaseMode
@@ -195,9 +194,9 @@ class MainMap extends StatelessWidget {
                 child: Container(),
               );
       default:
-        return CustomPaint(
-          painter: FortuneMapGridPainter(gridSpacing: 26),
-          child: Container(),
+        return TileLayer(
+          urlTemplate: openStreetMap,
+          tileBuilder: _darkModeTileBuilder,
         );
     }
   }
@@ -225,6 +224,24 @@ class MainMap extends StatelessWidget {
         globalKey: globalKey,
         distance: distance,
       ),
+    );
+  }
+
+  Widget _darkModeTileBuilder(
+    BuildContext context,
+    Widget tileWidget,
+    TileImage tile,
+  ) {
+    return ColorFiltered(
+      colorFilter: const ColorFilter.matrix(
+        <double>[
+          -0.2126, -0.7152, -0.0722, 0, 240, // Red channel
+          -0.2126, -0.7152, -0.0722, 0, 240, // Green channel
+          -0.2126, -0.7152, -0.0722, 0, 240, // Blue channel
+          0, 0, 0, 1, 0, // Alpha channel
+        ],
+      ),
+      child: tileWidget,
     );
   }
 }

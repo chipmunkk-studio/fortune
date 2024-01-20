@@ -73,7 +73,7 @@ class _FortuneTextFormState extends State<FortuneTextForm> {
       focusNode: focusNode,
       readOnly: widget.readOnly,
       maxLength: widget.maxLength,
-      style: FortuneTextStyle.button1Medium(fontColor: widget.textColor),
+      style: FortuneTextStyle.button1Medium(color: widget.textColor),
       controller: widget.textEditingController,
       keyboardType: widget.keyboardType,
       inputFormatters: widget.inputFormatters,

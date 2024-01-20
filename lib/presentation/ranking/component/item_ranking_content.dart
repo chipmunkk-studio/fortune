@@ -16,6 +16,7 @@ class ItemRankingContent extends StatelessWidget {
     required this.count,
     required this.grade,
     required this.level,
+    this.isMe = false,
   });
 
   final FortuneUserGradeEntity grade;
@@ -24,6 +25,7 @@ class ItemRankingContent extends StatelessWidget {
   final String profile;
   final String nickName;
   final String count;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +63,11 @@ class ItemRankingContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 4.h),
               Container(
                 padding: EdgeInsets.only(top: 4.h, left: 6.h, right: 8.h, bottom: 4.h),
                 decoration: ShapeDecoration(
-                  color: ColorName.grey800,
+                  color: isMe ? ColorName.grey700 : ColorName.grey800,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.r),
                   ),
@@ -82,13 +85,18 @@ class ItemRankingContent extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 8.h),
-              Text(
-                nickName,
-                softWrap: true,
-                overflow: TextOverflow.ellipsis,
-                style: FortuneTextStyle.body3Semibold(
-                  color: ColorName.white,
-                ),
+              Row(
+                children: [
+                  SizedBox(width: 3.h),
+                  Text(
+                    nickName,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: FortuneTextStyle.body3Semibold(
+                      color: ColorName.white,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
