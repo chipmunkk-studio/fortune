@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/mixpanel.dart';
+import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/ranking_view_item_entity.dart';
@@ -14,7 +16,6 @@ import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'bloc/ranking.dart';
-import 'component/top_area.dart';
 
 class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
@@ -40,7 +41,6 @@ class _RankingPage extends StatefulWidget {
 }
 
 class _RankingPageState extends State<_RankingPage> {
-  static const offsetVisibleThreshold = 50.0;
   final _router = serviceLocator<FortuneAppRouter>().router;
   final _tracker = serviceLocator<MixpanelTracker>();
   late RankingBloc _bloc;
@@ -51,7 +51,7 @@ class _RankingPageState extends State<_RankingPage> {
     super.initState();
     _tracker.trackEvent('랭킹_랜딩');
     _bloc = BlocProvider.of<RankingBloc>(context);
-    _scrollController = ScrollController()..addListener(_onScroll);
+    _scrollController = ScrollController();
   }
 
   @override
@@ -72,39 +72,43 @@ class _RankingPageState extends State<_RankingPage> {
         buildWhen: (previous, current) => previous.rankingItems != current.rankingItems,
         builder: (context, state) {
           return Skeleton(
-            skeleton: Container(),
+            skeleton: const _RankingPageSkeleton(),
             isLoading: state.isLoading,
             child: state.rankingItems.isNotEmpty
                 ? Stack(
                     children: [
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          TopArea(
-                            items: state.rankingItems
-                                .take(3)
-                                .map(
-                                  (e) => e as RankingPagingViewItemEntity,
-                                )
-                                .toList(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Assets.icons.icArrowsDownUp.svg(width: 16, height: 16),
+                              const SizedBox(width: 3),
+                              Text(
+                                FortuneTr.msgOrderOfMissionCompletion,
+                                style: FortuneTextStyle.body3Semibold(
+                                  color: ColorName.grey200,
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                            ],
                           ),
+                          const SizedBox(height: 12),
                           Expanded(
                             child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: state.rankingItems.length - 3,
+                              itemCount: state.rankingItems.length,
                               controller: _scrollController,
                               shrinkWrap: true,
-                              padding: EdgeInsets.symmetric(vertical: 44.h),
-                              separatorBuilder: (context, index) => Divider(
-                                height: 21.h,
-                                color: ColorName.grey800,
-                              ),
+                              padding: const EdgeInsets.only(top: 4, bottom: 100),
+                              separatorBuilder: (context, index) => Divider(height: 21.h, color: ColorName.grey800),
                               itemBuilder: (context, index) {
-                                final item = state.rankingItems[index + 3];
+                                final item = state.rankingItems[index];
                                 if (item is RankingPagingViewItemEntity) {
                                   return ItemRanking(
                                     item: item,
-                                    index: (index + 4).toString(),
+                                    index: index + 1,
                                   );
                                 } else {
                                   return Center(
@@ -116,7 +120,6 @@ class _RankingPageState extends State<_RankingPage> {
                                     ),
                                   );
                                 }
-                                return Container();
                               },
                             ),
                           ),
@@ -140,12 +143,15 @@ class _RankingPageState extends State<_RankingPage> {
                               ),
                               child: Column(
                                 children: [
-                                  SizedBox(height: 20.h),
+                                  SizedBox(height: 12.h),
                                   ItemRankingContent(
                                     nickName: state.me.nickName,
                                     profile: state.me.profile,
-                                    index: state.me.index,
+                                    grade: state.me.grade,
+                                    level: state.me.level,
+                                    index: int.parse(state.me.index.toString()) + 1,
                                     count: state.me.count,
+                                    isMe: true,
                                   ),
                                   SizedBox(height: 20.h),
                                 ],
@@ -162,13 +168,82 @@ class _RankingPageState extends State<_RankingPage> {
       ),
     );
   }
+}
 
-  void _onScroll() {
-    final max = _scrollController.position.maxScrollExtent;
-    final offset = _scrollController.offset;
+class _RankingPageSkeleton extends StatelessWidget {
+  const _RankingPageSkeleton();
 
-    if (offset + offsetVisibleThreshold >= max) {
-      _bloc.add(RankingNextPage());
-    }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Spacer(),
+              SkeletonLine(
+                style: SkeletonLineStyle(
+                  width: 120,
+                  height: 30,
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+          const SizedBox(height: 20),
+          SkeletonLine(
+            style: SkeletonLineStyle(
+              height: 50,
+              randomLength: true,
+              borderRadius: BorderRadius.circular(16.r),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,0 +1,17 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <clipPath id="clip0_4687_3178">
+            <rect width="16" height="16" fill="white" />
+        </clipPath>
+    </defs>
+    <g id="ArrowsDownUp" clip-path="url(#clip0_4687_3178)">
+        <path id="Vector" d="M7 11L5 13L3 11" stroke="#A2A2AD" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round" />
+        <path id="Vector_2" d="M5 3V13" stroke="#A2A2AD" stroke-width="1.3" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path id="Vector_3" d="M9 5L11 3L13 5" stroke="#A2A2AD" stroke-width="1.3"
+            stroke-linecap="round" stroke-linejoin="round" />
+        <path id="Vector_4" d="M11 13V3" stroke="#A2A2AD" stroke-width="1.3" stroke-linecap="round"
+            stroke-linejoin="round" />
+    </g>
+</svg>

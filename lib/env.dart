@@ -187,7 +187,7 @@ class Environment {
       "buildType: $buildType,\n"
       "--------------configArgs--------------"
       "${remoteConfig.toString()}"
-      "rewardAdUnitId: ${GoogleAdHelper.rewardedAdUnitId}\n"
+      "rewardAdUnitId: ${AdmobHelper.rewardedAdUnitId}\n"
       "--------------------------------------",
     );
   }

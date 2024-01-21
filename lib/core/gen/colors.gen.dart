@@ -52,11 +52,11 @@ class ColorName {
   /// Color: #FFE6FAED
   static const Color positiveLight = Color(0xFFE6FAED);
 
-  /// Color: #45E2AA
-  static const Color primary = Color(0xFF45E2AA);
+  /// Color: #13EF79
+  static const Color primary = Color(0xFF13EF79);
 
-  /// Color: #7367FF
-  static const Color secondary = Color(0xFF7367FF);
+  /// Color: #471AFF
+  static const Color secondary = Color(0xFF471AFF);
 
   /// Color: #FFEDBE13
   static const Color warning = Color(0xFFEDBE13);

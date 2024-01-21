@@ -65,7 +65,7 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
                       hintText: FortuneTr.msgRequireVerifySixNumber,
                       contentPadding: const EdgeInsets.all(16),
                       counterText: "",
-                      hintStyle: FortuneTextStyle.button1Medium(fontColor: ColorName.grey700),
+                      hintStyle: FortuneTextStyle.button1Medium(color: ColorName.grey700),
                       errorText: FortuneValidator.isValidVerifyCode(widget._verifyCode) || widget._verifyCode.isEmpty
                           ? null
                           : FortuneTr.msgRequireVerifySixNumberContent,

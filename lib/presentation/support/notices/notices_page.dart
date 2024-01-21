@@ -13,7 +13,7 @@ import '../component/support_card.dart';
 import 'bloc/notices.dart';
 
 class NoticesPage extends StatelessWidget {
-  const NoticesPage({Key? key}) : super(key: key);
+  const NoticesPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -11,17 +11,19 @@ class ItemRanking extends StatelessWidget {
   });
 
   final RankingPagingViewItemEntity item;
-  final String index;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ItemRankingContent(
         index: index,
         profile: item.profile,
         nickName: item.nickName,
         count: item.count,
+        level: item.level,
+        grade: item.grade,
       ),
     );
   }

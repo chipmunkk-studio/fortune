@@ -8,12 +8,12 @@ class FortuneScaleButton extends StatelessWidget {
   final ButtonStyle? style;
 
   const FortuneScaleButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPress,
     this.isEnabled,
     this.style,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

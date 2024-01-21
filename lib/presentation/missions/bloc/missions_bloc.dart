@@ -50,7 +50,7 @@ class MissionsBloc extends Bloc<MissionsEvent, MissionsState>
 
   void _loadBannerAd() {
     BannerAd(
-      adUnitId: GoogleAdHelper.bannerAdUnitId,
+      adUnitId: AdmobHelper.bannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

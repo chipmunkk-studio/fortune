@@ -6,6 +6,7 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
+import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_grade_entity.dart';
 import 'package:fortune/presentation/main/bloc/main.dart';
@@ -105,14 +106,10 @@ class _UserLevel extends StatelessWidget {
         color: ColorName.grey700,
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: Row(
+      child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
-            child: _grade.icon.svg(width: 20, height: 20),
-          ),
-          const SizedBox(width: 8),
-          Flexible(
+            padding: const EdgeInsets.only(left: 24, top: 10,right: 10),
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 return FittedBox(
@@ -123,12 +120,12 @@ class _UserLevel extends StatelessWidget {
                     lineHeight: 16,
                     animationDuration: 2000,
                     center: Text(
-                      "Lv. $_level",
-                      style: FortuneTextStyle.caption3Semibold(),
+                      FortuneTr.msgCenterLevel(_level.toString()),
+                      style: FortuneTextStyle.caption1SemiBold(),
                     ),
                     percent: _percentageNextLevel ?? 0,
                     padding: const EdgeInsets.all(0),
-                    barRadius: Radius.circular(100.r),
+                    barRadius: Radius.circular(12.r),
                     linearGradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.topRight,
@@ -143,7 +140,10 @@ class _UserLevel extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(width: 8),
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 4,left: 8),
+            child: _grade.icon.svg(width: 28, height: 28),
+          ),
         ],
       ),
     );
@@ -167,11 +167,11 @@ class _CoinCount extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
-            child: Assets.icons.icFortuneMoney.svg(width: 20, height: 20),
+            padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+            child: Assets.icons.icFortuneMoney.svg(width: 28, height: 28),
           ),
           const SizedBox(width: 8),
-          Text("$_ticket", style: FortuneTextStyle.body3Semibold()),
+          Text("$_ticket", style: FortuneTextStyle.body2Semibold()),
           const SizedBox(width: 12),
         ],
       ),
@@ -198,24 +198,16 @@ class _ObtainMarkerCount extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 5, bottom: 5),
-            child: Assets.icons.icIngredientBag.svg(width: 20, height: 20),
+            padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
+            child: Assets.icons.icIngredientBag.svg(width: 28, height: 28),
           ),
           AddToCartIcon(
             key: _cartKey,
             badgeOptions: const BadgeOptions(active: false),
             icon: Text(
               "$_markerObtainCount",
-              style: FortuneTextStyle.body3Semibold(),
+              style: FortuneTextStyle.body2Semibold(),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: ColorName.grey500,
-              borderRadius: BorderRadius.circular(6.r),
-            ),
-            child: Assets.icons.icPlus.svg(width: 8, height: 8),
           ),
           const SizedBox(width: 8),
         ],

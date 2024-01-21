@@ -13,11 +13,11 @@ class FortuneTextButton extends StatelessWidget {
   final TextStyle? textStyle;
 
   FortuneTextButton({
-    Key? key,
+    super.key,
     required this.onPress,
     required this.text,
     this.textStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
