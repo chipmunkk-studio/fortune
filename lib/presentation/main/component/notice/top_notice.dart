@@ -47,7 +47,7 @@ class _TopNoticeState extends State<TopNotice> {
             : Bounceable(
                 onTap: widget.onTap,
                 child: Container(
-                  height: 64,
+                  height: 68,
                   // h를 줘서 반응형으로 적용할 시 크기가 작아짐.
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
@@ -61,8 +61,8 @@ class _TopNoticeState extends State<TopNotice> {
                           children: [
                             const SizedBox(width: 12),
                             FortuneCachedNetworkImage(
-                              width: 40.h,
-                              height: 40.h,
+                              width: 44.h,
+                              height: 44.h,
                               imageUrl: e.user.profileImage,
                               errorWidget: Container(
                                 decoration: BoxDecoration(
@@ -78,7 +78,7 @@ class _TopNoticeState extends State<TopNotice> {
                                   child: Assets.images.ivDefaultProfile.svg(),
                                 ),
                               ),
-                              imageShape: ImageShape.squircle,
+                              imageShape: ImageShape.circle,
                               placeholder: Container(),
                               fit: BoxFit.fill,
                             ),
@@ -90,27 +90,25 @@ class _TopNoticeState extends State<TopNotice> {
                                 children: [
                                   Row(
                                     children: [
+                                      Text(
+                                        e.createdAt,
+                                        style: FortuneTextStyle.body2Regular(),
+                                      ),
+                                      const SizedBox(width: 3),
                                       Flexible(
                                         child: Text(
                                           e.user.nickname.isEmpty ? FortuneTr.msgUnknownUser : e.user.nickname,
-                                          style: FortuneTextStyle.body3Semibold(),
+                                          style: FortuneTextStyle.body2Semibold(),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                       Text(
                                         FortuneTr.msgHelpedBy,
-                                        style: FortuneTextStyle.body3Regular(),
-                                      ),
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        e.createdAt,
-                                        style: FortuneTextStyle.body3Regular(
-                                          color: ColorName.grey200,
-                                        ),
+                                        style: FortuneTextStyle.body2Regular(),
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 3),
+                                  const SizedBox(height: 6),
                                   Flexible(
                                     child: Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,14 +116,14 @@ class _TopNoticeState extends State<TopNotice> {
                                         Flexible(
                                           child: Text(
                                             e.mission.title,
-                                            style: FortuneTextStyle.body3Regular(),
+                                            style: FortuneTextStyle.body2Regular(),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                         Text(
                                           " ${FortuneTr.msgAcquired}",
-                                          style: FortuneTextStyle.body3Regular(),
+                                          style: FortuneTextStyle.body2Regular(),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],

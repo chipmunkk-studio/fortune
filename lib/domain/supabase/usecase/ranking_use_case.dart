@@ -57,11 +57,12 @@ class RankingUseCase implements UseCase1<RankingViewItemEntity, RequestRankingPa
           final rankingList = missionClearUserRankingList
               .map(
                 (e) => RankingPagingViewItemEntity(
-                    nickName: e.user.nickname,
-                    count: e.clearCount.toString(),
-                    profile: e.user.profileImage,
-                    level: e.user.level,
-                    grade: e.user.grade),
+                  nickName: e.user.nickname,
+                  count: e.clearCount.toString(),
+                  profile: e.user.profileImage,
+                  level: e.user.level,
+                  grade: e.user.grade,
+                ),
               )
               .toList();
 

@@ -66,6 +66,10 @@ class $AssetsIconsGen {
   SvgGenImage get icArrowUp =>
       const SvgGenImage('assets/icons/ic_arrow_up.svg');
 
+  /// File path: assets/icons/ic_arrows_down_up.svg
+  SvgGenImage get icArrowsDownUp =>
+      const SvgGenImage('assets/icons/ic_arrows_down_up.svg');
+
   /// File path: assets/icons/ic_bell.svg
   SvgGenImage get icBell => const SvgGenImage('assets/icons/ic_bell.svg');
 
@@ -97,6 +101,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_coin_pocket.svg
   SvgGenImage get icCoinPocket =>
       const SvgGenImage('assets/icons/ic_coin_pocket.svg');
+
+  /// File path: assets/icons/ic_collect_complete.svg
+  SvgGenImage get icCollectComplete =>
+      const SvgGenImage('assets/icons/ic_collect_complete.svg');
 
   /// File path: assets/icons/ic_fortune_cookie_1.svg
   SvgGenImage get icFortuneCookie1 =>
@@ -208,6 +216,18 @@ class $AssetsIconsGen {
   SvgGenImage get icRandomBox =>
       const SvgGenImage('assets/icons/ic_random_box.svg');
 
+  /// File path: assets/icons/ic_rank_bronze.svg
+  SvgGenImage get icRankBronze =>
+      const SvgGenImage('assets/icons/ic_rank_bronze.svg');
+
+  /// File path: assets/icons/ic_rank_gold.svg
+  SvgGenImage get icRankGold =>
+      const SvgGenImage('assets/icons/ic_rank_gold.svg');
+
+  /// File path: assets/icons/ic_rank_silver.svg
+  SvgGenImage get icRankSilver =>
+      const SvgGenImage('assets/icons/ic_rank_silver.svg');
+
   /// File path: assets/icons/ic_ranking_1.svg
   SvgGenImage get icRanking1 =>
       const SvgGenImage('assets/icons/ic_ranking_1.svg');
@@ -252,6 +272,7 @@ class $AssetsIconsGen {
         icArrowRight16,
         icArrowRight20,
         icArrowUp,
+        icArrowsDownUp,
         icBell,
         icCamera,
         icCamera32,
@@ -261,6 +282,7 @@ class $AssetsIconsGen {
         icChecklist24,
         icClock,
         icCoinPocket,
+        icCollectComplete,
         icFortuneCookie1,
         icFortuneCookie2,
         icFortuneMoney,
@@ -291,6 +313,9 @@ class $AssetsIconsGen {
         icQuestion,
         icRadarRotate,
         icRandomBox,
+        icRankBronze,
+        icRankGold,
+        icRankSilver,
         icRanking1,
         icRanking2,
         icRanking3,

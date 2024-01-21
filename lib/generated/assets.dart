@@ -14,6 +14,7 @@ class Assets {
   static const String iconsIcArrowRight16 = 'assets/icons/ic_arrow_right_16.svg';
   static const String iconsIcArrowRight20 = 'assets/icons/ic_arrow_right_20.svg';
   static const String iconsIcArrowUp = 'assets/icons/ic_arrow_up.svg';
+  static const String iconsIcArrowsDownUp = 'assets/icons/ic_arrows_down_up.svg';
   static const String iconsIcBell = 'assets/icons/ic_bell.svg';
   static const String iconsIcCamera = 'assets/icons/ic_camera.svg';
   static const String iconsIcCamera32 = 'assets/icons/ic_camera_32.svg';
@@ -23,6 +24,7 @@ class Assets {
   static const String iconsIcChecklist24 = 'assets/icons/ic_checklist_24.svg';
   static const String iconsIcClock = 'assets/icons/ic_clock.svg';
   static const String iconsIcCoinPocket = 'assets/icons/ic_coin_pocket.svg';
+  static const String iconsIcCollectComplete = 'assets/icons/ic_collect_complete.svg';
   static const String iconsIcFortuneCookie1 = 'assets/icons/ic_fortune_cookie_1.svg';
   static const String iconsIcFortuneCookie2 = 'assets/icons/ic_fortune_cookie_2.svg';
   static const String iconsIcFortuneMoney = 'assets/icons/ic_fortune_money.svg';
@@ -53,6 +55,9 @@ class Assets {
   static const String iconsIcQuestion = 'assets/icons/ic_question.svg';
   static const String iconsIcRadarRotate = 'assets/icons/ic_radar_rotate.svg';
   static const String iconsIcRandomBox = 'assets/icons/ic_random_box.svg';
+  static const String iconsIcRankBronze = 'assets/icons/ic_rank_bronze.svg';
+  static const String iconsIcRankGold = 'assets/icons/ic_rank_gold.svg';
+  static const String iconsIcRankSilver = 'assets/icons/ic_rank_silver.svg';
   static const String iconsIcRanking1 = 'assets/icons/ic_ranking_1.svg';
   static const String iconsIcRanking2 = 'assets/icons/ic_ranking_2.svg';
   static const String iconsIcRanking3 = 'assets/icons/ic_ranking_3.svg';

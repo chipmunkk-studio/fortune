@@ -164,13 +164,13 @@ abstract class FortuneTextStyle {
     );
   }
 
-  static TextStyle button1Medium({Color? fontColor}) {
+  static TextStyle button1Medium({Color? color}) {
     return TextStyle(
       fontSize: 18.spMin,
       letterSpacing: -0.06,
       fontStyle: FontStyle.normal,
       fontFamily: FontFamily.pretendardMedium,
-      color: fontColor ?? ColorName.white,
+      color: color ?? ColorName.white,
     );
   }
 
