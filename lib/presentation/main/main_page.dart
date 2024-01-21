@@ -441,7 +441,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                   ),
                 ),
                 Positioned(
-                  bottom: 16,
+                  bottom: 20,
                   right: 16,
                   child: Bounceable(
                     onTap: _onMyBagClick,
@@ -450,7 +450,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         Container(
                           width: 64,
                           height: 64,
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16.r),
                             color: ColorName.grey700,
@@ -518,7 +518,9 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                         ),
                         const SizedBox(height: 16),
                         TopNotice(
-                          onTap: () {},
+                          onTap: () {
+                            _router.navigateTo(context, AppRoutes.rankingRoutes);
+                          },
                         ),
                         const SizedBox(height: 10),
                         TopInformationArea(
@@ -535,7 +537,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           },
                           onGradeAreaTap: () {
                             _tracker.trackEvent('메인_레벨_클릭');
-                            _router.navigateTo(context, AppRoutes.rankingRoutes);
+                            _router.navigateTo(context, AppRoutes.gradeGuideRoute);
                           },
                           onCoinTap: _showCoinDialog,
                         ),
