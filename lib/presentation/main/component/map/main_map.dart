@@ -142,9 +142,7 @@ class MainMap extends StatelessWidget {
                       builder: (context, state) {
                         return CenterProfile(
                           imageUrl: state.user?.profileImage ?? "",
-                          backgroundColor: _isOpenStreetMap()
-                              ? ColorName.primary.withOpacity(0.5)
-                              : ColorName.secondary.withOpacity(1.0),
+                          backgroundColor: ColorName.primary.withOpacity(1.0),
                         );
                       },
                     ),

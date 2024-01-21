@@ -43,13 +43,15 @@ class RankingUserByMissionClearCountUseCase implements UseCase0<RankingViewItemE
           .toList();
 
       final myRankingIndex = _findUserMissionClearRankingIndex(missionClearUserRankingList, user.email);
-      final myRankingUser = missionClearUserRankingList[myRankingIndex];
+      final myRankingUser = myRankingIndex >= 0
+          ? missionClearUserRankingList[myRankingIndex]
+          : MissionClearUserCountEntity(user: user, clearCount: 0);
       return Right(
         RankingViewItemEntity(
           rankingItems: rankingList,
           myRanking: RankingMyRankingViewItem(
             nickName: user.nickname,
-            count: myRankingIndex > 0 ? myRankingUser.clearCount.toString() : '',
+            count: myRankingUser.clearCount.toString(),
             profile: user.profileImage,
             level: myRankingUser.user.level,
             grade: myRankingUser.user.grade,

@@ -149,7 +149,7 @@ class _RankingPageState extends State<_RankingPage> {
                                     profile: state.me.profile,
                                     grade: state.me.grade,
                                     level: state.me.level,
-                                    index: int.parse(state.me.index),
+                                    index: int.parse(state.me.index.toString()) + 1,
                                     count: state.me.count,
                                     isMe: true,
                                   ),

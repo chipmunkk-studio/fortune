@@ -126,7 +126,10 @@ class ItemRankingContent extends StatelessWidget {
       default:
         icon = Padding(
           padding: EdgeInsets.all(8.h),
-          child: Text(index.toString(), style: FortuneTextStyle.body3Semibold()),
+          child: Text(
+            index <= 0 ? '-' : index.toString(),
+            style: FortuneTextStyle.body3Semibold(),
+          ),
         );
         break;
     }

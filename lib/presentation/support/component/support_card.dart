@@ -30,14 +30,14 @@ class _SupportCardState extends State<SupportCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAlias,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: EdgeInsets.zero,
       color: ColorName.grey800,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.r),
         side: BorderSide(
-          color: widget.isPin ? ColorName.primary : Colors.transparent,
-          width: 1,
+          color: widget.isPin ? ColorName.primary : ColorName.grey800,
+          width:  1,
         ),
       ),
       child: ExpansionTile(

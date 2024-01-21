@@ -357,8 +357,8 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                 ),
                 // 카트.
                 Positioned(
-                  bottom: 16,
-                  right: 16,
+                  bottom: 20,
+                  left: 16,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -399,7 +399,7 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           );
                         },
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       BlocConsumer<MainBloc, MainState>(
                         listenWhen: (previous, current) =>
                             previous.isLoading != current.isLoading ||
@@ -437,32 +437,33 @@ class _MainPageState extends State<_MainPage> with WidgetsBindingObserver, Ticke
                           );
                         },
                       ),
-                      const SizedBox(height: 24),
-                      Bounceable(
-                        onTap: _onMyBagClick,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 17),
-                          decoration: ShapeDecoration(
-                            color: ColorName.grey700,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Assets.icons.icInventory.svg(width: 20, height: 20),
-                              const SizedBox(width: 12),
-                              Text(
-                                "내 미션 현황",
-                                style: FortuneTextStyle.subTitle2SemiBold(),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
                     ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 16,
+                  right: 16,
+                  child: Bounceable(
+                    onTap: _onMyBagClick,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 64,
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.r),
+                            color: ColorName.grey700,
+                          ),
+                          child: Assets.icons.icInventory.svg(width: 32, height: 32),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          FortuneTr.msgMyMissionStatus,
+                          style: FortuneTextStyle.body3Semibold(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 AddToCartAnimation(
