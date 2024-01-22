@@ -12,7 +12,7 @@ class AdmobHelper {
     'ios': {
       'banner': kReleaseMode ? 'ca-app-pub-8638803250596668/8868042637' : 'ca-app-pub-3940256099942544/2934735716',
       'interstitial': kReleaseMode ? 'ca-app-pub-8638803250596668/7886133459' : 'ca-app-pub-3940256099942544/6978759866',
-      'rewarded': kReleaseMode ? 'ca-app-pub-8638803250596668/4990925070' : 'ca-app-pub-8638803250596668/5965937651',
+      'rewarded': kReleaseMode ? 'ca-app-pub-8638803250596668/4990925070' : 'ca-app-pub-8638803250596668/1712485313',
     }
   };
 
