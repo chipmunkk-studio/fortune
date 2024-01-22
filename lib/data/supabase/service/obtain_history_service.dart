@@ -105,9 +105,9 @@ class ObtainHistoryService {
   }
 
   Future<List<ObtainHistoryResponse>> findObtainHistoryByUser(
-    userId, {
-    required List<ObtainHistoryColumn> columnsToSelect,
-  }) async {
+      userId, {
+        required List<ObtainHistoryColumn> columnsToSelect,
+      }) async {
     final selectColumns = columnsToSelect.map((column) {
       if (column == ObtainHistoryColumn.ingredient) {
         return '${ObtainHistoryColumn.ingredient.name}('
@@ -123,21 +123,31 @@ class ObtainHistoryService {
       return column.name;
     }).toList();
 
+    List<ObtainHistoryResponse> allHistories = [];
+    int start = 0;
+    const int pageSize = 100;
+
     try {
-      final List<dynamic> response = await _client
-          .from(_obtainHistoryTableName)
-          .select(selectColumns.join(","))
-          .eq(
-            ObtainHistoryColumn.users.name,
-            userId,
-          )
-          .toSelect();
-      if (response.isEmpty) {
-        return List.empty();
-      } else {
-        final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
-        return histories;
+      while (true) {
+        final List<dynamic> response = await _client
+            .from(_obtainHistoryTableName)
+            .select(selectColumns.join(","))
+            .eq(ObtainHistoryColumn.users.name, userId)
+            .range(start, start + pageSize - 1)
+            .toSelect();
+
+        if (response.isEmpty) {
+          break; // 더 이상 가져올 데이터가 없으면 반복 종료
+        } else {
+          final histories = response.map((e) => ObtainHistoryResponse.fromJson(e)).toList();
+          allHistories.addAll(histories);
+          if (response.length < pageSize) {
+            break; // 마지막 페이지인 경우 반복 종료
+          }
+          start += pageSize; // 다음 페이지로 이동
+        }
       }
+      return allHistories;
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
@@ -154,8 +164,17 @@ class ObtainHistoryService {
 
   // 히스토리 삭제.
   Future<void> delete(List<int> list) async {
+    const int batchSize = 100;
     try {
-      await _client.from(_obtainHistoryTableName).delete().inFilter('id', list);
+      for (int i = 0; i < list.length; i += batchSize) {
+        // 100개씩 분할
+        var batch = list.sublist(i, i + batchSize > list.length ? list.length : i + batchSize);
+        // 분할된 배치로 삭제
+        await _client
+            .from(_obtainHistoryTableName)
+            .delete()
+            .inFilter('id', batch);
+      }
     } catch (e) {
       throw (e is Exception) ? e.handleException() : e;
     }
