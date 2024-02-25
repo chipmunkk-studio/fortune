@@ -1,16 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.9.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
-        classpath 'com.google.gms:google-services:4.3.14'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
-    }
+    ext.kotlin_version = '1.9.22'
 }
 
 allprojects {
@@ -26,6 +15,36 @@ allprojects {
         resolutionStrategy {
             force "com.google.android.gms:play-services-location:21.0.1"
         }
+    }
+    // This code is where all the magic happens and fixes the error.
+    subprojects {
+        afterEvaluate { project ->
+            if (project.plugins.hasPlugin("com.android.application")
+                    || project.plugins.hasPlugin("com.android.library")) {
+
+                // todo https://github.com/avioli/uni_links/issues/187
+                if (project.name == "uni_links") {
+                    project.android.namespace = "name.avioli.unilinks"
+                }
+
+                // todo https://github.com/fluttercandies/flutter_image_compress/issues/270
+                if (project.name == "flutter_image_compress_common") {
+                    project.android.compileOptions {
+                        sourceCompatibility = JavaVersion.VERSION_17
+                        targetCompatibility = JavaVersion.VERSION_17
+                    }
+                }
+            }
+            if (project.hasProperty('android')) {
+                project.android {
+                    if (namespace == null) {
+                        namespace project.group
+                    }
+                }
+            }
+        }
+        project.buildDir = "${rootProject.buildDir}/${project.name}"
+        project.evaluationDependsOn(":app")
     }
 }
 
