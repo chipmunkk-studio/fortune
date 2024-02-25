@@ -252,7 +252,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 메인 화면을 구성하는데 필요한 모든 정보를 가져옴.
   getMain(Emitter<MainState> emit) async {
     final myLoc = state.myLocation;
-    if (myLoc != null) {
+    if (myLoc != null && !myLoc.isMocked) {
       await mainUseCase(
         RequestMainParam(
           longitude: myLoc.longitude,
@@ -294,15 +294,17 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   // 위치 변경 시.
   FutureOr<void> locationChange(MainMyLocationChange event, Emitter<MainState> emit) async {
     try {
-      final latitude = event.newLoc.latitude;
-      final longitude = event.newLoc.longitude;
-      final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
-      emit(
-        state.copyWith(
-          myLocation: event.newLoc,
-          locationName: locationName,
-        ),
-      );
+      if (!event.newLoc.isMocked) {
+        final latitude = event.newLoc.latitude;
+        final longitude = event.newLoc.longitude;
+        final locationName = await getLocationName(latitude, longitude, isDetailStreet: false);
+        emit(
+          state.copyWith(
+            myLocation: event.newLoc,
+            locationName: locationName,
+          ),
+        );
+      }
     } catch (e) {
       FortuneLogger.error(message: e.toString());
     }
