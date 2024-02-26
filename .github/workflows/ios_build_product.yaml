@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-13.5
+    runs-on: macOS-13
 
     steps:
       - name: Checkout Repository
