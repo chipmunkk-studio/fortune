@@ -25,11 +25,11 @@ jobs:
       - name: Install the provisioning profile
         env:
           PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
-        run: |
+      - run: |
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
+          echo "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode > $PP_PATH
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles     
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v1
