@@ -33,6 +33,7 @@ jobs:
         with:
           channel: stable
 
+
       - name: Install Flutter Dependencies
         run: flutter pub get
 
