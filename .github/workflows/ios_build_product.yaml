@@ -25,7 +25,7 @@ jobs:
       - name: Install the provisioning profile
         env:
           PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
-      - run: |
+        run: |
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           echo "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode > $PP_PATH
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
