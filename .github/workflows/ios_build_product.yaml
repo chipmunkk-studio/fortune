@@ -7,11 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macos-13
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
+      - name: Select Xcode Version
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app/Contents/Developer
 
       - name: Install Apple Certificate
         uses: apple-actions/import-codesign-certs@v1
@@ -24,9 +27,9 @@ jobs:
           PROVISIONING_CERTIFICATE_BASE64: ${{ secrets.APPLE_PROVISIONING_PROFILE }}
         run: |
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-          echo -n "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode --output $PP_PATH
+          echo "$PROVISIONING_CERTIFICATE_BASE64" | base64 --decode > $PP_PATH
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles     
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v1

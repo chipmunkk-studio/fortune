@@ -20,7 +20,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>LSMinimumSystemVersion</key>
-        <string>13.0</string>
+        <string>14.0</string>
 		<key>CFBundleDisplayName</key>
 		<string>포춘레이더</string>
 		<key>CFBundleExecutable</key>
