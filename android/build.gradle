@@ -16,17 +16,9 @@ allprojects {
             force "com.google.android.gms:play-services-location:21.0.1"
         }
     }
-    // This code is where all the magic happens and fixes the error.
+
     subprojects {
         afterEvaluate { project ->
-            if (project.plugins.hasPlugin("com.android.application")
-                    || project.plugins.hasPlugin("com.android.library")) {
-
-                // todo https://github.com/avioli/uni_links/issues/187
-                if (project.name == "uni_links") {
-                    project.android.namespace = "name.avioli.unilinks"
-                }
-            }
             if (project.hasProperty('android')) {
                 project.android {
                     if (namespace == null) {
