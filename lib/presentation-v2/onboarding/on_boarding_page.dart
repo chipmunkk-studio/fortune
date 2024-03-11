@@ -10,7 +10,7 @@ import 'package:fortune/di.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 
 class OnBoardingPage extends StatefulWidget {
-  const OnBoardingPage({Key? key}) : super(key: key);
+  const OnBoardingPage({super.key});
 
   @override
   State<OnBoardingPage> createState() => _OnBoardingPageState();

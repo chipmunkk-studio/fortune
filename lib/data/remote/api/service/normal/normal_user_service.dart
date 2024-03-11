@@ -1,7 +1,6 @@
 import 'package:chopper/chopper.dart';
-import 'package:fortune/core/network/api/request/request_nickname_check.dart';
-
-import '../../../auth_helper_jwt.dart';
+import 'package:fortune/data/remote/api/request/request_nickname_check.dart';
+import 'package:fortune/data/remote/core/auth_helper_jwt.dart';
 
 part 'normal_user_service.chopper.dart';
 

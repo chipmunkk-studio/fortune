@@ -382,7 +382,7 @@
 //             },
 //             content: Container(
 //               color: Colors.grey[300],
-//               child: Image.network(
+//               child: Image.core(
 //                 imageForIndex(index),
 //                 fit: BoxFit.cover,
 //                 width: double.infinity,
@@ -436,7 +436,7 @@
 //             },
 //             content: Container(
 //               color: Colors.grey[300],
-//               child: Image.network(
+//               child: Image.core(
 //                 imageForIndex(index),
 //                 fit: BoxFit.cover,
 //                 width: double.infinity,

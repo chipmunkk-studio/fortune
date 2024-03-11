@@ -2,14 +2,14 @@ import 'dart:core';
 import 'dart:io';
 
 import 'package:chopper/chopper.dart';
-import 'package:fortune/core/error2/fortune_app_failures.dart';
-import 'package:fortune/core/network/api/fortune_response.dart';
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/data/remote/api/fortune_response.dart';
+import 'package:fortune/data/remote/api/service/normal/normal_user_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:single_item_storage/storage.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:fortune/data/error/fortune_error.dart';
 
-import '../util/logger.dart';
-import 'api/service/normal/normal_user_service.dart';
 import 'credential/token_response.dart';
 import 'credential/user_credential.dart';
 

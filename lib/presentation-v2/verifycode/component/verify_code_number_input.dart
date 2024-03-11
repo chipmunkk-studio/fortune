@@ -8,7 +8,7 @@ import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/util/validators.dart';
-import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
+import 'package:fortune/presentation-v2/verifycode/bloc/verify_code.dart';
 
 class VerifyCodeNumberInput extends StatefulWidget {
   const VerifyCodeNumberInput({

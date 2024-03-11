@@ -1,5 +1,5 @@
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:fortune/presentation/verifycode/bloc/verify_code_bloc.dart';
+import 'package:fortune/presentation-v2/verifycode/bloc/verify_code.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'web_verify_code_state.freezed.dart';

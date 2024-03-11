@@ -1,11 +1,11 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/presentation-v2/termsdetail/terms_detail_page.dart';
 import 'package:fortune/presentation-web/login/web_login_page.dart';
 import 'package:fortune/presentation-web/retire/web_retire_page.dart';
 import 'package:fortune/presentation-web/viewpost/view_post_page.dart';
 import 'package:fortune/presentation-web/writepost/write_post.dart';
 import 'package:fortune/presentation/support/privacypolicy/privacy_policy_page.dart';
-import 'package:fortune/presentation/termsdetail/terms_detail_page.dart';
 
 import '../../presentation-web/main/web_main_page.dart';
 

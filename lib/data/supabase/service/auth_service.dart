@@ -13,7 +13,7 @@ import 'package:fortune/core/util/permission.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:fortune/presentation/login/bloc/login.dart';
+import 'package:fortune/presentation-v2/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

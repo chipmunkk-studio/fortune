@@ -11,7 +11,7 @@ import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation/login/bloc/login.dart';
+import 'package:fortune/presentation-v2/login/bloc/login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';

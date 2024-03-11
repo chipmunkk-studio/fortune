@@ -22,7 +22,7 @@
 // ),
 // Positioned(
 // top: -100,
-// child: Image.network("https://i.imgur.com/2yaf2wb.png", width: 150, height: 150)
+// child: Image.core("https://i.imgur.com/2yaf2wb.png", width: 150, height: 150)
 // )
 // ],
 // )

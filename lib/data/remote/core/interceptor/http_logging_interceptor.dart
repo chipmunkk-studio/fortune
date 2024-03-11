@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
+import 'package:fortune/core/util/logger.dart';
 import 'package:http/http.dart' as http;
-
-import '../../util/logger.dart';
 
 class HttpLoggerInterceptor implements RequestInterceptor, ResponseInterceptor {
   @override

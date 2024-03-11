@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:chopper/chopper.dart';
 import 'package:dartz/dartz.dart';
-import 'package:fortune/core/error2/fortune_app_failures.dart';
-import 'package:fortune/core/error2/fortune_error_mapper.dart';
-import 'package:fortune/core/error2/fortune_error_response.dart';
+import 'package:fortune/data/error/fortune_error.dart';
 
 extension FortuneResponseMapper on Response {
   dynamic response() {

@@ -1,11 +1,11 @@
 import 'package:chopper/chopper.dart';
+import 'package:fortune/data/remote/api/service/main_service.dart';
+import 'package:fortune/data/remote/api/service/normal/normal_auth_service.dart';
+import 'package:fortune/data/remote/api/service/normal/normal_user_service.dart';
+import 'package:fortune/data/remote/api/service/user_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
-import 'api/service/main_service.dart';
-import 'api/service/normal/normal_auth_service.dart';
-import 'api/service/normal/normal_user_service.dart';
-import 'api/service/user_service.dart';
 import 'auth_helper_jwt.dart';
 import 'credential/user_credential.dart';
 import 'interceptor/auth_interceptor.dart';
