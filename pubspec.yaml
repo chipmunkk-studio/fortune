@@ -18,21 +18,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core:
-  firebase_remote_config:
-  firebase_analytics:
-  firebase_crashlytics:
-  firebase_messaging:
+  firebase_core: ^2.27.0
+  firebase_remote_config: ^4.3.17
+  firebase_analytics: ^10.8.9
+  firebase_crashlytics: ^3.4.18
+  firebase_messaging: ^14.7.19
   supabase: ^2.0.8
   supabase_flutter: ^2.3.4
   app_settings: ^5.1.1
   mixpanel_flutter: ^2.2.0
   package_info_plus: ^5.0.1
-  flutter_local_notifications: ^16.3.1+1
+  flutter_local_notifications: ^17.0.0
   flutter_launcher_icons: ^0.13.1
   google_mobile_ads: ^4.0.0
   upgrader: ^8.4.0
-  google_fonts: ^6.1.0
+  google_fonts: ^6.2.1
   flutter_inappwebview: ^5.7.2+3
   flutter_cache_manager: ^3.3.1
   url_launcher: ^6.2.5
@@ -96,14 +96,14 @@ dependencies:
   dartz: ^0.10.1
   json_annotation: ^4.8.1
   synchronized: ^3.1.0
-  logger: ^2.0.2+1
-  easy_localization: ^3.0.4
+  logger: ^2.1.0
+  easy_localization: ^3.0.5
   collection: ^1.18.0
   geocoding: ^2.2.0
 
   # network
   http: ^1.2.0
-  chopper: ^7.1.0+1
+  chopper: ^7.2.0
   jwt_decoder: 2.0.1
 
   # data
@@ -126,7 +126,6 @@ dev_dependencies:
   flutter_lints: ^3.0.1
   # 패키지명변경: flutter pub run change_app_package_name:main com.new.package.name
   change_app_package_name: ^1.1.0
-
   # Code generator from models (to json and from json)
   json_serializable: ^6.7.1
   # Freezed
@@ -153,12 +152,6 @@ flutter_native_splash:
     icon_background_color_dark: "#1b1c24"
 
   web: false
-
-# 버전 호환이 안되서 강제로 명시해서 씀
-dependency_overrides:
-  leak_tracker: ^10.0.4
-  leak_tracker_testing: 3.0.1
-  leak_tracker_flutter_testing: 3.0.3
 
 flutter_gen:
   output: lib/core/gen/
