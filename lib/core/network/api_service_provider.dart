@@ -1,6 +1,4 @@
 import 'package:chopper/chopper.dart';
-import 'package:foresh_flutter/core/network/api/service/common_service.dart';
-import 'package:foresh_flutter/core/network/api/service/mission_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
@@ -55,8 +53,6 @@ class ApiServiceProvider {
       services: [
         UserService.create(),
         MainService.create(),
-        MissionService.create(),
-        CommonService.create(),
         // 여기에 인증이 필요한 api 추가.
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
@@ -93,8 +89,4 @@ class ApiServiceProvider {
   UserService getUserService() => _defaultClient.getService<UserService>();
 
   MainService getMarkerService() => _defaultClient.getService<MainService>();
-
-  MissionService getRewardService() => _defaultClient.getService<MissionService>();
-
-  CommonService getCommonService() => _defaultClient.getService<CommonService>();
 }

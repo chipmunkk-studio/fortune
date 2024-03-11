@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
-import 'package:foresh_flutter/core/network/api/request/request_main.dart';
-import 'package:foresh_flutter/core/network/api/request/request_post_marker.dart';
+
+import '../request/request_main.dart';
+import '../request/request_post_marker.dart';
 
 part 'main_service.chopper.dart';
 

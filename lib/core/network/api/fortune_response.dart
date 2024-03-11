@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:chopper/chopper.dart';
 import 'package:dartz/dartz.dart';
-import 'package:foresh_flutter/core/error/fortune_app_failures.dart';
-import 'package:foresh_flutter/core/error/fortune_error_response.dart';
-
-import '../../error/fortune_error_mapper.dart';
+import 'package:fortune/core/error2/fortune_app_failures.dart';
+import 'package:fortune/core/error2/fortune_error_mapper.dart';
+import 'package:fortune/core/error2/fortune_error_response.dart';
 
 extension FortuneResponseMapper on Response {
   dynamic response() {
@@ -17,7 +16,7 @@ extension FortuneResponseMapper on Response {
     return decodedData;
   }
 
-  FortuneErrorResponse? errorResponse() {
+  FortuneErrorResponse? toErrorResponse() {
     dynamic decodedData;
     if (bodyBytes.isNotEmpty) {
       decodedData = jsonDecode(utf8.decode(bodyBytes));
@@ -30,10 +29,10 @@ extension FortuneResponseMapper on Response {
     if (isSuccessful) {
       return response();
     } else {
-      FortuneErrorResponse? errorResponse = this.errorResponse();
+      FortuneErrorResponse? errorResponse = toErrorResponse();
       throw FortuneException(
-        errorCode: errorResponse?.code ?? base.statusCode,
-        errorMessage: errorResponse?.message ?? error.toString(),
+        code: errorResponse?.code ?? base.statusCode,
+        message: errorResponse?.message ?? error.toString(),
       );
     }
   }
@@ -49,15 +48,6 @@ extension FortuneDomainMapper<T> on Future<T> {
   }
 
   Future<Either<FortuneFailure, T>> toLocalDomainData(FortuneErrorMapper errorMapper) async {
-    try {
-      return Right(await this);
-    } catch (e) {
-      return errorMapper.mapAsLeft(
-        FortuneException(
-          errorCode: FortuneErrorStatus.clientInternal,
-          errorMessage: e.toString(),
-        ),
-      );
-    }
+    return Right(await this);
   }
 }

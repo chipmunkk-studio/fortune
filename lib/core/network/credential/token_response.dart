@@ -10,7 +10,6 @@ class TokenResponse extends Equatable {
   final String? accessToken;
   @JsonKey(name: 'refreshToken')
   final String? refreshToken;
-
   final String? _displayToken;
 
   const TokenResponse({

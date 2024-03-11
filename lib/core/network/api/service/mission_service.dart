@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
-import 'package:foresh_flutter/core/network/api/request/request_reward_exchange.dart';
+
+import '../request/request_reward_exchange.dart';
 
 part 'mission_service.chopper.dart';
 

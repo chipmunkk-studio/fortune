@@ -30,11 +30,7 @@ class HttpLoggerInterceptor implements RequestInterceptor, ResponseInterceptor {
   FutureOr<Response> onResponse(Response response) {
     final base = response.base.request;
 
-    if (response.statusCode >= 400) {
-      FortuneLogger.error('[RESPONSE] <-- ${response.statusCode} ${base!.url}');
-    } else {
-      FortuneLogger.info('[RESPONSE] <-- ${response.statusCode} ${base!.url}');
-    }
+    FortuneLogger.info('[RESPONSE] <-- ${response.statusCode} ${base!.url}');
 
     // response.base.headers.forEach((k, v) => debugPrint('$k: $v'));
 

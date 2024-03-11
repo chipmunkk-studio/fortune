@@ -13,4 +13,10 @@ class RefreshTokenAuthenticator implements Authenticator {
   FutureOr<Request?> authenticate(Request request, Response response, [Request? originalRequest]) {
     return _authHelperJwt.interceptResponse(request, response);
   }
+
+  @override
+  AuthenticationCallback? get onAuthenticationFailed => null;
+
+  @override
+  AuthenticationCallback? get onAuthenticationSuccessful => null;
 }

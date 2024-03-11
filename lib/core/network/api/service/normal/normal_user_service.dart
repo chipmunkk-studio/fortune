@@ -1,5 +1,5 @@
 import 'package:chopper/chopper.dart';
-import 'package:foresh_flutter/core/network/api/request/request_nickname_check.dart';
+import 'package:fortune/core/network/api/request/request_nickname_check.dart';
 
 import '../../../auth_helper_jwt.dart';
 
