@@ -66,6 +66,7 @@ import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.d
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
+import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
 import 'package:fortune/presentation-web/login/bloc/web_login.dart';
@@ -153,13 +154,6 @@ Future<void> init() async {
           remoteConfig: serviceLocator<Environment>().remoteConfig,
         ),
       );
-
-    /// Supabase
-    await Supabase.initialize(
-      url: serviceLocator<Environment>().remoteConfig.baseUrl,
-      anonKey: serviceLocator<Environment>().remoteConfig.anonKey,
-      debug: false,
-    );
 
     /// 로컬 데이터 - Storage.
     final ObservedStorage<UserCredential> userStorage = ObservedStorage<UserCredential>(
@@ -698,171 +692,12 @@ _initBloc(bool kIsWeb) async {
   kIsWeb ? await _initWebBloc() : await _initAppBloc();
 }
 
-/// Bloc.
-// _initAppBloc() {
-//   serviceLocator
-//     ..registerFactory(
-//       () => LoginBloc(
-//         getUserUseCase: serviceLocator<GetUserUseCase>(),
-//         signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
-//         env: serviceLocator<Environment>(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => RequestPermissionBloc(),
-//     )
-//     ..registerFactory(
-//       () => AlarmFeedBloc(
-//         getAlarmFeedUseCase: serviceLocator(),
-//         receiveAlarmRewardUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => PrivacyPolicyBloc(
-//         getPrivacyPolicyUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => NickNameBloc(
-//         nickNameUseCase: serviceLocator<NickNameUseCase>(),
-//         updateProfileUseCase: serviceLocator<UpdateUserProfileUseCase>(),
-//         updateUserNickNameUseCase: serviceLocator<UpdateUserNickNameUseCase>(),
-//         withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => ObtainHistoryBloc(
-//         getObtainHistoriesUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MyMissionsBloc(
-//         missionsUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => RankingBloc(
-//         rankingUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => GiftboxActionBloc(
-//         getIngredientsByTypeUseCase: serviceLocator(),
-//         env: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MainBloc(
-//         remoteConfig: serviceLocator<Environment>().remoteConfig,
-//         mainUseCase: serviceLocator(),
-//         obtainMarkerMainUseCase: serviceLocator(),
-//         getShowAdUseCase: serviceLocator(),
-//         readAlarmFeedUseCase: serviceLocator(),
-//         obtainMarkerDefaultUseCase: serviceLocator(),
-//         getAppUpdate: serviceLocator(),
-//         getIngredientsByTypeUseCase: serviceLocator(),
-//         tracker: serviceLocator<MixpanelTracker>(),
-//         setRandomBoxRemainTimeUseCase: serviceLocator(),
-//         setRandomBoxStopTimeUseCase: serviceLocator(),
-//         getRandomBoxRemainTimeUseCase: serviceLocator(),
-//         getRandomBoxStopTimeUseCase: serviceLocator(),
-//         setCoinboxRemainTimeUseCase: serviceLocator(),
-//         setCoinboxStopTimeUseCase: serviceLocator(),
-//         getCoinboxRemainTimeUseCase: serviceLocator(),
-//         getCoinboxStopTimeUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => TermsDetailBloc(
-//         getTermsByIndexUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MissionsBloc(
-//         getAllMissionsUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MissionDetailBloc(
-//         getMissionDetailUseCase: serviceLocator(),
-//         postMissionClearUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => VerifyCodeBloc(
-//         verifyEmailUseCase: serviceLocator(),
-//         checkVerifySmsTimeUseCase: serviceLocator(),
-//         signUpOrInUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MyIngredientsBloc(
-//         getMyIngredientsUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => FaqsBloc(
-//         getFaqsUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => IngredientActionBloc(
-//         setShowAdUseCase: serviceLocator(),
-//         getIngredientsByTypeUseCase: serviceLocator(),
-//         env: serviceLocator(),
-//         reduceCoinUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => NoticesBloc(
-//         getNoticesUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => GradeGuideBloc(
-//         gradeGuideUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => CountryCodeBloc(
-//         getCountryInfoUseCase: serviceLocator(),
-//       ),
-//     )
-//     ..registerFactory(
-//       () => MyPageBloc(
-//         myPageUseCase: serviceLocator(),
-//         updateProfileUseCase: serviceLocator(),
-//         localRepository: serviceLocator(),
-//       ),
-//     )
-//     // ..registerFactory(
-//     //   () => MissionDetailRelayBloc(
-//     //     getMissionDetailUseCase: serviceLocator(),
-//     //     postMissionClearUseCase: serviceLocator(),
-//     //   ),
-//     // )
-//     ..registerFactory(
-//       () => FortuneWebviewBloc(),
-//     )
-//
-//     /// 삭제 해야 됨.
-//     ..registerFactory(
-//       () => WritePostBloc(),
-//     )
-//     ..registerFactory(
-//       () => AgreeTermsBloc(
-//         getTermsUseCase: serviceLocator(),
-//         tracker: serviceLocator(),
-//       ),
-//     );
-// }
-
 _initAppBloc() {
   serviceLocator
     ..registerFactory(
       () => LoginBloc(
         getUserUseCase: serviceLocator<GetUserUseCase>(),
-        signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
+        signInWithEmailUseCase: serviceLocator<RequestEmailVerifyCodeUseCase>(),
         env: serviceLocator<Environment>(),
       ),
     )
