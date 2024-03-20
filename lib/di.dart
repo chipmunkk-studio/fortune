@@ -11,7 +11,7 @@ import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/local/repository/local_repository_impl.dart';
-import 'package:fortune/data/supabase/repository/auth_repository_impl.dart';
+import 'package:fortune/data/remote/datasource/auth_normal_datasource.dart';
 import 'package:fortune/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:fortune/data/supabase/repository/marker_respository_impl.dart';
 import 'package:fortune/data/supabase/repository/obtain_history_respository_impl.dart';
@@ -28,7 +28,7 @@ import 'package:fortune/data/supabase/service/post_service.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/local/local_respository.dart';
-import 'package:fortune/domain/supabase/repository/auth_repository.dart';
+import 'package:fortune/domain/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/repository/country_info_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
@@ -90,6 +90,7 @@ import 'data/remote/api/service/user_service.dart';
 import 'data/remote/core/api_service_provider.dart';
 import 'data/remote/core/auth_helper_jwt.dart';
 import 'data/remote/core/credential/user_credential.dart';
+import 'data/remote/repository/auth_normal_repository_impl.dart';
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
 import 'data/supabase/repository/country_info_repository_impl.dart';
@@ -99,6 +100,7 @@ import 'data/supabase/service/alarm_reward_history_service.dart';
 import 'data/supabase/service/alarm_reward_info_service.dart';
 import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission/missions_service.dart';
+import 'domain/repository/auth_normal_repository.dart';
 import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
@@ -210,6 +212,64 @@ _initService(ApiServiceProvider apiProvider) {
     /// abnormal.(인증이 필요한 서비스)
     ..registerLazySingleton<UserService>(() => apiProvider.getUserService())
     ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
+}
+
+_initUseCase2() async {
+  serviceLocator
+    ..registerLazySingleton<RequestEmailVerifyCodeUseCase>(
+      () => RequestEmailVerifyCodeUseCase(
+        authRepository: serviceLocator(),
+      ),
+    );
+}
+
+_initRepository2() async {
+  serviceLocator
+    ..registerLazySingleton<AuthNormalRepository>(
+      () => AuthNormalRepositoryImpl(
+        authDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    );
+}
+
+_initDataSource() async {
+  serviceLocator
+    ..registerLazySingleton<AuthNormalDataSource>(
+      () => AuthNormalDataSourceImpl(
+        normalAuthService: serviceLocator(),
+      ),
+    );
+}
+
+_initAppBloc() {
+  serviceLocator
+    ..registerFactory(
+      () => LoginBloc(
+        requestEmailVerifyCodeUseCase: serviceLocator<RequestEmailVerifyCodeUseCase>(),
+      ),
+    )
+    ..registerFactory(
+      () => RequestPermissionBloc(),
+    )
+    ..registerFactory(
+      () => TermsDetailBloc(
+        getTermsByIndexUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => VerifyCodeBloc(
+        verifyEmailUseCase: serviceLocator(),
+        checkVerifySmsTimeUseCase: serviceLocator(),
+        signUpOrInUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => AgreeTermsBloc(
+        getTermsUseCase: serviceLocator(),
+        tracker: serviceLocator(),
+      ),
+    );
 }
 
 _initMixPanel() async {
@@ -411,8 +471,8 @@ _initRepository() {
         userService: serviceLocator<FortuneUserService>(),
       ),
     )
-    ..registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(
+    ..registerLazySingleton<AuthNormalRepository>(
+      () => AuthNormalRepositoryImpl(
         serviceLocator<AuthService>(),
         serviceLocator<FortuneUserService>(),
         serviceLocator<MixpanelTracker>(),
@@ -574,7 +634,7 @@ _initUseCase() async {
     )
     ..registerLazySingleton<SignInWithEmailUseCase>(
       () => SignInWithEmailUseCase(
-        authRepository: serviceLocator<AuthRepository>(),
+        authRepository: serviceLocator<AuthNormalRepository>(),
       ),
     )
     ..registerLazySingleton<RankingUseCase>(
@@ -690,38 +750,6 @@ _initUseCase() async {
 
 _initBloc(bool kIsWeb) async {
   kIsWeb ? await _initWebBloc() : await _initAppBloc();
-}
-
-_initAppBloc() {
-  serviceLocator
-    ..registerFactory(
-      () => LoginBloc(
-        getUserUseCase: serviceLocator<GetUserUseCase>(),
-        signInWithEmailUseCase: serviceLocator<RequestEmailVerifyCodeUseCase>(),
-        env: serviceLocator<Environment>(),
-      ),
-    )
-    ..registerFactory(
-      () => RequestPermissionBloc(),
-    )
-    ..registerFactory(
-      () => TermsDetailBloc(
-        getTermsByIndexUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => VerifyCodeBloc(
-        verifyEmailUseCase: serviceLocator(),
-        checkVerifySmsTimeUseCase: serviceLocator(),
-        signUpOrInUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => AgreeTermsBloc(
-        getTermsUseCase: serviceLocator(),
-        tracker: serviceLocator(),
-      ),
-    );
 }
 
 _initWebBloc() {

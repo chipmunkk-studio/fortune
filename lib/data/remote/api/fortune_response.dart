@@ -36,11 +36,11 @@ extension FortuneResponseMapper on Response {
 }
 
 extension FortuneDomainMapper<T> on Future<T> {
-  Future<Either<FortuneFailure, T>> toRemoteDomainData(FortuneErrorMapper errorMapper) async {
+  Future<T> toRemoteDomainData(FortuneErrorMapper errorMapper) async {
     try {
-      return Right(await this);
+      return await this;
     } on FortuneException catch (e) {
-      return errorMapper.mapAsLeft(e);
+      throw errorMapper.mapAsLeft(e);
     }
   }
 

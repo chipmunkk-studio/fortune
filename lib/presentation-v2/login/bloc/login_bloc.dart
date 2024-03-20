@@ -4,19 +4,16 @@ import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
-import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart';
-import 'package:fortune/env.dart';
+import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'login.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<LoginEvent, LoginState, LoginSideEffect> {
-  final SignInWithEmailUseCase signInWithEmailUseCase;
-  final Environment env;
+  final RequestEmailVerifyCodeUseCase requestEmailVerifyCodeUseCase;
 
   LoginBloc({
-    required this.signInWithEmailUseCase,
-    required this.env,
+    required this.requestEmailVerifyCodeUseCase,
   }) : super(LoginState.initial()) {
     on<LoginInit>(init);
     on<LoginEmailInput>(
@@ -53,17 +50,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   Future<void> _processSignInOrUp(Emitter<LoginState> emit) async {
-    await getUserUseCase(
+    await requestEmailVerifyCodeUseCase(
       state.email,
     ).then(
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
         (r) async {
           try {
-            if (r != null && r.isWithdrawal) {
-              produceSideEffect(LoginWithdrawalUser());
-              return;
-            }
             // 사용자가 가입되어 있으면 인증번호 전송 로직을 처리
             if (r != null) {
               // 인증번호 전송

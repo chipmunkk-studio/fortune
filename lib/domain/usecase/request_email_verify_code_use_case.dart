@@ -1,21 +1,23 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/util/usecase.dart';
-import 'package:fortune/domain/supabase/repository/auth_repository.dart';
-import 'package:fortune/domain/supabase/request/request_sign_up_or_in_test_param.dart';
+import 'package:fortune/domain/entity/request_email_verify_code_entity.dart';
+import 'package:fortune/domain/repository/auth_normal_repository.dart';
 
-class RequestEmailVerifyCodeUseCase implements UseCase1<void, RequestSignUpOrInTestParam> {
-  final AuthRepository authRepository;
+class RequestEmailVerifyCodeUseCase implements UseCase1<RequestEmailVerifyCodeEntity, String> {
+  final AuthNormalRepository authRepository;
 
   RequestEmailVerifyCodeUseCase({
     required this.authRepository,
   });
 
   @override
-  Future<FortuneResult<void>>  call(RequestSignUpOrInTestParam param) async {
+  Future<FortuneResult<RequestEmailVerifyCodeEntity>> call(
+    String email,
+  ) async {
     try {
-      final user = await authRepository.signInWithOtp(phoneNumber: phoneNumber);
-      return const Right(null);
+      final entity = await authRepository.requestEmailVerifyCode(email: email);
+      return Right(entity);
     } on FortuneFailure catch (e) {
       return Left(e);
     }

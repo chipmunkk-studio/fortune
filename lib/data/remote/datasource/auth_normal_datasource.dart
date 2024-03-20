@@ -1,18 +1,27 @@
 import 'package:fortune/data/remote/api/fortune_response.dart';
 import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
 import 'package:fortune/data/remote/request/request_email_verify_code.dart';
+import 'package:fortune/data/remote/response/request_email_verify_code_response.dart';
 
 abstract class AuthNormalDataSource {
-  Future<void> requestEmailVerifyCode(RequestEmailVerifyCode request);
+  Future<RequestEmailVerifyCodeResponse> requestEmailVerifyCode(RequestEmailVerifyCode request);
 }
 
 class AuthNormalDataSourceImpl extends AuthNormalDataSource {
   final NormalAuthService normalAuthService;
 
-  AuthNormalDataSourceImpl(this.normalAuthService);
+  AuthNormalDataSourceImpl({
+    required this.normalAuthService,
+  });
 
   @override
-  Future<void> requestEmailVerifyCode(RequestEmailVerifyCode request) async {
-    await normalAuthService.requestEmailVerifyCode(request).then((value) => value.toResponseData());
+  Future<RequestEmailVerifyCodeResponse> requestEmailVerifyCode(RequestEmailVerifyCode request) async {
+    return await normalAuthService
+        .requestEmailVerifyCode(
+          request,
+        )
+        .then(
+          (value) => value.toResponseData(),
+        );
   }
 }
