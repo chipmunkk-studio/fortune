@@ -14,7 +14,7 @@ class RequestEmailVerifyCodeUseCase implements UseCase1<void, RequestSignUpOrInT
   @override
   Future<FortuneResult<void>>  call(RequestSignUpOrInTestParam param) async {
     try {
-      // final user = await authRepository.signInWithOtp(phoneNumber: phoneNumber);
+      final user = await authRepository.signInWithOtp(phoneNumber: phoneNumber);
       return const Right(null);
     } on FortuneFailure catch (e) {
       return Left(e);

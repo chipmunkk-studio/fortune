@@ -84,8 +84,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart';
 
 import 'data/remote/api/service/main_service.dart';
-import 'data/remote/api/service/normal/normal_auth_service.dart';
-import 'data/remote/api/service/normal/normal_user_service.dart';
+import 'data/remote/api/service/normal_auth_service.dart';
+import 'data/remote/api/service/normal_user_service.dart';
 import 'data/remote/api/service/user_service.dart';
 import 'data/remote/core/api_service_provider.dart';
 import 'data/remote/core/auth_helper_jwt.dart';
