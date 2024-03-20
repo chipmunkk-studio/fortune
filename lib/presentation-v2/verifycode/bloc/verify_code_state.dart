@@ -21,7 +21,7 @@ class VerifyCodeState with _$VerifyCodeState {
       VerifyCodeState(
         email: email ?? "",
         verifyCode: "",
-        verifyTime: VerifyCodeBloc.verifyTime,
+        verifyTime: 180,
         isLoginProcessing: false,
         isConfirmEnable: false,
         isRequestVerifyCodeEnable: true,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/validators.dart';
 import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -26,11 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
-    emit(
-      state.copyWith(
-        isLoading: false,
-      ),
-    );
+    // do nothing.
   }
 
   FutureOr<void> emailInput(LoginEmailInput event, Emitter<LoginState> emit) {
@@ -43,17 +38,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
   }
 
   FutureOr<void> clickNextButton(LoginBottomButtonClick event, Emitter<LoginState> emit) async {
-    await _processSignInOrUp(emit);
-  }
-
-  Future<void> _processSignInOrUp(Emitter<LoginState> emit) async {
+    emit(state.copyWith(
+      isLoading: true,
+      isButtonEnabled: false,
+    ));
     await requestEmailVerifyCodeUseCase(
       state.email,
     ).then(
       (value) => value.fold(
-        (l) => produceSideEffect(LoginError(l)),
+        (l) {
+          emit(
+            state.copyWith(
+              isLoading: false,
+              isButtonEnabled: true,
+            ),
+          );
+          produceSideEffect(LoginError(l));
+        },
         (r) async {
-          emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
+          emit(
+            state.copyWith(
+              guideTitle: LoginGuideTitle.signInWithOtp,
+              isLoading: false,
+              isButtonEnabled: true,
+            ),
+          );
           produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
         },
       ),

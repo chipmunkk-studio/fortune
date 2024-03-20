@@ -9,17 +9,15 @@ part 'user_credential.g.dart';
 @JsonSerializable()
 @immutable
 class UserCredential extends Equatable {
-  final int? id;
   final TokenResponse? token;
 
   const UserCredential(
-    this.id,
     this.token,
   );
 
   factory UserCredential.fromJson(Map<String, dynamic> json) => _$UserCredentialFromJson(json);
 
-  factory UserCredential.initial() => const UserCredential(null, null);
+  factory UserCredential.initial() => const UserCredential(null);
 
   Map<String, dynamic> toJson() => _$UserCredentialToJson(this);
 
@@ -28,13 +26,14 @@ class UserCredential extends Equatable {
     TokenResponse? token,
   }) =>
       UserCredential(
-        id ?? this.id,
         token ?? this.token,
       );
 
   @override
-  List<Object?> get props => [token, id];
+  List<Object?> get props => [
+        token,
+      ];
 
   @override
-  String toString() => 'UserCredential{' 'id:$id,' 'token: $token' '}';
+  String toString() => 'UserCredential{' 'token: $token' '}';
 }

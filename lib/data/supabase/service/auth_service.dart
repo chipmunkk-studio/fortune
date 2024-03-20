@@ -11,9 +11,9 @@ import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/permission.dart';
-import 'package:fortune/data/remote/core/auth_helper_jwt.dart';
-import 'package:fortune/data/remote/core/credential/token_response.dart';
-import 'package:fortune/data/remote/core/credential/user_credential.dart';
+import 'package:fortune/data/remote/network/auth_helper_jwt.dart';
+import 'package:fortune/data/remote/network/credential/token_response.dart';
+import 'package:fortune/data/remote/network/credential/user_credential.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/di.dart';
@@ -284,7 +284,7 @@ class AuthService {
 }
 
 // 시작 화면 결정.
-Future<String> getStartRoute(Map<String, dynamic>? data) async {
+Future<String> getAppStartRoute(Map<String, dynamic>? data) async {
   final Storage<UserCredential> userStorage = serviceLocator();
   final AuthHelperJwt authHelperJwt = serviceLocator();
   final UserCredential loggedInUser = await userStorage.get() ?? UserCredential.initial();

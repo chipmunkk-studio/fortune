@@ -7,12 +7,12 @@ import 'package:fortune/domain/entity/email_verify_code_entity.dart';
 import 'package:fortune/domain/entity/verify_email_entity.dart';
 import 'package:fortune/domain/repository/auth_normal_repository.dart';
 
-class AuthNormalRepositoryImpl implements AuthNormalRepository {
-  final AuthNormalDataSource authDataSource;
+class NoAuthRepositoryImpl implements AuthNormalRepository {
+  final NoAuthDataSource noAuthDataSource;
   final FortuneErrorMapper errorMapper;
 
-  AuthNormalRepositoryImpl({
-    required this.authDataSource,
+  NoAuthRepositoryImpl({
+    required this.noAuthDataSource,
     required this.errorMapper,
   });
 
@@ -21,7 +21,7 @@ class AuthNormalRepositoryImpl implements AuthNormalRepository {
     required String email,
   }) async {
     try {
-      final remoteData = await authDataSource
+      final remoteData = await noAuthDataSource
           .requestEmailVerifyCode(
             RequestEmailVerifyCode(
               email: email,
@@ -40,7 +40,7 @@ class AuthNormalRepositoryImpl implements AuthNormalRepository {
     required String code,
   }) async {
     try {
-      final remoteData = await authDataSource
+      final remoteData = await noAuthDataSource
           .verifyEmail(
             RequestVerifyEmail(
               email: email,

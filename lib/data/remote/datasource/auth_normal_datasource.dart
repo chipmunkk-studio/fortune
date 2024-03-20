@@ -5,14 +5,14 @@ import 'package:fortune/data/remote/request/request_verify_email.dart';
 import 'package:fortune/data/remote/response/email_verify_code_response.dart';
 import 'package:fortune/data/remote/response/verify_email_response.dart';
 
-abstract class AuthNormalDataSource {
+abstract class NoAuthDataSource {
   Future<EmailVerifyCodeResponse> requestEmailVerifyCode(RequestEmailVerifyCode request);
 
   Future<VerifyEmailResponse> verifyEmail(RequestVerifyEmail request);
 }
 
-class AuthNormalDataSourceImpl extends AuthNormalDataSource {
-  final NormalAuthService normalAuthService;
+class AuthNormalDataSourceImpl extends NoAuthDataSource {
+  final NoAuthService normalAuthService;
 
   AuthNormalDataSourceImpl({
     required this.normalAuthService,
@@ -38,7 +38,9 @@ class AuthNormalDataSourceImpl extends AuthNormalDataSource {
           request,
         )
         .then(
-          (value) => value.toResponseData(),
+          (value) => VerifyEmailResponse.fromJson(
+            value.toResponseData(),
+          ),
         );
   }
 }

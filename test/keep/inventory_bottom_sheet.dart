@@ -1,10 +1,10 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:fortune/core/gen/assets.gen.dart';
-// import 'package:fortune/core/gen/colors.gen.dart';
-// import 'package:fortune/core/util/textstyle.dart';
-// import 'package:fortune/core/widgets/animation/scale_widget.dart';
-// import 'package:fortune/core/widgets/painter/squircle_painter.dart';
+// import 'package:fortune/network/gen/assets.gen.dart';
+// import 'package:fortune/network/gen/colors.gen.dart';
+// import 'package:fortune/network/util/textstyle.dart';
+// import 'package:fortune/network/widgets/animation/scale_widget.dart';
+// import 'package:fortune/network/widgets/painter/squircle_painter.dart';
 // import 'package:scrollable_list_tab_scroller/scrollable_list_tab_scroller.dart';
 //
 // class InventoryBottomSheet extends StatefulWidget {

@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 class FortuneException {
   final int code;
   final String message;
-
   final String description;
 
   FortuneException({

@@ -10,12 +10,16 @@ class TokenResponse extends Equatable {
   final String? accessToken;
   @JsonKey(name: 'refreshToken')
   final String? refreshToken;
-  final String? _displayToken;
+  @JsonKey(name: 'signUpToken')
+  final String? signUpToken;
 
   const TokenResponse({
     this.accessToken,
     this.refreshToken,
+    this.signUpToken,
   }) : _displayToken = accessToken;
+
+  final String? _displayToken;
 
   bool isAccessTokenExpired() => JwtDecoder.isExpired(accessToken ?? '');
 
@@ -23,7 +27,7 @@ class TokenResponse extends Equatable {
 
   @override
   String toString() {
-    return 'TokenResponse{accessToken: $_displayToken, refreshToken: $refreshToken}';
+    return 'TokenResponse{accessToken: $_displayToken, refreshToken: $refreshToken, signUpToken:$signUpToken}';
   }
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) => _$TokenResponseFromJson(json);

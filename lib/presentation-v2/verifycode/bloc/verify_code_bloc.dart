@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/validators.dart';
-import 'package:fortune/data/remote/core/credential/user_credential.dart';
+import 'package:fortune/data/remote/network/credential/token_response.dart';
+import 'package:fortune/data/remote/network/credential/user_credential.dart';
 import 'package:fortune/domain/usecase/verify_email_use_case.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 import 'package:single_item_storage/storage.dart';
@@ -15,7 +15,6 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
     with SideEffectBlocMixin<VerifyCodeEvent, VerifyCodeState, VerifyCodeSideEffect> {
   final VerifyEmailUseCase verifyEmailUseCase;
   final Storage<UserCredential> userStorage;
-  static const verifyTime = 180;
 
   VerifyCodeBloc({
     required this.verifyEmailUseCase,
@@ -33,7 +32,13 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
   }
 
   FutureOr<void> init(VerifyCodeInit event, Emitter<VerifyCodeState> emit) async {
-    emit(state.copyWith(email: event.email));
+    emit(
+      state.copyWith(
+        email: event.email,
+        isRequestVerifyCodeEnable: false,
+        verifyTime: 180,
+      ),
+    );
   }
 
   FutureOr<void> verifyCodeCountdown(VerifyCodeCountdown event, Emitter<VerifyCodeState> emit) {
@@ -69,8 +74,17 @@ class VerifyCodeBloc extends Bloc<VerifyCodeEvent, VerifyCodeState>
         },
         (r) async {
           emit(state.copyWith(isLoginProcessing: false));
-          userStorage.get().then((value) => value.)
-          produceSideEffect(VerifyCodeLandingRoute(AppRoutes.mainRoute));
+          UserCredential credential = await userStorage.get() ?? UserCredential.initial();
+          await userStorage.save(
+            credential.copy(
+              token: TokenResponse(
+                accessToken: r.accessToken,
+                refreshToken: r.refreshToken,
+                signUpToken: r.signUpToken,
+              ),
+            ),
+          );
+          // produceSideEffect(VerifyCodeLandingRoute(AppRoutes.mainRoute));
         },
       ),
     );

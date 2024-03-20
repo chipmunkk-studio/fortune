@@ -17,7 +17,7 @@ class LoginState with _$LoginState {
   factory LoginState.initial([String? phoneNumber]) => LoginState(
         email: "",
         isButtonEnabled: false,
-        isLoading: true,
+        isLoading: false,
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
       );
 }

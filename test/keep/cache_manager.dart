@@ -17,7 +17,7 @@
 //   Future<Codec> _loadAsync(CachedTileImageProvider key, DecoderCallback decode) async {
 //     final file = await key.cacheManager.getSingleFile(key.url);
 //     if (file == null || !file.existsSync()) {
-//       throw Exception("Tile Image not found in cache and core.");
+//       throw Exception("Tile Image not found in cache and network.");
 //     }
 //     final bytes = await file.readAsBytes();
 //     if (bytes.lengthInBytes == 0) {

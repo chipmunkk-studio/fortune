@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:chopper/chopper.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/data/remote/api/fortune_response.dart';
+import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
 import 'package:fortune/data/remote/api/service/normal_user_service.dart';
+import 'package:fortune/data/remote/request/request_token_refresh.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:single_item_storage/storage.dart';
 import 'package:synchronized/synchronized.dart';
@@ -24,9 +26,12 @@ class AuthHelperJwt {
   static const _errorCode = 401;
 
   final Storage<UserCredential> _userStore;
-  final NormalUserService _userNormalSource;
+  final NoAuthService _noAuthService;
 
-  AuthHelperJwt(this._userNormalSource, this._userStore);
+  AuthHelperJwt(
+    this._noAuthService,
+    this._userStore,
+  );
 
   Future<String?> refreshIfTokenExpired({
     required TokenResponse? token,
@@ -224,8 +229,8 @@ class AuthHelperJwt {
 
   Future<TokenResponse> _refreshToken(String token) async {
     try {
-      TokenResponse newToken = await _userNormalSource
-          .refreshToken("Bearer $token")
+      TokenResponse newToken = await _noAuthService
+          .refreshToken(RequestTokenRefresh(token: token))
           .timeout(const Duration(seconds: 25))
           .then((value) => TokenResponse.fromJson(value.toResponseData()));
       return newToken;

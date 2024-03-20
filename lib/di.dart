@@ -80,7 +80,6 @@ import 'package:single_item_secure_storage/single_item_secure_storage.dart';
 import 'package:single_item_storage/cached_storage.dart';
 import 'package:single_item_storage/observed_storage.dart';
 import 'package:single_item_storage/storage.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' hide Storage;
 
 import 'data/error/fortune_error_mapper.dart';
@@ -88,9 +87,9 @@ import 'data/remote/api/service/main_service.dart';
 import 'data/remote/api/service/normal_auth_service.dart';
 import 'data/remote/api/service/normal_user_service.dart';
 import 'data/remote/api/service/user_service.dart';
-import 'data/remote/core/api_service_provider.dart';
-import 'data/remote/core/auth_helper_jwt.dart';
-import 'data/remote/core/credential/user_credential.dart';
+import 'data/remote/network/api_service_provider.dart';
+import 'data/remote/network/auth_helper_jwt.dart';
+import 'data/remote/network/credential/user_credential.dart';
 import 'data/remote/repository/auth_normal_repository_impl.dart';
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
@@ -213,12 +212,11 @@ _initService(ApiServiceProvider apiProvider) {
 
     /// normal.(인증이 필요하지 않은 서비스)
     ..registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt())
-    ..registerLazySingleton<NormalUserService>(() => apiProvider.getMemberNormalService())
-    ..registerLazySingleton<NormalAuthService>(() => apiProvider.getAuthNormalService())
+    ..registerLazySingleton<NoAuthService>(() => apiProvider.getNoAuthService())
 
     /// abnormal.(인증이 필요한 서비스)
-    ..registerLazySingleton<UserService>(() => apiProvider.getUserService())
-    ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
+    ..registerLazySingleton<UserService>(() => apiProvider.getUserService());
+  // ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
 
   _initUseCase2();
   _initRepository2();
@@ -242,8 +240,8 @@ _initUseCase2() async {
 _initRepository2() async {
   serviceLocator
     ..registerLazySingleton<AuthNormalRepository>(
-      () => AuthNormalRepositoryImpl(
-        authDataSource: serviceLocator(),
+      () => NoAuthRepositoryImpl(
+        noAuthDataSource: serviceLocator(),
         errorMapper: serviceLocator(),
       ),
     );
@@ -251,7 +249,7 @@ _initRepository2() async {
 
 _initDataSource() async {
   serviceLocator
-    ..registerLazySingleton<AuthNormalDataSource>(
+    ..registerLazySingleton<NoAuthDataSource>(
       () => AuthNormalDataSourceImpl(
         normalAuthService: serviceLocator(),
       ),
@@ -276,6 +274,7 @@ _initAppBloc() {
     ..registerFactory(
       () => VerifyCodeBloc(
         verifyEmailUseCase: serviceLocator(),
+        userStorage: serviceLocator(),
       ),
     )
     ..registerFactory(

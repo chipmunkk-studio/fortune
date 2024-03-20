@@ -27,18 +27,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => serviceLocator<LoginBloc>()..add(LoginInit()),
-      child: Scaffold(
-        appBar: FortuneCustomAppBar.leadingAppBar(
-          context,
-          onPressed: () {
-            // 로그인 화면에서는 뒤로가기 동작 없음.
-          },
-        ),
-        body: const SafeArea(
-          bottom: true,
-          child: _LoginPage(),
-        ),
-      ),
+      child: const _LoginPage(),
     );
   }
 }
@@ -102,68 +91,88 @@ class _LoginPageState extends State<_LoginPage> {
           );
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          return KeyboardVisibilityBuilder(
-            builder: (BuildContext context, bool isKeyboardVisible) {
-              return Column(
-                children: <Widget>[
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 28),
-                            // 상단 타이틀.
-                            BlocBuilder<LoginBloc, LoginState>(
-                              buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
-                              builder: (context, state) {
-                                return Text(state.guideTitle, style: FortuneTextStyle.headLine1(height: 1.3));
-                              },
+      child: KeyboardVisibilityBuilder(
+        builder: (BuildContext context, bool isKeyboardVisible) {
+          return BlocBuilder<LoginBloc, LoginState>(
+            buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+            builder: (context, state) {
+              return Stack(
+                children: [
+                  Scaffold(
+                    appBar: FortuneCustomAppBar.leadingAppBar(
+                      context,
+                      onPressed: () {
+                        // 로그인 화면에서는 뒤로가기 동작 없음.
+                      },
+                    ),
+                    body: SafeArea(
+                      bottom: true,
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 28),
+                                    // 상단 타이틀.
+                                    BlocBuilder<LoginBloc, LoginState>(
+                                      buildWhen: (previous, current) => previous.guideTitle != current.guideTitle,
+                                      builder: (context, state) {
+                                        return Text(state.guideTitle, style: FortuneTextStyle.headLine1(height: 1.3));
+                                      },
+                                    ),
+                                    const SizedBox(height: 40),
+                                    // 로그인 상태.
+                                    BlocBuilder<LoginBloc, LoginState>(
+                                      buildWhen: (previous, current) => previous.email != current.email,
+                                      builder: (context, state) {
+                                        return LoginEmailInputField(
+                                          email: state.email,
+                                          emailController: _phoneNumberController,
+                                          onTextChanged: (text) => _bloc.add(LoginEmailInput(text)),
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    if (!kReleaseMode) buildDebugRow(context)
+                                  ],
+                                ),
+                              ),
                             ),
-                            const SizedBox(height: 40),
-                            // 로그인 상태.
-                            BlocBuilder<LoginBloc, LoginState>(
-                              buildWhen: (previous, current) => previous.email != current.email,
+                          ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 100),
+                            padding: EdgeInsets.only(
+                              left: isKeyboardVisible ? 0 : 20,
+                              right: isKeyboardVisible ? 0 : 20,
+                              bottom: isKeyboardVisible ? 0 : 20,
+                            ),
+                            curve: Curves.easeInOut,
+                            child: BlocBuilder<LoginBloc, LoginState>(
+                              buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
                               builder: (context, state) {
-                                return LoginEmailInputField(
-                                  email: state.email,
-                                  emailController: _phoneNumberController,
-                                  onTextChanged: (text) => _bloc.add(LoginEmailInput(text)),
+                                return LoginBottomButton(
+                                  text: FortuneTr.msgVerifyYourself,
+                                  isKeyboardVisible: isKeyboardVisible,
+                                  isEnabled: state.isButtonEnabled,
+                                  onPressed: () {
+                                    _bloc.add(LoginBottomButtonClick());
+                                  },
                                 );
                               },
                             ),
-                            const SizedBox(height: 20),
-                            if (!kReleaseMode) buildDebugRow(context)
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    padding: EdgeInsets.only(
-                      left: isKeyboardVisible ? 0 : 20,
-                      right: isKeyboardVisible ? 0 : 20,
-                      bottom: isKeyboardVisible ? 0 : 20,
-                    ),
-                    curve: Curves.easeInOut,
-                    child: BlocBuilder<LoginBloc, LoginState>(
-                      buildWhen: (previous, current) => previous.isButtonEnabled != current.isButtonEnabled,
-                      builder: (context, state) {
-                        return LoginBottomButton(
-                          text: FortuneTr.msgVerifyYourself,
-                          isKeyboardVisible: isKeyboardVisible,
-                          isEnabled: state.isButtonEnabled,
-                          onPressed: () {
-                            _bloc.add(LoginBottomButtonClick());
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  if (state.isLoading) ...[
+                    ModalBarrier(dismissible: false, color: Colors.black.withOpacity(0.5)),
+                    const Center(child: CircularProgressIndicator()),
+                  ],
                 ],
               );
             },

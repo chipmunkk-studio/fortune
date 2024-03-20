@@ -27,7 +27,7 @@ main() {
 
       String startRoute = kIsWeb
           ? WebRoutes.loginRoute
-          : await getStartRoute(
+          : await getAppStartRoute(
               remoteMessageData,
             );
 

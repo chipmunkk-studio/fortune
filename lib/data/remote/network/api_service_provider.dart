@@ -3,7 +3,6 @@ import 'package:fortune/data/remote/api/service/main_service.dart';
 import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
 import 'package:fortune/data/remote/api/service/normal_user_service.dart';
 import 'package:fortune/data/remote/api/service/user_service.dart';
-import 'package:fortune/di.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
@@ -29,8 +28,7 @@ class ApiServiceProvider {
       client: httpClient,
       converter: const JsonConverter(),
       services: [
-        NormalUserService.create(),
-        NormalAuthService.create(),
+        NoAuthService.create(),
       ],
       errorConverter: const JsonConverter(),
       interceptors: [
@@ -42,7 +40,7 @@ class ApiServiceProvider {
     );
 
     AuthHelperJwt authHelperJwt = AuthHelperJwt(
-      normalClient.getService<NormalUserService>(),
+      normalClient.getService<NoAuthService>(),
       userStore,
     );
 
@@ -53,7 +51,7 @@ class ApiServiceProvider {
       converter: const JsonConverter(),
       services: [
         UserService.create(),
-        MainService.create(),
+        // MainService.create(),
         // 여기에 인증이 필요한 api 추가.
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
@@ -83,11 +81,10 @@ class ApiServiceProvider {
 
   AuthHelperJwt getAuthHelperJwt() => _authHelperJwt;
 
-  NormalUserService getMemberNormalService() => _normalClient.getService<NormalUserService>();
 
-  NormalAuthService getAuthNormalService() => _normalClient.getService<NormalAuthService>();
+  NoAuthService getNoAuthService() => _normalClient.getService<NoAuthService>();
 
   UserService getUserService() => _defaultClient.getService<UserService>();
 
-  MainService getMarkerService() => _defaultClient.getService<MainService>();
+  // MainService getMarkerService() => _defaultClient.getService<MainService>();
 }

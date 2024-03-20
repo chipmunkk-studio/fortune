@@ -3,9 +3,10 @@ description: fortune flutter
 
 # flutter update-packages --force-upgrade
 # apk > flutter build apk —release --flavor dev -t lib/main/dev.dart, flutter build apk —release -t lib/main.dart
-# 빌드 > flutter packages pub run build_runner build --delete-conflicting-outputs
+# 빌드 > dart run build_runner build --delete-conflicting-outputs
 # assets > fluttergen -c /Users/hyeokshin/StudioProjects/fortune/pubspec.yaml
 # 스플래시 스크린 > flutter pub run flutter_native_splash:create
+# 캐시 클린 > flutter pub cache clean
 
 publish_to: 'none'
 # 1.0.0: 버전네임, 1: 버전코드
