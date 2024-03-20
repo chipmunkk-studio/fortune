@@ -16,7 +16,7 @@ class GetAppUpdate implements UseCase0<void> {
   });
 
   @override
-  Future<FortuneResult<AppUpdateViewEntity>> call() async {
+  Future<FortuneResultDeprecated<AppUpdateViewEntity>> call() async {
     try {
       final appUpdates = await supportRepository.getAppUpdateRecently();
 
@@ -62,7 +62,7 @@ class GetAppUpdate implements UseCase0<void> {
         );
       }
       return Right(AppUpdateViewEntity.empty);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

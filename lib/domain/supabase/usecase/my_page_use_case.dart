@@ -19,7 +19,7 @@ class MyPageUseCase implements UseCase0<MyPageViewEntity> {
   });
 
   @override
-  Future<FortuneResult<MyPageViewEntity>> call() async {
+  Future<FortuneResultDeprecated<MyPageViewEntity>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(
         columnsToSelect: [
@@ -44,7 +44,7 @@ class MyPageUseCase implements UseCase0<MyPageViewEntity> {
         hasNewFaq: hasNewFaqs,
       );
       return Right(entity);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

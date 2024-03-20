@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class FortuneWebviewSideEffect extends Equatable {}
 
 class FortuneWebviewError extends FortuneWebviewSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   FortuneWebviewError(this.error);
 

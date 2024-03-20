@@ -36,7 +36,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
         ],
       );
       return markers;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -56,7 +56,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
         markerId: markerId,
         distance: ingredient.distance,
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -107,7 +107,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
       }
 
       return await _markerService.insertRandomMarkers(markers: markers);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -117,7 +117,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
     try {
       final marker = await _markerService.findMarkerById(markerId);
       return marker;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -133,7 +133,7 @@ class MarkerRepositoryImpl extends MarkerRepository {
         longitude: longitude,
       );
       return marker;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

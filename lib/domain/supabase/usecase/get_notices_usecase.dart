@@ -10,11 +10,11 @@ class GetNoticesUseCase implements UseCase0<List<NoticesEntity>> {
   GetNoticesUseCase({required this.repository});
 
   @override
-  Future<FortuneResult<List<NoticesEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<NoticesEntity>>> call() async {
     try {
       final notices = await repository.getNotices();
       return Right(notices);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

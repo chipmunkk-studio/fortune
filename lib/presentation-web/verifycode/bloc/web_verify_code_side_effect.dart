@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/entity/sms_verify_remain_time_entity.dar
 abstract class WebVerifyCodeSideEffect extends Equatable {}
 
 class WebVerifyCodeError extends WebVerifyCodeSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   WebVerifyCodeError(this.error);
 

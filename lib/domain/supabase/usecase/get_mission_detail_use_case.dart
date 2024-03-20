@@ -20,7 +20,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
   });
 
   @override
-  Future<FortuneResult<MissionDetailEntity>> call(int missionId) async {
+  Future<FortuneResultDeprecated<MissionDetailEntity>> call(int missionId) async {
     try {
       final user = await userRepository.findUserByEmailNonNull(
         columnsToSelect: [
@@ -68,7 +68,7 @@ class GetMissionDetailUseCase implements UseCase1<MissionDetailEntity, int> {
           mission: mission,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

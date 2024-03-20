@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class GradeGuideSideEffect extends Equatable {}
 
 class GradeGuideError extends GradeGuideSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   GradeGuideError(this.error);
 

@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class WritePostSideEffect extends Equatable {}
 
 class WritePostError extends WritePostSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   WritePostError(this.error);
 

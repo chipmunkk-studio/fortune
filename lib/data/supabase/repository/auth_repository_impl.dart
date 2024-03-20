@@ -28,7 +28,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final List<AgreeTermsEntity> terms = await _authService.getTerms();
       return terms;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.message,
       );
@@ -40,7 +40,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final AgreeTermsEntity terms = await _authService.getTermsByIndex(index);
       return terms;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.message,
       );
@@ -67,7 +67,7 @@ class AuthRepositoryImpl extends AuthRepository {
       }
       await _authService.persistSession(response.session!);
       return response;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.message,
       );
@@ -81,7 +81,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final response = await _authService.signUpWithEmail(email: email);
       return response;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.message,
       );
@@ -94,7 +94,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }) async {
     try {
       await _authService.signInWithEmail(email: email);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.msgUseNextTime,
       );
@@ -118,7 +118,7 @@ class AuthRepositoryImpl extends AuthRepository {
       }
       await _authService.persistSession(response.session!);
       return response;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.message,
       );

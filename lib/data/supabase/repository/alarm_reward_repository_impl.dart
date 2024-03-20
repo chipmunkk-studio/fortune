@@ -33,7 +33,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
         ),
       );
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: e.description,
       );
@@ -45,7 +45,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
     try {
       final rewardInfo = await alarmRewardInfoService.findEventRewardsByType(type.name);
       return rewardInfo;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -61,7 +61,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
         request: request,
       );
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -70,7 +70,7 @@ class AlarmRewardRepositoryImpl extends AlarmRewardRepository {
   Future<void> deleteOldHistory(int userId) async {
     try {
       return await rewardsService.deleteOldData(userId);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

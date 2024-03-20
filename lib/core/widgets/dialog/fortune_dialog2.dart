@@ -3,13 +3,12 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fortune/core/error/failure/auth_failure.dart';
-import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
+import 'package:fortune/data/error/fortune_app_failures.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation-v2/login/bloc/login.dart';
 import 'package:lottie/lottie.dart';
@@ -17,13 +16,12 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class FortuneDialogService {
+class FortuneDialogService2 {
   bool _isDialogShowing = false;
-  final _sClient = Supabase.instance.client;
 
   Future<void> showAppErrorDialog(
     BuildContext context,
-    FortuneFailureDeprecated error, {
+    FortuneFailure error, {
     Function0? btnOkOnPress,
     bool needToFinish = true,
   }) async {
@@ -38,12 +36,11 @@ class FortuneDialogService {
       () {
         if (error is AuthFailure) {
           _isDialogShowing = false;
-          // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
+          // 인증 에러이지만, 로그인 화면으로 보내면 안되는 경우가 있음.
           if (needToFinish) {
-            _sClient.auth.signOut();
             router.navigateTo(
               context,
-              "${AppRoutes.loginRoute}/:${LoginUserState.needToLogin}",
+              AppRoutes.loginRoute,
               clearStack: true,
               replace: false,
             );
@@ -59,7 +56,7 @@ class FortuneDialogService {
 
   Future<void> showWebErrorDialog(
     BuildContext context,
-    FortuneFailureDeprecated error, {
+    FortuneFailure error, {
     Function0? btnOkOnPress,
     bool needToFinish = true,
   }) async {
@@ -76,7 +73,6 @@ class FortuneDialogService {
           _isDialogShowing = false;
           // 인증 에러이지만, 로그인화면으로 보내면 안되는 경우가 있음.
           if (needToFinish) {
-            _sClient.auth.signOut();
             router.navigateTo(
               context,
               WebRoutes.loginRoute,
@@ -95,7 +91,7 @@ class FortuneDialogService {
 
   AwesomeDialog _fortuneErrorDialog(
     BuildContext context,
-    FortuneFailureDeprecated error,
+    FortuneFailure error,
     Function0<dynamic>? btnOkOnPress,
     bool needToFinish,
   ) {

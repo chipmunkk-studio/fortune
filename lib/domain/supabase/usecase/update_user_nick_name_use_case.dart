@@ -13,14 +13,14 @@ class UpdateUserNickNameUseCase implements UseCase1<FortuneUserEntity, RequestNi
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity>> call(RequestNickNameUpdateParam param) async {
+  Future<FortuneResultDeprecated<FortuneUserEntity>> call(RequestNickNameUpdateParam param) async {
     try {
       final user = await userRepository.updateUserNickName(
         param.email,
         nickname: param.nickName,
       );
       return Right(user);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

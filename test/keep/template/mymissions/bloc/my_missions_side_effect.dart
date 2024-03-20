@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class MyMissionsSideEffect extends Equatable {}
 
 class MyMissionsError extends MyMissionsSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   MyMissionsError(this.error);
 

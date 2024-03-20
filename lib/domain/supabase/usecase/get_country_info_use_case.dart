@@ -12,11 +12,11 @@ class GetCountryInfoUseCase implements UseCase0<List<CountryInfoEntity>> {
   });
 
   @override
-  Future<FortuneResult<List<CountryInfoEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<CountryInfoEntity>>> call() async {
     try {
       final faqs = await repository.getAllCountries();
       return Right(faqs);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

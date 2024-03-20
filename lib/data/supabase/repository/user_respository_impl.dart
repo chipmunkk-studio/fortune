@@ -37,7 +37,7 @@ class UserRepositoryImpl extends UserRepository {
         throw CommonFailure(errorMessage: FortuneTr.msgNotExistUser);
       }
       return user;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -48,7 +48,7 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final FortuneUserEntity? user = await _userService.findUserByEmail(email, columnsToSelect: []);
       return user;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -69,7 +69,7 @@ class UserRepositoryImpl extends UserRepository {
           level: assignLevel(markerObtainCount),
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -87,7 +87,7 @@ class UserRepositoryImpl extends UserRepository {
           nickname: nickname,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: FortuneTr.msgNicknameExists,
       );
@@ -107,7 +107,7 @@ class UserRepositoryImpl extends UserRepository {
         request: RequestFortuneUser(profileImage: imagePath),
       );
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -124,7 +124,7 @@ class UserRepositoryImpl extends UserRepository {
       );
       await _supabaseClient.auth.signOut();
       _mixpanelTracker.trackEvent('회원 탈퇴', properties: {'email': email});
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -141,7 +141,7 @@ class UserRepositoryImpl extends UserRepository {
         ),
       );
       _mixpanelTracker.trackEvent('회원 탈퇴 철회', properties: {'email': email});
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -154,7 +154,7 @@ class UserRepositoryImpl extends UserRepository {
         end: param.end,
       );
       return users;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -174,7 +174,7 @@ class UserRepositoryImpl extends UserRepository {
         paramCreatedAt: paramCreatedAt,
       );
       return ranking;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

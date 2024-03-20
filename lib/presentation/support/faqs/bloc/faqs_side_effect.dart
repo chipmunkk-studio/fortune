@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class FaqsSideEffect extends Equatable {}
 
 class FaqError extends FaqsSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   FaqError(this.error);
 

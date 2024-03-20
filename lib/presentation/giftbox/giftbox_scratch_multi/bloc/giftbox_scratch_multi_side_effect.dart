@@ -7,7 +7,7 @@ import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 abstract class GiftboxScratchMultiSideEffect extends Equatable {}
 
 class GiftboxScratchMultiError extends GiftboxScratchMultiSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   GiftboxScratchMultiError(this.error);
 

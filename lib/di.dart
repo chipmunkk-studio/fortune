@@ -9,6 +9,7 @@ import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
+import 'package:fortune/core/widgets/dialog/fortune_dialog2.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/local/repository/local_repository_impl.dart';
 import 'package:fortune/data/remote/datasource/auth_normal_datasource.dart';
@@ -63,7 +64,6 @@ import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
 import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:fortune/firebase_options.dart';
@@ -79,8 +79,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:single_item_secure_storage/single_item_secure_storage.dart';
 import 'package:single_item_storage/cached_storage.dart';
 import 'package:single_item_storage/observed_storage.dart';
+import 'package:single_item_storage/storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:universal_html/html.dart';
+import 'package:universal_html/html.dart' hide Storage;
 
 import 'data/error/fortune_error_mapper.dart';
 import 'data/remote/api/service/main_service.dart';
@@ -120,6 +121,7 @@ import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'domain/supabase/usecase/set_giftbox_remain_time_use_case.dart';
 import 'domain/supabase/usecase/set_giftbox_stop_time_use_case.dart';
+import 'domain/usecase/verify_email_use_case.dart';
 import 'env.dart';
 import 'presentation-v2/agreeterms/bloc/agree_terms_bloc.dart';
 import 'presentation-v2/login/bloc/login_bloc.dart';
@@ -130,6 +132,7 @@ import 'presentation/support/privacypolicy/bloc/privacy_policy_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
+final FortuneDialogService2 dialogService2 = FortuneDialogService2();
 
 Future<void> init() async {
   try {
@@ -176,6 +179,7 @@ Future<void> init() async {
         ),
       ),
     );
+    serviceLocator.registerLazySingleton<Storage<UserCredential>>(() => userStorage);
 
     /// 서비스 프로바이더.
     ApiServiceProvider apiProvider = ApiServiceProvider(
@@ -215,12 +219,21 @@ _initService(ApiServiceProvider apiProvider) {
     /// abnormal.(인증이 필요한 서비스)
     ..registerLazySingleton<UserService>(() => apiProvider.getUserService())
     ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
+
+  _initUseCase2();
+  _initRepository2();
+  _initDataSource();
 }
 
 _initUseCase2() async {
   serviceLocator
     ..registerLazySingleton<RequestEmailVerifyCodeUseCase>(
       () => RequestEmailVerifyCodeUseCase(
+        authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<VerifyEmailUseCase>(
+      () => VerifyEmailUseCase(
         authRepository: serviceLocator(),
       ),
     );
@@ -263,8 +276,6 @@ _initAppBloc() {
     ..registerFactory(
       () => VerifyCodeBloc(
         verifyEmailUseCase: serviceLocator(),
-        checkVerifySmsTimeUseCase: serviceLocator(),
-        signUpOrInUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -510,12 +521,6 @@ _initUseCase() async {
       () => RankingUserByMissionClearCountUseCase(
         userRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<VerifyEmailUseCase>(
-      () => VerifyEmailUseCase(
-        authRepository: serviceLocator(),
-        userRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetTermsByIndexUseCase>(

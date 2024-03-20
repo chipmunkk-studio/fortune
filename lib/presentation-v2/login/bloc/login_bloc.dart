@@ -23,7 +23,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       ),
     );
     on<LoginBottomButtonClick>(clickNextButton);
-    on<LoginRequestVerifyCode>(requestVerifyCode);
   }
 
   FutureOr<void> init(LoginInit event, Emitter<LoginState> emit) async {
@@ -54,19 +53,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> with SideEffectBlocMixin<Lo
       (value) => value.fold(
         (l) => produceSideEffect(LoginError(l)),
         (r) async {
-          try {
-            emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
-            produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
-          } catch (e) {
-            FortuneLogger.error(message: e.toString());
-          }
+          emit(state.copyWith(guideTitle: LoginGuideTitle.signInWithOtp));
+          produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
         },
       ),
     );
-  }
-
-  // 약관 동의 후 인증 번호 바텀시트 띄움.
-  FutureOr<void> requestVerifyCode(LoginRequestVerifyCode event, Emitter<LoginState> emit) async {
-    produceSideEffect(LoginShowVerifyCodeBottomSheet(state.email));
   }
 }

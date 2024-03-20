@@ -47,7 +47,8 @@ class AuthHelperJwt {
         );
         throw FortuneException(
           code: _errorCode,
-          message: 'AccessToken does not exist or expired.',
+          message: 'AccessToken Expired',
+          description: 'AccessToken does not exist or expired.',
         );
       }
 
@@ -101,11 +102,11 @@ class AuthHelperJwt {
       // 현재 토큰보다 새로운 토큰이 존재 하는지 확인 > 토큰이 없을 경우. => 로그인이 필요함.
       if (refreshTokenCurrent == null) {
         FortuneLogger.error(
-          code: response.statusCode.toString(),
+          code: _errorCode.toString(),
           message: "Need to login.",
         );
         throw FortuneException(
-          code: response.statusCode,
+          code: _errorCode,
           message: "Need to login",
         );
       }

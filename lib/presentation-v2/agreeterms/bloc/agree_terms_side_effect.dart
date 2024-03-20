@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class AgreeTermsSideEffect extends Equatable {}
 
 class AgreeTermsError extends AgreeTermsSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   AgreeTermsError(this.error);
 

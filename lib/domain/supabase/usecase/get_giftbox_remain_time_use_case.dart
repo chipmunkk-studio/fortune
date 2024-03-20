@@ -11,11 +11,11 @@ class GetGiftboxRemainTimeUseCase implements UseCase0<int> {
   });
 
   @override
-  Future<FortuneResult<int>> call() async {
+  Future<FortuneResultDeprecated<int>> call() async {
     try {
       final time = await repository.getGiftboxRemainTime();
       return Right(time);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

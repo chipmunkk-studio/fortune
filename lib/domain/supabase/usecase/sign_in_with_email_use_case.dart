@@ -12,11 +12,11 @@ class SignInWithEmailUseCase implements UseCase1<void, RequestSignUpOrInTestPara
   });
 
   @override
-  Future<FortuneResult<void>>  call(RequestSignUpOrInTestParam param) async {
+  Future<FortuneResultDeprecated<void>>  call(RequestSignUpOrInTestParam param) async {
     try {
       // final user = await authRepository.signInWithOtp(phoneNumber: phoneNumber);
       return const Right(null);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

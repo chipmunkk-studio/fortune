@@ -5,7 +5,7 @@ part 'network_failure.g.dart';
 
 /// 네트워크 에러.
 @JsonSerializable(ignoreUnannotated: false)
-class NetworkFailure extends FortuneFailure {
+class NetworkFailure extends FortuneFailureDeprecated {
   @JsonKey(name: 'errorCode')
   final String? errorCode;
   @JsonKey(name: 'errorMessage')

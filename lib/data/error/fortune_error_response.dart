@@ -6,7 +6,7 @@ part 'fortune_error_response.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class FortuneErrorResponse {
   @JsonKey(name: 'error_code')
-  int? errorCode;
+  String? errorCode;
   @JsonKey(name: 'error_message')
   String? errorMessage;
 

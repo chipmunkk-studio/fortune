@@ -13,11 +13,11 @@ class GetIngredientsByTypeUseCase implements UseCase1<List<IngredientEntity>, Li
   });
 
   @override
-  Future<FortuneResult<List<IngredientEntity>>> call(List<IngredientType> types) async {
+  Future<FortuneResultDeprecated<List<IngredientEntity>>> call(List<IngredientType> types) async {
     try {
       final ingredients = await ingredientRepository.findIngredientsByType(types);
       return Right(ingredients);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/core/util/usecase.dart';
-import 'package:fortune/domain/entity/request_email_verify_code_entity.dart';
+import 'package:fortune/data/error/fortune_error.dart';
+import 'package:fortune/domain/entity/email_verify_code_entity.dart';
 import 'package:fortune/domain/repository/auth_normal_repository.dart';
 
-class RequestEmailVerifyCodeUseCase implements UseCase1<RequestEmailVerifyCodeEntity, String> {
+import '../../core/util/usecase2.dart';
+
+class RequestEmailVerifyCodeUseCase implements UseCase1<EmailVerifyCodeEntity, String> {
   final AuthNormalRepository authRepository;
 
   RequestEmailVerifyCodeUseCase({
@@ -12,7 +13,7 @@ class RequestEmailVerifyCodeUseCase implements UseCase1<RequestEmailVerifyCodeEn
   });
 
   @override
-  Future<FortuneResult<RequestEmailVerifyCodeEntity>> call(
+  Future<FortuneResult<EmailVerifyCodeEntity>> call(
     String email,
   ) async {
     try {

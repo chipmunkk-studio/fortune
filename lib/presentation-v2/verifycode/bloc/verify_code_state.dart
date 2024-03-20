@@ -7,28 +7,23 @@ part 'verify_code_state.freezed.dart';
 @freezed
 class VerifyCodeState with _$VerifyCodeState {
   factory VerifyCodeState({
-    required String phoneNumber,
-    required List<AgreeTermsEntity> agreeTerms,
+    required String email,
     required String verifyCode,
     required int verifyTime,
-    required bool isRequestVerifyCodeEnable,
     required bool isLoginProcessing,
     required bool isConfirmEnable,
-    required bool isTestAccount,
+    required bool isRequestVerifyCodeEnable,
   }) = _VerifyCodeState;
 
   factory VerifyCodeState.initial([
-    List<AgreeTermsEntity>? agreeTerms,
-    String? phoneNumber,
+    String? email,
   ]) =>
       VerifyCodeState(
-        phoneNumber: phoneNumber ?? "",
-        agreeTerms: agreeTerms ?? List.empty(),
+        email: email ?? "",
         verifyCode: "",
         verifyTime: VerifyCodeBloc.verifyTime,
-        isRequestVerifyCodeEnable: true,
         isLoginProcessing: false,
         isConfirmEnable: false,
-        isTestAccount: false,
+        isRequestVerifyCodeEnable: true,
       );
 }

@@ -26,7 +26,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
         query: query,
       );
       return histories;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -38,7 +38,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
   }) async {
     try {
       await _obtainHistoryService.insert(request: request);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -54,7 +54,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
         ingredientId: ingredientId,
       );
       return histories;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -70,7 +70,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
         columnsToSelect: columnsToSelect,
       );
       return histories;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -82,7 +82,7 @@ class ObtainHistoryRepositoryImpl extends ObtainHistoryRepository {
     try {
       final result = await _obtainHistoryService.delete(histories.map((e) => e.id).toList());
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 abstract class VerifyCodeEvent extends Equatable {}
 
 class VerifyCodeInit extends VerifyCodeEvent {
-  final String phoneNumber;
+  final String email;
 
   VerifyCodeInit({
-    required this.phoneNumber,
+    required this.email,
   });
 
   @override

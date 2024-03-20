@@ -7,7 +7,7 @@ import '../../../../core/error/fortune_app_failures.dart';
 abstract class ObtainHistorySideEffect extends Equatable {}
 
 class ObtainHistoryError extends ObtainHistorySideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   ObtainHistoryError(this.error);
 

@@ -12,11 +12,11 @@ class GetTermsUseCase implements UseCase0<List<AgreeTermsEntity>> {
   });
 
   @override
-  Future<FortuneResult<List<AgreeTermsEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<AgreeTermsEntity>>> call() async {
     try {
       final terms = await authRepository.getTerms();
       return Right(terms);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

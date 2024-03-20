@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class RequestPermissionSideEffect extends Equatable {}
 
 class RequestPermissionError extends RequestPermissionSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   RequestPermissionError(this.error);
 

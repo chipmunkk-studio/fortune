@@ -15,7 +15,7 @@ class CountryInfoRepositoryImpl extends CountryInfoRepository {
     try {
       List<CountryInfoEntity> notices = await countryInfoService.findAllCountryInfo();
       return notices;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );

@@ -8,7 +8,7 @@ part 'unknown_failure.g.dart';
 
 /// 알 수 없는 에러.
 @JsonSerializable(ignoreUnannotated: false)
-class UnknownFailure extends FortuneFailure {
+class UnknownFailure extends FortuneFailureDeprecated {
   @JsonKey(name: 'errorCode')
   final String? errorCode;
   @JsonKey(name: 'errorMessage')

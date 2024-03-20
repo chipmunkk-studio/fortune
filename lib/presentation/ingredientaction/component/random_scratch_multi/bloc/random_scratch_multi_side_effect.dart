@@ -7,7 +7,7 @@ import 'package:fortune/presentation/ingredientaction/ingredient_action_param.da
 abstract class RandomScratchMultiSideEffect extends Equatable {}
 
 class RandomScratchMultiError extends RandomScratchMultiSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   RandomScratchMultiError(this.error);
 

@@ -35,7 +35,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionNormalService.findAllMissions();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -48,7 +48,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
         throw CustomFailure(errorDescription: FortuneTr.msgUnableToLoadMissionCard);
       }
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -81,7 +81,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
           user: userId,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -91,7 +91,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionNormalService.findMissionById(missionId);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(description: FortuneTr.msgInvalidMission);
     }
   }
@@ -101,7 +101,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearConditionsService.findMissionClearConditionOrNullByMarkerId(markerId);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -117,7 +117,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
         end: end,
       );
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -127,7 +127,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
     try {
       final result = await missionClearUserService.findAllMissionClearUserByUserId(userId);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -148,7 +148,7 @@ class MissionsRepositoryImpl extends MissionsRepository {
 
       // 지정된 범위의 랭킹만 반환
       return rankingList;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

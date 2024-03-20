@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class NoticesSideEffect extends Equatable {}
 
 class NoticesError extends NoticesSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   NoticesError(this.error);
 

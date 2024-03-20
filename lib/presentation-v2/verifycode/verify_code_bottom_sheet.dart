@@ -25,7 +25,7 @@ class VerifyCodeBottomSheet extends StatelessWidget {
     return BlocProvider(
       create: (_) => serviceLocator<VerifyCodeBloc>()
         ..add(
-          VerifyCodeInit(phoneNumber: email),
+          VerifyCodeInit(email: email),
         ),
       child: const _VerifyCodeBottomSheet(),
     );
@@ -61,7 +61,7 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
     return BlocSideEffectListener<VerifyCodeBloc, VerifyCodeSideEffect>(
       listener: (BuildContext context, VerifyCodeSideEffect sideEffect) {
         if (sideEffect is VerifyCodeError) {
-          dialogService.showAppErrorDialog(
+          dialogService2.showAppErrorDialog(
             context,
             sideEffect.error,
             needToFinish: false,

@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 abstract class NickNameSideEffect extends Equatable {}
 
 class NickNameError extends NickNameSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   NickNameError(this.error);
 

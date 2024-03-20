@@ -3,6 +3,7 @@ import 'package:fortune/data/remote/api/service/main_service.dart';
 import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
 import 'package:fortune/data/remote/api/service/normal_user_service.dart';
 import 'package:fortune/data/remote/api/service/user_service.dart';
+import 'package:fortune/di.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 

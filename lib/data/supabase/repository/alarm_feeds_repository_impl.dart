@@ -23,7 +23,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
         columnsToSelect: columnsToSelect,
       );
       return alarms;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -33,7 +33,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
     try {
       final result = await alarmFeedsService.insert(content);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -60,7 +60,7 @@ class AlarmFeedsRepositoryImpl extends AlarmFeedsRepository {
           }
         }),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

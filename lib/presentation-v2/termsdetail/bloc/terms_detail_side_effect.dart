@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class TermsDetailSideEffect extends Equatable {}
 
 class TermsDetailError extends TermsDetailSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   TermsDetailError(this.error);
 

@@ -28,9 +28,9 @@ extension FortuneResponseMapper on Response {
     } else {
       FortuneErrorResponse? errorResponse = toErrorResponse();
       throw FortuneException(
-        code: errorResponse?.errorCode ?? base.statusCode,
-        message: errorResponse?.errorMessage ?? error.toString(),
-      );
+          code: base.statusCode,
+          message: errorResponse?.errorCode ?? base.reasonPhrase.toString(),
+          description: errorResponse?.errorMessage ?? error.toString());
     }
   }
 }
@@ -40,7 +40,7 @@ extension FortuneDomainMapper<T> on Future<T> {
     try {
       return await this;
     } on FortuneException catch (e) {
-      throw errorMapper.mapAsLeft(e);
+      throw errorMapper.mapAsFailure(e);
     }
   }
 

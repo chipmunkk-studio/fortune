@@ -39,7 +39,7 @@ class ObtainMarkerMainUseCase implements UseCase1<MarkerObtainEntity, RequestObt
   });
 
   @override
-  Future<FortuneResult<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
+  Future<FortuneResultDeprecated<MarkerObtainEntity>> call(RequestObtainMarkerParam param) async {
     try {
       final marker = param.marker;
       final currentUser = await userRepository.findUserByEmailNonNull(
@@ -100,7 +100,7 @@ class ObtainMarkerMainUseCase implements UseCase1<MarkerObtainEntity, RequestObt
           haveCount: histories.length,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

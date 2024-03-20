@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/data/supabase/service/auth_service.dart';
 
 import '../di.dart';
@@ -21,13 +22,14 @@ main() {
       // FlutterError.onError는 Flutter 프레임워크 에러를 처리하고,
       // runZonedGuarded는 그 외 Dart 수준에서 발생하는 예외를 처리함.
       FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-      final authService = serviceLocator<AuthService>();
       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-      final remoteMessageData = initialMessage?.data ?? {};
+      final remoteMessageData = initialMessage?.data;
 
       String startRoute = kIsWeb
-          ? await authService.recoverWebSession()
-          : await authService.recoverAppSession(remoteMessageData: remoteMessageData);
+          ? WebRoutes.loginRoute
+          : await getStartRoute(
+              remoteMessageData,
+            );
 
       final isWebInApp = serviceLocator<Environment>().isWebInApp;
 

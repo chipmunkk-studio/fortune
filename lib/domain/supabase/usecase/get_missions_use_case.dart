@@ -21,7 +21,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   });
 
   @override
-  Future<FortuneResult<List<MissionViewEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<MissionViewEntity>>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final missions = await missionRepository.getAllMissions();
@@ -103,7 +103,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
       });
 
       return Right(missionViewItems);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

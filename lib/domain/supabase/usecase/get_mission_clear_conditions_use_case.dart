@@ -12,11 +12,11 @@ class GetMissionClearConditionsUseCase implements UseCase1<List<MissionClearCond
   });
 
   @override
-  Future<FortuneResult<List<MissionClearConditionEntity>>> call(int missionId) async {
+  Future<FortuneResultDeprecated<List<MissionClearConditionEntity>>> call(int missionId) async {
     try {
       final missions = await missionRepository.getMissionClearConditionsByMissionId(missionId);
       return Right(missions);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

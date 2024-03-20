@@ -14,7 +14,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getAllowPushAlarm();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '푸시 알람을 설정할 수 없습니다',
       );
@@ -26,7 +26,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setAllowPushAlarm(isAllow);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '테스트 계정을 설정 할 수 없습니다',
       );
@@ -39,7 +39,7 @@ class LocalRepositoryImpl extends LocalRepository {
       final currentTime = DateTime.now().millisecondsSinceEpoch;
       final result = await localDataSource.setVerifySmsTime(currentTime);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -51,7 +51,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getVerifySmsTime();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -63,7 +63,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getShowAd();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -75,7 +75,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setShowAdCounter();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -87,7 +87,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getGiftBoxRemainTime();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -99,7 +99,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setGiftBoxStopTime(time);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -111,7 +111,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setGiftBoxRemainTime(time);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -123,7 +123,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getGiftBoxStopTime();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -135,7 +135,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getCoinBoxRemainTime();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -147,7 +147,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.getCoinBoxStopTime();
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -159,7 +159,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setCoinBoxRemainTime(time);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );
@@ -171,7 +171,7 @@ class LocalRepositoryImpl extends LocalRepository {
     try {
       final result = await localDataSource.setCoinBoxStopTime(time);
       return result;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure(
         description: '${e.description}',
       );

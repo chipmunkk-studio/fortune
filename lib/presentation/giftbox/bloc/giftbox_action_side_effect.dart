@@ -8,7 +8,7 @@ import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 abstract class GiftboxActionSideEffect extends Equatable {}
 
 class GiftboxActionError extends GiftboxActionSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   GiftboxActionError(this.error);
 

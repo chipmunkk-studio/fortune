@@ -5,7 +5,7 @@ part 'custom_failure.g.dart';
 
 /// 커스텀 에러.
 @JsonSerializable(ignoreUnannotated: false)
-class CustomFailure extends FortuneFailure {
+class CustomFailure extends FortuneFailureDeprecated {
   @JsonKey(name: 'errorDescription')
   final String? errorDescription;
 

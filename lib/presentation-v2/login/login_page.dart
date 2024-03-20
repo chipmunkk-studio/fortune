@@ -73,7 +73,7 @@ class _LoginPageState extends State<_LoginPage> {
     return BlocSideEffectListener<LoginBloc, LoginSideEffect>(
       listener: (context, sideEffect) async {
         if (sideEffect is LoginError) {
-          dialogService.showAppErrorDialog(context, sideEffect.error, needToFinish: false);
+          dialogService2.showAppErrorDialog(context, sideEffect.error, needToFinish: false);
         } else if (sideEffect is LoginShowTermsBottomSheet) {
           final result = await context.showBottomSheet(
             isDismissible: false,
@@ -83,7 +83,7 @@ class _LoginPageState extends State<_LoginPage> {
             _bloc.add(LoginRequestVerifyCode());
           }
         } else if (sideEffect is LoginShowVerifyCodeBottomSheet) {
-          final result = await context.showBottomSheet(
+          await context.showBottomSheet(
             isDismissible: false,
             content: (context) => VerifyCodeBottomSheet(email: sideEffect.email),
           );

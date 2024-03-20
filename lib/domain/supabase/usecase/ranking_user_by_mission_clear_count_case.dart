@@ -19,7 +19,7 @@ class RankingUserByMissionClearCountUseCase implements UseCase0<RankingViewItemE
   });
 
   @override
-  Future<FortuneResult<RankingViewItemEntity>> call() async {
+  Future<FortuneResultDeprecated<RankingViewItemEntity>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.email,
@@ -59,7 +59,7 @@ class RankingUserByMissionClearCountUseCase implements UseCase0<RankingViewItemE
           ),
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

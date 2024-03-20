@@ -18,7 +18,7 @@ class SupportRepositoryImpl extends SupportRepository {
     try {
       List<FaqsEntity> faqs = onlyCount ? await supportService.findAllFaqCount() : await supportService.findAllFaqs();
       return faqs;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -29,7 +29,7 @@ class SupportRepositoryImpl extends SupportRepository {
       List<NoticesEntity> notices =
           onlyCount ? await supportService.findAllNoticesCount() : await supportService.findAllNotices();
       return notices;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -39,7 +39,7 @@ class SupportRepositoryImpl extends SupportRepository {
     try {
       List<PrivacyPolicyEntity> privacy = await supportService.findPrivacyPolicy();
       return privacy;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }
@@ -49,7 +49,7 @@ class SupportRepositoryImpl extends SupportRepository {
     try {
       List<AppUpdateEntity> update = await supportService.findAllAppUpdate();
       return update;
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       throw e.handleFortuneFailure();
     }
   }

@@ -16,7 +16,7 @@ class VerifyEmailUseCase implements UseCase1<VerifyPhoneNumberEntity, RequestVer
   });
 
   @override
-  Future<FortuneResult<VerifyPhoneNumberEntity>> call(RequestVerifyEmailParam request) async {
+  Future<FortuneResultDeprecated<VerifyPhoneNumberEntity>> call(RequestVerifyEmailParam request) async {
     try {
       final authResponse = await authRepository.verifyOTP(request);
       final userEntity = await userRepository.findUserByEmailNonNull(columnsToSelect: []);
@@ -26,7 +26,7 @@ class VerifyEmailUseCase implements UseCase1<VerifyPhoneNumberEntity, RequestVer
           userEntity: userEntity,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

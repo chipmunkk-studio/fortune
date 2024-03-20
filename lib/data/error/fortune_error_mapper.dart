@@ -7,10 +7,12 @@ class FortuneErrorMapper {
   FortuneFailure map(FortuneException exception) {
     final int errorCode = exception.code;
     final String errorMessage = exception.message;
+    final String errorDescription = exception.description;
 
     FortuneLogger.error(
       code: errorCode.toString(),
       message: errorMessage,
+      description: errorDescription,
     );
 
     // 계정 에러: 401/403 Unauthorized
@@ -18,15 +20,24 @@ class FortuneErrorMapper {
       return AuthFailure(
         errorCode,
         errorMessage,
+        errorDescription,
       );
     }
     // 클라이언트 에러: 400 이상 500 미만 (401/403은 이미 위에서 처리)
     else if (errorCode >= 400 && errorCode < 500) {
-      return ClientFailure(errorCode, errorMessage);
+      return ClientFailure(
+        errorCode,
+        errorMessage,
+        errorDescription,
+      );
     }
     // 서버 에러: 500 이상
     else if (errorCode >= 500) {
-      return ServerFailure(errorCode, errorMessage);
+      return ServerFailure(
+        errorCode,
+        errorMessage,
+        errorDescription,
+      );
     }
     // 알 수 없는 에러: 에러 코드 범위 외
     else {
@@ -34,5 +45,5 @@ class FortuneErrorMapper {
     }
   }
 
-  Either<FortuneFailure, T> mapAsLeft<T>(FortuneException error) => left(map(error));
+  FortuneFailure mapAsFailure<T>(FortuneException error) => map(error);
 }

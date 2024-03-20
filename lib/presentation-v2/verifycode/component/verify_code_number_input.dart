@@ -48,7 +48,7 @@ class _VerifyCodeNumberInputState extends State<VerifyCodeNumberInput> {
           Stack(
             children: [
               BlocBuilder<VerifyCodeBloc, VerifyCodeState>(
-                buildWhen: (previous, current) => previous.phoneNumber != current.phoneNumber,
+                buildWhen: (previous, current) => previous.email != current.email,
                 builder: (context, state) {
                   return TextFormField(
                     autofocus: true,

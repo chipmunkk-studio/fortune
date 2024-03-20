@@ -8,14 +8,21 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/navigation/fortune_web_router.dart';
+import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/permission.dart';
+import 'package:fortune/data/remote/core/auth_helper_jwt.dart';
+import 'package:fortune/data/remote/core/credential/token_response.dart';
+import 'package:fortune/data/remote/core/credential/user_credential.dart';
 import 'package:fortune/data/supabase/response/agree_terms_response.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
+import 'package:fortune/di.dart';
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
+import 'package:fortune/env.dart';
 import 'package:fortune/presentation-v2/login/bloc/login.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:single_item_storage/storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -273,5 +280,55 @@ class AuthService {
 
   Future<void> persistSession(Session session) async {
     await preferences.setString(supabaseSessionKey, json.encode(session));
+  }
+}
+
+// 시작 화면 결정.
+Future<String> getStartRoute(Map<String, dynamic>? data) async {
+  final Storage<UserCredential> userStorage = serviceLocator();
+  final AuthHelperJwt authHelperJwt = serviceLocator();
+  final UserCredential loggedInUser = await userStorage.get() ?? UserCredential.initial();
+  final TokenResponse? tokenResponse = loggedInUser.token;
+  final permissionStatus = await FortunePermissionUtil.checkPermissionsStatus(
+    Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
+  );
+
+  FortuneLogger.info(tag: Environment.tag, "AccessToken: ${loggedInUser.token?.accessToken}");
+  FortuneLogger.info(tag: Environment.tag, "Permission Status: $permissionStatus");
+
+  try {
+    if (tokenResponse == null) {
+      // 토큰이 없는 경우 > 로그인 한 적이 없음 > 온보딩.
+      FortuneLogger.info(tag: Environment.tag, "토큰이 없음");
+      return AppRoutes.onBoardingRoute;
+    } else if (tokenResponse.isRefreshTokenExpired()) {
+      // 리프레시 토큰이 만료 된 경우 > 로그인 화면.
+      FortuneLogger.info(tag: Environment.tag, "리프레시토큰 만료.");
+      return AppRoutes.loginRoute;
+    } else if (permissionStatus) {
+      FortuneLogger.info(tag: Environment.tag, "사용 중 권한을 허용 하지 않음.");
+      // 권한을 허용 하지 않은 경우.
+      return AppRoutes.requestPermissionRoute;
+    } else {
+      // 액세스 토큰이 만료된 경우 > 리프레시 토큰으로 갱신.
+      try {
+        if (tokenResponse.isAccessTokenExpired()) {
+          await authHelperJwt.refreshIfTokenExpired(token: tokenResponse);
+        }
+        // 만료가 되지 않은 경우에는 메인화면 보여줌.
+        if (data != null) {
+          final entity = FortuneNotificationResponse.fromJson(data);
+          return "${AppRoutes.mainRoute}/${entity.landingRoute}";
+        } else {
+          // return Routes.mainRoute;
+          return AppRoutes.mainRoute;
+        }
+      } catch (e) {
+        // 리프레시 토큰 갱신 에러일 경우 다시 로그인.
+        return AppRoutes.loginRoute;
+      }
+    }
+  } catch (e) {
+    return AppRoutes.loginRoute;
   }
 }
