@@ -11,11 +11,11 @@ class SetShowAdUseCase implements UseCase0<void> {
   });
 
   @override
-  Future<FortuneResult<void>> call() async {
+  Future<FortuneResultDeprecated<void>> call() async {
     try {
       await repository.setShowAdCounter();
       return const Right(null);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

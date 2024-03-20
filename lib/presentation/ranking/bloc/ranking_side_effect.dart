@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class RankingSideEffect extends Equatable {}
 
 class RankingError extends RankingSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   RankingError(this.error);
 

@@ -8,7 +8,7 @@ import 'package:fortune/presentation/ingredientaction/ingredient_action_param.da
 abstract class IngredientActionSideEffect extends Equatable {}
 
 class IngredientActionError extends IngredientActionSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   IngredientActionError(this.error);
 

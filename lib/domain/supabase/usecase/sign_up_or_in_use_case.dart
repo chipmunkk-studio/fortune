@@ -19,7 +19,7 @@ class SignUpOrInUseCase implements UseCase1<bool, RequestSignUpParam> {
   });
 
   @override
-  Future<FortuneResult<bool>> call(RequestSignUpParam param) async {
+  Future<FortuneResultDeprecated<bool>> call(RequestSignUpParam param) async {
     try {
       final user = await userRepository.findUserByEmail(param.email);
       final remoteConfig = env.remoteConfig;
@@ -42,7 +42,7 @@ class SignUpOrInUseCase implements UseCase1<bool, RequestSignUpParam> {
       }
       // 테스트 계정이 아닐 경우.
       return const Right(false);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

@@ -15,11 +15,11 @@ class GetUserUseCase implements UseCase1<FortuneUserEntity?, String> {
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity?>> call(String email) async {
+  Future<FortuneResultDeprecated<FortuneUserEntity?>> call(String email) async {
     try {
       final user = await userRepository.findUserByEmail(email);
       return Right(user);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

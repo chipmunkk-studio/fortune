@@ -16,7 +16,7 @@ class NickNameUseCase implements UseCase0<NickNameViewEntity> {
   });
 
   @override
-  Future<FortuneResult<NickNameViewEntity>> call() async {
+  Future<FortuneResultDeprecated<NickNameViewEntity>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.nickname,
@@ -25,7 +25,7 @@ class NickNameUseCase implements UseCase0<NickNameViewEntity> {
       ]);
       final entity = NickNameViewEntity(user: user);
       return Right(entity);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

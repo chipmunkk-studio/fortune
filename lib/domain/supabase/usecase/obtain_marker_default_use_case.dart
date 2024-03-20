@@ -24,7 +24,7 @@ class ObtainMarkerDefaultUseCase implements UseCase1<FortuneUserEntity, Ingredie
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity>> call(IngredientEntity param) async {
+  Future<FortuneResultDeprecated<FortuneUserEntity>> call(IngredientEntity param) async {
     try {
       // 유저 정보 가져오기
       var user = await _getUserByEmail();
@@ -41,7 +41,7 @@ class ObtainMarkerDefaultUseCase implements UseCase1<FortuneUserEntity, Ingredie
       }
       // 결과 반환
       return Right(user);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

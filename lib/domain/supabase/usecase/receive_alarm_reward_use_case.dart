@@ -27,7 +27,7 @@ class ReceiveAlarmRewardUseCase implements UseCase1<List<AlarmFeedsEntity>, Alar
   });
 
   @override
-  Future<FortuneResult<List<AlarmFeedsEntity>>> call(AlarmFeedsEntity param) async {
+  Future<FortuneResultDeprecated<List<AlarmFeedsEntity>>> call(AlarmFeedsEntity param) async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.id,
@@ -72,7 +72,7 @@ class ReceiveAlarmRewardUseCase implements UseCase1<List<AlarmFeedsEntity>, Alar
         ],
       );
       return Right(newAlarms);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

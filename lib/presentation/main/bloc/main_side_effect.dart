@@ -13,7 +13,7 @@ import '../../../../core/error/fortune_app_failures.dart';
 abstract class MainSideEffect extends Equatable {}
 
 class MainError extends MainSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   MainError(this.error);
 

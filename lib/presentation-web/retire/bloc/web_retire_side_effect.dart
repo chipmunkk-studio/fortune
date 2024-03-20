@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class WebRetireSideEffect extends Equatable {}
 
 class WebRetireError extends WebRetireSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   WebRetireError(this.error);
 

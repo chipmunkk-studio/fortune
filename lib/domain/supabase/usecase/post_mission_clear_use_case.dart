@@ -21,7 +21,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
   });
 
   @override
-  Future<FortuneResult<void>> call(RequestPostNormalMissionClear request) async {
+  Future<FortuneResultDeprecated<void>> call(RequestPostNormalMissionClear request) async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final clearConditions = await missionRepository.getMissionClearConditionsByMissionId(request.missionId);
@@ -51,7 +51,7 @@ class PostMissionClearUseCase implements UseCase1<void, RequestPostNormalMission
       await obtainHistoryRepository.delete(histories: filteredUserHistories);
 
       return const Right(null);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

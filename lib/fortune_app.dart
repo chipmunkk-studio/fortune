@@ -34,7 +34,9 @@ class FortuneApp extends StatelessWidget {
           builder: (BuildContext context, Widget? child) {
             return MediaQuery(
               // 화면 비율 일정 하도록 함.
-              data: MediaQueryData.fromView(View.of(context)).copyWith(textScaleFactor: 1.0),
+              data: MediaQueryData.fromView(View.of(context)).copyWith(
+                textScaler: const TextScaler.linear(1.0),
+              ),
               child: _buildApp(context),
             );
           },

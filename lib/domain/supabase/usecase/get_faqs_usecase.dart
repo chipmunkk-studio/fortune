@@ -10,11 +10,11 @@ class GetFaqsUseCase implements UseCase0<List<FaqsEntity>> {
   GetFaqsUseCase({required this.repository});
 
   @override
-  Future<FortuneResult<List<FaqsEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<FaqsEntity>>> call() async {
     try {
       final faqs = await repository.getFaqs();
       return Right(faqs);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

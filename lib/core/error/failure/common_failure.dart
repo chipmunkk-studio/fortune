@@ -7,7 +7,7 @@ part 'common_failure.g.dart';
 
 /// 공통 에러.
 @JsonSerializable(ignoreUnannotated: false)
-class CommonFailure extends FortuneFailure {
+class CommonFailure extends FortuneFailureDeprecated {
   @JsonKey(name: 'errorMessage')
   final String? errorMessage;
   @JsonKey(name: 'errorDescription')

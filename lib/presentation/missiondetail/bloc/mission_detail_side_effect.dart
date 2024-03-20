@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/entity/mission/missions_entity.dart';
 abstract class MissionDetailSideEffect extends Equatable {}
 
 class MissionDetailError extends MissionDetailSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   MissionDetailError(this.error);
 

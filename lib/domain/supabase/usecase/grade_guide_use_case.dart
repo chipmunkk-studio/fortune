@@ -13,7 +13,7 @@ class GradeGuideUseCase implements UseCase0<GradeGuideViewEntity> {
   });
 
   @override
-  Future<FortuneResult<GradeGuideViewEntity>> call() async {
+  Future<FortuneResultDeprecated<GradeGuideViewEntity>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(
         columnsToSelect: [
@@ -26,7 +26,7 @@ class GradeGuideUseCase implements UseCase0<GradeGuideViewEntity> {
         user: user,
       );
       return Right(entity);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

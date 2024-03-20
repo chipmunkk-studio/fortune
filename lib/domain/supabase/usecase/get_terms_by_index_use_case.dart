@@ -12,11 +12,11 @@ class GetTermsByIndexUseCase implements UseCase1<AgreeTermsEntity, int> {
   });
 
   @override
-  Future<FortuneResult<AgreeTermsEntity>> call(int index) async {
+  Future<FortuneResultDeprecated<AgreeTermsEntity>> call(int index) async {
     try {
       final terms = await authRepository.getTermsByIndex(index);
       return Right(terms);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

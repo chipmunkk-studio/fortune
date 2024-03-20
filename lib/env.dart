@@ -3,11 +3,9 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/util/logger.dart';
 enum BuildType {
@@ -169,7 +167,6 @@ class Environment {
     // [WEB] 웹은 크래실리틱스 수집 안함.
     if (!kIsWeb) {
       FirebaseCrashlytics.instance
-        ..setUserIdentifier(Supabase.instance.client.auth.currentUser?.email ?? FortuneTr.msgUnknownUser)
         ..setCustomKey("appName", packageInfo.appName)
         ..setCustomKey("packageName", packageInfo.packageName)
         ..setCustomKey("version", packageInfo.version)

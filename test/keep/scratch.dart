@@ -1,9 +1,9 @@
 // import 'package:flutter/material.dart';
-// import 'package:fortune/core/util/logger.dart';
-// import 'package:fortune/core/util/textstyle.dart';
-// import 'package:fortune/core/widgets/button/fortune_text_button.dart';
-// import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
-// import 'package:fortune/core/widgets/fortune_scaffold.dart';
+// import 'package:fortune/network/util/logger.dart';
+// import 'package:fortune/network/util/textstyle.dart';
+// import 'package:fortune/network/widgets/button/fortune_text_button.dart';
+// import 'package:fortune/network/widgets/fortune_cached_network_Image.dart';
+// import 'package:fortune/network/widgets/fortune_scaffold.dart';
 // import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 // import 'package:fortune/presentation/ingredientaction/giftbox_action_param.dart';
 // import 'package:scratcher/scratcher.dart';

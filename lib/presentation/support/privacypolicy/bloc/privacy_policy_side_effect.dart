@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class PrivacyPolicySideEffect extends Equatable {}
 
 class PrivacyPolicyError extends PrivacyPolicySideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   PrivacyPolicyError(this.error);
 

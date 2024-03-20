@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/entity/eventnotice/alarm_feeds_entity.da
 abstract class AlarmFeedSideEffect extends Equatable {}
 
 class AlarmFeedError extends AlarmFeedSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   AlarmFeedError(this.error);
 

@@ -5,6 +5,7 @@ build/
 /gradlew
 /gradlew.bat
 /local.properties
+/build/intermediates
 GeneratedPluginRegistrant.java
 
 # Remember to never publicly share your keystore.

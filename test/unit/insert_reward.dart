@@ -1,4 +1,4 @@
-// import 'package:fortune/core/util/logger.dart';
+// import 'package:fortune/network/util/logger.dart';
 // import 'package:fortune/data/supabase/request/request_alarm_feeds.dart';
 // import 'package:fortune/data/supabase/request/request_obtain_history.dart';
 // import 'package:fortune/data/supabase/service/service_ext.dart';

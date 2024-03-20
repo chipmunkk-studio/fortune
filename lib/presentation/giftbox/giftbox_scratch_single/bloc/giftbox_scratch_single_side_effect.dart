@@ -7,7 +7,7 @@ import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 abstract class GiftboxScratchSingleSideEffect extends Equatable {}
 
 class GiftboxScratchSingleError extends GiftboxScratchSingleSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   GiftboxScratchSingleError(this.error);
 

@@ -14,7 +14,7 @@ class CheckVerifySmsTimeUseCase implements UseCase0<SmsVerifyRemainTimeEntity> {
   });
 
   @override
-  Future<FortuneResult<SmsVerifyRemainTimeEntity>> call() async {
+  Future<FortuneResultDeprecated<SmsVerifyRemainTimeEntity>> call() async {
     try {
       final entity = await _getTimeDifference();
       if (!entity.isEnable) {
@@ -26,7 +26,7 @@ class CheckVerifySmsTimeUseCase implements UseCase0<SmsVerifyRemainTimeEntity> {
         );
       }
       return Right(entity);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

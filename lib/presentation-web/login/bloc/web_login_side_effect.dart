@@ -7,7 +7,7 @@ import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 abstract class WebLoginSideEffect extends Equatable {}
 
 class WebLoginError extends WebLoginSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   WebLoginError(this.error);
 

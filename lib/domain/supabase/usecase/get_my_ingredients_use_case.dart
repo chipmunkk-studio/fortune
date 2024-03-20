@@ -20,7 +20,7 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
   });
 
   @override
-  Future<FortuneResult<MyIngredientsViewEntity>> call() async {
+  Future<FortuneResultDeprecated<MyIngredientsViewEntity>> call() async {
     try {
       final ingredients = await ingredientRepository.findAllIngredients();
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
@@ -68,7 +68,7 @@ class GetMyIngredientsUseCase implements UseCase0<MyIngredientsViewEntity> {
       );
 
       return Right(entity);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

@@ -11,11 +11,11 @@ class GetCoinboxStopTimeUseCase implements UseCase0<int> {
   });
 
   @override
-  Future<FortuneResult<int>> call() async {
+  Future<FortuneResultDeprecated<int>> call() async {
     try {
       final time = await repository.getCoinboxStopTime();
       return Right(time);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

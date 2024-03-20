@@ -16,7 +16,7 @@ class MyMissionsUseCase implements UseCase0<MainViewEntity> {
   });
 
   @override
-  Future<FortuneResult<MainViewEntity>> call() async {
+  Future<FortuneResultDeprecated<MainViewEntity>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final missions = await missionsRepository.getMissionClearUsersByUserId(user.id);
@@ -25,7 +25,7 @@ class MyMissionsUseCase implements UseCase0<MainViewEntity> {
           missions: missions,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

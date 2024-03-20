@@ -23,18 +23,18 @@ class FortuneException {
   });
 }
 
-abstract class FortuneFailure extends Equatable {
+abstract class FortuneFailureDeprecated extends Equatable {
   final String? code;
   final String? message;
   final String? description;
 
-  const FortuneFailure({
+  const FortuneFailureDeprecated({
     this.code,
     this.message,
     this.description,
   }) : super();
 
-  FortuneFailure copyWith({
+  FortuneFailureDeprecated copyWith({
     String? code,
     String? message,
     String? description,
@@ -45,7 +45,7 @@ abstract class FortuneFailure extends Equatable {
 }
 
 extension FortuneExceptionX on Exception {
-  FortuneFailure handleException() {
+  FortuneFailureDeprecated handleException() {
     if (this is PostgrestException) {
       final postgrestException = this as PostgrestException;
       if (postgrestException.message.contains("Token") ||
@@ -91,8 +91,8 @@ extension FortuneExceptionX on Exception {
   }
 }
 
-extension FortuneFailureX on FortuneFailure {
-  FortuneFailure handleFortuneFailure({
+extension FortuneFailureX on FortuneFailureDeprecated {
+  FortuneFailureDeprecated handleFortuneFailure({
     String? description,
   }) {
     if (this is CustomFailure) {

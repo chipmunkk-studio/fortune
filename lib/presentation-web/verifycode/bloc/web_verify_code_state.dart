@@ -1,5 +1,4 @@
 import 'package:fortune/domain/supabase/entity/agree_terms_entity.dart';
-import 'package:fortune/presentation/verifycode/bloc/verify_code_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'web_verify_code_state.freezed.dart';
@@ -26,7 +25,7 @@ class WebVerifyCodeState with _$WebVerifyCodeState {
         email: email ?? "",
         agreeTerms: agreeTerms ?? List.empty(),
         verifyCode: "",
-        verifyTime: VerifyCodeBloc.verifyTime,
+        verifyTime: 180,
         isRequestVerifyCodeEnable: true,
         isLoginProcessing: false,
         isConfirmEnable: false,

@@ -5,7 +5,7 @@ part 'auth_failure.g.dart';
 
 /// 인증 에러.
 @JsonSerializable(ignoreUnannotated: false)
-class AuthFailure extends FortuneFailure {
+class AuthFailure extends FortuneFailureDeprecated {
   @JsonKey(name: 'errorCode')
   final String? errorCode;
   @JsonKey(name: 'errorMessage')

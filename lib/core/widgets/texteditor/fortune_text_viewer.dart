@@ -5,8 +5,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_quill/flutter_quill.dart';
 // import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
-// import 'package:fortune/core/gen/colors.gen.dart';
-// import 'package:fortune/core/gen/fonts.gen.dart';
+// import 'package:fortune/network/gen/colors.gen.dart';
+// import 'package:fortune/network/gen/fonts.gen.dart';
 //
 // import 'fortune_text_editor_style.dart';
 //

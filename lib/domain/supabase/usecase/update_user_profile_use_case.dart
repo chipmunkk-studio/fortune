@@ -13,14 +13,14 @@ class UpdateUserProfileUseCase implements UseCase1<FortuneUserEntity, RequestPro
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity>> call(RequestProfileUpdateParam param) async {
+  Future<FortuneResultDeprecated<FortuneUserEntity>> call(RequestProfileUpdateParam param) async {
     try {
       final user = await userRepository.updateUserProfile(
         param.email,
         filePath: param.profile,
       );
       return Right(user);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

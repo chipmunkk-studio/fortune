@@ -11,11 +11,11 @@ class WithdrawalUseCase implements UseCase1<void, String> {
   });
 
   @override
-  Future<FortuneResult<void>> call(String param) async {
+  Future<FortuneResultDeprecated<void>> call(String param) async {
     try {
       await userRepository.withdrawal(param);
       return const Right(null);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

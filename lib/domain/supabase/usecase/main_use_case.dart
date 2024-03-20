@@ -37,7 +37,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
   });
 
   @override
-  Future<FortuneResult<MainViewEntity>> call(RequestMainParam param) async {
+  Future<FortuneResultDeprecated<MainViewEntity>> call(RequestMainParam param) async {
     try {
       // 유저 정보 가져오기.
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
@@ -132,7 +132,7 @@ class MainUseCase implements UseCase1<MainViewEntity, RequestMainParam> {
           haveCount: haveCounts.length,
         ),
       );
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

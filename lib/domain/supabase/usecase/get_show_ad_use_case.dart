@@ -11,11 +11,11 @@ class GetShowAdUseCase implements UseCase0<bool> {
   });
 
   @override
-  Future<FortuneResult<bool>> call() async {
+  Future<FortuneResultDeprecated<bool>> call() async {
     try {
       final result = await repository.getShowAd();
       return Right(result);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

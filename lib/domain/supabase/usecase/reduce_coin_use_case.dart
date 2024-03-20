@@ -30,7 +30,7 @@ class ReduceCoinUseCase implements UseCase1<FortuneUserEntity, IngredientEntity>
   });
 
   @override
-  Future<FortuneResult<FortuneUserEntity>> call(IngredientEntity ingredient) async {
+  Future<FortuneResultDeprecated<FortuneUserEntity>> call(IngredientEntity ingredient) async {
     try {
       /// 현재 유저 상태.
       final currentUser = await userRepository.findUserByEmailNonNull(
@@ -83,7 +83,7 @@ class ReduceCoinUseCase implements UseCase1<FortuneUserEntity, IngredientEntity>
       }
 
       return Right(updateUser);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

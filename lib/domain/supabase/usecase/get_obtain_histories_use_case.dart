@@ -14,7 +14,7 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingView
   });
 
   @override
-  Future<FortuneResult<List<ObtainHistoryPagingViewItem>>> call(RequestObtainHistoriesParam param) async {
+  Future<FortuneResultDeprecated<List<ObtainHistoryPagingViewItem>>> call(RequestObtainHistoriesParam param) async {
     try {
       final missions = (await obtainHistoryRepository.getAllHistories(
         start: param.start,
@@ -34,7 +34,7 @@ class GetObtainHistoriesUseCase implements UseCase1<List<ObtainHistoryPagingView
           )
           .toList();
       return Right(missions);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

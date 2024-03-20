@@ -10,11 +10,11 @@ class GetPrivacyPolicyUseCase implements UseCase0<List<PrivacyPolicyEntity>> {
   GetPrivacyPolicyUseCase({required this.repository});
 
   @override
-  Future<FortuneResult<List<PrivacyPolicyEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<PrivacyPolicyEntity>>> call() async {
     try {
       final faqs = await repository.getPrivacyPolicy();
       return Right(faqs);
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

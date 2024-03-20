@@ -20,7 +20,7 @@ class RankingUseCase implements UseCase1<RankingViewItemEntity, RequestRankingPa
   });
 
   @override
-  Future<FortuneResult<RankingViewItemEntity>> call(RequestRankingParam param) async {
+  Future<FortuneResultDeprecated<RankingViewItemEntity>> call(RequestRankingParam param) async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [
         UserColumn.email,
@@ -84,7 +84,7 @@ class RankingUseCase implements UseCase1<RankingViewItemEntity, RequestRankingPa
         default:
           return Right(_defaultRankingEntity(user));
       }
-    } on FortuneFailure catch (e) {
+    } on FortuneFailureDeprecated catch (e) {
       return Left(e);
     }
   }

@@ -9,9 +9,10 @@ import 'package:fortune/core/notification/notification_manager.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
+import 'package:fortune/core/widgets/dialog/fortune_dialog2.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/local/repository/local_repository_impl.dart';
-import 'package:fortune/data/supabase/repository/auth_repository_impl.dart';
+import 'package:fortune/data/remote/datasource/auth_normal_datasource.dart';
 import 'package:fortune/data/supabase/repository/ingredient_respository_impl.dart';
 import 'package:fortune/data/supabase/repository/marker_respository_impl.dart';
 import 'package:fortune/data/supabase/repository/obtain_history_respository_impl.dart';
@@ -28,7 +29,6 @@ import 'package:fortune/data/supabase/service/post_service.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/local/local_respository.dart';
-import 'package:fortune/domain/supabase/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/repository/country_info_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
@@ -64,44 +64,36 @@ import 'package:fortune/domain/supabase/usecase/sign_in_with_email_use_case.dart
 import 'package:fortune/domain/supabase/usecase/sign_up_or_in_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_nick_name_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/update_user_profile_use_case.dart';
-import 'package:fortune/domain/supabase/usecase/verify_email_use_case.dart';
 import 'package:fortune/domain/supabase/usecase/withdrawal_use_case.dart';
+import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-web/agreeterms/bloc/web_agree_terms.dart';
 import 'package:fortune/presentation-web/login/bloc/web_login.dart';
 import 'package:fortune/presentation-web/retire/bloc/web_retire.dart';
 import 'package:fortune/presentation-web/verifycode/bloc/web_verify_code.dart';
 import 'package:fortune/presentation-web/writepost/bloc/write_post.dart';
-import 'package:fortune/presentation/agreeterms/bloc/agree_terms_bloc.dart';
-import 'package:fortune/presentation/alarmfeed/bloc/alarm_feed_bloc.dart';
-import 'package:fortune/presentation/countrycode/bloc/country_code.dart';
-import 'package:fortune/presentation/giftbox/bloc/giftbox_action.dart';
-import 'package:fortune/presentation/gradeguide/bloc/grade_guide.dart';
-import 'package:fortune/presentation/ingredientaction/bloc/ingredient_action.dart';
-import 'package:fortune/presentation/login/bloc/login_bloc.dart';
-import 'package:fortune/presentation/main/bloc/main.dart';
-import 'package:fortune/presentation/missions/bloc/missions.dart';
-import 'package:fortune/presentation/myingredients/bloc/my_ingredients.dart';
-import 'package:fortune/presentation/mymissions/bloc/my_missions.dart';
-import 'package:fortune/presentation/mypage/bloc/my_page.dart';
-import 'package:fortune/presentation/nickname/bloc/nick_name.dart';
-import 'package:fortune/presentation/obtainhistory/bloc/obtain_history.dart';
-import 'package:fortune/presentation/permission/bloc/request_permission_bloc.dart';
-import 'package:fortune/presentation/ranking/bloc/ranking.dart';
-import 'package:fortune/presentation/support/faqs/bloc/faqs.dart';
-import 'package:fortune/presentation/support/notices/bloc/notices.dart';
-import 'package:fortune/presentation/termsdetail/bloc/terms_detail.dart';
-import 'package:fortune/presentation/verifycode/bloc/verify_code.dart';
-import 'package:fortune/presentation/webview/bloc/fortune_webview.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:universal_html/html.dart';
+import 'package:single_item_secure_storage/single_item_secure_storage.dart';
+import 'package:single_item_storage/cached_storage.dart';
+import 'package:single_item_storage/observed_storage.dart';
+import 'package:single_item_storage/storage.dart';
+import 'package:universal_html/html.dart' hide Storage;
 
+import 'data/error/fortune_error_mapper.dart';
+import 'data/remote/api/service/main_service.dart';
+import 'data/remote/api/service/normal_auth_service.dart';
+import 'data/remote/api/service/normal_user_service.dart';
+import 'data/remote/api/service/user_service.dart';
+import 'data/remote/network/api_service_provider.dart';
+import 'data/remote/network/auth_helper_jwt.dart';
+import 'data/remote/network/credential/user_credential.dart';
+import 'data/remote/repository/auth_normal_repository_impl.dart';
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
+import 'data/supabase/repository/auth_repository_impl.dart';
 import 'data/supabase/repository/country_info_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
 import 'data/supabase/service/alarm_feeds_service.dart';
@@ -109,8 +101,10 @@ import 'data/supabase/service/alarm_reward_history_service.dart';
 import 'data/supabase/service/alarm_reward_info_service.dart';
 import 'data/supabase/service/mission/mission_clear_conditions_service.dart';
 import 'data/supabase/service/mission/missions_service.dart';
+import 'domain/repository/auth_normal_repository.dart';
 import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
+import 'domain/supabase/repository/auth_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_app_update.dart';
@@ -126,16 +120,25 @@ import 'domain/supabase/usecase/nick_name_use_case.dart';
 import 'domain/supabase/usecase/post_mission_clear_use_case.dart';
 import 'domain/supabase/usecase/set_giftbox_remain_time_use_case.dart';
 import 'domain/supabase/usecase/set_giftbox_stop_time_use_case.dart';
+import 'domain/usecase/verify_email_use_case.dart';
 import 'env.dart';
-import 'presentation/missiondetail/bloc/mission_detail_bloc.dart';
-import 'presentation/support/privacypolicy/bloc/privacy_policy.dart';
+import 'presentation-v2/agreeterms/bloc/agree_terms_bloc.dart';
+import 'presentation-v2/login/bloc/login_bloc.dart';
+import 'presentation-v2/permission/bloc/request_permission_bloc.dart';
+import 'presentation-v2/termsdetail/bloc/terms_detail_bloc.dart';
+import 'presentation-v2/verifycode/bloc/verify_code_bloc.dart';
+import 'presentation/support/privacypolicy/bloc/privacy_policy_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 final FortuneDialogService dialogService = FortuneDialogService();
+final FortuneDialogService2 dialogService2 = FortuneDialogService2();
 
 Future<void> init() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+
+    /// 다국어 설정.
+    await EasyLocalization.ensureInitialized();
 
     /// Firebase 초기화.
     await Firebase.initializeApp(
@@ -158,24 +161,42 @@ Future<void> init() async {
         ),
       );
 
-    /// Supabase
-    await Supabase.initialize(
-      url: serviceLocator<Environment>().remoteConfig.baseUrl,
-      anonKey: serviceLocator<Environment>().remoteConfig.anonKey,
-      debug: false,
+    /// 로컬 데이터 - Storage.
+    final ObservedStorage<UserCredential> userStorage = ObservedStorage<UserCredential>(
+      CachedStorage(
+        SecureStorage(
+          itemKey: 'data.models.user-credential',
+          fromMap: (map) => UserCredential.fromJson(map),
+          toMap: (user) => user.toJson(),
+          iosOptions: const IOSOptions(
+            accessibility: KeychainAccessibility.first_unlock,
+            synchronizable: true,
+          ),
+          androidOptions: const AndroidOptions(
+            encryptedSharedPreferences: false,
+          ),
+        ),
+      ),
     );
+    serviceLocator.registerLazySingleton<Storage<UserCredential>>(() => userStorage);
 
-    /// 믹스 패널.
-    await initMixPanel();
-
-    /// FCM todo 나중에 작업할 때 다시 활성화.
-    await initFCM();
-
-    /// 다국어 설정.
-    await EasyLocalization.ensureInitialized();
+    /// 서비스 프로바이더.
+    ApiServiceProvider apiProvider = ApiServiceProvider(
+      baseUrl: serviceLocator<Environment>().remoteConfig.baseUrl,
+      userStore: userStorage,
+    );
 
     /// Router.
     initRouter(kIsWeb);
+
+    /// 서비스 init
+    await _initService(apiProvider);
+
+    /// 믹스 패널.
+    await _initMixPanel();
+
+    /// FCM todo 나중에 작업할 때 다시 활성화.
+    await _initFCM();
 
     /// Supabase
     await initSupabase(kIsWeb);
@@ -184,13 +205,92 @@ Future<void> init() async {
   }
 }
 
-initMixPanel() async {
+/// Service.
+_initService(ApiServiceProvider apiProvider) {
+  serviceLocator
+    ..registerLazySingleton<FortuneErrorMapper>(() => FortuneErrorMapper())
+
+    /// normal.(인증이 필요하지 않은 서비스)
+    ..registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt())
+    ..registerLazySingleton<NoAuthService>(() => apiProvider.getNoAuthService())
+
+    /// abnormal.(인증이 필요한 서비스)
+    ..registerLazySingleton<UserService>(() => apiProvider.getUserService());
+  // ..registerLazySingleton<MainService>(() => apiProvider.getMarkerService());
+
+  _initUseCase2();
+  _initRepository2();
+  _initDataSource();
+}
+
+_initUseCase2() async {
+  serviceLocator
+    ..registerLazySingleton<RequestEmailVerifyCodeUseCase>(
+      () => RequestEmailVerifyCodeUseCase(
+        authRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<VerifyEmailUseCase>(
+      () => VerifyEmailUseCase(
+        authRepository: serviceLocator(),
+      ),
+    );
+}
+
+_initRepository2() async {
+  serviceLocator
+    ..registerLazySingleton<AuthNormalRepository>(
+      () => NoAuthRepositoryImpl(
+        noAuthDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    );
+}
+
+_initDataSource() async {
+  serviceLocator
+    ..registerLazySingleton<NoAuthDataSource>(
+      () => AuthNormalDataSourceImpl(
+        normalAuthService: serviceLocator(),
+      ),
+    );
+}
+
+_initAppBloc() {
+  serviceLocator
+    ..registerFactory(
+      () => LoginBloc(
+        requestEmailVerifyCodeUseCase: serviceLocator<RequestEmailVerifyCodeUseCase>(),
+      ),
+    )
+    ..registerFactory(
+      () => RequestPermissionBloc(),
+    )
+    ..registerFactory(
+      () => TermsDetailBloc(
+        getTermsByIndexUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => VerifyCodeBloc(
+        verifyEmailUseCase: serviceLocator(),
+        userStorage: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => AgreeTermsBloc(
+        getTermsUseCase: serviceLocator(),
+        tracker: serviceLocator(),
+      ),
+    );
+}
+
+_initMixPanel() async {
   final remoteConfig = serviceLocator<Environment>().remoteConfig;
-  final currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
 
   /// 믹스 패널 추가 > 웹이 아닐 경우 에만 지원.
   Mixpanel? mixpanel;
-  if (!kIsWeb && currentEmail != remoteConfig.testSignInEmail) {
+  if (!kIsWeb) {
     mixpanel = await Mixpanel.init(
       kReleaseMode ? remoteConfig.mixpanelReleaseToken : remoteConfig.mixpanelDevelopToken,
       trackAutomaticEvents: false,
@@ -212,7 +312,7 @@ initRouter(bool kIsWeb) {
 
 initSupabase(bool kIsWeb) async {
   /// data.
-  await _initService();
+  await _initSupabaseService();
 
   /// domain.
   await _initRepository();
@@ -241,7 +341,7 @@ initEnvironment(bool kIsWeb) async {
 }
 
 /// FCM
-initFCM() async {
+_initFCM() async {
   final FortuneNotificationsManager notificationsManager = FortuneNotificationsManager(
     initializeSettings,
     localDataSource: serviceLocator<LocalDataSource>(),
@@ -275,7 +375,7 @@ initAppLogger() {
 }
 
 /// Service.
-_initService() {
+_initSupabaseService() {
   serviceLocator
     ..registerLazySingleton<FortuneUserService>(
       () => FortuneUserService(notificationManager: serviceLocator()),
@@ -420,12 +520,6 @@ _initUseCase() async {
       () => RankingUserByMissionClearCountUseCase(
         userRepository: serviceLocator(),
         missionsRepository: serviceLocator(),
-      ),
-    )
-    ..registerLazySingleton<VerifyEmailUseCase>(
-      () => VerifyEmailUseCase(
-        authRepository: serviceLocator(),
-        userRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<GetTermsByIndexUseCase>(
@@ -662,165 +756,6 @@ _initUseCase() async {
 
 _initBloc(bool kIsWeb) async {
   kIsWeb ? await _initWebBloc() : await _initAppBloc();
-}
-
-/// Bloc.
-_initAppBloc() {
-  serviceLocator
-    ..registerFactory(
-      () => LoginBloc(
-        getUserUseCase: serviceLocator<GetUserUseCase>(),
-        signInWithEmailUseCase: serviceLocator<SignInWithEmailUseCase>(),
-        env: serviceLocator<Environment>(),
-      ),
-    )
-    ..registerFactory(
-      () => RequestPermissionBloc(),
-    )
-    ..registerFactory(
-      () => AlarmFeedBloc(
-        getAlarmFeedUseCase: serviceLocator(),
-        receiveAlarmRewardUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => PrivacyPolicyBloc(
-        getPrivacyPolicyUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => NickNameBloc(
-        nickNameUseCase: serviceLocator<NickNameUseCase>(),
-        updateProfileUseCase: serviceLocator<UpdateUserProfileUseCase>(),
-        updateUserNickNameUseCase: serviceLocator<UpdateUserNickNameUseCase>(),
-        withdrawalUseCase: serviceLocator<WithdrawalUseCase>(),
-      ),
-    )
-    ..registerFactory(
-      () => ObtainHistoryBloc(
-        getObtainHistoriesUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MyMissionsBloc(
-        missionsUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => RankingBloc(
-        rankingUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => GiftboxActionBloc(
-        getIngredientsByTypeUseCase: serviceLocator(),
-        env: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MainBloc(
-        remoteConfig: serviceLocator<Environment>().remoteConfig,
-        mainUseCase: serviceLocator(),
-        obtainMarkerMainUseCase: serviceLocator(),
-        getShowAdUseCase: serviceLocator(),
-        readAlarmFeedUseCase: serviceLocator(),
-        obtainMarkerDefaultUseCase: serviceLocator(),
-        getAppUpdate: serviceLocator(),
-        getIngredientsByTypeUseCase: serviceLocator(),
-        tracker: serviceLocator<MixpanelTracker>(),
-        setRandomBoxRemainTimeUseCase: serviceLocator(),
-        setRandomBoxStopTimeUseCase: serviceLocator(),
-        getRandomBoxRemainTimeUseCase: serviceLocator(),
-        getRandomBoxStopTimeUseCase: serviceLocator(),
-        setCoinboxRemainTimeUseCase: serviceLocator(),
-        setCoinboxStopTimeUseCase: serviceLocator(),
-        getCoinboxRemainTimeUseCase: serviceLocator(),
-        getCoinboxStopTimeUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => TermsDetailBloc(
-        getTermsByIndexUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MissionsBloc(
-        getAllMissionsUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MissionDetailBloc(
-        getMissionDetailUseCase: serviceLocator(),
-        postMissionClearUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => VerifyCodeBloc(
-        verifyEmailUseCase: serviceLocator(),
-        checkVerifySmsTimeUseCase: serviceLocator(),
-        signUpOrInUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MyIngredientsBloc(
-        getMyIngredientsUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => FaqsBloc(
-        getFaqsUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => IngredientActionBloc(
-        setShowAdUseCase: serviceLocator(),
-        getIngredientsByTypeUseCase: serviceLocator(),
-        env: serviceLocator(),
-        reduceCoinUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => NoticesBloc(
-        getNoticesUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => GradeGuideBloc(
-        gradeGuideUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => CountryCodeBloc(
-        getCountryInfoUseCase: serviceLocator(),
-      ),
-    )
-    ..registerFactory(
-      () => MyPageBloc(
-        myPageUseCase: serviceLocator(),
-        updateProfileUseCase: serviceLocator(),
-        localRepository: serviceLocator(),
-      ),
-    )
-    // ..registerFactory(
-    //   () => MissionDetailRelayBloc(
-    //     getMissionDetailUseCase: serviceLocator(),
-    //     postMissionClearUseCase: serviceLocator(),
-    //   ),
-    // )
-    ..registerFactory(
-      () => FortuneWebviewBloc(),
-    )
-
-    /// 삭제 해야 됨.
-    ..registerFactory(
-      () => WritePostBloc(),
-    )
-    ..registerFactory(
-      () => AgreeTermsBloc(
-        getTermsUseCase: serviceLocator(),
-        tracker: serviceLocator(),
-      ),
-    );
 }
 
 _initWebBloc() {

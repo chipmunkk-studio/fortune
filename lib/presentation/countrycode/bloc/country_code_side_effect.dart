@@ -6,7 +6,7 @@ import 'package:fortune/core/error/fortune_app_failures.dart';
 abstract class CountryCodeSideEffect extends Equatable {}
 
 class CountryCodeError extends CountryCodeSideEffect {
-  final FortuneFailure error;
+  final FortuneFailureDeprecated error;
 
   CountryCodeError(this.error);
 

@@ -71,4 +71,12 @@ abstract class FortuneDateExtension {
 
     return 'D-$difference';
   }
+
+  // ISO 8601 문자열에서 DateTime?로 변환
+  static DateTime? dateTimeFromIso8601String(String? date) => date == null ? null : DateTime.tryParse(date);
+
+  // DateTime?에서 ISO 8601 문자열로 변환
+  static String? dateTimeToIso8601String(DateTime? date) => date?.toIso8601String();
 }
+
+
