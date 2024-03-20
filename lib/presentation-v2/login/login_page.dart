@@ -19,17 +19,14 @@ import 'component/login_bottom_button.dart';
 import 'component/login_email_input_field.dart';
 
 class LoginPage extends StatelessWidget {
-  final LoginUserState loginState;
-
-  const LoginPage(
-    this.loginState, {
+  const LoginPage({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => serviceLocator<LoginBloc>()..add(LoginInit(loginState)),
+      create: (_) => serviceLocator<LoginBloc>()..add(LoginInit()),
       child: Scaffold(
         appBar: FortuneCustomAppBar.leadingAppBar(
           context,

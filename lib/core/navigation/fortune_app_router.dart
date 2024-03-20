@@ -89,15 +89,7 @@ class FortuneAppRouter {
 
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      String sessionsState = params[routeParam]?.first ?? LoginUserState.none.name;
-      final loginUserState = () {
-        if (sessionsState.contains("needToLogin")) {
-          return LoginUserState.needToLogin;
-        } else {
-          return LoginUserState.none;
-        }
-      }();
-      return LoginPage(loginUserState);
+      return LoginPage();
     },
   );
 
@@ -163,13 +155,6 @@ class FortuneAppRouter {
       /// 로그인.
       ..define(
         AppRoutes.loginRoute,
-        handler: loginHandler,
-        transitionType: TransitionType.cupertino,
-      )
-
-      /// 로그인 > 세션 만료 인 경우
-      ..define(
-        "${AppRoutes.loginRoute}/:$routeParam",
         handler: loginHandler,
         transitionType: TransitionType.cupertino,
       )
@@ -245,75 +230,75 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       );
 
-      /// 자주 묻는 질문.
-      // ..define(
-      //   AppRoutes.faqsRoute,
-      //   handler: faqsHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 자주 묻는 질문.
+    // ..define(
+    //   AppRoutes.faqsRoute,
+    //   handler: faqsHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 국가 코드.
-      // ..define(
-      //   AppRoutes.countryCodeRoute,
-      //   handler: countryCodeHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 국가 코드.
+    // ..define(
+    //   AppRoutes.countryCodeRoute,
+    //   handler: countryCodeHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 공지사항.
-      // ..define(
-      //   AppRoutes.noticesRoutes,
-      //   handler: noticesHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 공지사항.
+    // ..define(
+    //   AppRoutes.noticesRoutes,
+    //   handler: noticesHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 등급가이드.
-      // ..define(
-      //   AppRoutes.gradeGuideRoute,
-      //   handler: gradeGuideHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 등급가이드.
+    // ..define(
+    //   AppRoutes.gradeGuideRoute,
+    //   handler: gradeGuideHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 닉네임.
-      // ..define(
-      //   AppRoutes.nickNameRoute,
-      //   handler: nickNameHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 닉네임.
+    // ..define(
+    //   AppRoutes.nickNameRoute,
+    //   handler: nickNameHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 내 미션 완료 목록.
-      // ..define(
-      //   AppRoutes.myMissionsRoutes,
-      //   handler: myMissionsHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 내 미션 완료 목록.
+    // ..define(
+    //   AppRoutes.myMissionsRoutes,
+    //   handler: myMissionsHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 랭킹.
-      // ..define(
-      //   AppRoutes.rankingRoutes,
-      //   handler: rankingHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 랭킹.
+    // ..define(
+    //   AppRoutes.rankingRoutes,
+    //   handler: rankingHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 랜덤박스.
-      // ..define(
-      //   AppRoutes.giftBoxActionRoute,
-      //   handler: giftboxActionHandler,
-      //   transitionType: TransitionType.fadeIn,
-      // )
+    /// 랜덤박스.
+    // ..define(
+    //   AppRoutes.giftBoxActionRoute,
+    //   handler: giftboxActionHandler,
+    //   transitionType: TransitionType.fadeIn,
+    // )
 
-      /// 웹뷰.
-      // ..define(
-      //   AppRoutes.fortuneWebViewRoutes,
-      //   handler: fortuneWebViewHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+    /// 웹뷰.
+    // ..define(
+    //   AppRoutes.fortuneWebViewRoutes,
+    //   handler: fortuneWebViewHandler,
+    //   transitionType: TransitionType.cupertino,
+    // )
 
-      /// 마커 히스토리.
-      // ..define(
-      //   AppRoutes.obtainHistoryRoute,
-      //   handler: obtainHistoryHandler,
-      //   transitionType: TransitionType.cupertino,
-      // );
+    /// 마커 히스토리.
+    // ..define(
+    //   AppRoutes.obtainHistoryRoute,
+    //   handler: obtainHistoryHandler,
+    //   transitionType: TransitionType.cupertino,
+    // );
   }
 }
 

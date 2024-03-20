@@ -28,8 +28,8 @@ extension FortuneResponseMapper on Response {
     } else {
       FortuneErrorResponse? errorResponse = toErrorResponse();
       throw FortuneException(
-        code: errorResponse?.code ?? base.statusCode,
-        message: errorResponse?.message ?? error.toString(),
+        code: errorResponse?.errorCode ?? base.statusCode,
+        message: errorResponse?.errorMessage ?? error.toString(),
       );
     }
   }

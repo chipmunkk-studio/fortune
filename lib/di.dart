@@ -28,7 +28,6 @@ import 'package:fortune/data/supabase/service/post_service.dart';
 import 'package:fortune/data/supabase/service/support_service.dart';
 import 'package:fortune/data/supabase/service/user_service.dart';
 import 'package:fortune/domain/local/local_respository.dart';
-import 'package:fortune/domain/repository/auth_repository.dart';
 import 'package:fortune/domain/supabase/repository/country_info_repository.dart';
 import 'package:fortune/domain/supabase/repository/ingredient_respository.dart';
 import 'package:fortune/domain/supabase/repository/marker_respository.dart';
@@ -83,6 +82,7 @@ import 'package:single_item_storage/observed_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart';
 
+import 'data/error/fortune_error_mapper.dart';
 import 'data/remote/api/service/main_service.dart';
 import 'data/remote/api/service/normal_auth_service.dart';
 import 'data/remote/api/service/normal_user_service.dart';
@@ -93,6 +93,7 @@ import 'data/remote/core/credential/user_credential.dart';
 import 'data/remote/repository/auth_normal_repository_impl.dart';
 import 'data/supabase/repository/alarm_feeds_repository_impl.dart';
 import 'data/supabase/repository/alarm_reward_repository_impl.dart';
+import 'data/supabase/repository/auth_repository_impl.dart';
 import 'data/supabase/repository/country_info_repository_impl.dart';
 import 'data/supabase/repository/missions_respository_impl.dart';
 import 'data/supabase/service/alarm_feeds_service.dart';
@@ -103,6 +104,7 @@ import 'data/supabase/service/mission/missions_service.dart';
 import 'domain/repository/auth_normal_repository.dart';
 import 'domain/supabase/repository/alarm_feeds_repository.dart';
 import 'domain/supabase/repository/alarm_reward_repository.dart';
+import 'domain/supabase/repository/auth_repository.dart';
 import 'domain/supabase/repository/mission_respository.dart';
 import 'domain/supabase/usecase/get_alarm_feed_use_case.dart';
 import 'domain/supabase/usecase/get_app_update.dart';
@@ -203,6 +205,7 @@ Future<void> init() async {
 /// Service.
 _initService(ApiServiceProvider apiProvider) {
   serviceLocator
+    ..registerLazySingleton<FortuneErrorMapper>(() => FortuneErrorMapper())
 
     /// normal.(인증이 필요하지 않은 서비스)
     ..registerLazySingleton<AuthHelperJwt>(() => apiProvider.getAuthHelperJwt())
@@ -274,11 +277,10 @@ _initAppBloc() {
 
 _initMixPanel() async {
   final remoteConfig = serviceLocator<Environment>().remoteConfig;
-  final currentEmail = Supabase.instance.client.auth.currentUser?.email ?? '';
 
   /// 믹스 패널 추가 > 웹이 아닐 경우 에만 지원.
   Mixpanel? mixpanel;
-  if (!kIsWeb && currentEmail != remoteConfig.testSignInEmail) {
+  if (!kIsWeb) {
     mixpanel = await Mixpanel.init(
       kReleaseMode ? remoteConfig.mixpanelReleaseToken : remoteConfig.mixpanelDevelopToken,
       trackAutomaticEvents: false,
@@ -471,8 +473,8 @@ _initRepository() {
         userService: serviceLocator<FortuneUserService>(),
       ),
     )
-    ..registerLazySingleton<AuthNormalRepository>(
-      () => AuthNormalRepositoryImpl(
+    ..registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(
         serviceLocator<AuthService>(),
         serviceLocator<FortuneUserService>(),
         serviceLocator<MixpanelTracker>(),
@@ -634,7 +636,7 @@ _initUseCase() async {
     )
     ..registerLazySingleton<SignInWithEmailUseCase>(
       () => SignInWithEmailUseCase(
-        authRepository: serviceLocator<AuthNormalRepository>(),
+        authRepository: serviceLocator<AuthRepository>(),
       ),
     )
     ..registerLazySingleton<RankingUseCase>(

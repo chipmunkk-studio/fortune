@@ -12,14 +12,12 @@ class LoginState with _$LoginState {
     required String guideTitle,
     required bool isButtonEnabled,
     required bool isLoading,
-    required LoginUserState loginUserState,
   }) = _LoginState;
 
   factory LoginState.initial([String? phoneNumber]) => LoginState(
         email: "",
         isButtonEnabled: false,
         isLoading: true,
-        loginUserState: LoginUserState.none,
         guideTitle: 'loginGuideTitle.phoneNumber'.tr(),
       );
 }

@@ -5,14 +5,14 @@ part 'fortune_error_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class FortuneErrorResponse {
-  @JsonKey(name: 'code')
-  int? code;
-  @JsonKey(name: 'message')
-  String? message;
+  @JsonKey(name: 'error_code')
+  int? errorCode;
+  @JsonKey(name: 'error_message')
+  String? errorMessage;
 
   FortuneErrorResponse({
-    @required this.code,
-    @required this.message,
+    @required this.errorCode,
+    @required this.errorMessage,
   });
 
   factory FortuneErrorResponse.fromJson(Map<String, dynamic> json) => _$FortuneErrorResponseFromJson(json);

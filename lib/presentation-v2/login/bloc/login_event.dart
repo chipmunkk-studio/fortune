@@ -8,11 +8,7 @@ import 'login.dart';
 abstract class LoginEvent extends Equatable {}
 
 class LoginInit extends LoginEvent {
-  final LoginUserState loginUserState;
-
-  LoginInit(
-    this.loginUserState,
-  );
+  LoginInit();
 
   @override
   List<Object?> get props => [];
