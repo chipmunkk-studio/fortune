@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/widgets/button/fortune_scale_button.dart';
 
-
 class FortuneBottomButton extends StatelessWidget {
   final bool isEnabled;
   final Function0 onPress;
