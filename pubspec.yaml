@@ -76,6 +76,7 @@ dependencies:
   scratcher: ^2.5.0
   flutter_native_image: ^0.0.6+1
   flash: ^3.1.0
+  avatar_glow: ^3.0.1
 
   # map
   flutter_map: ^6.1.0

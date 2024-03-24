@@ -288,22 +288,22 @@ Future<String> getAppStartRoute(Map<String, dynamic>? data) async {
   final Storage<UserCredential> userStorage = serviceLocator();
   final AuthHelperJwt authHelperJwt = serviceLocator();
   final UserCredential loggedInUser = await userStorage.get() ?? UserCredential.initial();
-  final TokenResponse? tokenResponse = loggedInUser.token;
+  final TokenResponse tokenResponse = loggedInUser.token;
   final permissionStatus = await FortunePermissionUtil.checkPermissionsStatus(
     Platform.isAndroid ? FortunePermissionUtil.androidPermissions : FortunePermissionUtil.iosPermissions,
   );
 
-  FortuneLogger.info(tag: Environment.tag, "AccessToken: ${loggedInUser.token?.accessToken}");
+  FortuneLogger.info(tag: Environment.tag, "AccessToken: ${loggedInUser.token.accessToken}");
   FortuneLogger.info(tag: Environment.tag, "Permission Status: $permissionStatus");
 
   try {
-    if (tokenResponse == null) {
+    if (tokenResponse.accessToken.isEmpty) {
       // 토큰이 없는 경우 > 로그인 한 적이 없음 > 온보딩.
       FortuneLogger.info(tag: Environment.tag, "토큰이 없음");
       return AppRoutes.onBoardingRoute;
     } else if (tokenResponse.isRefreshTokenExpired()) {
       // 리프레시 토큰이 만료 된 경우 > 로그인 화면.
-      FortuneLogger.info(tag: Environment.tag, "리프레시토큰 만료.");
+      FortuneLogger.info(tag: Environment.tag, "리프레시 토큰 만료.");
       return AppRoutes.loginRoute;
     } else if (permissionStatus) {
       FortuneLogger.info(tag: Environment.tag, "사용 중 권한을 허용 하지 않음.");

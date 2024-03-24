@@ -6,28 +6,27 @@ part 'token_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class TokenResponse extends Equatable {
-  @JsonKey(name: 'accessToken')
-  final String? accessToken;
-  @JsonKey(name: 'refreshToken')
-  final String? refreshToken;
-  @JsonKey(name: 'signUpToken')
-  final String? signUpToken;
+  @JsonKey(name: 'access_token')
+  final String accessToken;
+  @JsonKey(name: 'refresh_token')
+  final String refreshToken;
 
   const TokenResponse({
-    this.accessToken,
-    this.refreshToken,
-    this.signUpToken,
+    this.accessToken = '',
+    this.refreshToken = '',
   }) : _displayToken = accessToken;
+
+  factory TokenResponse.initial() => const TokenResponse();
 
   final String? _displayToken;
 
-  bool isAccessTokenExpired() => JwtDecoder.isExpired(accessToken ?? '');
+  bool isAccessTokenExpired() => JwtDecoder.isExpired(accessToken);
 
-  bool isRefreshTokenExpired() => JwtDecoder.isExpired(refreshToken ?? '');
+  bool isRefreshTokenExpired() => JwtDecoder.isExpired(refreshToken);
 
   @override
   String toString() {
-    return 'TokenResponse{accessToken: $_displayToken, refreshToken: $refreshToken, signUpToken:$signUpToken}';
+    return 'TokenResponse{accessToken: $_displayToken, refreshToken: $refreshToken }';
   }
 
   factory TokenResponse.fromJson(Map<String, dynamic> json) => _$TokenResponseFromJson(json);

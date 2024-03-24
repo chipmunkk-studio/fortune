@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:fortune/presentation-v2/login/bloc/login_state.dart';
+import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/presentation-v2/login/login_page.dart';
+import 'package:fortune/presentation-v2/main/fortune_main_page.dart';
 import 'package:fortune/presentation-v2/onboarding/on_boarding_page.dart';
 import 'package:fortune/presentation-v2/permission/require_permission_page.dart';
 import 'package:fortune/presentation-v2/termsdetail/terms_detail_page.dart';
@@ -11,18 +14,18 @@ class FortuneAppRouter {
 
   static const String routeParam = "routeParam";
 
-  // static var mainHandler = Handler(
-  //   handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  //     final data = params[routeParam]?.first.toString() ?? '';
-  //     if (data.isNotEmpty) {
-  //       Map<String, dynamic> decodedMap = jsonDecode(params[routeParam]?.first ?? '');
-  //       FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
-  //       return MainPage(notification);
-  //     } else {
-  //       return const MainPage(null);
-  //     }
-  //   },
-  // );
+  static var mainHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final data = params[routeParam]?.first.toString() ?? '';
+      if (data.isNotEmpty) {
+        Map<String, dynamic> decodedMap = jsonDecode(params[routeParam]?.first ?? '');
+        FortuneNotificationEntity notification = FortuneNotificationResponse.fromJson(decodedMap);
+        return FortuneMainPage(notificationEntity: notification);
+      } else {
+        return const FortuneMainPage();
+      }
+    },
+  );
 
   static var permissionHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
@@ -89,7 +92,7 @@ class FortuneAppRouter {
 
   static var loginHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return LoginPage();
+      return const LoginPage();
     },
   );
 
@@ -160,11 +163,11 @@ class FortuneAppRouter {
       )
 
       /// 메인.
-      // ..define(
-      //   AppRoutes.mainRoute,
-      //   handler: mainHandler,
-      //   transitionType: TransitionType.cupertino,
-      // )
+      ..define(
+        AppRoutes.mainRoute,
+        handler: mainHandler,
+        transitionType: TransitionType.cupertino,
+      )
 
       /// 개인정보처리방침.
       // ..define(

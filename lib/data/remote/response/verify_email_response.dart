@@ -5,11 +5,11 @@ part 'verify_email_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
 class VerifyEmailResponse extends VerifyEmailEntity {
-  @JsonKey(name: 'accessToken')
+  @JsonKey(name: 'access_token')
   final String? accessToken_;
-  @JsonKey(name: 'refreshToken')
+  @JsonKey(name: 'refresh_token')
   final String? refreshToken_;
-  @JsonKey(name: 'signUpToken')
+  @JsonKey(name: 'sign_up_token')
   final String? signUpToken_;
 
   VerifyEmailResponse({

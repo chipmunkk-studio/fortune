@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -5,9 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
+import 'package:fortune/presentation-v2/admanager/fortune_ad_state_entity.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/util/logger.dart';
+import 'presentation-v2/admanager/fortune_ad_source.dart';
+
 enum BuildType {
   dev,
   product,
@@ -37,10 +42,10 @@ enum EnvKey {
   adShowThreshold,
   randomBoxTimer,
   randomBoxProbability,
+  adSourcePriority,
 }
 
 enum MapType {
-  mapBox,
   openStreet,
   radar,
 }
@@ -64,6 +69,8 @@ class FortuneRemoteConfig {
   final String mixpanelReleaseToken;
   final String testSignInEmail;
   final String testSignInPassword;
+
+  final List<AdSourcePriority> adSourcePriority;
   final double randomDistance;
   final int refreshTime;
   final int markerCount;
@@ -95,6 +102,7 @@ class FortuneRemoteConfig {
     required this.randomBoxTimer,
     required this.randomBoxProbability,
     required this.admobStatus,
+    required this.adSourcePriority,
   });
 
   @override
@@ -117,7 +125,8 @@ class FortuneRemoteConfig {
         "adRequestIntervalTime: $adRequestIntervalTime\n"
         "adShowThreshold: $adShowThreshold\n"
         "admobStatus: $admobStatus\n"
-        "anonKey: ${anonKey.shortenForPrint()}\n";
+        "anonKey: ${anonKey.shortenForPrint()}\n"
+        "priorities: ${adSourcePriority.toString()}\n";
   }
 }
 
@@ -222,6 +231,15 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     final randomBoxProbability = remoteConfig.getInt(describeEnum(EnvKey.randomBoxProbability));
     final admobStatus = remoteConfig.getBool(describeEnum(EnvKey.admobStatus));
 
+    // 광고 우선 순위.
+    final adSourcePriority = remoteConfig.getString(describeEnum(EnvKey.adSourcePriority));
+    List<dynamic> priorityList = jsonDecode(adSourcePriority);
+    List<AdSourcePriority> priorities = priorityList
+        .map((priorityAsString) => AdMobAdSource.stringToAdSourcePriority(
+              priorityAsString,
+            )!)
+        .toList();
+
     final baseUrl = remoteConfig.getString(() {
       switch (kReleaseMode) {
         case true:
@@ -264,6 +282,7 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
       adShowThreshold: adShowThreshold,
       mapType: mapType,
       admobStatus: admobStatus,
+      adSourcePriority: priorities,
     );
   } catch (e) {
     FortuneLogger.error(message: e.toString());

@@ -7,7 +7,7 @@ part 'email_verify_code_response.g.dart';
 @JsonSerializable(ignoreUnannotated: false)
 class EmailVerifyCodeResponse extends EmailVerifyCodeEntity {
   @JsonKey(
-    name: 'expireAt',
+    name: 'expire_at',
     fromJson: FortuneDateExtension.dateTimeFromIso8601String,
     toJson: FortuneDateExtension.dateTimeToIso8601String,
   )

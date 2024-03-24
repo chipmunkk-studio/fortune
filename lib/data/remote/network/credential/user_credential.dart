@@ -9,7 +9,7 @@ part 'user_credential.g.dart';
 @JsonSerializable()
 @immutable
 class UserCredential extends Equatable {
-  final TokenResponse? token;
+  final TokenResponse token;
 
   const UserCredential(
     this.token,
@@ -17,7 +17,7 @@ class UserCredential extends Equatable {
 
   factory UserCredential.fromJson(Map<String, dynamic> json) => _$UserCredentialFromJson(json);
 
-  factory UserCredential.initial() => const UserCredential(null);
+  factory UserCredential.initial() => UserCredential(TokenResponse.initial());
 
   Map<String, dynamic> toJson() => _$UserCredentialToJson(this);
 

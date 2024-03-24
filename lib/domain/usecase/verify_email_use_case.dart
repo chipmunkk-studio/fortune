@@ -2,10 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:fortune/core/util/usecase2.dart';
 import 'package:fortune/data/error/fortune_app_failures.dart';
 import 'package:fortune/domain/entity/verify_email_entity.dart';
-import 'package:fortune/domain/repository/auth_normal_repository.dart';
+import 'package:fortune/domain/repository/no_auth_repository.dart';
 
 class VerifyEmailUseCase implements UseCase2<VerifyEmailEntity, String, String> {
-  final AuthNormalRepository authRepository;
+  final NoAuthRepository authRepository;
 
   VerifyEmailUseCase({
     required this.authRepository,

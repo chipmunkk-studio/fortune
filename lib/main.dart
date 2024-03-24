@@ -25,11 +25,7 @@ main() {
       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
       final remoteMessageData = initialMessage?.data;
 
-      String startRoute = kIsWeb
-          ? WebRoutes.loginRoute
-          : await getAppStartRoute(
-              remoteMessageData,
-            );
+      String startRoute = await getAppStartRoute(remoteMessageData);
 
       final isWebInApp = serviceLocator<Environment>().isWebInApp;
 

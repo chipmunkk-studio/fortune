@@ -1,16 +1,14 @@
 import 'dart:core';
-import 'dart:io';
 
 import 'package:chopper/chopper.dart';
 import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/data/error/fortune_error.dart';
 import 'package:fortune/data/remote/api/fortune_response.dart';
-import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
-import 'package:fortune/data/remote/api/service/normal_user_service.dart';
+import 'package:fortune/data/remote/api/service/no_auth_service.dart';
 import 'package:fortune/data/remote/request/request_token_refresh.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:single_item_storage/storage.dart';
 import 'package:synchronized/synchronized.dart';
-import 'package:fortune/data/error/fortune_error.dart';
 
 import 'credential/token_response.dart';
 import 'credential/user_credential.dart';
@@ -39,13 +37,13 @@ class AuthHelperJwt {
   }) {
     return _lock.synchronized<String?>(() async {
       final UserCredential loggedInUser = await _userStore.get() ?? UserCredential.initial();
-      final TokenResponse? currentUser = token ?? loggedInUser.token;
-      final String? currentToken = currentUser?.accessToken;
+      final TokenResponse currentUser = token ?? loggedInUser.token;
+      final String currentToken = currentUser.accessToken;
 
       FortuneLogger.debug("LoggedInUser: $loggedInUser");
 
       // 토큰이 존재하지 않을 경우. => 로그인이 필요.
-      if (currentToken == null) {
+      if (currentToken.isEmpty) {
         FortuneLogger.error(
           code: _errorCode.toString(),
           message: "Token does not exist. >> $currentToken",
@@ -68,7 +66,7 @@ class AuthHelperJwt {
 
         // 토큰 리프레시.
         FortuneLogger.debug("Refreshing token...");
-        final newCredential = await _refreshToken(currentUser!.refreshToken!);
+        final newCredential = await _refreshToken(currentUser.refreshToken);
 
         // 리프레시 성공.
         FortuneLogger.debug("Updating old token...");
@@ -121,7 +119,7 @@ class AuthHelperJwt {
 
       // 토큰 리프레시.
       FortuneLogger.debug("interceptResponse():: Refreshing token...");
-      final newCredential = await _refreshToken(currentUser!.refreshToken!);
+      final newCredential = await _refreshToken(currentUser!.refreshToken);
 
       // 새로운 토큰을 저장.
       FortuneLogger.debug("interceptResponse():: Token refresh success; Saving...");
@@ -132,7 +130,7 @@ class AuthHelperJwt {
       return applyHeader(
         request,
         authHeaderKey,
-        newCredential.accessToken!,
+        newCredential.accessToken,
         override: true,
       );
     }, timeout: const Duration(seconds: 30)).catchError((_) {}, test: (error) {
@@ -172,36 +170,21 @@ class AuthHelperJwt {
           );
         }
 
-        // 토큰이 만료 되지 않은 경우. => 스토어에 저장된 토큰이 만료되지 않은 경우.
-        if (!JwtDecoder.isExpired(tokenCurrent)) {
-          FortuneLogger.debug(
-            'Applying token'
-            '\nnewToken: $tokenCurrent'
-            '\nusedToken: $tokenUsed',
-          );
-          return applyHeader(
-            request,
-            authHeaderKey,
-            authHeaderValue(tokenCurrent),
-            override: true,
-          );
-        }
-
         // 토큰이 만료 되었고, 리프레시 토큰이 만료되었는지 확인. => 로그인이 필요.
         _ensureRefreshTokenNotExpired(currentUser);
 
         // 토큰 리프레시.
         FortuneLogger.debug("Refreshing token...");
-        final newCredentials = await _refreshToken(currentUser!.refreshToken!);
+        final newCredentials = await _refreshToken(currentUser!.refreshToken);
 
         // 토큰 정보를 저장.
-        FortuneLogger.debug("interceptRequest():: Token refresh success...");
+        FortuneLogger.debug("interceptRequest():: Token refresh success... ${newCredentials.accessToken}");
         await _userStore.save(loggedInUser!.copy(token: newCredentials));
 
         return applyHeader(
           request,
           authHeaderKey,
-          authHeaderValue(newCredentials.accessToken!),
+          authHeaderValue(newCredentials.accessToken),
           override: true,
         );
       },

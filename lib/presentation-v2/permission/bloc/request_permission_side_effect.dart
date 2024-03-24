@@ -25,6 +25,10 @@ class RequestPermissionFail extends RequestPermissionSideEffect {
 }
 
 class RequestPermissionSuccess extends RequestPermissionSideEffect {
+  final String landingRoutes;
+
+  RequestPermissionSuccess(this.landingRoutes);
+
   @override
   List<Object?> get props => [];
 }

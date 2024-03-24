@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 
 class FortuneRadarBackground extends CustomPainter {
@@ -13,7 +14,7 @@ class FortuneRadarBackground extends CustomPainter {
       ..color = ColorName.primary.withOpacity(0.0); // 내부 색상의 투명도도 0.05로 설정
 
     final Offset center = Offset(size.width / 2, size.height / 2);
-    const double radiusInPixels = 150;
+    const double radiusInPixels = 152;
 
     // 원 그리기, 가장 안쪽 원을 제외함
     for (int i = 2; i <= 5; i++) {

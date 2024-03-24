@@ -113,7 +113,7 @@ class MainMap extends StatelessWidget {
                         child: SizedBox.square(
                           dimension: 100,
                           child: CustomPaint(
-                            painter: DirectionPainter(_isOpenStreetMap()),
+                            painter: DirectionPainter(),
                           ),
                         ),
                       );
@@ -172,11 +172,18 @@ class MainMap extends StatelessWidget {
   _getLayerByMapType(FortuneRemoteConfig remoteConfigArgs) {
     switch (remoteConfigArgs.mapType) {
       case MapType.openStreet:
-        return TileLayer(
-          urlTemplate: openStreetMap,
-          tileBuilder: _darkModeTileBuilder,
-        );
-      case MapType.mapBox:
+        try {
+          return TileLayer(
+            urlTemplate: openStreetMap,
+            tileBuilder: _darkModeTileBuilder,
+          );
+        } catch (e) {
+          return CustomPaint(
+            painter: FortuneMapGridPainter(gridSpacing: 26),
+            child: Container(),
+          );
+        }
+      case MapType.radar:
         return kReleaseMode
             ? TileLayer(
                 tileSize: 512,
@@ -192,9 +199,9 @@ class MainMap extends StatelessWidget {
                 child: Container(),
               );
       default:
-        return TileLayer(
-          urlTemplate: openStreetMap,
-          tileBuilder: _darkModeTileBuilder,
+        return CustomPaint(
+          painter: FortuneMapGridPainter(gridSpacing: 26),
+          child: Container(),
         );
     }
   }

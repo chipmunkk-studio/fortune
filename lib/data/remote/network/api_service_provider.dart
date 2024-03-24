@@ -1,8 +1,7 @@
 import 'package:chopper/chopper.dart';
-import 'package:fortune/data/remote/api/service/main_service.dart';
-import 'package:fortune/data/remote/api/service/normal_auth_service.dart';
-import 'package:fortune/data/remote/api/service/normal_user_service.dart';
-import 'package:fortune/data/remote/api/service/user_service.dart';
+import 'package:fortune/data/remote/api/service/fortune_user_service.dart';
+import 'package:fortune/data/remote/api/service/marker_service.dart';
+import 'package:fortune/data/remote/api/service/no_auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
 
@@ -50,9 +49,9 @@ class ApiServiceProvider {
       client: httpClient,
       converter: const JsonConverter(),
       services: [
-        UserService.create(),
-        // MainService.create(),
         // 여기에 인증이 필요한 api 추가.
+        FortuneUserService.create(),
+        MarkerService.create(),
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
       errorConverter: const JsonConverter(),
@@ -81,10 +80,9 @@ class ApiServiceProvider {
 
   AuthHelperJwt getAuthHelperJwt() => _authHelperJwt;
 
-
   NoAuthService getNoAuthService() => _normalClient.getService<NoAuthService>();
 
-  UserService getUserService() => _defaultClient.getService<UserService>();
+  FortuneUserService getFortuneUserService() => _defaultClient.getService<FortuneUserService>();
 
-  // MainService getMarkerService() => _defaultClient.getService<MainService>();
+  MarkerService getMarkerService() => _defaultClient.getService<MarkerService>();
 }

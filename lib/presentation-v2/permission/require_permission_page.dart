@@ -28,7 +28,7 @@ class _RequestPermissionEntity {
 }
 
 class RequestPermissionPage extends StatelessWidget {
-  const RequestPermissionPage({Key? key}) : super(key: key);
+  const RequestPermissionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class RequestPermissionPage extends StatelessWidget {
 }
 
 class _RequestPermissionPage extends StatefulWidget {
-  const _RequestPermissionPage({Key? key}) : super(key: key);
+  const _RequestPermissionPage();
 
   @override
   State<_RequestPermissionPage> createState() => _RequestPermissionPageState();
@@ -90,7 +90,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
         if (sideEffect is RequestPermissionStart) {
           FortunePermissionUtil.requestPermission(_bloc.state.permissions);
         } else if (sideEffect is RequestPermissionFail) {
-          dialogService.showFortuneDialog(
+          dialogService2.showFortuneDialog(
             context,
             title: FortuneTr.msgRequirePermissionTitle,
             subTitle: FortuneTr.msgRequirePermissionSubTitle,
@@ -102,7 +102,7 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
         } else if (sideEffect is RequestPermissionSuccess) {
           _router.navigateTo(
             context,
-            _bloc.state.nextLandingRoute,
+            sideEffect.landingRoutes,
             clearStack: true,
           );
         }
