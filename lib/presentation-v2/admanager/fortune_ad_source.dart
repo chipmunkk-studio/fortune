@@ -15,16 +15,16 @@ abstract class FortuneAdSource {
 class AdMobAdSource implements FortuneAdSource {
   int _rewardedAdRetryAttempt = 1;
 
-  static AdSourcePriority? stringToAdSourcePriority(String priorityString) {
+  static AdSourceType stringToAdSourcePriority(String priorityString) {
     switch (priorityString) {
       case 'AdMob':
-        return AdSourcePriority.AdMob;
+        return AdSourceType.AdMob;
       case 'Custom':
-        return AdSourcePriority.Custom;
+        return AdSourceType.Custom;
       case 'External':
-        return AdSourcePriority.External;
+        return AdSourceType.External;
       default:
-        return null;
+        return AdSourceType.None;
     }
   }
 
@@ -46,23 +46,15 @@ class AdMobAdSource implements FortuneAdSource {
               // 광고 표시에 실패 했을 경우
               onAdFailedToShowFullScreenContent: (ad, error) {
                 ad.dispose();
-                completer.complete(FortuneAdmobAdStateEntity(rewardedAd: ad));
+                completer.completeError("광고 로딩 실패: ${error.message}");
               },
             );
             FortuneLogger.info("광고 로딩 성공");
             completer.complete(FortuneAdmobAdStateEntity(rewardedAd: ad));
           },
           onAdFailedToLoad: (err) async {
-            try {
-              FortuneLogger.error(message: "광고 로딩 실패 : $err");
-              completer.completeError("광고 로딩 실패: $err");
-              await Future.delayed(Duration(milliseconds: 1000 * _rewardedAdRetryAttempt++));
-              loadAd();
-            } catch (e) {
-              if (!completer.isCompleted) {
-                completer.completeError("광고 로딩 실패: $e");
-              }
-            }
+            FortuneLogger.error(message: "광고 로딩 실패 : $err");
+            completer.completeError("광고 로딩 실패: $err");
           },
         ),
       );
@@ -80,7 +72,7 @@ class CustomAdSource implements FortuneAdSource {
   @override
   Future<FortuneAdState> loadAd() async {
     Completer<FortuneAdState> completer = Completer<FortuneAdState>();
-    completer.complete(FortuneCustomAdStateEntity(source: "테스트"));
+    completer.completeError("CustomAdSource:: 광고가 없습니다");
     return completer.future;
   }
 }
@@ -90,7 +82,7 @@ class ExternalAdSource implements FortuneAdSource {
   @override
   Future<FortuneAdState> loadAd() async {
     Completer<FortuneAdState> completer = Completer<FortuneAdState>();
-    completer.complete(FortuneExternalAdStateEntity(source: "테스트"));
+    completer.completeError("ExternalAdSource:: 광고가 없습니다");
     return completer.future;
     // 외부 광고 로딩 로직 구현
   }

@@ -31,4 +31,23 @@ class FortuneUserEntity {
     required this.timestamps,
     required this.shareUrl,
   });
+
+  // 'empty' 팩토리 생성자 추가
+  factory FortuneUserEntity.empty() {
+    return FortuneUserEntity(
+      id: '',
+      nickname: '',
+      profileImageUrl: '',
+      isAlarm: false,
+      isTutorial: false,
+      coins: 0,
+      itemCount: 0,
+      remainCoinChangeCount: 0,
+      remainRandomSeconds: 0,
+      remainPigSeconds: 0,
+      levelInfo: LevelInfoEntity.initial(),
+      timestamps: TimestampsEntity.initial(),
+      shareUrl: '',
+    );
+  }
 }

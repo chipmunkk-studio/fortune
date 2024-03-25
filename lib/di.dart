@@ -11,20 +11,27 @@ import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog.dart';
 import 'package:fortune/core/widgets/dialog/fortune_dialog2.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
+import 'package:fortune/data/remote/api/service/fortune_ad_service.dart';
 import 'package:fortune/data/remote/api/service/marker_service.dart';
+import 'package:fortune/data/remote/datasource/fortune_ad_datasource.dart';
 import 'package:fortune/data/remote/datasource/fortune_user_datasource.dart';
 import 'package:fortune/data/remote/datasource/marker_datasource.dart';
 import 'package:fortune/data/remote/repository/fortune_user_repository_impl.dart';
 import 'package:fortune/data/remote/repository/normal_auth_repository_impl.dart';
+import 'package:fortune/domain/repository/fortune_ad_repository.dart';
 import 'package:fortune/domain/repository/fortune_user_repository.dart';
 import 'package:fortune/domain/repository/marker_repository.dart';
 import 'package:fortune/domain/usecase/marker_list_use_case.dart';
+import 'package:fortune/domain/usecase/marker_obtain_use_case.dart';
 import 'package:fortune/domain/usecase/register_user_use_case.dart';
 import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
+import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
 import 'package:fortune/domain/usecase/user_me_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
+import 'package:fortune/presentation-v2/fortune_ad/bloc/fortune_ad.dart';
 import 'package:fortune/presentation-v2/main/bloc/main_bloc.dart';
+import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
@@ -42,6 +49,7 @@ import 'data/remote/datasource/no_auth_datasource.dart';
 import 'data/remote/network/api_service_provider.dart';
 import 'data/remote/network/auth_helper_jwt.dart';
 import 'data/remote/network/credential/user_credential.dart';
+import 'data/remote/repository/fortune_ad_repository_impl.dart';
 import 'data/remote/repository/marker_repository_impl.dart';
 import 'domain/repository/no_auth_repository.dart';
 import 'domain/usecase/verify_email_use_case.dart';
@@ -166,7 +174,8 @@ _initService(ApiServiceProvider apiProvider) {
 
     /// abnormal.(인증이 필요한 서비스)
     ..registerLazySingleton<MarkerService>(() => apiProvider.getMarkerService())
-    ..registerLazySingleton<FortuneUserService>(() => apiProvider.getFortuneUserService());
+    ..registerLazySingleton<FortuneUserService>(() => apiProvider.getFortuneUserService())
+    ..registerLazySingleton<FortuneAdService>(() => apiProvider.getFortuneAdService());
 }
 
 _initUseCase() {
@@ -191,6 +200,16 @@ _initUseCase() {
         markerRepository: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<ShowAdCompleteUseCase>(
+      () => ShowAdCompleteUseCase(
+        fortuneAdRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MarkerObtainUseCase>(
+      () => MarkerObtainUseCase(
+        markerRepository: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<VerifyEmailUseCase>(
       () => VerifyEmailUseCase(
         authRepository: serviceLocator(),
@@ -209,6 +228,12 @@ _initRepository() {
     ..registerLazySingleton<MarkerRepository>(
       () => MarkerRepositoryImpl(
         markerDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<FortuneAdRepository>(
+      () => FortuneAdRepositoryImpl(
+        fortuneAdDataSource: serviceLocator(),
         errorMapper: serviceLocator(),
       ),
     )
@@ -232,6 +257,11 @@ _initDataSource() {
         markerService: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<FortuneAdDataSource>(
+      () => FortuneAdDataSourceImpl(
+        fortuneAdService: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<NoAuthDataSource>(
       () => NoAuthDataSourceImpl(
         normalAuthService: serviceLocator(),
@@ -244,7 +274,6 @@ _initAppBloc() {
     ..registerFactory(
       () => MainBloc(
         environment: serviceLocator(),
-        adManager: serviceLocator(),
         tracker: serviceLocator(),
         userMeUseCase: serviceLocator(),
         markerListUseCase: serviceLocator(),
@@ -253,6 +282,17 @@ _initAppBloc() {
     ..registerFactory(
       () => LoginBloc(
         requestEmailVerifyCodeUseCase: serviceLocator<RequestEmailVerifyCodeUseCase>(),
+      ),
+    )
+    ..registerFactory(
+      () => FortuneAdBloc(
+        showAdCompleteUseCase: serviceLocator(),
+        adManager: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => FortuneObtainBloc(
+        markerObtainUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(
@@ -320,7 +360,7 @@ initEnvironment(bool kIsWeb) async {
   )..init(kIsWeb);
   serviceLocator
     ..registerLazySingleton<Environment>(() => environment)
-    ..registerLazySingleton<FortuneAdManager>(
+    ..registerFactory<FortuneAdManager>(
       () => FortuneAdManager(
         priorityOrder: remoteConfig.adSourcePriority,
       ),

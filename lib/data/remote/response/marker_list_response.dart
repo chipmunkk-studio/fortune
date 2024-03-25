@@ -3,6 +3,8 @@ import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/entity/marker_list_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'fortune_response_ext.dart';
+
 part 'marker_list_response.g.dart';
 
 @JsonSerializable(ignoreUnannotated: false)
@@ -19,7 +21,7 @@ class MarkerListResponse extends MarkerListEntity {
                       id: e.id ?? '',
                       name: e.name ?? '',
                       imageUrl: e.imageUrl ?? '',
-                      itemType: e.itemType ?? '',
+                      itemType: getMarkerItemType(e.itemType),
                       latitude: e.latitude ?? 0.0,
                       longitude: e.longitude ?? 0.0,
                       cost: e.cost ?? 0,

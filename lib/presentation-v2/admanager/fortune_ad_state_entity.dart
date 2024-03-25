@@ -3,10 +3,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 part 'fortune_ad_state_entity.freezed.dart';
 
-enum AdSourcePriority {
+enum AdSourceType {
   AdMob,
   Custom,
   External,
+  None,
 }
 
 abstract class FortuneAdState {}
@@ -25,7 +26,6 @@ class FortuneAdmobAdStateEntity extends FortuneAdState with _$FortuneAdmobAdStat
       );
 }
 
-
 @freezed
 class FortuneCustomAdStateEntity extends FortuneAdState with _$FortuneCustomAdStateEntity {
   factory FortuneCustomAdStateEntity({
@@ -39,7 +39,6 @@ class FortuneCustomAdStateEntity extends FortuneAdState with _$FortuneCustomAdSt
         source: source ?? '',
       );
 }
-
 
 @freezed
 class FortuneExternalAdStateEntity extends FortuneAdState with _$FortuneExternalAdStateEntity {

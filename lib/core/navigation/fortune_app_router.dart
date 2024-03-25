@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_page.dart';
+import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_param.dart';
 import 'package:fortune/presentation-v2/login/login_page.dart';
 import 'package:fortune/presentation-v2/main/fortune_main_page.dart';
+import 'package:fortune/presentation-v2/obtain/fortune_obtain_page.dart';
+import 'package:fortune/presentation-v2/obtain/fortune_obtain_param.dart';
 import 'package:fortune/presentation-v2/onboarding/on_boarding_page.dart';
 import 'package:fortune/presentation-v2/permission/require_permission_page.dart';
 import 'package:fortune/presentation-v2/termsdetail/terms_detail_page.dart';
@@ -30,6 +34,20 @@ class FortuneAppRouter {
   static var permissionHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const RequestPermissionPage();
+    },
+  );
+
+  static var onFortuneAdHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as FortuneAdParam?;
+      return args != null ? FortuneAdPage(args) : null;
+    },
+  );
+
+  static var onMarkerObtainHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as FortuneObtainParam?;
+      return args != null ? FortuneObtainPage(args) : null;
     },
   );
 
@@ -197,6 +215,22 @@ class FortuneAppRouter {
         transitionType: TransitionType.cupertino,
       )
 
+      /// 광고 화면.
+      ..define(
+        AppRoutes.fortuneAdRoute,
+        handler: onFortuneAdHandler,
+        transitionType: TransitionType.none,
+        opaque: false,
+      )
+
+      /// 마커 획득 화면.
+      ..define(
+        AppRoutes.markerObtainRoute,
+        handler: onMarkerObtainHandler,
+        transitionType: TransitionType.fadeIn,
+        opaque: false,
+      )
+
       /// 재료 획득 액션.
       // ..define(
       //   AppRoutes.ingredientActionRoute,
@@ -309,6 +343,7 @@ class AppRoutes {
   static const String mainRoute = 'main';
   static const String loginRoute = 'login';
   static const String onBoardingRoute = 'onBoarding';
+  static const String markerObtainRoute = 'markerObtainRoute';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String alarmFeedRoute = 'alarmFeed';
@@ -323,6 +358,7 @@ class AppRoutes {
   static const String nickNameRoute = 'nickName';
   static const String noticesRoutes = 'notices';
   static const String giftBoxActionRoute = 'giftBox';
+  static const String fortuneAdRoute = 'fortuneAd';
   static const String privacyPolicyRoutes = 'privacyPolicy';
   static const String myMissionsRoutes = 'myMissions';
   static const String rankingRoutes = 'ranking';

@@ -1,8 +1,11 @@
+import 'package:fortune/core/util/logger.dart';
+import 'package:fortune/data/error/fortune_error.dart';
+
 import 'fortune_ad_source.dart';
 import 'fortune_ad_state_entity.dart';
 
 class FortuneAdManager {
-  List<AdSourcePriority> priorityOrder;
+  List<AdSourceType> priorityOrder;
 
   FortuneAdManager({
     required this.priorityOrder,
@@ -12,10 +15,9 @@ class FortuneAdManager {
     for (var priority in priorityOrder) {
       try {
         var adSource = _createAdSourceBasedOnPriority(priority);
-        if (adSource != null) {
-          return await adSource.loadAd();
-        }
+        return await adSource.loadAd();
       } catch (e) {
+        FortuneLogger.error(message: e.toString());
         continue; // 실패 시 다음 우선 순위로 넘어갑니다.
       }
     }
@@ -24,29 +26,16 @@ class FortuneAdManager {
     return null;
   }
 
-  FortuneAdSource? _createAdSourceBasedOnPriority(AdSourcePriority priority) {
+  FortuneAdSource _createAdSourceBasedOnPriority(AdSourceType priority) {
     switch (priority) {
-      case AdSourcePriority.AdMob:
+      case AdSourceType.AdMob:
         return AdMobAdSource();
-      case AdSourcePriority.Custom:
+      case AdSourceType.Custom:
         return CustomAdSource();
-      case AdSourcePriority.External:
+      case AdSourceType.External:
         return ExternalAdSource();
       default:
-        return null;
-    }
-  }
-}
-
-extension FortuneAdManagerExt on FortuneAdState? {
-  showAd(Function callback) {
-    if (this is FortuneAdmobAdStateEntity) {
-      final adState = this as FortuneAdmobAdStateEntity; // 타입 캐스팅
-      adState.rewardedAd?.show(onUserEarnedReward: (_, __) => callback());
-    } else if (this is FortuneCustomAdStateEntity) {
-      callback();
-    } else if (this is FortuneExternalAdStateEntity) {
-      callback();
+        return AdMobAdSource();
     }
   }
 }

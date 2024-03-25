@@ -70,7 +70,7 @@ class FortuneRemoteConfig {
   final String testSignInEmail;
   final String testSignInPassword;
 
-  final List<AdSourcePriority> adSourcePriority;
+  final List<AdSourceType> adSourcePriority;
   final double randomDistance;
   final int refreshTime;
   final int markerCount;
@@ -234,10 +234,10 @@ Future<FortuneRemoteConfig> getRemoteConfigArgs() async {
     // 광고 우선 순위.
     final adSourcePriority = remoteConfig.getString(describeEnum(EnvKey.adSourcePriority));
     List<dynamic> priorityList = jsonDecode(adSourcePriority);
-    List<AdSourcePriority> priorities = priorityList
-        .map((priorityAsString) => AdMobAdSource.stringToAdSourcePriority(
-              priorityAsString,
-            )!)
+    List<AdSourceType> priorities = priorityList
+        .map(
+          (priorityAsString) => AdMobAdSource.stringToAdSourcePriority(priorityAsString),
+        )
         .toList();
 
     final baseUrl = remoteConfig.getString(() {

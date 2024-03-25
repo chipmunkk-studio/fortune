@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/domain/entity/fortune_user_entity.dart';
+import 'package:fortune/domain/entity/marker_entity.dart';
+import 'package:fortune/domain/entity/marker_obtain_entity.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
@@ -18,25 +21,44 @@ class MainInit extends MainEvent {
   List<Object?> get props => [];
 }
 
-class MainLoadAd extends MainEvent {
+class MainOnAdShowComplete extends MainEvent {
+  final FortuneUserEntity user;
 
-  MainLoadAd();
+  MainOnAdShowComplete(this.user);
 
   @override
   List<Object?> get props => [];
 }
 
-class MainInitMyLocation extends MainEvent {
+class MainObtainSuccess extends MainEvent {
+  final MarkerObtainEntity entity;
 
+  MainObtainSuccess(this.entity);
+
+  @override
+  List<Object?> get props => [];
+}
+
+
+class MainInitMyLocation extends MainEvent {
   final LatLng location;
+
   MainInitMyLocation(this.location);
 
   @override
   List<Object?> get props => [];
 }
 
-class MainMarkerList extends MainEvent {
+class MainMarkerClick extends MainEvent {
+  final MarkerEntity entity;
 
+  MainMarkerClick(this.entity);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainMarkerList extends MainEvent {
   final LatLng location;
 
   MainMarkerList(this.location);

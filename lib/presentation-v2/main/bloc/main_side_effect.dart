@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/data/error/fortune_error.dart';
+import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/support/app_update_view_entity.dart';
+import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';
@@ -77,18 +79,42 @@ class MainRequireInCircleMeters extends MainSideEffect {
 }
 
 class MainShowObtainDialog extends MainSideEffect {
-  final MainLocationData data;
-  final GlobalKey key;
-  final bool isShowAd;
-  final FortuneUserEntity? user;
-  final RewardedAd? ad;
+  final MarkerEntity marker;
+  final int timestamp;
+
+  final LatLng location;
 
   MainShowObtainDialog({
-    required this.data,
-    required this.key,
-    required this.isShowAd,
-    this.user,
-    this.ad,
+    required this.marker,
+    required this.timestamp,
+    required this.location,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainShowAdDialog extends MainSideEffect {
+  final int ts;
+
+  MainShowAdDialog({
+    required this.ts,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainObtainMarker extends MainSideEffect {
+  final MarkerEntity marker;
+  final int timestamp;
+
+  final LatLng location;
+
+  MainObtainMarker({
+    required this.marker,
+    required this.timestamp,
+    required this.location,
   });
 
   @override

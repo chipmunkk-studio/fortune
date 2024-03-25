@@ -1,5 +1,6 @@
 import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/message_ext.dart';
+import 'package:fortune/domain/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/entity/marker_list_entity.dart';
 import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
@@ -16,7 +17,7 @@ class MainState with _$MainState {
     required LatLng currentLocation,
     required LatLng cameraLocation,
     required List<MarkerEntity> markerList,
-    required String profileImage,
+    required FortuneUserEntity user,
     required String locationName,
     required FortuneAdState? ad,
     required double prevHeadings,
@@ -30,13 +31,13 @@ class MainState with _$MainState {
   factory MainState.initial() => MainState(
         currentLocation: const LatLng(0.0, 0.0),
         cameraLocation: const LatLng(0.0, 0.0),
+        user: FortuneUserEntity.empty(),
         ad: null,
         prevHeadings: 0,
         turns: 0,
         zoomThreshold: 19,
         locationName: FortuneTr.msgUnknownLocation,
         markerList: List.empty(),
-        profileImage: '',
         isLoading: true,
         isTestDeviceMode: true,
       );

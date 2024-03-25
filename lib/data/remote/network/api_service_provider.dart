@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:fortune/data/remote/api/service/fortune_ad_service.dart';
 import 'package:fortune/data/remote/api/service/fortune_user_service.dart';
 import 'package:fortune/data/remote/api/service/marker_service.dart';
 import 'package:fortune/data/remote/api/service/no_auth_service.dart';
@@ -52,6 +53,7 @@ class ApiServiceProvider {
         // 여기에 인증이 필요한 api 추가.
         FortuneUserService.create(),
         MarkerService.create(),
+        FortuneAdService.create(),
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
       errorConverter: const JsonConverter(),
@@ -83,6 +85,7 @@ class ApiServiceProvider {
   NoAuthService getNoAuthService() => _normalClient.getService<NoAuthService>();
 
   FortuneUserService getFortuneUserService() => _defaultClient.getService<FortuneUserService>();
+  FortuneAdService getFortuneAdService() => _defaultClient.getService<FortuneAdService>();
 
   MarkerService getMarkerService() => _defaultClient.getService<MarkerService>();
 }

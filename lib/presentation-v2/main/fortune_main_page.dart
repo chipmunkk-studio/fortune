@@ -18,9 +18,16 @@ import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
 import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_radar_background.dart';
+import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/di.dart';
+import 'package:fortune/domain/entity/marker_entity.dart';
+import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
 import 'package:fortune/presentation-v2/admanager/fortune_ad_manager.dart';
+import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_complete_return.dart';
+import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_param.dart';
 import 'package:fortune/presentation-v2/main/bloc/main.dart';
+import 'package:fortune/presentation-v2/obtain/fortune_obtain_param.dart';
+import 'package:fortune/presentation-v2/obtain/fortune_obtain_success_return.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -120,37 +127,108 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
     }
   }
 
+  void _handleSideEffect(BuildContext context, MainSideEffect sideEffect) async {
+    if (sideEffect is MainError) {
+      dialogService2.showAppErrorDialog(
+        context,
+        sideEffect.error,
+        btnOkOnPress: () {
+          _bloc.add(MainInit(notificationEntity: widget.notificationEntity));
+        },
+      );
+    } else if (sideEffect is MainLocationChangeListenSideEffect) {
+      final isInit = sideEffect.isInitialize;
+      _animatedMapMove(
+        destLocation: sideEffect.location,
+        destZoom: sideEffect.destZoom,
+      );
+      if (isInit) {
+        /// 카메라가 줌인 다되고 나서 위치 받아야 됨.
+        await Future.delayed(const Duration(seconds: 1));
+        _locationChangeSubscription = await _listenLocationChange();
+        _rotateChangeEvent = await _listenRotate();
+      }
+    } else if (sideEffect is MainRequireLocationPermission) {
+      _router.navigateTo(
+        context,
+        AppRoutes.requestPermissionRoute,
+        clearStack: true,
+      );
+    } else if (sideEffect is MainShowObtainDialog) {
+      dialogService2.showFortuneDialog(
+        context,
+        subTitle: FortuneTr.msgConsumeCoinToGetMarker(sideEffect.marker.cost.abs().toString()),
+        btnOkText: FortuneTr.confirm,
+        btnCancelText: FortuneTr.cancel,
+        dismissOnBackKeyPress: true,
+        dismissOnTouchOutside: true,
+        onDismissCallback: (_) {},
+        btnCancelPressed: () {},
+        btnOkPressed: () async {
+          final FortuneObtainSuccessReturn? response = await _router.navigateTo(
+            context,
+            AppRoutes.markerObtainRoute,
+            routeSettings: RouteSettings(
+              arguments: FortuneObtainParam(
+                ts: sideEffect.timestamp,
+                marker: sideEffect.marker,
+                location: sideEffect.location,
+              ),
+            ),
+          );
+          if (response != null) {
+            _bloc.add(MainObtainSuccess(response.markerObtainEntity));
+          }
+        },
+      );
+    } else if (sideEffect is MainShowAdDialog) {
+      dialogService2.showFortuneDialog(
+        context,
+        subTitle: FortuneTr.msgWatchAd,
+        btnOkText: FortuneTr.confirm,
+        btnCancelText: FortuneTr.cancel,
+        dismissOnBackKeyPress: true,
+        dismissOnTouchOutside: true,
+        onDismissCallback: (_) {},
+        btnCancelPressed: () {},
+        btnOkPressed: () async {
+          final FortuneAdCompleteReturn? response = await _router.navigateTo(
+            context,
+            AppRoutes.fortuneAdRoute,
+            routeSettings: RouteSettings(
+              arguments: FortuneAdParam(
+                ts: sideEffect.ts,
+              ),
+            ),
+          );
+          if (response != null) {
+            _bloc.add(MainOnAdShowComplete(response.user));
+          }
+        },
+      );
+    } else if (sideEffect is MainObtainMarker) {
+      final FortuneObtainSuccessReturn? response = await _router.navigateTo(
+        context,
+        AppRoutes.markerObtainRoute,
+        routeSettings: RouteSettings(
+          arguments: FortuneObtainParam(
+            ts: sideEffect.timestamp,
+            marker: sideEffect.marker,
+            location: sideEffect.location,
+          ),
+        ),
+      );
+      if (response != null) {
+        _bloc.add(MainObtainSuccess(response.markerObtainEntity));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<MainBloc, MainSideEffect>(
-      listener: (context, sideEffect) async {
-        if (sideEffect is MainError) {
-          // dialogService2.showAppErrorDialog(
-          //   context,
-          //   sideEffect.error,
-          //   btnOkOnPress: () {
-          //     _bloc.add(MainInit(notificationEntity: widget.notificationEntity));
-          //   },
-          // );
-        } else if (sideEffect is MainLocationChangeListenSideEffect) {
-          final isInit = sideEffect.isInitialize;
-          _animatedMapMove(
-            destLocation: sideEffect.location,
-            destZoom: sideEffect.destZoom,
-          );
-          if (isInit) {
-            /// 카메라가 줌인 다되고 나서 위치 받아야 됨.
-            await Future.delayed(const Duration(seconds: 1));
-            _locationChangeSubscription = await _listenLocationChange();
-            _rotateChangeEvent = await _listenRotate();
-          }
-        } else if (sideEffect is MainRequireLocationPermission) {
-          _router.navigateTo(
-            context,
-            AppRoutes.requestPermissionRoute,
-            clearStack: true,
-          );
-        }
+      listener: (context, sideEffect) {
+        _handleSideEffect(context, sideEffect);
       },
       child: UpgradeAlert(
         upgrader: Upgrader(
@@ -169,7 +247,6 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
                       final now = DateTime.now();
                       bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
                           lastPressed == null || now.difference(lastPressed!) > const Duration(seconds: 2);
-
                       if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
                         _fToast.showToast(
                           child: fortuneToastContent(
@@ -213,14 +290,26 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
                                 38,
                               );
                               if (isMarkerObtainable < 0) {
-                                _bloc.state.ad.showAd(() {
-                                  _bloc.add(MainLoadAd());
-                                });
+                                // _bloc.state.ad.showAd(() {
+                                //   _bloc.add(MainLoadAd());
+                                // });
                               }
                             },
                           ),
                           children: [
                             getLayerByMapType(),
+                            BlocBuilder<MainBloc, MainState>(
+                              buildWhen: (previous, current) => previous.markerList != current.markerList,
+                              builder: (context, state) {
+                                return MarkerLayer(
+                                  markers: state.markerList.toMarkerList(
+                                    (entity) {
+                                      _bloc.add(MainMarkerClick(entity));
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
 
@@ -264,10 +353,11 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
                               duration: const Duration(seconds: 3),
                               child: ScaleAnimation(
                                 child: BlocBuilder<MainBloc, MainState>(
-                                  buildWhen: (previous, current) => previous.profileImage != current.profileImage,
+                                  buildWhen: (previous, current) =>
+                                      previous.user.profileImageUrl != current.user.profileImageUrl,
                                   builder: (context, state) {
                                     return CenterProfile(
-                                      imageUrl: state.profileImage,
+                                      imageUrl: state.user.profileImageUrl,
                                       backgroundColor: ColorName.primary.withOpacity(1.0),
                                     );
                                   },

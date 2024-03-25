@@ -10,11 +10,9 @@ import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/data/error/fortune_app_failures.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation-v2/login/bloc/login.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FortuneDialogService2 {
   bool _isDialogShowing = false;
@@ -106,7 +104,7 @@ class FortuneDialogService2 {
       body: Wrap(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -114,10 +112,10 @@ class FortuneDialogService2 {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  error.description ?? error.message ?? FortuneTr.msgUnknownError,
+                  error.description,
                   style: FortuneTextStyle.body1Regular(
                     color: ColorName.grey200,
-                    height: 1.3,
+                    height: 1.4,
                   ),
                   textAlign: TextAlign.center,
                 ),

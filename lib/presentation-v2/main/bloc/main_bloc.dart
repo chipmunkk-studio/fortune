@@ -7,8 +7,12 @@ import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/permission.dart';
+import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
+import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/usecase/marker_list_use_case.dart';
+import 'package:fortune/domain/usecase/marker_obtain_use_case.dart';
+import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
 import 'package:fortune/domain/usecase/user_me_use_case.dart';
 import 'package:fortune/env.dart';
 import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
@@ -21,14 +25,12 @@ import 'main.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainEvent, MainState, MainSideEffect> {
   final Environment environment;
-  final FortuneAdManager adManager;
   final MixpanelTracker tracker;
   final UserMeUseCase userMeUseCase;
   final MarkerListUseCase markerListUseCase;
 
   MainBloc({
     required this.environment,
-    required this.adManager,
     required this.tracker,
     required this.userMeUseCase,
     required this.markerListUseCase,
@@ -52,7 +54,16 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       _rotate,
       transformer: sequential(),
     );
-    on<MainLoadAd>(_loadAd);
+    on<MainMarkerClick>(
+      _markerClick,
+      transformer: sequential(),
+    );
+    on<MainOnAdShowComplete>(
+      _onAdShowComplete,
+    );
+    on<MainObtainSuccess>(
+      _obtainSuccess,
+    );
   }
 
   FutureOr<void> _init(MainInit event, Emitter<MainState> emit) async {
@@ -72,15 +83,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (entity) async {
           final geoLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
           final location = LatLng(geoLocation.latitude, geoLocation.longitude);
-          emit(
-            state.copyWith(
-              profileImage: entity.profileImageUrl,
-            ),
-          );
+          emit(state.copyWith(user: entity));
           add(MainInitMyLocation(location));
-          add(MainMarkerList(location));
-          add(MainLoadAd());
-
           if (notificationEntity != null) {
             add(MainLandingPage(notificationEntity));
           }
@@ -119,7 +123,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
 
       // 카메라가 초기화되는 시간까지 기다려야 함.
       await Future.delayed(const Duration(milliseconds: 1000));
-
       produceSideEffect(
         MainLocationChangeListenSideEffect(
           location: locationData,
@@ -127,6 +130,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           isInitialize: true,
         ),
       );
+      // 마커 불러오기.
+      add(MainMarkerList(location));
     } catch (e) {
       FortuneLogger.error(message: e.toString());
     }
@@ -140,6 +145,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
           emit(
             state.copyWith(
               currentLocation: event.location,
+              markerList: r.list,
             ),
           );
         },
@@ -203,12 +209,65 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     );
   }
 
-  FutureOr<void> _loadAd(MainLoadAd event, Emitter<MainState> emit) async {
-    try {
-      final ad = await adManager.loadAd();
-      emit(state.copyWith(ad: ad));
-    } catch (e) {
-      FortuneLogger.error(message: e.toString());
+  FutureOr<void> _markerClick(MainMarkerClick event, Emitter<MainState> emit) async {
+    final remainCoinChangeCount = state.user.remainCoinChangeCount;
+    final ad = state.ad;
+    final isShowAd = remainCoinChangeCount <= 0 && event.entity.itemType == MarkerItemType.COIN;
+    final marker = event.entity;
+    if (isShowAd) {
+      // #1 광고를 봐야 할 경우.
+      produceSideEffect(MainShowAdDialog(ts: state.user.timestamps.ad));
+      return;
+    } else if (event.entity.itemType != MarkerItemType.COIN) {
+      // #2 코인이 아닌 경우 다이얼로그 노출.
+      produceSideEffect(
+        MainShowObtainDialog(
+          marker: marker,
+          timestamp: state.user.timestamps.marker,
+          location: state.cameraLocation,
+        ),
+      );
+    } else {
+      // #3 코인 일 경우 그냥 획득.
+      produceSideEffect(
+        MainObtainMarker(
+          marker: marker,
+          timestamp: state.user.timestamps.marker,
+          location: state.cameraLocation,
+        ),
+      );
     }
+  }
+
+  FutureOr<void> _onAdShowComplete(MainOnAdShowComplete event, Emitter<MainState> emit) async {
+    emit(state.copyWith(user: event.user));
+  }
+
+  FutureOr<void> _obtainSuccess(MainObtainSuccess event, Emitter<MainState> emit) async {
+    final responseEntity = event.entity;
+    final targetMarker = responseEntity.marker;
+    final targetUser = responseEntity.user;
+
+    final updatedMarkerList = state.markerList.map((marker) {
+      if (marker.id == targetMarker.id) {
+        return marker.copyWith(
+          name: targetMarker.name,
+          imageUrl: targetMarker.imageUrl,
+          itemType: targetMarker.itemType,
+          imageType: targetMarker.imageType,
+          latitude: targetMarker.latitude,
+          longitude: targetMarker.longitude,
+          cost: targetMarker.cost,
+        );
+      }
+      return marker; // 다른 마커는 변경 없이 그대로 반환
+    }).toList();
+
+    emit(
+      state.copyWith(
+        user: targetUser,
+        markerList: updatedMarkerList,
+      ),
+    );
   }
 }
