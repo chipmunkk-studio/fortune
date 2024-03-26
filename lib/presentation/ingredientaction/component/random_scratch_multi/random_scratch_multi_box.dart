@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fortune/core/widgets/fortune_cached_network_Image.dart';
-import 'package:scratcher/scratcher.dart';
 
 class RandomScratchMultiBox extends StatefulWidget {
   const RandomScratchMultiBox({

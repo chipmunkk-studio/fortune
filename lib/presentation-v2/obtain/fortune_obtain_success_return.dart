@@ -1,4 +1,3 @@
-import 'package:fortune/domain/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/entity/marker_obtain_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

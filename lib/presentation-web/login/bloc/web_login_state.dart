@@ -1,4 +1,3 @@
-import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'web_login_state.freezed.dart';

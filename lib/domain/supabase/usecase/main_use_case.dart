@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/usecase.dart';
 import 'package:fortune/data/supabase/response/alarmfeed/alarm_feeds_response.dart';
 import 'package:fortune/data/supabase/response/fortune_user_response.dart';

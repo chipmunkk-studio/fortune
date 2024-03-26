@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
 class SupportSkeleton extends StatelessWidget {
-  const SupportSkeleton({Key? key}) : super(key: key);
+  const SupportSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

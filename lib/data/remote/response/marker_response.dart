@@ -1,4 +1,3 @@
-import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'fortune_image_response.dart';

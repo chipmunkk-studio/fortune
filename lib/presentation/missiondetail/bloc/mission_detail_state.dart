@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fortune/domain/supabase/entity/mission/mission_detail_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:ui' as ui;
 
 part 'mission_detail_state.freezed.dart';
 

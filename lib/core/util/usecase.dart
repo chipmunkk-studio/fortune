@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/data/error/fortune_error.dart';
 
 typedef FortuneResultDeprecated<T> = Either<FortuneFailureDeprecated, T>;
 

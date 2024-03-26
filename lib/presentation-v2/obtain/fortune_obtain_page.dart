@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain_event.dart';
 import 'package:fortune/presentation-v2/obtain/component/random_scratch_single/random_scratch_single_view.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_param.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_success_return.dart';
@@ -73,7 +72,7 @@ class _FortuneObtainPageState extends State<_FortuneObtainPage> {
       child: BlocBuilder<FortuneObtainBloc, FortuneObtainViewState>(
         buildWhen: (previous, current) => previous.targetState != current.targetState,
         builder: (BuildContext context, FortuneObtainViewState state) {
-          if (state.targetState == MarkerItemType.SCRATCH) {
+          if (state.targetState == ObtainState.SCRATCH) {
             return RandomScratchSingleView(
               pickedItemEntity: state.responseEntity.pickedItem,
               scratchCoverEntity: state.responseEntity.cover,
@@ -86,8 +85,10 @@ class _FortuneObtainPageState extends State<_FortuneObtainPage> {
                 );
               },
             );
-          } else {
+          } else if (state.targetState == ObtainState.PROCESSING) {
             return ObtainLoadingView(state.processingMarker);
+          } else {
+            return const SizedBox.shrink();
           }
         },
       ),

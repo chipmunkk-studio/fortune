@@ -26,7 +26,7 @@ class FortuneTextForm extends StatefulWidget {
     required this.onTextChanged,
     required this.textEditingController,
     this.errorText,
-    Key? key,
+    super.key,
     this.keyboardType,
     this.hint,
     this.maxLength,
@@ -38,7 +38,7 @@ class FortuneTextForm extends StatefulWidget {
     this.onPrefixIconClicked,
     this.inputFormatters,
     this.autoFocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<FortuneTextForm> createState() => _FortuneTextFormState();

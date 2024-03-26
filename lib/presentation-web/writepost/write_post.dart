@@ -3,9 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/widgets/button/fortune_text_button.dart';
-import 'package:fortune/core/widgets/texteditor/fortune_text_editor.dart';
 import 'package:fortune/di.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 

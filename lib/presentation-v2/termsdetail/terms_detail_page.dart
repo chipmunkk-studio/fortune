@@ -29,7 +29,7 @@ class TermsDetailPage extends StatelessWidget {
 }
 
 class _TermsDetailPage extends StatefulWidget {
-  const _TermsDetailPage({Key? key}) : super(key: key);
+  const _TermsDetailPage();
 
   @override
   State<_TermsDetailPage> createState() => _TermsDetailPageState();

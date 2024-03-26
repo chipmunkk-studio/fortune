@@ -11,7 +11,6 @@ import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/domain/entity/picked_item_entity.dart';
 import 'package:fortune/domain/entity/scratch_cover_entity.dart';
-import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/presentation-v2/main/fortune_main_ext.dart';
 import 'package:fortune/presentation-v2/obtain/component/random_scratch_single/random_scratch_single_box.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';

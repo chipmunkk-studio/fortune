@@ -1,4 +1,3 @@
-import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
 import 'package:fortune/domain/supabase/entity/marker_entity.dart';
 import 'package:latlong2/latlong.dart';

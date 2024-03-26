@@ -100,5 +100,6 @@ class FortuneUserResponse extends FortuneUserEntity {
 
   factory FortuneUserResponse.fromJson(Map<String, dynamic> json) => _$FortuneUserResponseFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$FortuneUserResponseToJson(this);
 }

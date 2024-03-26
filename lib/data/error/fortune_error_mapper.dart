@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:fortune/core/util/logger.dart';
 
 import 'fortune_app_failures.dart';

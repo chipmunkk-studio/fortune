@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fortune/core/util/textstyle.dart';
-import 'package:fortune/core/widgets/texteditor/fortune_text_viewer.dart';
 
 class ViewPostPageArgs {
   final String json;

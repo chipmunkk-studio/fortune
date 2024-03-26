@@ -11,7 +11,7 @@ import '../component/support_card.dart';
 import 'bloc/privacy_policy.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
-  const PrivacyPolicyPage({Key? key}) : super(key: key);
+  const PrivacyPolicyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class PrivacyPolicyPage extends StatelessWidget {
 }
 
 class _PrivacyPolicyPage extends StatefulWidget {
-  const _PrivacyPolicyPage({Key? key}) : super(key: key);
+  const _PrivacyPolicyPage();
 
   @override
   State<_PrivacyPolicyPage> createState() => _PrivacyPolicyPageState();

@@ -8,10 +8,10 @@ class FortuneSwitchButton extends StatefulWidget {
   final bool isOn;
 
   const FortuneSwitchButton({
-    Key? key,
+    super.key,
     required this.onToggle,
     required this.isOn,
-  }) : super(key: key);
+  });
 
   @override
   State<FortuneSwitchButton> createState() => _FortuneSwitchButtonState();

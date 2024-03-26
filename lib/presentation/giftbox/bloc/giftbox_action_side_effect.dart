@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 
 @immutable
 abstract class GiftboxActionSideEffect extends Equatable {}

@@ -28,8 +28,4 @@ class _MarkerViewState extends State<MarkerView> with SingleTickerProviderStateM
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }

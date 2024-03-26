@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fluro/fluro.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/core/util/permission.dart';

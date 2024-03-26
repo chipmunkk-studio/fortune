@@ -33,7 +33,7 @@ class HttpLoggerInterceptor implements RequestInterceptor, ResponseInterceptor {
 
     // response.base.headers.forEach((k, v) => debugPrint('$k: $v'));
 
-    var bytes;
+    String bytes = '';
     if (response.base is http.Response) {
       final resp = response.base as http.Response;
       if (resp.body.isNotEmpty) {

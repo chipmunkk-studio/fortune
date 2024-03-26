@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 
-import 'login.dart';
 
 @immutable
 abstract class LoginEvent extends Equatable {}

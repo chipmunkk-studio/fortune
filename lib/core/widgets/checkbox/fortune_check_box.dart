@@ -8,10 +8,10 @@ class FortuneCheckBox extends StatelessWidget {
   final Function1<bool?, void> onCheck;
 
   const FortuneCheckBox({
-    Key? key,
+    super.key,
     required this.onCheck,
     required this.state,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/presentation/ingredientaction/component/random_scratch_multi/bloc/random_scratch_grid_item.dart';
 import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 
 @immutable

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
 class ObtainHistorySkeleton extends StatelessWidget {
-  const ObtainHistorySkeleton({Key? key}) : super(key: key);
+  const ObtainHistorySkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

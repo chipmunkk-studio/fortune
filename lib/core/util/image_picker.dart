@@ -31,7 +31,7 @@ class FortuneImagePicker {
       } else {
         FortuneLogger.debug(tag: _tag, "프로필 이미지 불러오기 실패.");
       }
-    } on PlatformException catch (e) {
+    } on PlatformException {
       PermissionStatus result;
       if (Platform.isAndroid) {
         result = await Permission.storage.request();

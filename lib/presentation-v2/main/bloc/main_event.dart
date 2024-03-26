@@ -5,8 +5,6 @@ import 'package:fortune/core/notification/notification_response.dart';
 import 'package:fortune/domain/entity/fortune_user_entity.dart';
 import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/entity/marker_obtain_entity.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:latlong2/latlong.dart';
 
 @immutable

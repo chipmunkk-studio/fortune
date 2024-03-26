@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/domain/supabase/entity/fortune_user_entity.dart';
-import 'package:fortune/domain/supabase/entity/support/app_update_view_entity.dart';
 import 'package:fortune/presentation/giftbox/giftbox_action_param.dart';
 import 'package:fortune/presentation/main/component/map/main_location_data.dart';
 import 'package:geolocator/geolocator.dart';

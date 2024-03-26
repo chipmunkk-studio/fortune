@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletons/skeletons.dart';
 
 class AlarmFeedSkeleton extends StatelessWidget {
-  const AlarmFeedSkeleton({Key? key}) : super(key: key);
+  const AlarmFeedSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {

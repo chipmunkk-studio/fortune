@@ -7,10 +7,10 @@ class DefaultPrefixIcon extends StatelessWidget {
   final Function0? press;
 
   const DefaultPrefixIcon({
-    Key? key,
+    super.key,
     this.svgIcon,
     this.press,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

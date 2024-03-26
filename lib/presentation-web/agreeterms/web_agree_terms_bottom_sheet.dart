@@ -18,8 +18,8 @@ class WebAgreeTermsBottomSheet extends StatelessWidget {
 
   const WebAgreeTermsBottomSheet(
     this.phoneNumber, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,7 @@ class WebAgreeTermsBottomSheet extends StatelessWidget {
 }
 
 class _WebAgreeTermsBottomSheet extends StatefulWidget {
-  const _WebAgreeTermsBottomSheet({
-    super.key,
-  });
+  const _WebAgreeTermsBottomSheet();
 
   @override
   State<_WebAgreeTermsBottomSheet> createState() => _WebAgreeTermsBottomSheetState();

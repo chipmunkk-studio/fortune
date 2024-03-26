@@ -60,7 +60,6 @@ class _ProfileImage extends StatelessWidget {
   final String profileUrl;
 
   const _ProfileImage({
-    super.key,
     required this.onProfileTap,
     required this.profileUrl,
   });

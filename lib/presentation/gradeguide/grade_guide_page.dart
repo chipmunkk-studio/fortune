@@ -15,7 +15,7 @@ import 'package:fortune/presentation/gradeguide/component/middle_percentage.dart
 import 'package:fortune/presentation/gradeguide/component/top_grade_area.dart';
 
 class GradeGuidePage extends StatelessWidget {
-  const GradeGuidePage({Key? key}) : super(key: key);
+  const GradeGuidePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class GradeGuidePage extends StatelessWidget {
 }
 
 class _GradeGuidePage extends StatefulWidget {
-  const _GradeGuidePage({Key? key}) : super(key: key);
+  const _GradeGuidePage();
 
   @override
   State<_GradeGuidePage> createState() => _GradeGuidePageState();

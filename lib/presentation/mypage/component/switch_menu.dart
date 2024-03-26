@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fortune/core/util/snackbar.dart';
 import 'package:fortune/core/util/textstyle.dart';
 import 'package:fortune/core/widgets/button/fortune_switch_button.dart';
 

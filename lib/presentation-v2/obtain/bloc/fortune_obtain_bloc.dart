@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/usecase/marker_obtain_use_case.dart';
-import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain_side_effect.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
@@ -26,7 +25,12 @@ class FortuneObtainBloc extends Bloc<FortuneObtainEvent, FortuneObtainViewState>
     final ts = param.ts;
     final location = param.location;
 
-    emit(state.copyWith(processingMarker: targetMarker));
+    emit(
+      state.copyWith(
+        processingMarker: targetMarker,
+        targetState: ObtainState.PROCESSING,
+      ),
+    );
 
     // 마커 획득 처리.
     await _markerObtain(
@@ -62,7 +66,7 @@ class FortuneObtainBloc extends Bloc<FortuneObtainEvent, FortuneObtainViewState>
               emit(
                 state.copyWith(
                   responseEntity: entity,
-                  targetState: entity.marker.itemType,
+                  targetState: getObtainState(entity.marker.itemType),
                 ),
               );
             default:

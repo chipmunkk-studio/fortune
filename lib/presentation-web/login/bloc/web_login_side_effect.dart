@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/error/fortune_app_failures.dart';
-import 'package:fortune/domain/supabase/entity/country_info_entity.dart';
 
 @immutable
 abstract class WebLoginSideEffect extends Equatable {}

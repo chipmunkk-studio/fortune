@@ -14,13 +14,13 @@ class CountryCodeName extends StatelessWidget {
   final Function1<CountryInfoEntity, void> onTap;
 
   const CountryCodeName({
-    Key? key,
+    super.key,
     required this.countries,
     required this.selected,
     required this.scrollDirection,
     required this.controller,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

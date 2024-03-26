@@ -12,7 +12,7 @@ import '../component/support_card.dart';
 import 'bloc/faqs.dart';
 
 class FaqPage extends StatelessWidget {
-  const FaqPage({Key? key}) : super(key: key);
+  const FaqPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class FaqPage extends StatelessWidget {
 }
 
 class _FaqPage extends StatefulWidget {
-  const _FaqPage({Key? key}) : super(key: key);
+  const _FaqPage();
 
   @override
   State<_FaqPage> createState() => _FaqPageState();

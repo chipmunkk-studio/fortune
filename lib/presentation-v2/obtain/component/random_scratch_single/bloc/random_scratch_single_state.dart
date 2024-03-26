@@ -1,7 +1,5 @@
 import 'package:fortune/domain/entity/picked_item_entity.dart';
 import 'package:fortune/domain/entity/scratch_cover_entity.dart';
-import 'package:fortune/domain/supabase/entity/ingredient_entity.dart';
-import 'package:fortune/presentation/ingredientaction/ingredient_action_param.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'random_scratch_single_state.freezed.dart';

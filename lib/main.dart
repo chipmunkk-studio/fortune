@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fortune/core/navigation/fortune_web_router.dart';
 import 'package:fortune/data/supabase/service/auth_service.dart';
 
 import '../di.dart';

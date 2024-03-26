@@ -90,9 +90,9 @@ void generateRandomMarkers({
     final double y = w * math.sin(t);
 
     // Adjust the x-coordinate for the shrinking of the east-west distances
-    final double new_x = x / math.cos(degreesToRadians(centerLat));
+    final double newX = x / math.cos(degreesToRadians(centerLat));
 
-    final double foundLatitude = new_x + centerLat;
+    final double foundLatitude = newX + centerLat;
     final double foundLongitude = y + centerLng;
     FortuneLogger.info("latitude: $foundLatitude, longitude: $foundLongitude");
   }

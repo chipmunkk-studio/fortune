@@ -40,7 +40,7 @@ class CountryCodePage extends StatelessWidget {
 }
 
 class _CountryCodePage extends StatefulWidget {
-  const _CountryCodePage({Key? key}) : super(key: key);
+  const _CountryCodePage();
 
   @override
   State<_CountryCodePage> createState() => _CountryCodePageState();

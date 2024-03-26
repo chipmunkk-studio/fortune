@@ -31,9 +31,7 @@ class AgreeTermsBottomSheet extends StatelessWidget {
 }
 
 class _AgreeTermsBottomSheet extends StatefulWidget {
-  const _AgreeTermsBottomSheet({
-    super.key,
-  });
+  const _AgreeTermsBottomSheet();
 
   @override
   State<_AgreeTermsBottomSheet> createState() => _AgreeTermsBottomSheetState();
