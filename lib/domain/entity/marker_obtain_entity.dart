@@ -15,4 +15,11 @@ class MarkerObtainEntity {
     required this.pickedItem,
     required this.cover,
   });
+
+  factory MarkerObtainEntity.initial() => MarkerObtainEntity(
+        marker: MarkerEntity.initial(),
+        user: FortuneUserEntity.empty(),
+        pickedItem: PickedItemEntity.initial(),
+        cover: ScratchCoverEntity.initial(),
+      );
 }

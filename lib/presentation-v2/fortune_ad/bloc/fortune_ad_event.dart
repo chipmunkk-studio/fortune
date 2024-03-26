@@ -20,3 +20,10 @@ class FortuneAdShowComplete extends FortuneAdEvent {
   @override
   List<Object?> get props => [];
 }
+
+class FortuneAdCallAdFail extends FortuneAdEvent {
+  FortuneAdCallAdFail();
+
+  @override
+  List<Object?> get props => [];
+}

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:bloc_event_transformers/bloc_event_transformers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/fortune_ext.dart';
 import 'package:fortune/core/util/logger.dart';
@@ -11,11 +12,9 @@ import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/data/supabase/service_ext.dart';
 import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/usecase/marker_list_use_case.dart';
-import 'package:fortune/domain/usecase/marker_obtain_use_case.dart';
-import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
 import 'package:fortune/domain/usecase/user_me_use_case.dart';
 import 'package:fortune/env.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
+import 'package:fortune/presentation-v2/fortune_ad/admanager/fortune_ad.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -28,12 +27,14 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   final MixpanelTracker tracker;
   final UserMeUseCase userMeUseCase;
   final MarkerListUseCase markerListUseCase;
+  final FortuneAdManager adManager;
 
   MainBloc({
     required this.environment,
     required this.tracker,
     required this.userMeUseCase,
     required this.markerListUseCase,
+    required this.adManager,
   }) : super(MainState.initial()) {
     on<MainInit>(
       _init,
@@ -60,15 +61,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     );
     on<MainOnAdShowComplete>(
       _onAdShowComplete,
+      transformer: sequential(),
     );
     on<MainObtainSuccess>(
       _obtainSuccess,
+      transformer: sequential(),
     );
   }
 
   FutureOr<void> _init(MainInit event, Emitter<MainState> emit) async {
     final notificationEntity = event.notificationEntity;
     bool hasPermission = await FortunePermissionUtil.requestPermission([Permission.location]);
+    final futureAd = adManager.loadAd();
 
     /// 위치 권한이 없을 경우.
     /// 권한 동의 다하고, 직전에 해제하고 들어올 수도 있음.
@@ -83,7 +87,7 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         (entity) async {
           final geoLocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
           final location = LatLng(geoLocation.latitude, geoLocation.longitude);
-          emit(state.copyWith(user: entity));
+          emit(state.copyWith(user: entity, ad: futureAd));
           add(MainInitMyLocation(location));
           if (notificationEntity != null) {
             add(MainLandingPage(notificationEntity));
@@ -121,8 +125,6 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
         ),
       );
 
-      // 카메라가 초기화되는 시간까지 기다려야 함.
-      await Future.delayed(const Duration(milliseconds: 1000));
       produceSideEffect(
         MainLocationChangeListenSideEffect(
           location: locationData,
@@ -141,11 +143,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     await markerListUseCase(state.currentLocation).then(
       (value) => value.fold(
         (l) => produceSideEffect(MainError(l)),
-        (r) {
+        (r) async {
+          // 기존 리스트에 없는 마커만 필터링하여 새 리스트를 만듬.
+          var newMarkers = r.list
+              .where((newMarker) => !state.markerList.any((existingMarker) => existingMarker.id == newMarker.id))
+              .toList();
+
+          // 기존 리스트에 새로운 마커 추가
+          List<MarkerEntity> updatedMarkerList = List.from(state.markerList)..addAll(newMarkers);
           emit(
             state.copyWith(
               currentLocation: event.location,
-              markerList: r.list,
+              markerList: updatedMarkerList,
             ),
           );
         },
@@ -154,6 +163,11 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> _locationChange(MainLocationChange event, Emitter<MainState> emit) async {
+    // 테스트 모드 일경우 위치 변경 이벤트 받지 않음.
+    if (state.isTestDeviceMode) {
+      return;
+    }
+
     final currentLocation = state.currentLocation;
     final nextLocation = event.location;
 
@@ -214,9 +228,23 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final ad = state.ad;
     final isShowAd = remainCoinChangeCount <= 0 && event.entity.itemType == MarkerItemType.COIN;
     final marker = event.entity;
+    final distance = event.distance;
+
+    /// 거리가 모자랄 경우(릴리즈에서만 검사함)
+    if (distance > 0 && kReleaseMode) {
+      produceSideEffect(MainRequireInCircleMetersEvent(distance));
+      return;
+    }
+
     if (isShowAd) {
       // #1 광고를 봐야 할 경우.
-      produceSideEffect(MainShowAdDialog(ts: state.user.timestamps.ad));
+      produceSideEffect(
+        MainShowAdDialog(
+          ts: state.user.timestamps.ad,
+          targetMarker: marker,
+          ad: ad,
+        ),
+      );
       return;
     } else if (event.entity.itemType != MarkerItemType.COIN) {
       // #2 코인이 아닌 경우 다이얼로그 노출.
@@ -240,7 +268,20 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
   }
 
   FutureOr<void> _onAdShowComplete(MainOnAdShowComplete event, Emitter<MainState> emit) async {
-    emit(state.copyWith(user: event.user));
+    // 광고를 다보고 새로운 광고를 다시 채워놔야 함.
+    emit(
+      state.copyWith(
+        user: event.user,
+        ad: adManager.loadAd(),
+      ),
+    );
+    produceSideEffect(
+      MainObtainMarker(
+        marker: event.targetMarker,
+        timestamp: event.user.timestamps.marker,
+        location: state.cameraLocation,
+      ),
+    );
   }
 
   FutureOr<void> _obtainSuccess(MainObtainSuccess event, Emitter<MainState> emit) async {
@@ -251,13 +292,8 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
     final updatedMarkerList = state.markerList.map((marker) {
       if (marker.id == targetMarker.id) {
         return marker.copyWith(
-          name: targetMarker.name,
-          imageUrl: targetMarker.imageUrl,
-          itemType: targetMarker.itemType,
-          imageType: targetMarker.imageType,
           latitude: targetMarker.latitude,
           longitude: targetMarker.longitude,
-          cost: targetMarker.cost,
         );
       }
       return marker; // 다른 마커는 변경 없이 그대로 반환

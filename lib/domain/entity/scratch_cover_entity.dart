@@ -10,4 +10,10 @@ class ScratchCoverEntity {
     required this.description,
     required this.imageUrl,
   });
+
+  factory ScratchCoverEntity.initial() => ScratchCoverEntity(
+        title: '',
+        description: '',
+        imageUrl: '',
+      );
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
+import 'package:fortune/presentation-v2/fortune_ad/admanager/fortune_ad.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
 import 'fortune_ad.dart';
@@ -19,15 +19,18 @@ class FortuneAdBloc extends Bloc<FortuneAdEvent, FortuneAdViewState>
   }) : super(FortuneAdViewState.initial()) {
     on<FortuneAdInit>(_init);
     on<FortuneAdShowComplete>(_onAdShowComplete);
+    on<FortuneAdCallAdFail>(_onAdCallFail);
   }
 
   FutureOr<void> _init(FortuneAdInit event, Emitter<FortuneAdViewState> emit) async {
     try {
       final param = event.param;
+      final futureAd = param.adState;
       emit(state.copyWith(ts: param.ts));
       // 광고 불러오기
-      final adState = await adManager.loadAd();
-      FortuneLogger.info("AdState:: $adState");
+      final adState = await futureAd ?? await adManager.loadAd();
+      emit(state.copyWith(isCallAdFail: false));
+
       if (adState != null) {
         if (adState is FortuneAdmobAdStateEntity) {
           produceSideEffect(FortuneShowAdmob(adState));
@@ -54,5 +57,9 @@ class FortuneAdBloc extends Bloc<FortuneAdEvent, FortuneAdViewState>
         },
       ),
     );
+  }
+
+  FutureOr<void> _onAdCallFail(FortuneAdCallAdFail event, Emitter<FortuneAdViewState> emit) {
+    emit(state.copyWith(isAdRequestError: true));
   }
 }

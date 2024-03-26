@@ -23,8 +23,9 @@ class MainInit extends MainEvent {
 
 class MainOnAdShowComplete extends MainEvent {
   final FortuneUserEntity user;
+  final MarkerEntity targetMarker;
 
-  MainOnAdShowComplete(this.user);
+  MainOnAdShowComplete(this.user, this.targetMarker);
 
   @override
   List<Object?> get props => [];
@@ -39,7 +40,6 @@ class MainObtainSuccess extends MainEvent {
   List<Object?> get props => [];
 }
 
-
 class MainInitMyLocation extends MainEvent {
   final LatLng location;
 
@@ -51,8 +51,12 @@ class MainInitMyLocation extends MainEvent {
 
 class MainMarkerClick extends MainEvent {
   final MarkerEntity entity;
+  final double distance;
 
-  MainMarkerClick(this.entity);
+  MainMarkerClick(
+    this.entity,
+    this.distance,
+  );
 
   @override
   List<Object?> get props => [];
@@ -84,25 +88,6 @@ class MainLandingPage extends MainEvent {
   @override
   List<Object?> get props => [entity];
 }
-
-class MainSetRewardAd extends MainEvent {
-  final RewardedAd? ad;
-
-  MainSetRewardAd(this.ad);
-
-  @override
-  List<Object?> get props => [ad];
-}
-
-class MainRequireInCircleMetersEvent extends MainEvent {
-  final double distance;
-
-  MainRequireInCircleMetersEvent(this.distance);
-
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class MainCompassRotate extends MainEvent {
   final CompassEvent data;
 

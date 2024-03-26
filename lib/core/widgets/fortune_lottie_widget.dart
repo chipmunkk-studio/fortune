@@ -43,7 +43,11 @@ class FortuneLottieWidget extends StatelessWidget {
       lottieFileData,
       frameBuilder: (ctx, dotlottie) {
         return dotlottie != null
-            ? Lottie.memory(dotlottie.animations.values.single, width: width, height: height)
+            ? Lottie.memory(
+                dotlottie.animations.values.single,
+                width: width,
+                height: height,
+              )
             : _emptyWidget();
       },
       errorBuilder: (ctx, e, s) => _errorWidget(e),

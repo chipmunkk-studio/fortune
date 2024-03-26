@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fortune/core/gen/assets.gen.dart';
 import 'package:fortune/core/gen/colors.gen.dart';
 import 'package:fortune/core/message_ext.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
@@ -16,13 +18,11 @@ import 'package:fortune/core/util/logger.dart';
 import 'package:fortune/core/util/mixpanel.dart';
 import 'package:fortune/core/util/toast.dart';
 import 'package:fortune/core/widgets/animation/scale_animation.dart';
+import 'package:fortune/core/widgets/fortune_loading_view.dart';
+import 'package:fortune/core/widgets/fortune_scaffold.dart';
 import 'package:fortune/core/widgets/painter/direction_painter.dart';
 import 'package:fortune/core/widgets/painter/fortune_radar_background.dart';
-import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/domain/entity/marker_entity.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad_manager.dart';
 import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_complete_return.dart';
 import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_param.dart';
 import 'package:fortune/presentation-v2/main/bloc/main.dart';
@@ -76,13 +76,7 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
   final FToast _fToast = FToast();
 
   late StreamSubscription<Position> _locationChangeSubscription;
-
   late StreamSubscription<CompassEvent>? _rotateChangeEvent;
-
-  late final AnimationController _centerRotateController = AnimationController(
-    vsync: this,
-    duration: const Duration(seconds: 7),
-  )..repeat();
 
   DateTime? lastPressed;
 
@@ -101,8 +95,6 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
     WidgetsBinding.instance.removeObserver(this);
     _locationChangeSubscription.cancel();
     _rotateChangeEvent?.cancel();
-    _centerRotateController.dispose();
-
     _bloc.close();
   }
 
@@ -138,16 +130,17 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
       );
     } else if (sideEffect is MainLocationChangeListenSideEffect) {
       final isInit = sideEffect.isInitialize;
-      _animatedMapMove(
-        destLocation: sideEffect.location,
-        destZoom: sideEffect.destZoom,
-      );
       if (isInit) {
-        /// 카메라가 줌인 다되고 나서 위치 받아야 됨.
+        _mapController.move(sideEffect.location, 16);
+        // 카메라가 줌인 다되고 나서 위치 받아야 됨.
         await Future.delayed(const Duration(seconds: 1));
         _locationChangeSubscription = await _listenLocationChange();
         _rotateChangeEvent = await _listenRotate();
       }
+      _animatedMapMove(
+        destLocation: sideEffect.location,
+        destZoom: sideEffect.destZoom,
+      );
     } else if (sideEffect is MainRequireLocationPermission) {
       _router.navigateTo(
         context,
@@ -198,11 +191,17 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
             routeSettings: RouteSettings(
               arguments: FortuneAdParam(
                 ts: sideEffect.ts,
+                adState: sideEffect.ad,
               ),
             ),
           );
           if (response != null) {
-            _bloc.add(MainOnAdShowComplete(response.user));
+            _bloc.add(
+              MainOnAdShowComplete(
+                response.user,
+                sideEffect.targetMarker,
+              ),
+            );
           }
         },
       );
@@ -222,6 +221,25 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
         _bloc.add(MainObtainSuccess(response.markerObtainEntity));
       }
     }
+
+    /// 거리가 부족 할 경우
+    else if (sideEffect is MainRequireInCircleMetersEvent) {
+      _fToast.showToast(
+        child: fortuneToastContent(
+          icon: Assets.icons.icWarningCircle24.svg(),
+          content: FortuneTr.msgRequireMarkerObtainDistance(
+            sideEffect.distance.toStringAsFixed(1),
+          ),
+        ),
+        positionedToastBuilder: (context, child) => Positioned(
+          bottom: 40,
+          left: 0,
+          right: 0,
+          child: child,
+        ),
+        toastDuration: const Duration(seconds: 2),
+      );
+    }
   }
 
   @override
@@ -237,179 +255,194 @@ class _FortuneMainPageState extends State<_FortuneMainPage> with WidgetsBindingO
           canDismissDialog: true,
           shouldPopScope: () => true,
         ),
-        child: BlocBuilder<MainBloc, MainState>(
-          buildWhen: (previous, current) => previous.isLoading != current.isLoading,
-          builder: (context, state) {
-            return state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : WillPopScope(
-                    onWillPop: () async {
-                      final now = DateTime.now();
-                      bool backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-                          lastPressed == null || now.difference(lastPressed!) > const Duration(seconds: 2);
-                      if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-                        _fToast.showToast(
-                          child: fortuneToastContent(
-                            content: FortuneTr.msgPressAgainToExit, // 이 부분은 실제 메시지로 교체해야 할 수 있습니다.
-                          ),
-                          positionedToastBuilder: (context, child) => Positioned(
-                            bottom: 40,
-                            left: 0,
-                            right: 0,
-                            child: child,
-                          ),
-                          toastDuration: const Duration(seconds: 2),
-                        );
-                        lastPressed = DateTime.now();
-                        return Future.value(false);
-                      }
-                      return Future.value(true);
+        child: WillPopScope(
+          onWillPop: () async {
+            final now = DateTime.now();
+            bool isShowExitToast = lastPressed == null || now.difference(lastPressed!) > const Duration(seconds: 2);
+            if (isShowExitToast) {
+              _fToast.showToast(
+                child: fortuneToastContent(
+                  content: FortuneTr.msgPressAgainToExit,
+                ),
+                positionedToastBuilder: (context, child) => Positioned(
+                  bottom: 40,
+                  left: 0,
+                  right: 0,
+                  child: child,
+                ),
+                toastDuration: const Duration(seconds: 2),
+              );
+              lastPressed = DateTime.now();
+              return Future.value(false);
+            }
+            return Future.value(true);
+          },
+          child: Stack(
+            children: [
+              /// 메인맵.
+              FlutterMap(
+                mapController: _mapController,
+                options: MapOptions(
+                  initialCenter: _bloc.state.currentLocation,
+                  interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
+                  minZoom: 15,
+                  maxZoom: 20,
+                  onPositionChanged: (mapPosition, boolHasGesture) {
+                    if (boolHasGesture) {
+                      _animatedMapMove(
+                        destLocation: _bloc.state.cameraLocation,
+                        destZoom: _bloc.state.zoomThreshold,
+                      );
+                    }
+                  },
+                  onTap: (tapPosition, point) {
+                    final isMarkerObtainable = isMarkerInsideCircle(
+                      _bloc.state.cameraLocation,
+                      point,
+                      38,
+                    );
+                    if (isMarkerObtainable < 0) {
+                      // _bloc.state.ad.showAd(() {
+                      //   _bloc.add(MainLoadAd());
+                      // });
+                    }
+                  },
+                ),
+                children: [
+                  getLayerByMapType(),
+                  BlocBuilder<MainBloc, MainState>(
+                    buildWhen: (previous, current) => previous.markerList != current.markerList,
+                    builder: (context, state) {
+                      return MarkerLayer(
+                        markers: state.markerList.toMarkerList(
+                          (entity) {
+                            final cameraPosition = _bloc.state.cameraLocation;
+                            LatLng markerPosition = LatLng(entity.latitude, entity.longitude);
+                            final double distance = isMarkerInsideCircle(
+                              cameraPosition,
+                              markerPosition,
+                              38,
+                            );
+                            _bloc.add(MainMarkerClick(entity, distance));
+                          },
+                        ),
+                      );
                     },
-                    child: Stack(
-                      children: [
-                        /// 메인맵.
-                        FlutterMap(
-                          mapController: _mapController,
-                          options: MapOptions(
-                            initialCenter: state.currentLocation,
-                            interactiveFlags: InteractiveFlag.pinchZoom | InteractiveFlag.rotate,
-                            minZoom: 15,
-                            maxZoom: 20,
-                            onPositionChanged: (mapPosition, boolHasGesture) {
-                              if (boolHasGesture) {
-                                _animatedMapMove(
-                                  destLocation: _bloc.state.cameraLocation,
-                                  destZoom: _bloc.state.zoomThreshold,
-                                );
-                              }
-                            },
-                            onTap: (tapPosition, point) {
-                              final isMarkerObtainable = isMarkerInsideCircle(
-                                state.cameraLocation,
-                                point,
-                                38,
-                              );
-                              if (isMarkerObtainable < 0) {
-                                // _bloc.state.ad.showAd(() {
-                                //   _bloc.add(MainLoadAd());
-                                // });
-                              }
-                            },
-                          ),
-                          children: [
-                            getLayerByMapType(),
-                            BlocBuilder<MainBloc, MainState>(
-                              buildWhen: (previous, current) => previous.markerList != current.markerList,
-                              builder: (context, state) {
-                                return MarkerLayer(
-                                  markers: state.markerList.toMarkerList(
-                                    (entity) {
-                                      _bloc.add(MainMarkerClick(entity));
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                  ),
+                ],
+              ),
 
-                        /// 백그라운드
-                        Positioned.fill(
-                          child: IgnorePointer(
-                            child: CustomPaint(
-                              painter: FortuneRadarBackground(),
-                            ),
-                          ),
-                        ),
+              /// 백그라운드
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: FortuneRadarBackground(),
+                  ),
+                ),
+              ),
 
-                        /// 나침반.
-                        Positioned.fill(
-                          child: IgnorePointer(
-                            child: BlocBuilder<MainBloc, MainState>(
-                              buildWhen: (previous, current) => previous.turns != current.turns,
-                              builder: (context, state) {
-                                return AnimatedRotation(
-                                  turns: state.turns,
-                                  duration: const Duration(milliseconds: 250),
-                                  child: SizedBox.square(
-                                    dimension: 100,
-                                    child: CustomPaint(
-                                      painter: DirectionPainter(),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+              /// 나침반.
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: BlocBuilder<MainBloc, MainState>(
+                    buildWhen: (previous, current) => previous.turns != current.turns,
+                    builder: (context, state) {
+                      return AnimatedRotation(
+                        turns: state.turns,
+                        duration: const Duration(milliseconds: 250),
+                        child: SizedBox.square(
+                          dimension: 100,
+                          child: CustomPaint(
+                            painter: DirectionPainter(),
                           ),
                         ),
+                      );
+                    },
+                  ),
+                ),
+              ),
 
-                        /// 센터프로필.
-                        Center(
-                          child: IgnorePointer(
-                            child: AvatarGlow(
-                              glowColor: ColorName.primary,
-                              glowCount: 3,
-                              glowRadiusFactor: 1.8,
-                              duration: const Duration(seconds: 3),
-                              child: ScaleAnimation(
-                                child: BlocBuilder<MainBloc, MainState>(
-                                  buildWhen: (previous, current) =>
-                                      previous.user.profileImageUrl != current.user.profileImageUrl,
-                                  builder: (context, state) {
-                                    return CenterProfile(
-                                      imageUrl: state.user.profileImageUrl,
-                                      backgroundColor: ColorName.primary.withOpacity(1.0),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+              /// 센터프로필.
+              Center(
+                child: IgnorePointer(
+                  child: AvatarGlow(
+                    glowColor: ColorName.primary,
+                    glowCount: 3,
+                    glowRadiusFactor: 1.8,
+                    duration: const Duration(seconds: 3),
+                    child: ScaleAnimation(
+                      child: BlocBuilder<MainBloc, MainState>(
+                        buildWhen: (previous, current) => previous.user.profileImageUrl != current.user.profileImageUrl,
+                        builder: (context, state) {
+                          return CenterProfile(
+                            imageUrl: state.user.profileImageUrl,
+                            backgroundColor: ColorName.primary.withOpacity(1.0),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
 
-                        /// 하단 그라데이션.
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 12,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [
-                                  ColorName.grey900.withOpacity(1.0),
-                                  ColorName.grey900.withOpacity(0.0),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        /// 상단 그라데이션.
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 12,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                colors: [
-                                  ColorName.grey900.withOpacity(0.0),
-                                  ColorName.grey900.withOpacity(1.0),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+              /// 하단 그라데이션.
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 12,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        ColorName.grey900.withOpacity(1.0),
+                        ColorName.grey900.withOpacity(0.0),
                       ],
                     ),
-                  );
-          },
+                  ),
+                ),
+              ),
+
+              /// 상단 그라데이션.
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 12,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        ColorName.grey900.withOpacity(0.0),
+                        ColorName.grey900.withOpacity(1.0),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              /// 로딩뷰.
+              Positioned.fill(
+                child: BlocBuilder<MainBloc, MainState>(
+                  buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+                  builder: (context, state) {
+                    return state.isLoading
+                        ? const FortuneScaffold(
+                            padding: EdgeInsets.zero,
+                            child: Center(
+                              child: FortuneLoadingView(),
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

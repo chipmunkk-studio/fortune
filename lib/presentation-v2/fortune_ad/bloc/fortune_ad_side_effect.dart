@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/data/error/fortune_error.dart';
 import 'package:fortune/domain/entity/fortune_user_entity.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
+import 'package:fortune/presentation-v2/fortune_ad/admanager/fortune_ad.dart';
 
 @immutable
 abstract class FortuneAdSideEffect extends Equatable {}

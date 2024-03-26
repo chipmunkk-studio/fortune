@@ -1,4 +1,5 @@
 import 'package:fortune/data/remote/response/marker_response.dart';
+import 'package:fortune/domain/entity/fortune_image_entity.dart';
 import 'package:fortune/domain/entity/marker_entity.dart';
 import 'package:fortune/domain/entity/marker_list_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -18,13 +19,13 @@ class MarkerListResponse extends MarkerListEntity {
           list: list_
                   ?.map(
                     (e) => MarkerEntity(
-                      id: e.id ?? '',
-                      name: e.name ?? '',
-                      imageUrl: e.imageUrl ?? '',
-                      itemType: getMarkerItemType(e.itemType),
-                      latitude: e.latitude ?? 0.0,
-                      longitude: e.longitude ?? 0.0,
-                      cost: e.cost ?? 0,
+                      id: e.id_ ?? '',
+                      name: e.name_ ?? '',
+                      image: e.image_ ?? FortuneImageEntity.empty(),
+                      itemType: getMarkerItemType(e.itemType_),
+                      latitude: e.latitude_ ?? 0.0,
+                      longitude: e.longitude_ ?? 0.0,
+                      cost: e.cost_ ?? 0,
                     ),
                   )
                   .toList() ??

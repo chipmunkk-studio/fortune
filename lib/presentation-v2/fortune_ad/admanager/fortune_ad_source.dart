@@ -13,7 +13,6 @@ abstract class FortuneAdSource {
 
 // AdMob 광고 소스 구현
 class AdMobAdSource implements FortuneAdSource {
-  int _rewardedAdRetryAttempt = 1;
 
   static AdSourceType stringToAdSourcePriority(String priorityString) {
     switch (priorityString) {
@@ -37,7 +36,6 @@ class AdMobAdSource implements FortuneAdSource {
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
-            _rewardedAdRetryAttempt = 1;
             ad.fullScreenContentCallback = FullScreenContentCallback(
               // 사용자가 광고를 닫았을 경우.
               onAdDismissedFullScreenContent: (ad) {},

@@ -1,5 +1,4 @@
 import 'package:fortune/core/util/logger.dart';
-import 'package:fortune/data/error/fortune_error.dart';
 
 import 'fortune_ad_source.dart';
 import 'fortune_ad_state_entity.dart';

@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
 import 'package:fortune/di.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
 import 'package:fortune/presentation-v2/fortune_ad/bloc/fortune_ad.dart';
 import 'package:fortune/presentation-v2/fortune_ad/component/customer_ad_view.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
 
+import 'admanager/fortune_ad.dart';
 import 'component/ad_loading_view.dart';
 import 'fortune_ad_complete_return.dart';
 import 'fortune_ad_param.dart';
@@ -44,6 +46,12 @@ class _FortuneAdPageState extends State<_FortuneAdPage> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<FortuneAdBloc>(context);
+    // 5초 후에 상태 변화가 있었는지 확인
+    Future.delayed(const Duration(seconds: 5)).then((_) {
+      if (_bloc.state.isCallAdFail) {
+        _bloc.add(FortuneAdCallAdFail());
+      }
+    });
   }
 
   @override

@@ -1,7 +1,19 @@
 class PickedItemEntity {
-  final String type;
+  final String imageUrl;
+
+  final String name;
+
+  final String description;
 
   PickedItemEntity({
-    required this.type,
+    required this.imageUrl,
+    required this.name,
+    required this.description,
   });
+
+  factory PickedItemEntity.initial() => PickedItemEntity(
+        imageUrl: '',
+        name: '',
+        description: '',
+      );
 }

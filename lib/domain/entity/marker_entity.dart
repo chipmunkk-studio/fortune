@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:fortune/data/remote/response/fortune_response_ext.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fortune/domain/entity/fortune_image_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'marker_entity.freezed.dart';
@@ -10,9 +9,8 @@ class MarkerEntity with _$MarkerEntity {
   factory MarkerEntity({
     required String id,
     required String name,
-    required String imageUrl,
+    required FortuneImageEntity image,
     @Default(MarkerItemType.NONE) MarkerItemType itemType,
-    @Default(MarkerImageType.PNG) MarkerImageType imageType, // 기본값 설정
     required double latitude,
     required double longitude,
     required int cost,
@@ -21,9 +19,8 @@ class MarkerEntity with _$MarkerEntity {
   factory MarkerEntity.initial() => MarkerEntity(
         id: '',
         name: '',
-        imageUrl: '',
+        image: FortuneImageEntity.empty(),
         itemType: MarkerItemType.NONE,
-        imageType: MarkerImageType.NONE,
         latitude: 0.0,
         longitude: 0.0,
         cost: 0,

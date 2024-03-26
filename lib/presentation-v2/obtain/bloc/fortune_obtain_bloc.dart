@@ -26,12 +26,7 @@ class FortuneObtainBloc extends Bloc<FortuneObtainEvent, FortuneObtainViewState>
     final ts = param.ts;
     final location = param.location;
 
-    emit(
-      state.copyWith(
-        processingMarker: targetMarker,
-        isObtaining: true,
-      ),
-    );
+    emit(state.copyWith(processingMarker: targetMarker));
 
     // 마커 획득 처리.
     await _markerObtain(
@@ -57,9 +52,21 @@ class FortuneObtainBloc extends Bloc<FortuneObtainEvent, FortuneObtainViewState>
         (l) {
           produceSideEffect(FortuneObtainError(l));
         },
-        (r) {
-          if (r.marker.itemType == MarkerItemType.COIN || r.marker.itemType == MarkerItemType.NORMAL) {
-            produceSideEffect(FortuneCoinOrNormalObtainSuccess(r));
+        (entity) {
+          switch (entity.marker.itemType) {
+            case MarkerItemType.NORMAL:
+            case MarkerItemType.COIN:
+              produceSideEffect(FortuneCoinOrNormalObtainSuccess(entity));
+              break;
+            case MarkerItemType.SCRATCH:
+              emit(
+                state.copyWith(
+                  responseEntity: entity,
+                  targetState: entity.marker.itemType,
+                ),
+              );
+            default:
+              produceSideEffect(FortuneCoinOrNormalObtainSuccess(entity));
           }
         },
       ),

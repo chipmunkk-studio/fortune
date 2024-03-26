@@ -28,7 +28,6 @@ import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
 import 'package:fortune/domain/usecase/user_me_use_case.dart';
 import 'package:fortune/firebase_options.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad.dart';
 import 'package:fortune/presentation-v2/fortune_ad/bloc/fortune_ad.dart';
 import 'package:fortune/presentation-v2/main/bloc/main_bloc.dart';
 import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain.dart';
@@ -55,6 +54,7 @@ import 'domain/repository/no_auth_repository.dart';
 import 'domain/usecase/verify_email_use_case.dart';
 import 'env.dart';
 import 'presentation-v2/agreeterms/bloc/agree_terms_bloc.dart';
+import 'presentation-v2/fortune_ad/admanager/fortune_ad.dart';
 import 'presentation-v2/login/bloc/login_bloc.dart';
 import 'presentation-v2/permission/bloc/request_permission_bloc.dart';
 import 'presentation-v2/termsdetail/bloc/terms_detail_bloc.dart';
@@ -277,6 +277,7 @@ _initAppBloc() {
         tracker: serviceLocator(),
         userMeUseCase: serviceLocator(),
         markerListUseCase: serviceLocator(),
+        adManager: serviceLocator(),
       ),
     )
     ..registerFactory(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fortune/core/navigation/fortune_app_router.dart';
+import 'package:fortune/data/remote/response/fortune_response_ext.dart';
 import 'package:fortune/di.dart';
 import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain_event.dart';
+import 'package:fortune/presentation-v2/obtain/component/random_scratch_single/random_scratch_single_view.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_param.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_success_return.dart';
 import 'package:side_effect_bloc/side_effect_bloc.dart';
@@ -69,11 +71,23 @@ class _FortuneObtainPageState extends State<_FortuneObtainPage> {
         }
       },
       child: BlocBuilder<FortuneObtainBloc, FortuneObtainViewState>(
+        buildWhen: (previous, current) => previous.targetState != current.targetState,
         builder: (BuildContext context, FortuneObtainViewState state) {
-          if (state.isObtaining) {
-            return ObtainLoadingView(state.processingMarker);
+          if (state.targetState == MarkerItemType.SCRATCH) {
+            return RandomScratchSingleView(
+              pickedItemEntity: state.responseEntity.pickedItem,
+              scratchCoverEntity: state.responseEntity.cover,
+              onReceive: () {
+                _router.pop(
+                  context,
+                  FortuneObtainSuccessReturn(
+                    markerObtainEntity: state.responseEntity,
+                  ),
+                );
+              },
+            );
           } else {
-            return const SizedBox.shrink();
+            return ObtainLoadingView(state.processingMarker);
           }
         },
       ),

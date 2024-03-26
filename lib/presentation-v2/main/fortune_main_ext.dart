@@ -58,17 +58,18 @@ double isMarkerInsideCircle(
   return distanceInMeters - clickableRadiusLength;
 }
 
-buildIngredientByPlayType(
-  MarkerEntity entity, {
+buildIngredientByPlayType({
+  required String url,
+  ImageType type = ImageType.WEBP,
   double? width,
   double? height,
   ImageShape? imageShape,
   BoxFit? fit,
 }) {
-  switch (entity.imageType) {
-    case MarkerImageType.LOTTIE:
+  switch (type) {
+    case ImageType.LOTTIE:
       return FortuneLottieWidget(
-        lottieUrl: entity.imageUrl,
+        lottieUrl: url,
         width: width,
         height: height,
       );
@@ -76,7 +77,7 @@ buildIngredientByPlayType(
       return FortuneCachedNetworkImage(
         width: width,
         height: height,
-        imageUrl: entity.imageUrl,
+        imageUrl: url,
         imageShape: imageShape ?? ImageShape.circle,
         placeholder: Container(),
         errorWidget: const SizedBox.shrink(),
@@ -101,6 +102,7 @@ extension FortuneMapDataConverter on List<MarkerEntity> {
           ),
           child: LinearBounceAnimation(
             child: MarkerView(
+              key: ValueKey(e.id),
               marker: e,
               onMarkerClick: onMarkerClick,
             ),

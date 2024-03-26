@@ -7,11 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fortune/core/util/adhelper.dart';
 import 'package:fortune/core/util/strings.dart';
-import 'package:fortune/presentation-v2/admanager/fortune_ad_state_entity.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../core/util/logger.dart';
-import 'presentation-v2/admanager/fortune_ad_source.dart';
+import 'presentation-v2/fortune_ad/admanager/fortune_ad.dart';
 
 enum BuildType {
   dev,

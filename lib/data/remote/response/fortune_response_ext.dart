@@ -1,12 +1,14 @@
 enum MarkerItemType {
   COIN, // 코인.
   NORMAL, // 노말.
+  SCRATCH, // 스크래치.
   NONE
 }
 
-enum MarkerImageType {
+enum ImageType {
   PNG, // 이미지.
   LOTTIE, // 로띠.
+  WEBP, // 웹피.
   NONE
 }
 
@@ -15,17 +17,21 @@ MarkerItemType getMarkerItemType(String? type) {
     return MarkerItemType.COIN;
   } else if (MarkerItemType.NORMAL.name == type) {
     return MarkerItemType.NORMAL;
+  } else if (MarkerItemType.SCRATCH.name == type) {
+    return MarkerItemType.SCRATCH;
   } else {
     return MarkerItemType.NONE;
   }
 }
 
-MarkerImageType getMarkerImageType(String? type) {
-  if (MarkerImageType.PNG.name == type) {
-    return MarkerImageType.PNG;
-  } else if (MarkerImageType.LOTTIE.name == type) {
-    return MarkerImageType.LOTTIE;
+ImageType getImageType(String? type) {
+  if (ImageType.PNG.name == type) {
+    return ImageType.PNG;
+  } else if (ImageType.LOTTIE.name == type) {
+    return ImageType.LOTTIE;
+  } else if (ImageType.WEBP.name == type) {
+    return ImageType.WEBP;
   } else {
-    return MarkerImageType.NONE;
+    return ImageType.NONE;
   }
 }
