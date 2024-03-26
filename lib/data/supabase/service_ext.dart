@@ -146,7 +146,6 @@ LatLng getRandomLocation(double lat, double lon, int radiusInMeters) {
 getLocationName(
   double latitude,
   double longitude, {
-  String? localeIdentifier,
   bool isDetailStreet = true,
 }) async {
   final unknownLocation = FortuneTr.msgUnknownLocation;
@@ -155,7 +154,6 @@ getLocationName(
     List<Placemark> placemarks = await placemarkFromCoordinates(
       latitude,
       longitude,
-      localeIdentifier: localeIdentifier,
     );
 
     // 장소가 없을 경우.

@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:fortune/core/util/usecase2.dart';
 import 'package:fortune/data/error/fortune_app_failures.dart';
 import 'package:fortune/domain/entity/user_token_entity.dart';
-import 'package:fortune/domain/entity/verify_email_entity.dart';
 import 'package:fortune/domain/repository/no_auth_repository.dart';
 
 class RegisterUserUseCase implements UseCase2<UserTokenEntity, String, String?> {
