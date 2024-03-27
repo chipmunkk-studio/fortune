@@ -67,6 +67,10 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       _obtainSuccess,
       transformer: sequential(),
     );
+    on<MainOnResume>(
+      _onResume,
+      transformer: throttle(const Duration(seconds: 3)),
+    );
   }
 
   FutureOr<void> _init(MainInit event, Emitter<MainState> emit) async {
@@ -303,6 +307,18 @@ class MainBloc extends Bloc<MainEvent, MainState> with SideEffectBlocMixin<MainE
       state.copyWith(
         user: targetUser,
         markerList: updatedMarkerList,
+      ),
+    );
+  }
+
+  FutureOr<void> _onResume(MainOnResume event, Emitter<MainState> emit) async {
+    FortuneLogger.info("onResume");
+    await userMeUseCase().then(
+      (value) => value.fold(
+        (l) => produceSideEffect(MainError(l)),
+        (entity) async {
+          emit(state.copyWith(user: entity));
+        },
       ),
     );
   }

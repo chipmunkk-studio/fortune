@@ -13,16 +13,23 @@ import 'package:fortune/core/widgets/dialog/fortune_dialog2.dart';
 import 'package:fortune/data/local/datasource/local_datasource.dart';
 import 'package:fortune/data/remote/api/service/fortune_ad_service.dart';
 import 'package:fortune/data/remote/api/service/marker_service.dart';
+import 'package:fortune/data/remote/api/service/mission_service.dart';
 import 'package:fortune/data/remote/datasource/fortune_ad_datasource.dart';
 import 'package:fortune/data/remote/datasource/fortune_user_datasource.dart';
 import 'package:fortune/data/remote/datasource/marker_datasource.dart';
+import 'package:fortune/data/remote/datasource/mission_datasource.dart';
 import 'package:fortune/data/remote/repository/fortune_user_repository_impl.dart';
+import 'package:fortune/data/remote/repository/mission_repository_impl.dart';
 import 'package:fortune/data/remote/repository/normal_auth_repository_impl.dart';
 import 'package:fortune/domain/repository/fortune_ad_repository.dart';
 import 'package:fortune/domain/repository/fortune_user_repository.dart';
 import 'package:fortune/domain/repository/marker_repository.dart';
+import 'package:fortune/domain/repository/mission_repository.dart';
 import 'package:fortune/domain/usecase/marker_list_use_case.dart';
 import 'package:fortune/domain/usecase/marker_obtain_use_case.dart';
+import 'package:fortune/domain/usecase/mission_acquire_usecase.dart';
+import 'package:fortune/domain/usecase/mission_detail_usecase.dart';
+import 'package:fortune/domain/usecase/mission_list_usecase.dart';
 import 'package:fortune/domain/usecase/register_user_use_case.dart';
 import 'package:fortune/domain/usecase/request_email_verify_code_use_case.dart';
 import 'package:fortune/domain/usecase/show_ad_complete_use_case.dart';
@@ -30,6 +37,8 @@ import 'package:fortune/domain/usecase/user_me_use_case.dart';
 import 'package:fortune/firebase_options.dart';
 import 'package:fortune/presentation-v2/fortune_ad/bloc/fortune_ad.dart';
 import 'package:fortune/presentation-v2/main/bloc/main_bloc.dart';
+import 'package:fortune/presentation-v2/missiondetail/bloc/mission_detail.dart';
+import 'package:fortune/presentation-v2/missions/bloc/missions.dart';
 import 'package:fortune/presentation-v2/obtain/bloc/fortune_obtain.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -175,6 +184,7 @@ _initService(ApiServiceProvider apiProvider) {
     /// abnormal.(인증이 필요한 서비스)
     ..registerLazySingleton<MarkerService>(() => apiProvider.getMarkerService())
     ..registerLazySingleton<FortuneUserService>(() => apiProvider.getFortuneUserService())
+    ..registerLazySingleton<MissionService>(() => apiProvider.getMissionService())
     ..registerLazySingleton<FortuneAdService>(() => apiProvider.getFortuneAdService());
 }
 
@@ -198,6 +208,21 @@ _initUseCase() {
     ..registerLazySingleton<MarkerListUseCase>(
       () => MarkerListUseCase(
         markerRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MissionListUseCase>(
+      () => MissionListUseCase(
+        missionRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MissionAcquireUseCase>(
+      () => MissionAcquireUseCase(
+        missionRepository: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MissionDetailUseCase>(
+      () => MissionDetailUseCase(
+        missionRepository: serviceLocator(),
       ),
     )
     ..registerLazySingleton<ShowAdCompleteUseCase>(
@@ -231,6 +256,12 @@ _initRepository() {
         errorMapper: serviceLocator(),
       ),
     )
+    ..registerLazySingleton<MissionRepository>(
+      () => MissionRepositoryImpl(
+        missionDataSource: serviceLocator(),
+        errorMapper: serviceLocator(),
+      ),
+    )
     ..registerLazySingleton<FortuneAdRepository>(
       () => FortuneAdRepositoryImpl(
         fortuneAdDataSource: serviceLocator(),
@@ -255,6 +286,11 @@ _initDataSource() {
     ..registerLazySingleton<MarkerDataSource>(
       () => MarkerDataSourceImpl(
         markerService: serviceLocator(),
+      ),
+    )
+    ..registerLazySingleton<MissionDataSource>(
+      () => MissionDataSourceImpl(
+        missionsService: serviceLocator(),
       ),
     )
     ..registerLazySingleton<FortuneAdDataSource>(
@@ -286,6 +322,12 @@ _initAppBloc() {
       ),
     )
     ..registerFactory(
+      () => MissionsBloc(
+        missionListUseCase: serviceLocator(),
+        userMeUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
       () => FortuneAdBloc(
         showAdCompleteUseCase: serviceLocator(),
         adManager: serviceLocator(),
@@ -294,6 +336,12 @@ _initAppBloc() {
     ..registerFactory(
       () => FortuneObtainBloc(
         markerObtainUseCase: serviceLocator(),
+      ),
+    )
+    ..registerFactory(
+      () => MissionDetailBloc(
+        missionDetailUseCase: serviceLocator(),
+        missionAcquireUseCase: serviceLocator(),
       ),
     )
     ..registerFactory(

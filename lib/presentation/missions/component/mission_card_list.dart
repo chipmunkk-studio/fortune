@@ -9,8 +9,8 @@ import 'package:fortune/presentation/missions/component/mission_relay_card.dart'
 import 'mission_normal_card.dart';
 
 class MissionCardList extends StatelessWidget {
-  final dartz.Function1<MissionViewEntity, void> onItemClick;
-  final List<MissionViewEntity> missions;
+  final dartz.Function1<MissionEntity, void> onItemClick;
+  final List<MissionEntity> missions;
 
   const MissionCardList({
     required this.missions,

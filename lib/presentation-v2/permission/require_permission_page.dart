@@ -79,8 +79,8 @@ class _RequestPermissionPageState extends State<_RequestPermissionPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _bloc.close();
+    super.dispose();
   }
 
   @override

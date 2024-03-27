@@ -109,7 +109,7 @@ class _RandomScratchSingleViewState extends State<_RandomScratchSingleView> with
                 subTitle: marker.name,
                 btnOkText: FortuneTr.msgReceive,
                 btnOkPressed: widget.onReceive,
-                topContent: buildIngredientByPlayType(
+                topContent: buildFortuneImage(
                   url: marker.imageUrl,
                   width: 84,
                   height: 84,

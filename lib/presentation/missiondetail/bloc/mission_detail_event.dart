@@ -8,7 +8,7 @@ abstract class MissionDetailEvent extends Equatable {}
 class MissionDetailInit extends MissionDetailEvent {
   MissionDetailInit(this.mission);
 
-  final MissionViewEntity mission;
+  final MissionEntity mission;
 
   @override
   List<Object?> get props => [];

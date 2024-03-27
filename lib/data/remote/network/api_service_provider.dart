@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:fortune/data/remote/api/service/fortune_ad_service.dart';
 import 'package:fortune/data/remote/api/service/fortune_user_service.dart';
 import 'package:fortune/data/remote/api/service/marker_service.dart';
+import 'package:fortune/data/remote/api/service/mission_service.dart';
 import 'package:fortune/data/remote/api/service/no_auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:single_item_storage/storage.dart';
@@ -54,6 +55,7 @@ class ApiServiceProvider {
         FortuneUserService.create(),
         MarkerService.create(),
         FortuneAdService.create(),
+        MissionService.create(),
       ],
       authenticator: RefreshTokenAuthenticator(authHelperJwt),
       errorConverter: const JsonConverter(),
@@ -85,6 +87,7 @@ class ApiServiceProvider {
   NoAuthService getNoAuthService() => _normalClient.getService<NoAuthService>();
 
   FortuneUserService getFortuneUserService() => _defaultClient.getService<FortuneUserService>();
+  MissionService getMissionService() => _defaultClient.getService<MissionService>();
   FortuneAdService getFortuneAdService() => _defaultClient.getService<FortuneAdService>();
 
   MarkerService getMarkerService() => _defaultClient.getService<MarkerService>();

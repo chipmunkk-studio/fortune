@@ -58,7 +58,7 @@ double isMarkerInsideCircle(
   return distanceInMeters - clickableRadiusLength;
 }
 
-buildIngredientByPlayType({
+buildFortuneImage({
   required String url,
   ImageType type = ImageType.WEBP,
   double? width,

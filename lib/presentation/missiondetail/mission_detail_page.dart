@@ -25,7 +25,7 @@ class MissionDetailPage extends StatelessWidget {
     super.key,
   });
 
-  final MissionViewEntity mission;
+  final MissionEntity mission;
 
   @override
   Widget build(BuildContext context) {

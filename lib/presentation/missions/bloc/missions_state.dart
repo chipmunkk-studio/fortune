@@ -9,7 +9,7 @@ class MissionsState with _$MissionsState {
   factory MissionsState({
     required String nickname,
     required String profileImage,
-    required List<MissionViewEntity> missions,
+    required List<MissionEntity> missions,
     required BannerAd? ad,
     required bool isLoading,
   }) = _MissionsState;

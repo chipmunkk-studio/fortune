@@ -11,7 +11,7 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 class MissionNormalCard extends StatelessWidget {
   const MissionNormalCard(this.item, {super.key});
 
-  final MissionViewEntity item;
+  final MissionEntity item;
 
   @override
   Widget build(BuildContext context) {

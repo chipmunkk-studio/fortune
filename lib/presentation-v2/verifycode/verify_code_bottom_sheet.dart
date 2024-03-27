@@ -52,8 +52,8 @@ class _VerifyCodeBottomSheetState extends State<_VerifyCodeBottomSheet> {
 
   @override
   void dispose() {
-    super.dispose();
     _bloc.close();
+    super.dispose();
   }
 
   @override

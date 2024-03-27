@@ -74,7 +74,7 @@ class _MissionsBottomContentsState extends State<_MissionsBottomContents> {
                     onItemClick: (entity) async {
                       await _router.navigateTo(
                         context,
-                        AppRoutes.missionDetailNormalRoute,
+                        AppRoutes.missionDetailRoute,
                         routeSettings: RouteSettings(
                           arguments: entity,
                         ),

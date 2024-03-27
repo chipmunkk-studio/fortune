@@ -48,6 +48,12 @@ class _AgreeTermsBottomSheetState extends State<_AgreeTermsBottomSheet> {
   }
 
   @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocSideEffectListener<AgreeTermsBloc, AgreeTermsSideEffect>(
       listener: (BuildContext context, AgreeTermsSideEffect sideEffect) {

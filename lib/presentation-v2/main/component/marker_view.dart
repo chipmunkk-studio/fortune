@@ -21,7 +21,7 @@ class _MarkerViewState extends State<MarkerView> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => widget.onMarkerClick(widget.marker),
-      child: buildIngredientByPlayType(
+      child: buildFortuneImage(
         url: widget.marker.image.url,
         type: widget.marker.image.type,
       ),

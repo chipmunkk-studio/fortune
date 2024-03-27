@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:fortune/core/notification/notification_response.dart';
+import 'package:fortune/domain/entity/mission_entity.dart';
 import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_page.dart';
 import 'package:fortune/presentation-v2/fortune_ad/fortune_ad_param.dart';
 import 'package:fortune/presentation-v2/login/login_page.dart';
 import 'package:fortune/presentation-v2/main/fortune_main_page.dart';
+import 'package:fortune/presentation-v2/missiondetail/mission_detail_page.dart';
+import 'package:fortune/presentation-v2/missiondetail/mission_detail_param.dart';
+import 'package:fortune/presentation-v2/missions/missions_page.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_page.dart';
 import 'package:fortune/presentation-v2/obtain/fortune_obtain_param.dart';
 import 'package:fortune/presentation-v2/onboarding/on_boarding_page.dart';
@@ -51,16 +55,22 @@ class FortuneAppRouter {
     },
   );
 
-  // static var missionDetailNormalHandler = Handler(
-  //   handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-  //     final args = context?.settings?.arguments as MissionViewEntity?;
-  //     return args != null ? MissionDetailPage(args) : null;
-  //   },
-  // );
+  static var missionDetailHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      final args = context?.settings?.arguments as MissionDetailParam?;
+      return args != null ? MissionDetailPage(args) : null;
+    },
+  );
 
   static var onBoardingHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
       return const OnBoardingPage();
+    },
+  );
+
+  static var missionsHandler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return const MissionsPage();
     },
   );
 
@@ -231,6 +241,20 @@ class FortuneAppRouter {
         opaque: false,
       )
 
+      /// 미션 목록
+      ..define(
+        AppRoutes.missionsRoute,
+        handler: missionsHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
+      /// 미션 상세.
+      ..define(
+        AppRoutes.missionDetailRoute,
+        handler: missionDetailHandler,
+        transitionType: TransitionType.cupertino,
+      )
+
       /// 재료 획득 액션.
       // ..define(
       //   AppRoutes.ingredientActionRoute,
@@ -343,11 +367,12 @@ class AppRoutes {
   static const String mainRoute = 'main';
   static const String loginRoute = 'login';
   static const String onBoardingRoute = 'onBoarding';
+  static const String missionsRoute = 'missions';
   static const String markerObtainRoute = 'markerObtainRoute';
   static const String requestPermissionRoute = 'requestPermission';
   static const String obtainHistoryRoute = 'obtainHistory';
   static const String alarmFeedRoute = 'alarmFeed';
-  static const String missionDetailNormalRoute = 'missionDetailNormal';
+  static const String missionDetailRoute = 'missionDetail';
   static const String ingredientActionRoute = 'ingredientAction';
   static const String userNoticesRoute = 'userNotices';
   static const String termsDetailRoute = 'termsDetail';

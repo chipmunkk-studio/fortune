@@ -9,7 +9,7 @@ import 'package:fortune/domain/supabase/repository/mission_respository.dart';
 import 'package:fortune/domain/supabase/repository/obtain_history_repository.dart';
 import 'package:fortune/domain/supabase/repository/user_repository.dart';
 
-class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
+class GetMissionsUseCase implements UseCase0<List<MissionEntity>> {
   final MissionsRepository missionRepository;
   final ObtainHistoryRepository obtainHistoryRepository;
   final UserRepository userRepository;
@@ -21,7 +21,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
   });
 
   @override
-  Future<FortuneResultDeprecated<List<MissionViewEntity>>> call() async {
+  Future<FortuneResultDeprecated<List<MissionEntity>>> call() async {
     try {
       final user = await userRepository.findUserByEmailNonNull(columnsToSelect: [UserColumn.id]);
       final missions = await missionRepository.getAllMissions();
@@ -55,7 +55,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           // 릴레이마커
           final relayMarker = (e.type == MissionType.relay) ? clearConditions.single.marker : MarkerEntity.empty();
 
-          return MissionViewEntity(
+          return MissionEntity(
             mission: e,
             relayMarker: relayMarker,
             // 사용자가 가진 총 합.
@@ -69,7 +69,7 @@ class GetMissionsUseCase implements UseCase0<List<MissionViewEntity>> {
           );
         },
       );
-      final List<MissionViewEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
+      final List<MissionEntity> missionViewItems = await Future.wait(missionViewItemsFutures);
 
       missionViewItems.sort((a, b) {
         // 1순위: mission.type이 MissionType.grade인 경우를 맨 뒤로

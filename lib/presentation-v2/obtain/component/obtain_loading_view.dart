@@ -22,7 +22,7 @@ class ObtainLoadingView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildIngredientByPlayType(
+              buildFortuneImage(
                 url: marker.image.url,
                 width: 92,
                 height: 92,

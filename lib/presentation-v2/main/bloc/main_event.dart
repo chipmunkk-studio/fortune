@@ -86,10 +86,18 @@ class MainLandingPage extends MainEvent {
   @override
   List<Object?> get props => [entity];
 }
+
 class MainCompassRotate extends MainEvent {
   final CompassEvent data;
 
   MainCompassRotate(this.data);
+
+  @override
+  List<Object?> get props => [];
+}
+
+class MainOnResume extends MainEvent {
+  MainOnResume();
 
   @override
   List<Object?> get props => [];
